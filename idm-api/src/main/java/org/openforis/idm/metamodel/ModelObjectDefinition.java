@@ -4,14 +4,14 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface ModelObjectDefinition extends Versionable, Annotatable {
+public interface ModelObjectDefinition extends Versionable, Annotatable, ModelObjectDefinitionContainer {
 
 	/**
 	 * @return  Returns the parent.
-	 * @uml.property  name="parent"
+	 * @uml.property  name="parentDefinition"
 	 * @uml.associationEnd  inverse="children:org.openforis.idm.metamodel.EntityDefinition"
 	 */
-	public EntityDefinition getParent();
+	EntityDefinition getParentDefinition();
 
 	CardinalityCheck getCardinalityCheck();
 	
@@ -19,55 +19,55 @@ public interface ModelObjectDefinition extends Versionable, Annotatable {
 	 * @return  Returns the name.
 	 * @uml.property  name="name"
 	 */
-	public String getName();
+	String getName();
 
 	/**
 	 * Setter of the property <tt>name</tt>
 	 * @param name  The name to set.
 	 * @uml.property  name="name"
 	 */
-	public void setName(String name);
+	void setName(String name);
 
 	/**
 	 * @return  Returns the relevantExpression.
 	 * @uml.property  name="relevantExpression"
 	 */
-	public String getRelevantExpression();
+	String getRelevantExpression();
 
 	/**
 	 * Setter of the property <tt>relevantExpression</tt>
 	 * @param relevantExpression  The relevantExpression to set.
 	 * @uml.property  name="relevantExpression"
 	 */
-	public void setRelevantExpression(String relevantExpression);
+	void setRelevantExpression(String relevantExpression);
 
 	/**
 	 * @return  Returns the descriptions.
 	 * @uml.property  name="descriptions"
 	 */
-	public MultilingualStringMap getDescriptions();
+	MultilingualStringMap getDescriptions();
 
 	/**
 	 * Setter of the property <tt>descriptions</tt>
 	 * @param descriptions  The descriptions to set.
 	 * @uml.property  name="descriptions"
 	 */
-	public void setDescriptions(MultilingualStringMap descriptions);
+	void setDescriptions(MultilingualStringMap descriptions);
 	
-	public MultilingualStringMap getLabels(LabelType type);
+	MultilingualStringMap getLabels(LabelType type);
 
-	public void setLabels(LabelType type, MultilingualStringMap labels);
+	void setLabels(LabelType type, MultilingualStringMap labels);
 
 	/**
 	 * @return  Returns the multiple.
 	 * @uml.property  name="multiple"
 	 */
-	public boolean isMultiple();
+	boolean isMultiple();
 
 	/**
 	 * Setter of the property <tt>multiple</tt>
 	 * @param multiple  The multiple to set.
 	 * @uml.property  name="multiple"
 	 */
-	public void setMultiple(boolean multiple);
+	void setMultiple(boolean multiple);
 }

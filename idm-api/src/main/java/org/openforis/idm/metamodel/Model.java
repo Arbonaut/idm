@@ -9,20 +9,6 @@ import java.util.List;
 public interface Model {
 
 	/**
-	 * @return  Returns the survey.
-	 * @uml.property  name="survey"
-	 * @uml.associationEnd  inverse="model:org.openforis.idm.metamodel.Survey"
-	 */
-	public Survey getSurvey();
-
-//	/**
-//	 * Setter of the property <tt>survey</tt>
-//	 * @param survey  The survey to set.
-//	 * @uml.property  name="survey"
-//	 */
-//	public void setSurvey(Survey survey);
-
-	/**
 	 * @return  Returns the schema.
 	 * @uml.property  name="schema"
 	 * @uml.associationEnd  aggregation="composite" inverse="model:org.openforis.idm.metamodel.Schema"

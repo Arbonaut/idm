@@ -4,7 +4,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface PatternCheck extends CodeCheck, StringCheck {
+public interface PatternCheck extends ExplicitCheck {
 
 	/**
 	 * @return  Returns the regularExpression.

@@ -9,7 +9,7 @@ import org.openforis.idm.metamodel.CardinalityCheck;
  * @author M. Togna
  * 
  */
-public class CardinalityCheckImpl extends AbstractCheck implements CardinalityCheck {
+public class CardinalityCheckImpl extends AbstractImplicitCheck implements CardinalityCheck {
 
 	private String requiredExpression;
 	private Integer minCount;

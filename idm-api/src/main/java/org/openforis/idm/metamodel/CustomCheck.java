@@ -5,7 +5,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface CustomCheck extends NumericCheck, StringCheck, TimestampCheck, BooleanCheck, CodeCheck {
+public interface CustomCheck extends ExplicitCheck {
 
 	/**
 	 * @return  Returns the expression.

@@ -5,7 +5,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface FileAttributeDefinition extends AttributeDefinition<FileCheck> {
+public interface FileAttributeDefinition extends AttributeDefinition {
 
 	/**
 	 * @return  Returns the maxSize.

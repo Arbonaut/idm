@@ -12,8 +12,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.metamodel.ExplicitCheck;
 import org.openforis.idm.metamodel.LanguageSpecificText;
-import org.openforis.idm.metamodel.ValueCheck;
 
 /**
  * @author M. Togna
@@ -21,7 +21,7 @@ import org.openforis.idm.metamodel.ValueCheck;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-public class AbstractValueCheck extends AbstractCheck implements ValueCheck {
+public class AbstractExplicitCheck extends AbstractCheck implements ExplicitCheck {
 
 	@XmlTransient
 	private Flag flag;

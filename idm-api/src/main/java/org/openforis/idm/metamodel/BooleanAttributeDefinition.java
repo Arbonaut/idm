@@ -5,7 +5,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface BooleanAttributeDefinition extends AttributeDefinition<BooleanCheck> {
+public interface BooleanAttributeDefinition extends AttributeDefinition {
 
 	/**
 	 * @return  Returns the affirmativeOnly.

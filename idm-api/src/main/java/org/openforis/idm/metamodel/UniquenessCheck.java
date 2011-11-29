@@ -4,7 +4,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface UniquenessCheck extends NumericCheck, StringCheck, TimestampCheck, BooleanCheck, CodeCheck {
+public interface UniquenessCheck extends ExplicitCheck {
 
 	/**
 	 * @return  Returns the expression.

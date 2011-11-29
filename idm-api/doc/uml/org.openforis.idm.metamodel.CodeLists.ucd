@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="org.openforis.idm.metamodel.CodeLists" size="1608,860" id="org.openforis.idm.metamodel" metadata="uml2-1.0" initialized="true" zoom="0.75" tag="1000" key="32303037303533312D313030302069646D2D6170692F6D696E6F746F676E61">
-  <children xsi:type="editmodel:InterfaceEditModel" name="CodeDefinition" location="936,389" size="212,89" id="org.openforis.idm.metamodel/CodeDefinition" runTimeClassModel="code,codingScheme">
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="org.openforis.idm.metamodel.CodeLists" size="1608,860" id="org.openforis.idm.metamodel" metadata="uml2-1.0" initialized="true" zoom="0.75" tag="1000" key="32303037303533312D31303030206F662D69646D2F67696E6F">
+  <children xsi:type="editmodel:InterfaceEditModel" name="Code" location="936,389" size="212,89" id="org.openforis.idm.metamodel/CodeDefinition" runTimeClassModel="code,codingScheme">
     <children xsi:type="editmodel:CompartmentEditModel" size="189,36">
       <children xsi:type="editmodel:AttributeEditModel" name="codingScheme" id="org.openforis.idm.metamodel/CodeDefinition#codingScheme"/>
       <children xsi:type="editmodel:AttributeEditModel" name="code" id="org.openforis.idm.metamodel/CodeDefinition#code"/>
@@ -17,11 +17,10 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.1" name="CodingScheme" location="120,179" size="172,309" id="org.openforis.idm.metamodel/CodingScheme" runTimeClassModel="codeScope,name,codeType,org.openforis.idm.metamodel.CodingScheme.CodeScope,org.openforis.idm.metamodel.CodingScheme.CodeType">
-    <children xsi:type="editmodel:CompartmentEditModel" size="149,54">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.1" name="CodingScheme" location="120,179" size="172,291" id="org.openforis.idm.metamodel/CodingScheme" runTimeClassModel="codeScope,codeType,org.openforis.idm.metamodel.CodingScheme.CodeScope,org.openforis.idm.metamodel.CodingScheme.CodeType">
+    <children xsi:type="editmodel:CompartmentEditModel" size="149,36">
       <children xsi:type="editmodel:AttributeEditModel" name="codeScope" id="org.openforis.idm.metamodel/CodingScheme#codeScope"/>
       <children xsi:type="editmodel:AttributeEditModel" name="codeType" id="org.openforis.idm.metamodel/CodingScheme#codeType"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="name" id="org.openforis.idm.metamodel/CodingScheme#name"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="126,182">
@@ -42,7 +41,7 @@
     </children>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" name="CodeList" location="494,179" size="234,107" id="org.openforis.idm.metamodel/CodeList" runTimeClassModel="name,labels,descriptions">
+  <children xsi:type="editmodel:InterfaceEditModel" name="CodeList" location="494,179" size="234,107" id="org.openforis.idm.metamodel/CodeList" runTimeClassModel="labels,name,descriptions">
     <children xsi:type="editmodel:CompartmentEditModel" size="211,54">
       <children xsi:type="editmodel:AttributeEditModel" name="descriptions" id="org.openforis.idm.metamodel/CodeList#descriptions"/>
       <children xsi:type="editmodel:AttributeEditModel" name="labels" id="org.openforis.idm.metamodel/CodeList#labels"/>
@@ -94,7 +93,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.0" name="CodeListRank" location="494,359" size="234,107" id="org.openforis.idm.metamodel/CodeListRank" runTimeClassModel="name,labels,descriptions">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.0" name="CodeListRank" location="494,359" size="234,107" id="org.openforis.idm.metamodel/CodeListRank" runTimeClassModel="labels,name,descriptions">
     <children xsi:type="editmodel:CompartmentEditModel" size="211,54">
       <children xsi:type="editmodel:AttributeEditModel" name="descriptions" id="org.openforis.idm.metamodel/CodeListRank#descriptions"/>
       <children xsi:type="editmodel:AttributeEditModel" name="labels" id="org.openforis.idm.metamodel/CodeListRank#labels"/>

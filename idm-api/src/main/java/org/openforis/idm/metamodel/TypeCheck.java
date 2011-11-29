@@ -1,6 +1,9 @@
 package org.openforis.idm.metamodel;
 
-
-public interface TypeCheck extends Check {
+/**
+ * @author G. Miceli
+ * @author M. Togna
+ */
+public interface TypeCheck extends ImplicitCheck {
 
 }

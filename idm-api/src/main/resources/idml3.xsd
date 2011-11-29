@@ -26,14 +26,6 @@
 
   <!-- Simple Types -->
   
-  <xs:simpleType name="versionName">
-    <xs:annotation>
-      <xs:documentation xml:lang="en">
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="internalName"/>
-  </xs:simpleType>
-  
   <xs:simpleType name="regularExpression">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -52,6 +44,8 @@
         
           this()   - the entity or attribute where the expression is defined
           parent() - the parent of the entity or attribute containing the expression
+          blank()  - returns true if an attribute value is blank (does not include symbols)
+          valid()  - returns true if an attribute value is not blank and does not return an error
         
         Expressions are generally evaluated from one level above the entity or attribute where they are defined.  For example:
       </xs:documentation>
@@ -69,27 +63,90 @@
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
+
+  <xs:simpleType name="versionName">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        A short version name or number used to distinguish between versions of the data model and related field forms.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token"/>
+  </xs:simpleType>
   
   <!-- Complex Types -->
   
   <xs:complexType name="codeListItem">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        An item in a code list.  In hierarchical lists, may also contain other sub-items.
+      </xs:documentation>
+    </xs:annotation>
     <xs:sequence>
       <xs:element name="code" maxOccurs="unbounded" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            A code used to refer to this item (e.g. 100, a).  Codes in any given coding scheme must be unique.  
+            
+            Alpha-numeric codes are considered case insensitive for purposes of uniqueness and search, however text formatting is to be maintained when presenting the codes to the user.  For example, if a code "Fhm" is defined in a particular coding scheme, code "FHM" may not also be defined.  However if a user enters "FHM", the value should  be automatically converted to the correct case "Fhm".  
+          </xs:documentation>
+        </xs:annotation>
         <xs:complexType>
           <xs:simpleContent>
             <xs:extension base="xs:normalizedString">
-              <xs:attribute name="scheme" use="optional"/>
+              <xs:attribute name="scheme" use="optional">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">
+                    The coding scheme to which this code refers, as defined in the list's codingScheme element.
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
             </xs:extension>            
           </xs:simpleContent>
         </xs:complexType>
       </xs:element>
-      <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText"/>
-      <xs:element name="description" maxOccurs="unbounded" minOccurs="0" type="formattedText"/>
-      <xs:element name="item" maxOccurs="unbounded" minOccurs="0" type="codeListItem"/>
+      <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Short label describing a particular code list item.
+          </xs:documentation>
+        </xs:annotation>        
+      </xs:element>
+      <xs:element name="description" maxOccurs="unbounded" minOccurs="0" type="formattedText">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Human-readable text describing the signficance of a particular code list item.
+          </xs:documentation>
+        </xs:annotation>        
+      </xs:element>
+      <xs:element name="item" maxOccurs="unbounded" minOccurs="0" type="codeListItem">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            For hierarchical lists, onr or more sub-items may be defined below this item.  In this case, the "hierarchy"  element should be used to define the significance of each level in the list. 
+          </xs:documentation>
+        </xs:annotation>        
+      </xs:element>
     </xs:sequence>
-    <xs:attribute name="qualifiable" type="xs:boolean"/>
-    <xs:attribute name="since" type="versionName"/>
-    <xs:attribute name="deprecated" type="versionName"/>
+    <xs:attribute name="qualifiable" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          Specifies whether additional information in the form of text may be provided when the code is used.  The most common use of this is for codes indicating "Other".  In these cases, the user is asked to qualify the use of that code with descriptive text.   
+        </xs:documentation>
+      </xs:annotation>        
+    </xs:attribute>
+    <xs:attribute name="since" type="versionName">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          The version of the model in which a particular list item was introduced.  New items and coding schemes may be added or marked deprecated, but for consistency, individual codes and labels may remain constant 
+        </xs:documentation>
+      </xs:annotation>        
+    </xs:attribute>
+    <xs:attribute name="deprecated" type="versionName">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          
+        </xs:documentation>
+      </xs:annotation>        
+    </xs:attribute>
   </xs:complexType>
   
   
@@ -103,6 +160,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
+        
       	<xs:element name="name" type="internalName">
       	  <xs:annotation>
         	  <xs:documentation xml:lang="en">
@@ -110,6 +168,7 @@
         	  </xs:documentation>
       	  </xs:annotation>
       	</xs:element>
+        
         <xs:element name="project" type="unformattedText" minOccurs="1" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -117,6 +176,7 @@
             </xs:documentation>
           </xs:annotation>
         </xs:element>
+        
         <xs:element name="cycle" type="unformattedText" minOccurs="0" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -124,6 +184,7 @@
             </xs:documentation>
           </xs:annotation>
         </xs:element>
+        
         <xs:element name="description" type="formattedText" minOccurs="0" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -131,7 +192,21 @@
             </xs:documentation>
           </xs:annotation>
         </xs:element>
-        <xs:element name="model" minOccurs="1" maxOccurs="1">
+        
+        <xs:element name="configuration" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              Any other configuration for use by software tools in XML or plain text format.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+              
+<!--        <xs:element name="model" minOccurs="1" maxOccurs="1">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               The survey data model.  Contains definitions of the variables recorded during a field survey, as well as information about versioning, code lists and units of measurement.
@@ -139,188 +214,187 @@
           </xs:annotation>
           <xs:complexType>
             <xs:sequence>
-              <!--~~~~~~~~~~~~-->
-              <!-- Versioning -->
-              <!--~~~~~~~~~~~~-->
-              <xs:element name="versioning" minOccurs="0" maxOccurs="1">
+  -->
+        <!--~~~~~~~~~~~~-->
+        <!-- Versioning -->
+        <!--~~~~~~~~~~~~-->
+        
+        <xs:element name="versioning" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              Container element for information on data model versions.  Versioning allows certain elements of the inventory data model to be added or retired in a manner which does not break data consistency or comparability.  For example, as field forms evolve throughout the course of an inventory, versions may be added this section to document the changes made and to allow the system to reflect the changes only on relevant data.         
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="version" minOccurs="1" maxOccurs="unbounded">
                 <xs:annotation>
                   <xs:documentation xml:lang="en">
-                    Container element for information on data model versions.  Versioning allows certain elements of the inventory data model to be added or retired in a manner which does not break data consistency or comparability.  For example, as field forms evolve throughout the course of an inventory, versions may be added this section to document the changes made and to allow the system to reflect the changes only on relevant data.         
+                    Describes a single version of the data model.  Generally follows the revision of the field forms or mobile computer setup. 
                   </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="version" minOccurs="1" maxOccurs="unbounded">
+                    <xs:element name="label" minOccurs="0" type="unformattedText">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          Describes a single version of the data model.  Generally follows the revision of the field forms or mobile computer setup. 
+                          Human-readable name of the model version (e.g. Pilot, Main Phase, Extension)
                         </xs:documentation>
                       </xs:annotation>
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="label" minOccurs="0" type="unformattedText">
-                            <xs:annotation>
-                              <xs:documentation xml:lang="en">
-                                Human-readable name of the model version (e.g. Pilot, Main Phase, Extension)
-                              </xs:documentation>
-                            </xs:annotation>
-                          </xs:element>
-                          <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText">
-                            <xs:annotation>
-                              <xs:documentation xml:lang="en">
-                                Human-readable description of the model version.              
-                              </xs:documentation>
-                            </xs:annotation>          
-                          </xs:element>
-                          <xs:element minOccurs="0" maxOccurs="1" name="date" type="xs:date">
-                            <xs:annotation>
-                              <xs:documentation xml:lang="en">
-                                Date from data was collected using this version of the model.
-                              </xs:documentation>
-                            </xs:annotation>          
-                          </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="name" type="versionName" use="required">
-                          <xs:annotation>
-                            <xs:documentation xml:lang="en">
-                              System name for this version of the data model.
-                            </xs:documentation>
-                          </xs:annotation>
-                        </xs:attribute>
-                      </xs:complexType>
                     </xs:element>
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
-              <!--~~~~~~~~-->
-              <!-- Schema -->
-              <!--~~~~~~~~-->
-              <xs:element name="schema" minOccurs="1" maxOccurs="1">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
-                    Contains the definition of the structure and contents of primary data, including types of entities studied and measurements or observations that will be made.  Quality checks to be applied during data collection and initial data processing are also defined here.
-                    
-                    A schema may contain one or more root entities which are considered the main unit of work for a survey. 
-                  </xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="entity" type="rootEntity" minOccurs="1" maxOccurs="unbounded">
+                    <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          
+                          Human-readable description of the model version.              
                         </xs:documentation>
-                      </xs:annotation>
-                      <xs:unique name="entityChildNames">
-                        <xs:selector xpath="*"/>
-                        <xs:field xpath="@name"/>
-                      </xs:unique>    
+                      </xs:annotation>          
+                    </xs:element>
+                    <xs:element minOccurs="0" maxOccurs="1" name="date" type="xs:date">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                          Date from which data was collected using this version of the model.
+                        </xs:documentation>
+                      </xs:annotation>          
                     </xs:element>
                   </xs:sequence>
-                </xs:complexType>
-              </xs:element>
-              <!--~~~~~~~~~~~~-->
-              <!-- Code Lists -->
-              <!--~~~~~~~~~~~~-->
-              <xs:element name="codeLists" minOccurs="0" maxOccurs="1">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
-                    Defines code lists referred to by the inventory data.
-                  </xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element minOccurs="1" maxOccurs="unbounded" name="list">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="label" minOccurs="0" maxOccurs="unbounded" type="unformattedText"/>
-                          <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText"/>
-                          <xs:element name="codingScheme" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                              <xs:attribute name="name" use="optional" type="internalName"/>
-                              <xs:attribute name="scope" use="required">
-                                <xs:simpleType>
-                                  <xs:restriction base="xs:string">
-                                    <xs:enumeration value="scheme"/>
-                                    <xs:enumeration value="local"/>
-                                  </xs:restriction>
-                                </xs:simpleType>
-                              </xs:attribute>
-                              <xs:attribute name="type" use="required">
-                                <xs:simpleType>
-                                  <xs:restriction base="xs:string">
-                                    <xs:enumeration value="numeric"/>
-                                    <xs:enumeration value="alphanumeric"/>
-                                  </xs:restriction>
-                                </xs:simpleType>
-                              </xs:attribute>            
-                              <xs:attribute name="since" type="versionName"/>
-                              <xs:attribute name="deprecated" type="versionName"/>
-                            </xs:complexType>
-                          </xs:element>
-                          <xs:element name="hierarchy" minOccurs="0">
-                            <xs:complexType>
-                              <xs:sequence>
-                                <xs:element name="rank" minOccurs="1" maxOccurs="unbounded">
-                                  <xs:complexType>
-                                    <xs:sequence>
-                                      <xs:element name="label" type="unformattedText" minOccurs="0" maxOccurs="unbounded"/>
-                                      <xs:element name="description" type="unformattedText" minOccurs="0" maxOccurs="unbounded"/>
-                                    </xs:sequence>
-                                    <xs:attribute name="name" type="internalName" use="required"/>
-                                  </xs:complexType>
-                                </xs:element>
-                              </xs:sequence>
-                            </xs:complexType>
-                          </xs:element>
-                          <xs:element minOccurs="0" name="items">
-                            <xs:complexType>
-                              <xs:sequence>
-                                <xs:element minOccurs="1" maxOccurs="unbounded" name="item" type="codeListItem"/>
-                              </xs:sequence>
-                            </xs:complexType>
-                          </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="name" type="internalName" use="required"/>
-                        <xs:attribute name="lookup" type="xs:string"/> 
-                        <xs:attribute name="since" type="versionName"/>
-                        <xs:attribute name="deprecated" type="versionName"/>
-                      </xs:complexType>
-                    </xs:element>
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
-              <!--~~~~~~~~~~~~~~~~~~~~~~-->
-              <!-- Units of Measurement -->
-              <!--~~~~~~~~~~~~~~~~~~~~~~-->
-              <xs:element name="units" minOccurs="0" maxOccurs="1">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
-                    Describes the units of measure used by the inventory.  Units are always stored with the primary data in order to avoid misinterpretation and to facilitate conversion between units.
-                  </xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="unit" minOccurs="1" maxOccurs="unbounded">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="label" minOccurs="0" maxOccurs="unbounded" type="unformattedText"/>
-                          <xs:element name="abbreviation" minOccurs="0" maxOccurs="unbounded" type="unformattedText"/>
-                        </xs:sequence>
-                        <xs:attribute name="name" use="required" type="internalName"/>
-                        <xs:attribute name="dimension" use="required" type="internalName"/>
-                        <xs:attribute name="conversionFactor" use="optional" type="xs:decimal"/>
-                      </xs:complexType>
-                    </xs:element>
-                  </xs:sequence>
+                  <xs:attribute name="name" type="versionName" use="required">
+                    <xs:annotation>
+                      <xs:documentation xml:lang="en">
+                        System name for this version of the data model.
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        
+        <!--~~~~~~~~~~~~-->
+        <!-- Code Lists -->
+        <!--~~~~~~~~~~~~-->
+        
+        <xs:element name="codeLists" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              Defines code lists referred to by the inventory data.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="unbounded" name="list">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="label" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:complexContent>
+                          <xs:extension base="unformattedText">
+                            <xs:attribute name="type" use="required">
+                              <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                  <xs:enumeration value="item"/>
+                                  <xs:enumeration value="list"/>
+                                </xs:restriction>
+                              </xs:simpleType>
+                            </xs:attribute>
+                            <xs:anyAttribute namespace="##other" processContents="lax"/>
+                          </xs:extension>
+                        </xs:complexContent>
+                      </xs:complexType>
+                    </xs:element>
+                    
+                    <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText"/>
+                    <xs:element name="codingScheme" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText"/>
+                          <xs:element name="description" maxOccurs="unbounded" minOccurs="0" type="formattedText"/>
+                        </xs:sequence>
+                        <xs:attribute name="name" use="optional" type="internalName"/>
+                        <xs:attribute name="scope" use="required">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                              <xs:enumeration value="scheme"/>
+                              <xs:enumeration value="local"/>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="type" use="required">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                              <xs:enumeration value="numeric"/>
+                              <xs:enumeration value="alphanumeric"/>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:attribute>            
+                        <xs:attribute name="since" type="versionName"/>
+                        <xs:attribute name="deprecated" type="versionName"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="hierarchy" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="level" minOccurs="1" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="label" type="unformattedText" minOccurs="0" maxOccurs="unbounded"/>
+                                <xs:element name="description" type="unformattedText" minOccurs="0" maxOccurs="unbounded"/>
+                              </xs:sequence>
+                              <xs:attribute name="name" type="internalName" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="items">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="1" maxOccurs="unbounded" name="item" type="codeListItem"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="internalName" use="required"/>
+                  <xs:attribute name="lookup" type="xs:string"/> 
+                  <xs:attribute name="since" type="versionName"/>
+                  <xs:attribute name="deprecated" type="versionName"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <!--~~~~~~~~~~~~~~~~~~~~~~-->
+        <!-- Units of Measurement -->
+        <!--~~~~~~~~~~~~~~~~~~~~~~-->
+        
+        <xs:element name="units" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              Describes the units of measure used by the inventory.  Units are always stored with the primary data in order to avoid misinterpretation and to facilitate conversion between units.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="unit" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="label" minOccurs="0" maxOccurs="unbounded" type="unformattedText"/>
+                    <xs:element name="abbreviation" minOccurs="0" maxOccurs="unbounded" type="unformattedText"/>
+                  </xs:sequence>
+                  <xs:attribute name="name" use="required" type="internalName"/>
+                  <xs:attribute name="dimension" use="required" type="internalName"/>
+                  <xs:attribute name="conversionFactor" use="optional" type="xs:decimal"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
         <!-- Spatial Reference Systems -->
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        
         <xs:element name="spatialReferenceSystems" minOccurs="0" maxOccurs="1">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -330,60 +404,80 @@
           <xs:complexType>
             <xs:sequence>
               <xs:element name="spatialReferenceSystem" minOccurs="1" maxOccurs="unbounded"> 
-               <xs:annotation>
-                 <xs:documentation xml:lang="en">
-                   Defines a single coordinate reference system used by the system.  Note that when using Universal Transverse Mercator coordinate system (UTM), each zone is to be encoded as a separate spatial reference system.  
-                 </xs:documentation>
-               </xs:annotation>
-               <xs:complexType>
-                 <xs:sequence>
-                   <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText">
-                     <xs:annotation>
-                       <xs:documentation xml:lang="en">
-                         Human-readable name of the spatial reference system (e.g. UTM Zone 38).
-                       </xs:documentation>
-                     </xs:annotation>
-                   </xs:element>
-                   <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText">
-                     <xs:annotation>
-                       <xs:documentation xml:lang="en">
-                         Human-readable description of the spatial reference system.
-                       </xs:documentation>
-                     </xs:annotation>
-                   </xs:element>
-                   <xs:element name="wkt" minOccurs="1" maxOccurs="1" type="xs:string">
-                     <xs:annotation>
-                       <xs:documentation xml:lang="en">
-                         Definition of the spatial reference system's parameters and projection in well-known text (WKT) format.  WKT is a standard defined in the Open Geospatial Consortium (OGC)'s Simple Feature Access and Coordinate Transformation Service specifications.
-                       </xs:documentation>
-                     </xs:annotation>
-                   </xs:element>
-                 </xs:sequence>
-                 <xs:attribute name="srid" type="xs:string">
-                   <xs:annotation>
-                     <xs:documentation xml:lang="en">
-                       User-defined unique ID of the spatial reference system (e.g. EPSG:21036)  
-                     </xs:documentation>
-                   </xs:annotation>
-                 </xs:attribute>
-               </xs:complexType>
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">
+                    Defines a single coordinate reference system used by the system.  Note that when using Universal Transverse Mercator coordinate system (UTM), each zone is to be encoded as a separate spatial reference system.  
+                  </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                          Human-readable name of the spatial reference system (e.g. UTM Zone 38).
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                          Human-readable description of the spatial reference system.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="wkt" minOccurs="1" maxOccurs="1" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                          Definition of the spatial reference system's parameters and projection in well-known text (WKT) format.  WKT is a standard defined in the Open Geospatial Consortium (OGC)'s Simple Feature Access and Coordinate Transformation Service specifications.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="srid" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation xml:lang="en">
+                        User-defined unique ID of the spatial reference system (e.g. EPSG:21036)  
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                </xs:complexType>
               </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="configuration" minOccurs="0" maxOccurs="1">
+        
+        <!--~~~~~~~~-->
+        <!-- Schema -->
+        <!--~~~~~~~~-->
+        <xs:element name="schema" minOccurs="1" maxOccurs="1">
           <xs:annotation>
             <xs:documentation xml:lang="en">
-              Any other configuration for use by software tools in XML or plain text format.
+              Contains the definition of the structure and contents of primary data, including types of entities studied and measurements or observations that will be made.  Quality checks to be applied during data collection and initial data processing are also defined here.
+              
+              A schema may contain one or more root entities which are considered the main unit of work for a survey. 
             </xs:documentation>
           </xs:annotation>
           <xs:complexType>
-        		<xs:sequence>
-			        <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-        		</xs:sequence>
-        	</xs:complexType>
+            <xs:sequence>
+              <xs:element name="entity" type="rootEntity" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">
+                    
+                  </xs:documentation>
+                </xs:annotation>
+                <xs:unique name="entityChildNames">
+                  <xs:selector xpath="*"/>
+                  <xs:field xpath="@name"/>
+                </xs:unique>    
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
         </xs:element>
-      </xs:sequence>
+
+        <!--            </xs:sequence>
+          </xs:complexType>
+        </xs:element>-->
+     </xs:sequence>
     </xs:complexType>
   </xs:element> 
   
@@ -403,7 +497,6 @@
                   </xs:restriction>
                 </xs:simpleType>
               </xs:attribute>
-              <xs:attribute name="since" type="versionName"/>
               <xs:anyAttribute namespace="##other" processContents="lax"/>
             </xs:extension>
           </xs:complexContent>
@@ -632,7 +725,7 @@
       </xs:complexContent>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="taxon">
     <xs:complexType>
       <xs:complexContent>
@@ -865,5 +958,4 @@
     </xs:simpleContent>
   </xs:complexType>
 </xs:schema>
-
 

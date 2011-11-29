@@ -1,5 +1,7 @@
 package org.openforis.idm.metamodel;
 
+import java.util.List;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -40,12 +42,12 @@ public interface ValueCheck extends Check {
 	 * @return  Returns the messages.
 	 * @uml.property  name="messages"
 	 */
-	public MultilingualStringMap getMessages();
+	public List<LanguageSpecificText> getMessages();
 
 	/**
 	 * Setter of the property <tt>messages</tt>
 	 * @param messages  The messages to set.
 	 * @uml.property  name="messages"
 	 */
-	public void setMessages(MultilingualStringMap messages);
+	public void setMessages(List<LanguageSpecificText> messages);
 }

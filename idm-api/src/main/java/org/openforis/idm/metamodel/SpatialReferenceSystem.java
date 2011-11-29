@@ -1,5 +1,7 @@
 package org.openforis.idm.metamodel;
 
+import java.util.List;
+
 
 /**
  * @author G. Miceli
@@ -25,27 +27,27 @@ public interface SpatialReferenceSystem {
 	 * @return  Returns the labels.
 	 * @uml.property  name="labels"
 	 */
-	public MultilingualStringMap getLabels();
+	public List<LanguageSpecificText> getLabels();
 
 	/**
 	 * Setter of the property <tt>labels</tt>
 	 * @param labels  The labels to set.
 	 * @uml.property  name="labels"
 	 */
-	public void setLabels(MultilingualStringMap labels);
+	public void setLabels(List<LanguageSpecificText> labels);
 
 	/**
 	 * @return  Returns the descriptions.
 	 * @uml.property  name="descriptions"
 	 */
-	public MultilingualStringMap getDescriptions();
+	public List<LanguageSpecificText> getDescriptions();
 
 	/**
 	 * Setter of the property <tt>descriptions</tt>
 	 * @param descriptions  The descriptions to set.
 	 * @uml.property  name="descriptions"
 	 */
-	public void setDescriptions(MultilingualStringMap descriptions);
+	public void setDescriptions(List<LanguageSpecificText> descriptions);
 
 	/**
 	 * @return  Returns the wellKnownText.

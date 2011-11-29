@@ -10,7 +10,7 @@ public interface CodingScheme {
 	}
 
 	public enum CodeScope {
-		LIST, PARENT
+		SCHEME, LOCAL
 	}
 
 	/**
@@ -42,5 +42,20 @@ public interface CodingScheme {
 	 * @uml.property name="codeScope"
 	 */
 	public void setCodeScope(CodingScheme.CodeScope codeScope);
+
+	/**
+	 * @return Returns the name.
+	 * @uml.property name="name"
+	 */
+	public String getName();
+
+	/**
+	 * Setter of the property <tt>name</tt>
+	 * 
+	 * @param name
+	 *            The name to set.
+	 * @uml.property name="name"
+	 */
+	public void setName(String name);
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="org.openforis.idm.metamodel.Checks" size="1669,1067" id="org.openforis.idm.metamodel" metadata="uml2-1.0" initialized="true" zoom="0.75" tag="1000" key="32303037303533312D31303030206F662D69646D2F67696E6F">
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.10/@sourceConnections.0 //@children.9/@sourceConnections.0 //@children.7/@sourceConnections.0 //@children.12/@sourceConnections.0 //@children.5/@sourceConnections.0 //@children.8/@sourceConnections.0 //@children.11/@sourceConnections.0 //@children.6/@sourceConnections.0" name="ValueCheck" location="682,283" size="223,218" id="org.openforis.idm.metamodel/ValueCheck" runTimeClassModel="flag,org.openforis.idm.metamodel.ValueCheck.Flag,condition,messages">
-    <children xsi:type="editmodel:CompartmentEditModel" size="200,54">
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="org.openforis.idm.metamodel.Checks" size="1669,1067" id="org.openforis.idm.metamodel" metadata="uml2-1.0" initialized="true" zoom="0.75" tag="1000" key="32303037303533312D313030302069646D2D6170692F6D696E6F746F676E61">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.10/@sourceConnections.0 //@children.9/@sourceConnections.0 //@children.7/@sourceConnections.0 //@children.12/@sourceConnections.0 //@children.5/@sourceConnections.0 //@children.8/@sourceConnections.0 //@children.11/@sourceConnections.0 //@children.6/@sourceConnections.0" name="ValueCheck" location="682,283" size="262,218" id="org.openforis.idm.metamodel/ValueCheck" runTimeClassModel="flag,org.openforis.idm.metamodel.ValueCheck.Flag,condition,messages">
+    <children xsi:type="editmodel:CompartmentEditModel" size="239,54">
       <children xsi:type="editmodel:AttributeEditModel" name="flag" id="org.openforis.idm.metamodel/ValueCheck#flag"/>
       <children xsi:type="editmodel:AttributeEditModel" name="condition" id="org.openforis.idm.metamodel/ValueCheck#condition"/>
       <children xsi:type="editmodel:AttributeEditModel" name="messages" id="org.openforis.idm.metamodel/ValueCheck#messages"/>
@@ -110,8 +110,8 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.openforis.idm.metamodel/ValueCheck&lt;-org.openforis.idm.metamodel/NumericCheck" source="//@children.5" target="//@children.0" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="38,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="223,172"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="39,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="262,185"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
@@ -120,8 +120,8 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.openforis.idm.metamodel/ValueCheck&lt;-org.openforis.idm.metamodel/TimestampCheck" source="//@children.6" target="//@children.0" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="64,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="220,218"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="65,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="234,218"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
@@ -130,8 +130,8 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.openforis.idm.metamodel/ValueCheck&lt;-org.openforis.idm.metamodel/CoordinateCheck" source="//@children.7" target="//@children.0" targetEnd="//@children.7/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="111,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="0,200"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="112,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,210"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
@@ -150,8 +150,8 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.openforis.idm.metamodel/ValueCheck&lt;-org.openforis.idm.metamodel/CodeCheck" source="//@children.9" target="//@children.0" targetEnd="//@children.9/@sourceConnections.0/@children.1" sourceEnd="//@children.9/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="26,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="195,218"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="46,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="215,218"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
@@ -160,8 +160,8 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.openforis.idm.metamodel/ValueCheck&lt;-org.openforis.idm.metamodel/BooleanCheck" source="//@children.10" target="//@children.0" targetEnd="//@children.10/@sourceConnections.0/@children.1" sourceEnd="//@children.10/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="21,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="223,154"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="22,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="262,163"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>

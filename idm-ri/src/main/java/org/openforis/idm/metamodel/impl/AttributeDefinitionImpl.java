@@ -10,7 +10,7 @@ import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.ValueCheck;
 
 /**
- * @author Mino Togna
+ * @author M. Togna
  * 
  */
 public class AttributeDefinitionImpl<C extends ValueCheck> extends AbstractModelObjectDefinition implements AttributeDefinition<C> {
@@ -18,18 +18,22 @@ public class AttributeDefinitionImpl<C extends ValueCheck> extends AbstractModel
 	private List<C> valueChecks;
 	private List<AttributeDefault> attributeDefaults;
 
+	@Override
 	public List<C> getValueChecks() {
-		return valueChecks;
+		return this.valueChecks;
 	}
 
+	@Override
 	public void setValueChecks(List<C> valueChecks) {
 		this.valueChecks = valueChecks;
 	}
 
+	@Override
 	public List<AttributeDefault> getAttributeDefaults() {
-		return attributeDefaults;
+		return this.attributeDefaults;
 	}
 
+	@Override
 	public void setAttributeDefaults(List<AttributeDefault> attributeDefaults) {
 		this.attributeDefaults = attributeDefaults;
 	}

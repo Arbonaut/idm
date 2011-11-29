@@ -9,42 +9,27 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.metamodel.CodeListRank;
 import org.openforis.idm.metamodel.LanguageSpecificText;
-import org.openforis.idm.metamodel.SpatialReferenceSystem;
 
 /**
  * @author M. Togna
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "wellKnownText", "labels", "descriptions" })
-@XmlRootElement(name = "spatialReferenceSystem")
-public class SpatialReferenceSystemImpl implements SpatialReferenceSystem {
+@XmlType(name = "", propOrder = { "name", "labels", "descriptions" })
+public class CodeListRankImpl implements CodeListRank {
 
-	@XmlAttribute(name = "srid")
-	private String id;
+	@XmlAttribute(name = "name")
+	private String name;
 
 	@XmlElement(name = "label", type = LanguageSpecificTextImpl.class)
 	private List<LanguageSpecificText> labels;
 
 	@XmlElement(name = "description", type = LanguageSpecificTextImpl.class)
 	private List<LanguageSpecificText> descriptions;
-
-	@XmlElement(name = "wkt")
-	private String wellKnownText;
-
-	@Override
-	public String getId() {
-		return this.id;
-	}
-
-	@Override
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	@Override
 	public List<LanguageSpecificText> getLabels() {
@@ -67,13 +52,13 @@ public class SpatialReferenceSystemImpl implements SpatialReferenceSystem {
 	}
 
 	@Override
-	public String getWellKnownText() {
-		return this.wellKnownText;
+	public String getName() {
+		return this.name;
 	}
 
 	@Override
-	public void setWellKnownText(String wellKnownText) {
-		this.wellKnownText = wellKnownText;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

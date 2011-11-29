@@ -5,6 +5,6 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface TaxonAttributeDefinition extends AttributeDefinition<TaxonCheck> {
+public interface TaxonAttributeDefinition extends AttributeDefinition {
 
 }

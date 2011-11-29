@@ -6,7 +6,7 @@ import java.util.List;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface NumericAttributeDefinition extends AttributeDefinition<NumericCheck> {
+public interface NumericAttributeDefinition extends AttributeDefinition {
 
 	
 	public enum Type {

@@ -8,13 +8,13 @@ public class InvalidCheckException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	private ValueCheck valueCheck;
+	private ExplicitCheck explicitCheck;
 	
-	public InvalidCheckException(ValueCheck valueCheck, String message) {
+	public InvalidCheckException(ExplicitCheck explicitCheck, String message) {
 		super(message);
 	}
 	
-	public ValueCheck getCheck() {
-		return valueCheck;
+	public ExplicitCheck getCheck() {
+		return explicitCheck;
 	}
 }

@@ -110,7 +110,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.5/@sourceConnections.0 //@children.1/@sourceConnections.0 //@children.1/@sourceConnections.1" name="SchemaObjectDefinition" location="165,561" size="234,225" id="org.openforis.idm.metamodel/ModelObjectDefinition" runTimeClassModel="getLabels(Lorg.openforis.idm.metamodel.LabelType;),requiredExpression,setLabels(Lorg.openforis.idm.metamodel.LabelType;Lorg.openforis.idm.metamodel.MultilingualStringMap;),relevantExpression,name,minCount,multiple,maxCount,descriptions">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.5/@sourceConnections.0 //@children.1/@sourceConnections.0 //@children.1/@sourceConnections.1" name="SchemaObjectDefinition" location="165,561" size="234,225" id="org.openforis.idm.metamodel/ModelObjectDefinition" runTimeClassModel="requiredExpression,getLabels(Lorg.openforis.idm.metamodel.LabelType;),setLabels(Lorg.openforis.idm.metamodel.LabelType;Lorg.openforis.idm.metamodel.MultilingualStringMap;),relevantExpression,name,minCount,multiple,descriptions,maxCount">
     <children xsi:type="editmodel:CompartmentEditModel" size="211,126">
       <children xsi:type="editmodel:AttributeEditModel" name="requiredExpression" id="org.openforis.idm.metamodel/ModelObjectDefinition#requiredExpression"/>
       <children xsi:type="editmodel:AttributeEditModel" name="minCount" id="org.openforis.idm.metamodel/ModelObjectDefinition#minCount"/>
@@ -137,28 +137,28 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="109,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="234,140"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:AssociationEditModel" autoLocated="true" id="org.openforis.idm.metamodel/ValueCheck@checks+org.openforis.idm.metamodel/AttributeDefinition@attributeDefinition" source="//@children.5" target="//@children.6" targetEnd="//@children.5/@sourceConnections.1/@children.2" label="//@children.5/@sourceConnections.1/@children.0" sourceEnd="//@children.5/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" autoLocated="true" id="org.openforis.idm.metamodel/ExplicitCheck@checks+org.openforis.idm.metamodel/AttributeDefinition@attributeDefinition" source="//@children.5" target="//@children.6" targetEnd="//@children.5/@sourceConnections.1/@children.2" label="//@children.5/@sourceConnections.1/@children.0" sourceEnd="//@children.5/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" size="0,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" name="attributeDefinition" location="220,81" id="org.openforis.idm.metamodel/ValueCheck@checks+org.openforis.idm.metamodel/AttributeDefinition@attributeDefinition|org.openforis.idm.metamodel/AttributeDefinition#attributeDefinition" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" name="checks" location="0,21" id="org.openforis.idm.metamodel/ValueCheck@checks+org.openforis.idm.metamodel/AttributeDefinition@attributeDefinition|org.openforis.idm.metamodel/ValueCheck#checks" multiplicityLabel="//@children.5/@sourceConnections.1/@children.2/@children.1" roleLabel="//@children.5/@sourceConnections.1/@children.2/@children.0" aggregationKind="Composition" navigable="true" orderingKind="1">
+      <children xsi:type="editmodel:AssociationEndEditModel" name="attributeDefinition" location="220,81" id="org.openforis.idm.metamodel/ExplicitCheck@checks+org.openforis.idm.metamodel/AttributeDefinition@attributeDefinition|org.openforis.idm.metamodel/AttributeDefinition#attributeDefinition" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="checks" location="0,21" id="org.openforis.idm.metamodel/ExplicitCheck@checks+org.openforis.idm.metamodel/AttributeDefinition@attributeDefinition|org.openforis.idm.metamodel/ExplicitCheck#checks" multiplicityLabel="//@children.5/@sourceConnections.1/@children.2/@children.1" roleLabel="//@children.5/@sourceConnections.1/@children.2/@children.0" aggregationKind="Composition" navigable="true" orderingKind="1">
         <children xsi:type="editmodel:LabelEditModel" name=" + checks" location="761,838" size="53,13" anchorKind="LastPart"/>
         <children xsi:type="editmodel:LabelEditModel" name="*" location="809,811" size="5,13" anchorKind="LastPart"/>
       </children>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.5/@sourceConnections.1" name="Check" location="821,810" size="223,125" id="org.openforis.idm.metamodel/ValueCheck" runTimeClassModel="flag,org.openforis.idm.metamodel.Check.Flag,condition,name,messages">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.5/@sourceConnections.1" name="Check" location="821,810" size="223,125" id="org.openforis.idm.metamodel/ExplicitCheck" runTimeClassModel="flag,org.openforis.idm.metamodel.Check.Flag,condition,name,messages">
     <children xsi:type="editmodel:CompartmentEditModel" size="200,72">
-      <children xsi:type="editmodel:AttributeEditModel" name="condition" id="org.openforis.idm.metamodel/ValueCheck#condition"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="flag" id="org.openforis.idm.metamodel/ValueCheck#flag"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="name" id="org.openforis.idm.metamodel/ValueCheck#name"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="messages" id="org.openforis.idm.metamodel/ValueCheck#messages"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="condition" id="org.openforis.idm.metamodel/ExplicitCheck#condition"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="flag" id="org.openforis.idm.metamodel/ExplicitCheck#flag"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="org.openforis.idm.metamodel/ExplicitCheck#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="messages" id="org.openforis.idm.metamodel/ExplicitCheck#messages"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.3" name="ModelVersion" location="179,330" size="234,125" id="org.openforis.idm.metamodel/ModelVersion" runTimeClassModel="name,labels,date,descriptions">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.3" name="ModelVersion" location="179,330" size="234,125" id="org.openforis.idm.metamodel/ModelVersion" runTimeClassModel="labels,name,date,descriptions">
     <children xsi:type="editmodel:CompartmentEditModel" size="211,72">
       <children xsi:type="editmodel:AttributeEditModel" name="date" id="org.openforis.idm.metamodel/ModelVersion#date"/>
       <children xsi:type="editmodel:AttributeEditModel" name="descriptions" id="org.openforis.idm.metamodel/ModelVersion#descriptions"/>
@@ -169,7 +169,7 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.1" name="CodeList" location="795,525" size="234,107" id="org.openforis.idm.metamodel/CodeList" runTimeClassModel="name,labels,descriptions">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.1" name="CodeList" location="795,525" size="234,107" id="org.openforis.idm.metamodel/CodeList" runTimeClassModel="labels,name,descriptions">
     <children xsi:type="editmodel:CompartmentEditModel" size="211,54">
       <children xsi:type="editmodel:AttributeEditModel" name="name" id="org.openforis.idm.metamodel/CodeList#name"/>
       <children xsi:type="editmodel:AttributeEditModel" name="labels" id="org.openforis.idm.metamodel/CodeList#labels"/>
@@ -179,7 +179,7 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.2" name="Unit" location="960,321" size="242,143" id="org.openforis.idm.metamodel/Unit" runTimeClassModel="conversionFactor,dimension,labels,name,abbreviations">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.2" name="Unit" location="960,321" size="242,143" id="org.openforis.idm.metamodel/Unit" runTimeClassModel="conversionFactor,dimension,name,labels,abbreviations">
     <children xsi:type="editmodel:CompartmentEditModel" size="219,90">
       <children xsi:type="editmodel:AttributeEditModel" name="abbreviations" id="org.openforis.idm.metamodel/Unit#abbreviations"/>
       <children xsi:type="editmodel:AttributeEditModel" name="conversionFactor" id="org.openforis.idm.metamodel/Unit#conversionFactor"/>

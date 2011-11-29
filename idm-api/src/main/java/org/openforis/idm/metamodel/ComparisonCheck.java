@@ -5,7 +5,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface ComparisonCheck extends TimestampCheck, NumericCheck, CodeCheck {
+public interface ComparisonCheck extends ExplicitCheck {
 
 	/**
 	 * @return  Returns the lessThanExpression.

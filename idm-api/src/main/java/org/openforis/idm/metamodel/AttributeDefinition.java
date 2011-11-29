@@ -6,24 +6,24 @@ import java.util.List;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface AttributeDefinition<C extends ValueCheck> extends ModelObjectDefinition {
+public interface AttributeDefinition extends ModelObjectDefinition {
 
 	/**
-	 * @return    Returns the checks.
-	 * @uml.property   name="valueChecks"
-	 * @uml.associationEnd   multiplicity="(0 -1)" ordering="true" container="java.util.List" aggregation="composite" inverse="attributeDefinition:org.openforis.idm.metamodel.ValueCheck"
+	 * @return      Returns the checks.
+	 * @uml.property   name="explicitChecks"
+	 * @uml.associationEnd   multiplicity="(0 -1)" ordering="true" container="java.util.List" aggregation="composite" inverse="attributeDefinition:org.openforis.idm.metamodel.ExplicitCheck"
 	 */
-	public List<C> getValueChecks();
+	public List<ExplicitCheck> getExplicitChecks();
 
 	/**
 	 * Setter of the property <tt>checks</tt>
 	 * @param checks  The checks to set.
-	 * @uml.property  name="valueChecks"
+	 * @uml.property  name="explicitChecks"
 	 */
-	public void setValueChecks(List<C> valueChecks);
+	public void setExplicitCheck(List<ExplicitCheck> explicitCheck);
 	
 	/**
-	 * @return    Returns the attributeDefaults.
+	 * @return      Returns the attributeDefaults.
 	 * @uml.property   name="attributeDefaults"
 	 * @uml.associationEnd   multiplicity="(0 -1)" ordering="true" container="java.util.List" aggregation="composite" inverse="attributeDefinition:org.openforis.idm.metamodel.AttributeDefault"
 	 */

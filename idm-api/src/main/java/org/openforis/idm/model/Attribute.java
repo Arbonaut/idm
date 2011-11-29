@@ -6,6 +6,6 @@ import org.openforis.idm.metamodel.AttributeDefinition;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface Attribute<D extends AttributeDefinition<?>, V extends Value> extends ModelObject<D, V> {
+public interface Attribute<D extends AttributeDefinition, V extends Value> extends ModelObject<D, V> {
 	V getDefaultValue();
 }

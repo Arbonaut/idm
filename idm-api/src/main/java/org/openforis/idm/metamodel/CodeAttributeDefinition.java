@@ -5,7 +5,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface CodeAttributeDefinition extends AttributeDefinition<CodeCheck> {
+public interface CodeAttributeDefinition extends AttributeDefinition {
 
 	/**
 	 * @return  Returns the list.

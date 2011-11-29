@@ -4,7 +4,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface CardinalityCheck extends Check {
+public interface CardinalityCheck extends ImplicitCheck {
 	/**
 	 * @return  Returns the requiredExpression.
 	 * @uml.property  name="requiredExpression"

@@ -6,19 +6,21 @@
   xmlns="http://www.openforis.org/idml/3.0">
   <xs:annotation>
     <xs:documentation xml:lang="en">
-      Inventory Data Modeling Language 3.0
-            
-      The IDML provides a standard way of defining data models for inventory primary data.  
-      
-      The IDML represents a meta-model for describing inventory data models.  It provides an abstraction which enables the creation of software that is both flexible and reuseable in a wider range of scenarios.  It allows tools to interoperate on the same data, regardless of platform or implementation.  For example, mobile or personal data recorder (PDR) software, web or desktop-based data management software and data modeling tools that understand IDML would all be able work together and exchange data, regardless of vendor or inventory-specific details or functionality.
-      
-      A model written in IDML is called an inventory data model (IDM).  An inventory data model formally defines the variables recorded during an inventory, as well as metadata needed for transparent, consistent interpretation of collected data.  This includes definition of each entity and attribute and their respective data quality checks, precision, units, code lists and spatial reference systems.  Names and documentation for each of these elements may be specified in any number of languages.  These may then be used to generate standard reports for use in field manuals, online reporting and/or software help systems, for example.  This documentation is also essential for proper interpretation of primary data and results calculation.
-      
-      Other features include versioning, which allow data models to evolve over time in a managed way.  New elements may be added and old ones deprecated, however operations which would compromise data integraty and comparability are inherently prohibited.  This also facilitates creation of easy-to-use tools for data and database management.  Custom expressions are represented in the W3C standard XPath language.  String patterns may also be specified using standard POSIX-like regular expressions.  
-            
-      © Copyright 2012 Food and Agriculture Organization of the United Nations
-            
-      G. Miceli, M. Togna, A. Pekkarinen, S. Ricci
+		Inventory Data Modeling Language 3.0
+		
+		Inventory Data Modeling Language (IDML) is an XML implementation of the Inventory Data Metamodel (IDMM), which provides a formal language for defining and describing inventory data models.  It provides an abstraction which enables the creation of software that is flexible and reuseable in a wider range of scenarios.  The IDMM also allows tools to interoperate on the same data, regardless of platform or implementation.  For example, mobile or personal data recorder (PDR) software, web or desktop-based data management software and data modeling tools that are designed to work with the IDMM would all be able work together and exchange data, regardless of vendor or inventory-specific details or functionality.
+		      
+		A specific usage or instance of the IDMM is called an inventory data model (IDM).  An inventory data model formally defines the variables recorded during an inventory, as well as metadata needed for transparent, consistent interpretation of collected data.  This includes definition of each entity and attribute and their respective data quality checks, precision, units, code lists and spatial reference systems.  Names and documentation for each of these elements may be specified in any number of languages.  These may then be used to generate standard reports for use in field manuals, online reporting and/or software help systems, for example.  This documentation is also essential for proper interpretation of primary data and results calculation.
+		      
+		Other features include versioning, which allow data models to evolve over time in a managed way.  New elements may be added and old ones deprecated, however operations which would compromise data integraty and comparability are inherently prohibited.  This also facilitates creation of easy-to-use tools for data and database management.  
+		
+		The IDMM has been implemented as both a Java API and an XML schema.  The latter is called the Inventory Data Modeling Language (IDML), and provides a human and machine-readable format for defining models. It is fully supported by [[Open Foris Collect]], without other tools in the development pipeline.
+		                     
+		Other features include versioning, which allow data models to evolve over time in a managed way.  New elements may be added and old ones deprecated, however operations which would compromise data integraty and comparability are inherently prohibited.  This also facilitates creation of easy-to-use tools for data and database management.  Custom expressions are represented in the W3C standard XPath language.  String patterns may also be specified using standard POSIX-like regular expressions.  
+	            
+		© Copyright 2012 Food and Agriculture Organization of the United Nations
+		      
+		G. Miceli, M. Togna, A. Pekkarinen, S. Ricci
     </xs:documentation>
    </xs:annotation>
   
@@ -44,11 +46,14 @@
         
         Several custom functions are also provided:
         
-          this()   - the entity or attribute where the expression is defined
           parent() - the parent of the entity or attribute containing the expression
           blank()  - returns true if an attribute value is blank (does not include symbols)
           valid()  - returns true if an attribute value is not blank and does not return an error
+
+        Also, a custom variable to point to the current value is defined:
         
+          $this    - the value associatioed with the attribute where the expression is defined
+
         Expressions are generally evaluated from one level above the entity or attribute where they are defined.  For example:
       </xs:documentation>
       <xs:documentation xml:lang="en">

@@ -9,8 +9,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.ExplicitCheck;
 import org.openforis.idm.metamodel.LanguageSpecificText;
@@ -23,7 +24,8 @@ import org.openforis.idm.metamodel.LanguageSpecificText;
 @XmlType(name = "")
 public class AbstractExplicitCheck extends AbstractCheck implements ExplicitCheck {
 
-	@XmlTransient
+	@XmlAttribute(name = "flag")
+	@XmlJavaTypeAdapter(value = FlagAdapter.class)
 	private Flag flag;
 
 	@XmlAttribute(name = "if")
@@ -60,6 +62,20 @@ public class AbstractExplicitCheck extends AbstractCheck implements ExplicitChec
 	@Override
 	public void setMessages(List<LanguageSpecificText> messages) {
 		this.messages = messages;
+	}
+
+	private static class FlagAdapter extends XmlAdapter<String, Flag> {
+
+		@Override
+		public Flag unmarshal(String v) throws Exception {
+			return Flag.valueOf(v.toUpperCase());
+		}
+
+		@Override
+		public String marshal(Flag v) throws Exception {
+			return v.toString().toLowerCase();
+		}
+
 	}
 
 }

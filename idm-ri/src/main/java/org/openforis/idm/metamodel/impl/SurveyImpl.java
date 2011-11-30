@@ -9,12 +9,17 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.openforis.idm.metamodel.CodeList;
 import org.openforis.idm.metamodel.LanguageSpecificText;
-import org.openforis.idm.metamodel.Model;
+import org.openforis.idm.metamodel.ModelVersion;
+import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.SpatialReferenceSystem;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.Unit;
+import org.w3c.dom.Element;
 
 /**
  * 
@@ -22,7 +27,7 @@ import org.openforis.idm.metamodel.Survey;
  */
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "model", "spatialReferenceSystems", "configuration" })
+@XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "configuration", "versions", "codeLists", "units", "spatialReferenceSystems", "schema" })
 @XmlRootElement(name = "survey")
 public class SurveyImpl implements Survey {
 
@@ -35,19 +40,71 @@ public class SurveyImpl implements Survey {
 	@XmlElement(name = "description", type = LanguageSpecificTextImpl.class)
 	private List<LanguageSpecificText> descriptions;
 
-	@XmlElement(type = ModelImpl.class)
-	private Model model;
-
 	@XmlElement(name = "cycle")
 	private Integer cycle;
 
 	@XmlElement(name = "configuration")
 	@XmlJavaTypeAdapter(value = ConfigurationTypeAdapter.class)
-	private String configuration;
+	private Element configuration;
 
 	@XmlElement(name = "spatialReferenceSystem", type = SpatialReferenceSystemImpl.class)
 	@XmlElementWrapper(name = "spatialReferenceSystems")
 	private Collection<SpatialReferenceSystem> spatialReferenceSystems;
+
+	@XmlElement(name = "schema", type = SchemaImpl.class)
+	private Schema schema;
+
+	@XmlElement(name = "version", type = ModelVersionImpl.class)
+	@XmlElementWrapper(name = "versioning")
+	private List<ModelVersion> versions;
+
+	@XmlElement(name = "list", type = CodeListImpl.class)
+	@XmlElementWrapper(name = "codeLists")
+	private List<CodeList> codeLists;
+
+	@XmlElement(name = "unit", type = UnitImpl.class)
+	@XmlElementWrapper(name = "units")
+	private List<Unit> units;
+
+	@Override
+	public Schema getSchema() {
+		return this.schema;
+	}
+
+	@Override
+	public void setSchema(Schema schema) {
+		this.schema = schema;
+	}
+
+	@Override
+	public List<ModelVersion> getVersions() {
+		return this.versions;
+	}
+
+	@Override
+	public void setVersions(List<ModelVersion> versions) {
+		this.versions = versions;
+	}
+
+	@Override
+	public List<CodeList> getCodeLists() {
+		return this.codeLists;
+	}
+
+	@Override
+	public void setCodeLists(List<CodeList> codeLists) {
+		this.codeLists = codeLists;
+	}
+
+	@Override
+	public List<Unit> getUnits() {
+		return this.units;
+	}
+
+	@Override
+	public void setUnits(List<Unit> units) {
+		this.units = units;
+	}
 
 	@Override
 	public String getName() {
@@ -57,16 +114,6 @@ public class SurveyImpl implements Survey {
 	@Override
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Override
-	public Model getModel() {
-		return this.model;
-	}
-
-	@Override
-	public void setModel(Model model) {
-		this.model = model;
 	}
 
 	@Override
@@ -90,12 +137,12 @@ public class SurveyImpl implements Survey {
 	}
 
 	@Override
-	public String getConfiguration() {
+	public Element getConfiguration() {
 		return this.configuration;
 	}
 
 	@Override
-	public void setConfiguration(String configuration) {
+	public void setConfiguration(Element configuration) {
 		this.configuration = configuration;
 	}
 
@@ -119,4 +166,17 @@ public class SurveyImpl implements Survey {
 		this.projectNames = projectNames;
 	}
 
+	private static class ConfigurationTypeAdapter extends XmlAdapter<Object, Object> {
+
+		@Override
+		public Object unmarshal(Object v) {
+			return v;
+		}
+
+		@Override
+		public Object marshal(Object v) throws Exception {
+			return v;
+		}
+
+	}
 }

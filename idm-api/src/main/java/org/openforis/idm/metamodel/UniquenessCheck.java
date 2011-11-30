@@ -7,15 +7,17 @@ package org.openforis.idm.metamodel;
 public interface UniquenessCheck extends ExplicitCheck {
 
 	/**
-	 * @return  Returns the expression.
-	 * @uml.property  name="expression"
+	 * @return Returns the expression.
+	 * @uml.property name="expression"
 	 */
 	public String getExpression();
 
 	/**
 	 * Setter of the property <tt>expression</tt>
-	 * @param expression  The expression to set.
-	 * @uml.property  name="expression"
+	 * 
+	 * @param expression
+	 *            The expression to set.
+	 * @uml.property name="expression"
 	 */
 	public void setExpression(String expression);
 

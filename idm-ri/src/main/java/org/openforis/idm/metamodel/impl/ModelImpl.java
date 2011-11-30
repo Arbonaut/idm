@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.CodeList;
-import org.openforis.idm.metamodel.Model;
 import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.Unit;
@@ -23,7 +22,7 @@ import org.openforis.idm.metamodel.Unit;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "versions", "schema", "codeLists", "units" })
-public class ModelImpl implements Model {
+public class ModelImpl {
 
 	@XmlElement(name = "schema", type = SchemaImpl.class)
 	private Schema schema;
@@ -40,42 +39,34 @@ public class ModelImpl implements Model {
 	@XmlElementWrapper(name = "units")
 	private List<Unit> units;
 
-	@Override
 	public Schema getSchema() {
 		return this.schema;
 	}
 
-	@Override
 	public void setSchema(Schema schema) {
 		this.schema = schema;
 	}
 
-	@Override
 	public List<ModelVersion> getVersions() {
 		return this.versions;
 	}
 
-	@Override
 	public void setVersions(List<ModelVersion> versions) {
 		this.versions = versions;
 	}
 
-	@Override
 	public List<CodeList> getCodeLists() {
 		return this.codeLists;
 	}
 
-	@Override
 	public void setCodeLists(List<CodeList> codeLists) {
 		this.codeLists = codeLists;
 	}
 
-	@Override
 	public List<Unit> getUnits() {
 		return this.units;
 	}
 
-	@Override
 	public void setUnits(List<Unit> units) {
 		this.units = units;
 	}

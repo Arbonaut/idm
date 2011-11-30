@@ -6,5 +6,6 @@ package org.openforis.idm.model;
  */
 public interface ModelObjectVisitor {
 	void visit(Entity target);
-	void visit(Attribute<?,?> target);
+
+	void visit(Attribute<?, ?> target);
 }

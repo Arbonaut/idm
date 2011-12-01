@@ -1040,8 +1040,33 @@
                   </xs:documentation>
                 </xs:annotation>                
                 <xs:complexType>
-                  <xs:complexContent>
-                    <xs:extension base="stringAttribute">
+                   <xs:complexContent>
+                    <xs:extension base="attribute">
+                      <xs:sequence>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                          <xs:element name="unique" type="uniquenessCheck">
+                            <xs:annotation>
+                              <xs:documentation xml:lang="en">
+                                TO-DO
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="pattern" type="patternCheck">
+                            <xs:annotation>
+                              <xs:documentation xml:lang="en">
+                                TO-DO
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="check" type="customCheck">
+                            <xs:annotation>
+                              <xs:documentation xml:lang="en">
+                                TO-DO
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>            
+                        </xs:choice>
+                      </xs:sequence>
                       <xs:attribute name="key" type="xs:boolean" use="optional" default="false">
                         <xs:annotation>
                           <xs:documentation xml:lang="en">
@@ -1049,18 +1074,35 @@
                           </xs:documentation>
                         </xs:annotation>                
                       </xs:attribute>
+                      <xs:attribute name="type" use="optional" default="short">
+                        <xs:annotation>
+                          <xs:documentation xml:lang="en">
+                            TO-DO
+                          </xs:documentation>
+                        </xs:annotation>                      
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:enumeration value="short">
+                              <xs:annotation>
+                                <xs:documentation xml:lang="en">
+                                  TO-DO
+                                </xs:documentation>
+                              </xs:annotation>                      
+                            </xs:enumeration>
+                            <xs:enumeration value="memo">
+                              <xs:annotation>
+                                <xs:documentation xml:lang="en">
+                                  TO-DO
+                                </xs:documentation>
+                              </xs:annotation>                      
+                            </xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:attribute>            
                     </xs:extension>
                   </xs:complexContent>
                 </xs:complexType>
               </xs:element>  
-              
-              <xs:element name="memo" type="stringAttribute">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
-                    TO-DO
-                  </xs:documentation>
-                </xs:annotation>                
-              </xs:element>
             </xs:choice>
           </xs:sequence>
         </xs:extension>
@@ -1272,45 +1314,6 @@
     </xs:complexContent>
   </xs:complexType>
    
-  <!-- String Attributes -->
-
-  <xs:complexType name="stringAttribute">
-    <xs:annotation>
-      <xs:documentation xml:lang="en">
-        TO-DO
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexContent>
-      <xs:extension base="attribute">
-        <xs:sequence>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="unique" type="uniquenessCheck">
-              <xs:annotation>
-                <xs:documentation xml:lang="en">
-                  TO-DO
-                </xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="pattern" type="patternCheck">
-              <xs:annotation>
-                <xs:documentation xml:lang="en">
-                  TO-DO
-                </xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="check" type="customCheck">
-              <xs:annotation>
-                <xs:documentation xml:lang="en">
-                  TO-DO
-                </xs:documentation>
-              </xs:annotation>
-            </xs:element>            
-          </xs:choice>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
   <xs:complexType name="timestampAttribute">
     <xs:annotation>
       <xs:documentation xml:lang="en">

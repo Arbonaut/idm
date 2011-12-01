@@ -15,7 +15,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.CodeList;
 import org.openforis.idm.metamodel.CodeListItem;
-import org.openforis.idm.metamodel.CodeListRank;
+import org.openforis.idm.metamodel.CodeListLabel;
+import org.openforis.idm.metamodel.CodeListLevel;
 import org.openforis.idm.metamodel.CodingScheme;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.ModelVersion;
@@ -41,15 +42,15 @@ public class CodeListImpl implements CodeList {
 	@XmlAttribute(name = "name")
 	private String name;
 
-	@XmlElement(name = "label", type = LanguageSpecificTextImpl.class)
-	private List<LanguageSpecificText> labels;
+	@XmlElement(name = "label", type = CodeListLabelImpl.class)
+	private List<CodeListLabel> labels;
 
 	@XmlElement(name = "description", type = LanguageSpecificTextImpl.class)
 	private List<LanguageSpecificText> descriptions;
 
-	@XmlElement(name = "rank", type = CodeListRankImpl.class)
+	@XmlElement(name = "level", type = CodeListLevelImpl.class)
 	@XmlElementWrapper(name = "hierarchy")
-	private List<CodeListRank> hierarchy;
+	private List<CodeListLevel> hierarchy;
 
 	@XmlElement(name = "codingScheme", type = CodingSchemeImpl.class)
 	private List<CodingScheme> codingSchemes;
@@ -89,12 +90,12 @@ public class CodeListImpl implements CodeList {
 	}
 
 	@Override
-	public List<LanguageSpecificText> getLabels() {
+	public List<CodeListLabel> getLabels() {
 		return this.labels;
 	}
 
 	@Override
-	public void setLabels(List<LanguageSpecificText> labels) {
+	public void setLabels(List<CodeListLabel> labels) {
 		this.labels = labels;
 	}
 
@@ -109,12 +110,12 @@ public class CodeListImpl implements CodeList {
 	}
 
 	@Override
-	public List<CodeListRank> getHierarchy() {
+	public List<CodeListLevel> getHierarchy() {
 		return this.hierarchy;
 	}
 
 	@Override
-	public void setHierarchy(List<CodeListRank> hierarchy) {
+	public void setHierarchy(List<CodeListLevel> hierarchy) {
 		this.hierarchy = hierarchy;
 	}
 

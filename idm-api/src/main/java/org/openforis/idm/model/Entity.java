@@ -8,14 +8,14 @@ import org.openforis.idm.metamodel.EntityDefinition;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface Entity extends ModelObject<EntityDefinition, ModelObject<?,?>> {
+public interface Entity extends ModelObject<EntityDefinition, ModelObject<?, ?>> {
 
-	public ModelObject<?,?> get(String name);
-	
+	public ModelObject<?, ?> get(String name);
+
 	/**
-	 * @param name attribute name
-	 * @return Immutable list of values contained in the attribute specified in name or null if attribute 
-	 * does not exist
+	 * @param name
+	 *            attribute name
+	 * @return Immutable list of values contained in the attribute specified in name or null if attribute does not exist
 	 */
 	public List<Value> getValues(String name);
 }

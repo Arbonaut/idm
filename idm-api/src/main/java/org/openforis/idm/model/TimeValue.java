@@ -7,14 +7,13 @@ package org.openforis.idm.model;
 public interface TimeValue extends TimestampValue {
 
 	/**
-	 * @return  Returns the hour.
+	 * @return Returns the hour.
 	 * @uml.property name="hour" readOnly="true"
 	 */
 	public Integer getHour();
 
-
 	/**
-	 * @return  Returns the minute.
+	 * @return Returns the minute.
 	 * @uml.property name="minute" readOnly="true"
 	 */
 	public Integer getMinute();

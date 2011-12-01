@@ -7,15 +7,17 @@ package org.openforis.idm.metamodel;
 public interface PatternCheck extends ExplicitCheck {
 
 	/**
-	 * @return  Returns the regularExpression.
-	 * @uml.property  name="regularExpression"
+	 * @return Returns the regularExpression.
+	 * @uml.property name="regularExpression"
 	 */
 	public String getRegularExpression();
 
 	/**
 	 * Setter of the property <tt>regularExpression</tt>
-	 * @param regularExpression  The regularExpression to set.
-	 * @uml.property  name="regularExpression"
+	 * 
+	 * @param regularExpression
+	 *            The regularExpression to set.
+	 * @uml.property name="regularExpression"
 	 */
 	public void setRegularExpression(String regularExpression);
 

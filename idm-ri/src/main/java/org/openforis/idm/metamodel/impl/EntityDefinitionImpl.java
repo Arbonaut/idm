@@ -22,7 +22,12 @@ import org.openforis.idm.metamodel.ModelObjectDefinition;
 @XmlType(name = "")
 public class EntityDefinitionImpl extends AbstractModelObjectDefinition implements EntityDefinition {
 
-	@XmlElements(@XmlElement(name = "entity", type = EntityDefinitionImpl.class))
+	@XmlElements({ @XmlElement(name = "entity", type = EntityDefinitionImpl.class), @XmlElement(name = "number", type = NumberAttributeDefinitionImpl.class),
+			@XmlElement(name = "range", type = NumericRangeAttributeDefinitionImpl.class), @XmlElement(name = "boolean", type = BooleanAttributeDefinitionImpl.class),
+			@XmlElement(name = "date", type = DateAttributeDefinitionImpl.class), @XmlElement(name = "time", type = TimeAttributeDefinitionImpl.class),
+			@XmlElement(name = "file", type = FileAttributeDefinitionImpl.class), @XmlElement(name = "taxon", type = TaxonAttributeDefinitionImpl.class),
+			@XmlElement(name = "coordinate", type = CoordinateAttributeDefinitionImpl.class), @XmlElement(name = "code", type = CodeAttributeDefinitionImpl.class),
+			@XmlElement(name = "text", type = TextAttributeDefinitionImpl.class), @XmlElement(name = "memo", type = MemoAttributeDefinitionImpl.class) })
 	private List<ModelObjectDefinition> childDefinitions;
 
 	@Override
@@ -33,6 +38,22 @@ public class EntityDefinitionImpl extends AbstractModelObjectDefinition implemen
 	@Override
 	public void setChildDefinitions(List<ModelObjectDefinition> childDefinitions) {
 		this.childDefinitions = childDefinitions;
+	}
+
+	@Override
+	public String toString() {
+		return "Entity " + this.getName();
+	}
+
+	public ModelObjectDefinition getChildDefinition(String name) {
+		if (this.childDefinitions != null) {
+			for (ModelObjectDefinition childDefinition : this.childDefinitions) {
+				if (childDefinition.getName().equals(name)) {
+					return childDefinition;
+				}
+			}
+		}
+		return null;
 	}
 
 }

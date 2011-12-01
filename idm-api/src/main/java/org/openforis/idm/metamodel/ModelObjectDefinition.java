@@ -2,6 +2,8 @@ package org.openforis.idm.metamodel;
 
 import java.util.List;
 
+import org.openforis.idm.metamodel.ModelObjectLabel.LabelType;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -67,6 +69,8 @@ public interface ModelObjectDefinition extends Versionable, Annotatable, ModelOb
 	 * @uml.property name="labels"
 	 */
 	List<ModelObjectLabel> getLabels();
+
+	List<ModelObjectLabel> getLabelsByType(LabelType labelType);
 
 	/**
 	 * Setter of the property <tt>labels</tt>

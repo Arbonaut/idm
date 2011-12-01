@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.metamodel.CodeListRank;
+import org.openforis.idm.metamodel.CodeListLevel;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 
 /**
@@ -20,7 +20,7 @@ import org.openforis.idm.metamodel.LanguageSpecificText;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "name", "labels", "descriptions" })
-public class CodeListRankImpl implements CodeListRank {
+public class CodeListLevelImpl implements CodeListLevel {
 
 	@XmlAttribute(name = "name")
 	private String name;

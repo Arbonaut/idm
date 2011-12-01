@@ -6,7 +6,7 @@ import java.util.List;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface CodeListRank {
+public interface CodeListLevel {
 	/**
 	 * @return Returns the name.
 	 * @uml.property name="name"

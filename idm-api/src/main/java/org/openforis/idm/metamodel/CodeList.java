@@ -27,7 +27,7 @@ public interface CodeList extends Versionable {
 	 * @return Returns the labels.
 	 * @uml.property name="labels"
 	 */
-	public List<LanguageSpecificText> getLabels();
+	public List<CodeListLabel> getLabels();
 
 	/**
 	 * Setter of the property <tt>labels</tt>
@@ -36,7 +36,7 @@ public interface CodeList extends Versionable {
 	 *            The labels to set.
 	 * @uml.property name="labels"
 	 */
-	public void setLabels(List<LanguageSpecificText> labels);
+	public void setLabels(List<CodeListLabel> labels);
 
 	/**
 	 * @return Returns the descriptions.
@@ -59,7 +59,7 @@ public interface CodeList extends Versionable {
 	 * @uml.associationEnd multiplicity="(0 -1)" ordering="true" container="java.util.List" aggregation="composite"
 	 *                     inverse="codeList:org.openforis.idm.metamodel.CodeListRank"
 	 */
-	public List<CodeListRank> getHierarchy();
+	public List<CodeListLevel> getHierarchy();
 
 	/**
 	 * Setter of the property <tt>hierarchy</tt>
@@ -68,7 +68,7 @@ public interface CodeList extends Versionable {
 	 *            The hierarchy to set.
 	 * @uml.property name="hierarchy"
 	 */
-	public void setHierarchy(List<CodeListRank> hierarchy);
+	public void setHierarchy(List<CodeListLevel> hierarchy);
 
 	/**
 	 * @return Returns the codingSchemes.

@@ -5,9 +5,9 @@ package org.openforis.idm.model;
  * @author M. Togna
  */
 public interface Expression {
-	
+
 	Object[] evaluate(Record context);
-	
-	Object[] evaluate(ModelObject<?,?> context);
-	
+
+	Object[] evaluate(ModelObject<?, ?> context);
+
 }

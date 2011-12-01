@@ -3,21 +3,25 @@
  */
 package org.openforis.idm.metamodel.impl;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.CodingScheme;
+import org.openforis.idm.metamodel.LanguageSpecificText;
 
 /**
  * @author M. Togna
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "codeType", "codeScope", "name" })
+@XmlType(name = "", propOrder = { "codeType", "codeScope", "name", "isDefault", "labels", "descriptions" })
 public class CodingSchemeImpl implements CodingScheme {
 
 	@XmlAttribute(name = "type")
@@ -30,6 +34,15 @@ public class CodingSchemeImpl implements CodingScheme {
 
 	@XmlAttribute(name = "name")
 	private String name;
+
+	@XmlElement(name = "label", type = LanguageSpecificTextImpl.class)
+	private List<LanguageSpecificText> labels;
+
+	@XmlElement(name = "description", type = LanguageSpecificTextImpl.class)
+	private List<LanguageSpecificText> descriptions;
+
+	@XmlAttribute(name = "default")
+	private boolean isDefault;
 
 	@Override
 	public CodeType getCodeType() {
@@ -61,18 +74,34 @@ public class CodingSchemeImpl implements CodingScheme {
 		this.name = name;
 	}
 
-	private static class CodeScopeAdapter extends XmlAdapter<String, CodeScope> {
+	@Override
+	public void setDefault(boolean isDefault) {
+		this.isDefault = isDefault;
+	}
 
-		@Override
-		public CodeScope unmarshal(String v) throws Exception {
-			return CodeScope.valueOf(v.toUpperCase());
-		}
+	@Override
+	public boolean isDefault() {
+		return this.isDefault;
+	}
 
-		@Override
-		public String marshal(CodeScope v) throws Exception {
-			return v.toString().toLowerCase();
-		}
+	@Override
+	public List<LanguageSpecificText> getLabels() {
+		return this.labels;
+	}
 
+	@Override
+	public void setLabels(List<LanguageSpecificText> labels) {
+		this.labels = labels;
+	}
+
+	@Override
+	public List<LanguageSpecificText> getDescriptions() {
+		return this.descriptions;
+	}
+
+	@Override
+	public void setDescriptions(List<LanguageSpecificText> descriptions) {
+		this.descriptions = descriptions;
 	}
 
 	private static class CodeTypeAdapter extends XmlAdapter<String, CodeType> {
@@ -89,4 +118,17 @@ public class CodingSchemeImpl implements CodingScheme {
 
 	}
 
+	private static class CodeScopeAdapter extends XmlAdapter<String, CodeScope> {
+
+		@Override
+		public CodeScope unmarshal(String v) throws Exception {
+			return CodeScope.valueOf(v.toUpperCase());
+		}
+
+		@Override
+		public String marshal(CodeScope v) throws Exception {
+			return v.toString().toLowerCase();
+		}
+
+	}
 }

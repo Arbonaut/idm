@@ -1,6 +1,5 @@
 package org.openforis.idm.metamodel;
 
-
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -8,55 +7,62 @@ package org.openforis.idm.metamodel;
 public interface CodeAttributeDefinition extends AttributeDefinition {
 
 	/**
-	 * @return  Returns the list.
-	 * @uml.property  name="list"
+	 * @return Returns the list.
+	 * @uml.property name="list"
 	 */
 	public CodeList getList();
 
 	/**
 	 * Setter of the property <tt>list</tt>
-	 * @param list  The list to set.
-	 * @uml.property  name="list"
+	 * 
+	 * @param list
+	 *            The list to set.
+	 * @uml.property name="list"
 	 */
 	public void setList(CodeList list);
 
 	/**
-	 * @return  Returns the key.
-	 * @uml.property  name="key"
+	 * @return Returns the key.
+	 * @uml.property name="key"
 	 */
 	public boolean isKey();
 
 	/**
 	 * Setter of the property <tt>key</tt>
-	 * @param key  The key to set.
-	 * @uml.property  name="key"
+	 * 
+	 * @param key
+	 *            The key to set.
+	 * @uml.property name="key"
 	 */
 	public void setKey(boolean key);
 
 	/**
-	 * @return  Returns the parentCodeAttributeDefinition.
-	 * @uml.property  name="parentCodeAttributeDefinition"
+	 * @return Returns the parentExpression.
+	 * @uml.property name="parentExpression"
 	 */
-	public CodeAttributeDefinition getParentCodeAttributeDefinition();
+	public String getParentExpression();
 
 	/**
-	 * Setter of the property <tt>parentCodeAttributeDefinition</tt>
-	 * @param parentCodeAttributeDefinition  The parentCodeAttributeDefinition to set.
-	 * @uml.property  name="parentCodeAttributeDefinition"
+	 * Setter of the property <tt>parentExpression</tt>
+	 * 
+	 * @param parentExpression
+	 *            The parentExpression to set.
+	 * @uml.property name="parentExpression"
 	 */
-	public void setParentCodeAttributeDefinition(
-			CodeAttributeDefinition parentCodeAttributeDefinition);
+	public void setParentExpression(String parentExpression);
 
 	/**
-	 * @return  Returns the allowUnlisted.
-	 * @uml.property  name="allowUnlisted"
+	 * @return Returns the allowUnlisted.
+	 * @uml.property name="allowUnlisted"
 	 */
 	public boolean getAllowUnlisted();
 
 	/**
 	 * Setter of the property <tt>allowUnlisted</tt>
-	 * @param allowUnlisted  The allowUnlisted to set.
-	 * @uml.property  name="allowUnlisted"
+	 * 
+	 * @param allowUnlisted
+	 *            The allowUnlisted to set.
+	 * @uml.property name="allowUnlisted"
 	 */
 	public void setAllowUnlisted(boolean allowUnlisted);
 

@@ -6,41 +6,47 @@ package org.openforis.idm.metamodel;
  */
 public interface CardinalityCheck extends ImplicitCheck {
 	/**
-	 * @return  Returns the requiredExpression.
-	 * @uml.property  name="requiredExpression"
+	 * @return Returns the requiredExpression.
+	 * @uml.property name="requiredExpression"
 	 */
 	public String getRequiredExpression();
 
 	/**
 	 * Setter of the property <tt>requiredExpression</tt>
-	 * @param requiredExpression  The requiredExpression to set.
-	 * @uml.property  name="requiredExpression"
+	 * 
+	 * @param requiredExpression
+	 *            The requiredExpression to set.
+	 * @uml.property name="requiredExpression"
 	 */
 	public void setRequiredExpression(String requiredExpression);
 
 	/**
-	 * @return  Returns the minCount.
-	 * @uml.property  name="minCount"
+	 * @return Returns the minCount.
+	 * @uml.property name="minCount"
 	 */
 	public Integer getMinCount();
 
 	/**
 	 * Setter of the property <tt>minCount</tt>
-	 * @param minCount  The minCount to set.
-	 * @uml.property  name="minCount"
+	 * 
+	 * @param minCount
+	 *            The minCount to set.
+	 * @uml.property name="minCount"
 	 */
 	public void setMinCount(Integer minCount);
 
 	/**
-	 * @return  Returns the maxCount.
-	 * @uml.property  name="maxCount"
+	 * @return Returns the maxCount.
+	 * @uml.property name="maxCount"
 	 */
 	public Integer getMaxCount();
 
 	/**
 	 * Setter of the property <tt>maxCount</tt>
-	 * @param maxCount  The maxCount to set.
-	 * @uml.property  name="maxCount"
+	 * 
+	 * @param maxCount
+	 *            The maxCount to set.
+	 * @uml.property name="maxCount"
 	 */
 	public void setMaxCount(Integer maxCount);
 

@@ -7,28 +7,32 @@ package org.openforis.idm.metamodel;
 public interface AttributeDefault {
 
 	/**
-	 * @return  Returns the expression.
-	 * @uml.property  name="expression"
+	 * @return Returns the expression.
+	 * @uml.property name="expression"
 	 */
 	public String getExpression();
 
 	/**
 	 * Setter of the property <tt>expression</tt>
-	 * @param expression  The expression to set.
-	 * @uml.property  name="expression"
+	 * 
+	 * @param expression
+	 *            The expression to set.
+	 * @uml.property name="expression"
 	 */
 	public void setExpression(String expression);
 
 	/**
-	 * @return  Returns the condition.
-	 * @uml.property  name="condition"
+	 * @return Returns the condition.
+	 * @uml.property name="condition"
 	 */
 	public String getCondition();
 
 	/**
 	 * Setter of the property <tt>condition</tt>
-	 * @param condition  The condition to set.
-	 * @uml.property  name="condition"
+	 * 
+	 * @param condition
+	 *            The condition to set.
+	 * @uml.property name="condition"
 	 */
 	public void setCondition(String condition);
 

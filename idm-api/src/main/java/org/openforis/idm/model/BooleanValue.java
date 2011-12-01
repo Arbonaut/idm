@@ -6,8 +6,8 @@ package org.openforis.idm.model;
  */
 public interface BooleanValue extends Value {
 	/**
-	 * @return  Returns the boolean.
-	 * @uml.property  name="boolean" readOnly="true"
+	 * @return Returns the boolean.
+	 * @uml.property name="boolean" readOnly="true"
 	 */
 	public Boolean getBoolean();
 }

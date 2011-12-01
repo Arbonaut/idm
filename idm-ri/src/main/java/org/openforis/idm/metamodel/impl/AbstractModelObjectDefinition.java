@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,7 +19,9 @@ import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.ModelAnnotation;
 import org.openforis.idm.metamodel.ModelObjectDefinition;
 import org.openforis.idm.metamodel.ModelObjectLabel;
+import org.openforis.idm.metamodel.ModelObjectLabel.LabelType;
 import org.openforis.idm.metamodel.ModelVersion;
+import org.openforis.idm.metamodel.impl.jxpath.MetaModelExpression;
 
 /**
  * @author M. Togna
@@ -78,7 +81,11 @@ public abstract class AbstractModelObjectDefinition implements ModelObjectDefini
 	 */
 	@Override
 	public ModelObjectDefinition get(String path) {
-		// TODO Auto-generated method stub
+		MetaModelExpression expression = new MetaModelExpression(path);
+		Object object = expression.evaluate(this);
+		if (object instanceof ModelObjectDefinition) {
+			return (ModelObjectDefinition) object;
+		}
 		return null;
 	}
 
@@ -173,6 +180,19 @@ public abstract class AbstractModelObjectDefinition implements ModelObjectDefini
 	@Override
 	public List<ModelObjectLabel> getLabels() {
 		return this.labels;
+	}
+
+	@Override
+	public List<ModelObjectLabel> getLabelsByType(LabelType labelType) {
+		List<ModelObjectLabel> list = new ArrayList<ModelObjectLabel>();
+		if (this.labels != null) {
+			for (ModelObjectLabel label : this.labels) {
+				if (label.getLabelType().equals(labelType)) {
+					list.add(label);
+				}
+			}
+		}
+		return list;
 	}
 
 	@Override

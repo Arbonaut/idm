@@ -7,8 +7,8 @@ package org.openforis.idm.model;
 public interface StringValue extends Value {
 
 	/**
-	 * @return  Returns the string.
-	 * @uml.property  name="string" readOnly="true"
+	 * @return Returns the string.
+	 * @uml.property name="string" readOnly="true"
 	 */
 	public String getString();
 }

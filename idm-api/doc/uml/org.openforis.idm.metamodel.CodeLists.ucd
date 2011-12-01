@@ -41,7 +41,7 @@
     </children>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" name="CodeList" location="494,179" size="234,107" id="org.openforis.idm.metamodel/CodeList" runTimeClassModel="labels,name,descriptions">
+  <children xsi:type="editmodel:InterfaceEditModel" name="CodeList" location="494,179" size="234,107" id="org.openforis.idm.metamodel/CodeList" runTimeClassModel="name,labels,descriptions">
     <children xsi:type="editmodel:CompartmentEditModel" size="211,54">
       <children xsi:type="editmodel:AttributeEditModel" name="descriptions" id="org.openforis.idm.metamodel/CodeList#descriptions"/>
       <children xsi:type="editmodel:AttributeEditModel" name="labels" id="org.openforis.idm.metamodel/CodeList#labels"/>
@@ -93,11 +93,11 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.0" name="CodeListRank" location="494,359" size="234,107" id="org.openforis.idm.metamodel/CodeListRank" runTimeClassModel="labels,name,descriptions">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.0" name="CodeListRank" location="494,359" size="234,107" id="org.openforis.idm.metamodel/CodeListLevel" runTimeClassModel="name,labels,descriptions">
     <children xsi:type="editmodel:CompartmentEditModel" size="211,54">
-      <children xsi:type="editmodel:AttributeEditModel" name="descriptions" id="org.openforis.idm.metamodel/CodeListRank#descriptions"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="labels" id="org.openforis.idm.metamodel/CodeListRank#labels"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="name" id="org.openforis.idm.metamodel/CodeListRank#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="descriptions" id="org.openforis.idm.metamodel/CodeListLevel#descriptions"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="labels" id="org.openforis.idm.metamodel/CodeListLevel#labels"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="org.openforis.idm.metamodel/CodeListLevel#name"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>

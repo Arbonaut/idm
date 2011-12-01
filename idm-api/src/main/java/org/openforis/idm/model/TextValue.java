@@ -1,5 +1,15 @@
 package org.openforis.idm.model;
 
-public interface TextValue extends StringValue {
 
+/**
+ * @author G. Miceli
+ * @author M. Togna
+ */
+public interface TextValue extends Value {
+
+	/**
+	 * @return Returns the string.
+	 * @uml.property name="string" readOnly="true"
+	 */
+	public String getString();
 }

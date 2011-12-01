@@ -3,6 +3,7 @@ package org.openforis.idm.model;
 import java.util.Date;
 
 import org.openforis.idm.metamodel.ModelVersion;
+import org.openforis.idm.metamodel.Survey;
 
 /**
  * @author G. Miceli
@@ -116,4 +117,5 @@ public interface Record {
 	 */
 	void setVersion(ModelVersion version);
 
+	Survey getSurvey();
 }

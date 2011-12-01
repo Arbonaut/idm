@@ -5,17 +5,29 @@ import java.util.List;
 import org.openforis.idm.metamodel.EntityDefinition;
 
 /**
+ * NOTE: METHODS ARE DRAFT; TO BE IMPLEMENTED AS NEEDED. UNUSED METHODS WILL BE REMOVED.
+ * 
  * @author G. Miceli
  * @author M. Togna
  */
-public interface Entity extends ModelObject<EntityDefinition, ModelObject<?, ?>> {
+public interface Entity extends ModelObject<EntityDefinition> {
 
-	public ModelObject<?, ?> get(String name);
+	ModelObject<?> get(String name, int index);
 
 	/**
-	 * @param name
-	 *            attribute name
-	 * @return Immutable list of values contained in the attribute specified in name or null if attribute does not exist
+	 * @return Immutable list containing all children with the specified name (entities and attributes), or an empty list if none exist.  
 	 */
-	public List<Value> getValues(String name);
+	List<ModelObject<?>> get(String name);
+
+	void add(ModelObject<?> o);
+
+	void add(ModelObject<?> o, int index);
+
+	ModelObject<?> remove(String name, int index);
+	
+	void clear(String name);
+
+	void clear();
+
+	ModelObject<?> set(ModelObject<?> o, int index);
 }

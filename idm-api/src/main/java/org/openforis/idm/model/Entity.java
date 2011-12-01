@@ -15,7 +15,7 @@ public interface Entity extends ModelObject<EntityDefinition> {
 	ModelObject<?> get(String name, int index);
 
 	/**
-	 * @return Immutable list containing all children with the specified name (entities and attributes), or an empty list if none exist.  
+	 * @return Immutable list containing all children with the specified name (entities and attributes), or an empty list if none exist.
 	 */
 	List<ModelObject<?>> get(String name);
 
@@ -24,7 +24,7 @@ public interface Entity extends ModelObject<EntityDefinition> {
 	void add(ModelObject<?> o, int index);
 
 	ModelObject<?> remove(String name, int index);
-	
+
 	void clear(String name);
 
 	void clear();

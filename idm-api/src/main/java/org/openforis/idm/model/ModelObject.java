@@ -12,7 +12,7 @@ import org.openforis.idm.metamodel.ModelObjectDefinition;
 public interface ModelObject<D extends ModelObjectDefinition> {
 
 	D getDefinition();
-	
+
 	/**
 	 * @return Returns the relevant.
 	 * @uml.property name="relevant" readOnly="true"

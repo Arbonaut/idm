@@ -13,7 +13,7 @@ import org.openforis.idm.metamodel.ModelObjectDefinition;
  */
 public interface Entity extends ModelObject<EntityDefinition> {
 
-	ModelObject<?> get(String name, int index);
+	ModelObject<? extends ModelObjectDefinition> get(String name, int index);
 
 	/**
 	 * @return Immutable list containing all children with the specified name (entities and attributes), or an empty list if none exist.
@@ -30,5 +30,5 @@ public interface Entity extends ModelObject<EntityDefinition> {
 
 	void clear();
 
-	ModelObject<? extends ModelObjectDefinition> set(ModelObject<?> o, int index);
+	ModelObject<? extends ModelObjectDefinition> set(ModelObject<? extends ModelObjectDefinition> o, int index);
 }

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="org.openforis.idm.model.Values" size="1658,954" id="org.openforis.idm.model" metadata="uml2-1.0" initialized="true" zoom="0.75" tag="1000" key="32303037303533312D313030302069646D2D6170692F67696E6F">
+=======
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="org.openforis.idm.model.Values" size="1658,954" id="org.openforis.idm.model" metadata="uml2-1.0" initialized="true" zoom="0.75" tag="1000" key="32303037303533312D313030302069646D2D6170692F6D696E6F746F676E61">
+>>>>>>> 3e5c959f7dc9b6e902bd5ef73d9a437bb14b1f73
   <children xsi:type="editmodel:InterfaceEditModel" name="Coordinate" location="830,52" size="316,125" id="org.openforis.idm.model/Coordinate" runTimeClassModel="spatialReferenceSystem,z,y,x">
     <children xsi:type="editmodel:CompartmentEditModel" size="293,72">
       <children xsi:type="editmodel:AttributeEditModel" name="x" id="org.openforis.idm.model/Coordinate#x"/>
@@ -39,7 +43,11 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
+<<<<<<< HEAD
   <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.4/@sourceConnections.0 //@children.5/@sourceConnections.0" name="NumberValue" location="351,494" size="182,71" id="org.openforis.idm.model/NumberValue" runTimeClassModel="number">
+=======
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.5/@sourceConnections.0 //@children.4/@sourceConnections.0" name="NumberValue" location="323,465" size="182,71" id="org.openforis.idm.model/NumberValue" runTimeClassModel="number">
+>>>>>>> 3e5c959f7dc9b6e902bd5ef73d9a437bb14b1f73
     <children xsi:type="editmodel:CompartmentEditModel" size="75,18">
       <children xsi:type="editmodel:AttributeEditModel" name="number" id="org.openforis.idm.model/NumberValue#number"/>
     </children>
@@ -51,23 +59,35 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" name="RealValue" location="284,621" size="116,43" id="org.openforis.idm.model/RealValue" runTimeClassModel="">
+  <children xsi:type="editmodel:InterfaceEditModel" name="RealValue" location="209,621" size="116,43" id="org.openforis.idm.model/RealValue" runTimeClassModel="">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+<<<<<<< HEAD
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.openforis.idm.model/NumberValue&lt;-org.openforis.idm.model/RealValue" source="//@children.4" target="//@children.3" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
       <children xsi:type="editmodel:AssociationEndEditModel" location="91,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="24,71"/>
+=======
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="org.openforis.idm.model/NumberValue&lt;-org.openforis.idm.model/RealValue" source="//@children.4" target="//@children.3" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="59,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="82,70"/>
+>>>>>>> 3e5c959f7dc9b6e902bd5ef73d9a437bb14b1f73
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" name="IntegerValue" location="476,621" size="138,43" id="org.openforis.idm.model/IntegerValue" runTimeClassModel="">
+  <children xsi:type="editmodel:InterfaceEditModel" name="IntegerValue" location="448,621" size="138,43" id="org.openforis.idm.model/IntegerValue" runTimeClassModel="">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+<<<<<<< HEAD
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.openforis.idm.model/NumberValue&lt;-org.openforis.idm.model/IntegerValue" source="//@children.5" target="//@children.3" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
       <children xsi:type="editmodel:AssociationEndEditModel" location="28,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="153,71"/>
+=======
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="org.openforis.idm.model/NumberValue&lt;-org.openforis.idm.model/IntegerValue" source="//@children.5" target="//@children.3" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="69,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="91,71" anchorKind="FixedAtEdge"/>
+>>>>>>> 3e5c959f7dc9b6e902bd5ef73d9a437bb14b1f73
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
@@ -200,7 +220,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.18/@sourceConnections.0 //@children.19/@sourceConnections.0" name="Code" location="315,209" size="126,89" id="org.openforis.idm.model/Code" runTimeClassModel="qualifier,code">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.18/@sourceConnections.0 //@children.19/@sourceConnections.0" name="Code" location="239,180" size="126,89" id="org.openforis.idm.model/Code" runTimeClassModel="qualifier,code">
     <children xsi:type="editmodel:CompartmentEditModel" size="103,36">
       <children xsi:type="editmodel:AttributeEditModel" name="qualifier" id="org.openforis.idm.model/Code#qualifier"/>
       <children xsi:type="editmodel:AttributeEditModel" name="code" id="org.openforis.idm.model/Code#code"/>

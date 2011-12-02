@@ -27,7 +27,7 @@ public class EntityDefinitionImpl extends AbstractModelObjectDefinition implemen
 			@XmlElement(name = "date", type = DateAttributeDefinitionImpl.class), @XmlElement(name = "time", type = TimeAttributeDefinitionImpl.class),
 			@XmlElement(name = "file", type = FileAttributeDefinitionImpl.class), @XmlElement(name = "taxon", type = TaxonAttributeDefinitionImpl.class),
 			@XmlElement(name = "coordinate", type = CoordinateAttributeDefinitionImpl.class), @XmlElement(name = "code", type = CodeAttributeDefinitionImpl.class),
-			@XmlElement(name = "text", type = TextAttributeDefinitionImpl.class), @XmlElement(name = "memo", type = MemoAttributeDefinitionImpl.class) })
+			@XmlElement(name = "text", type = TextAttributeDefinitionImpl.class) })
 	private List<ModelObjectDefinition> childDefinitions;
 
 	@Override

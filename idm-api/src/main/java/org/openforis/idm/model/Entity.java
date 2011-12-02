@@ -3,6 +3,7 @@ package org.openforis.idm.model;
 import java.util.List;
 
 import org.openforis.idm.metamodel.EntityDefinition;
+import org.openforis.idm.metamodel.ModelObjectDefinition;
 
 /**
  * NOTE: METHODS ARE DRAFT; TO BE IMPLEMENTED AS NEEDED. UNUSED METHODS WILL BE REMOVED.
@@ -12,22 +13,22 @@ import org.openforis.idm.metamodel.EntityDefinition;
  */
 public interface Entity extends ModelObject<EntityDefinition> {
 
-	ModelObject<?> get(String name, int index);
+	ModelObject<? extends ModelObjectDefinition> get(String name, int index);
 
 	/**
-	 * @return Immutable list containing all children with the specified name (entities and attributes), or an empty list if none exist.  
+	 * @return Immutable list containing all children with the specified name (entities and attributes), or an empty list if none exist.
 	 */
-	List<ModelObject<?>> get(String name);
+	List<ModelObject<? extends ModelObjectDefinition>> get(String name);
 
-	void add(ModelObject<?> o);
+	void add(ModelObject<? extends ModelObjectDefinition> o);
 
-	void add(ModelObject<?> o, int index);
+	void add(ModelObject<? extends ModelObjectDefinition> o, int index);
 
-	ModelObject<?> remove(String name, int index);
-	
+	ModelObject<? extends ModelObjectDefinition> remove(String name, int index);
+
 	void clear(String name);
 
 	void clear();
 
-	ModelObject<?> set(ModelObject<?> o, int index);
+	ModelObject<? extends ModelObjectDefinition> set(ModelObject<? extends ModelObjectDefinition> o, int index);
 }

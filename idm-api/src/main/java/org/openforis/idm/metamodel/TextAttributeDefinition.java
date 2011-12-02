@@ -6,8 +6,8 @@ package org.openforis.idm.metamodel;
  */
 public interface TextAttributeDefinition extends AttributeDefinition {
 	enum Type {
-		SHORT, MEMO 
+		SHORT, MEMO
 	}
-	
+
 	Type getType();
 }

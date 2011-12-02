@@ -25,11 +25,8 @@
   </children>
   <children xsi:type="editmodel:InterfaceEditModel" name="Taxon" location="522,30" size="171,197" id="org.openforis.idm.model/Taxon" runTimeClassModel="vernacularName,languageCode,scientificName,languageVariant,code">
     <children xsi:type="editmodel:CompartmentEditModel" size="148,144">
-      <children xsi:type="editmodel:AttributeEditModel" name="id" location="-2,46"/>
       <children xsi:type="editmodel:AttributeEditModel" name="scientificName" id="org.openforis.idm.model/Taxon#scientificName"/>
       <children xsi:type="editmodel:AttributeEditModel" name="vernacularName" id="org.openforis.idm.model/Taxon#vernacularName"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="language"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="userSpecified"/>
       <children xsi:type="editmodel:AttributeEditModel" name="languageCode" id="org.openforis.idm.model/Taxon#languageCode"/>
       <children xsi:type="editmodel:AttributeEditModel" name="languageVariant" id="org.openforis.idm.model/Taxon#languageVariant"/>
       <children xsi:type="editmodel:AttributeEditModel" name="code" id="org.openforis.idm.model/Taxon#code"/>

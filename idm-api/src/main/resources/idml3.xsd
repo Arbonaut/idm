@@ -8,14 +8,12 @@
     <xs:documentation xml:lang="en">
 		Inventory Data Modeling Language 3.0
 		
-		Inventory Data Modeling Language (IDML) is an XML implementation of the Inventory Data Metamodel (IDMM), which provides a formal language for defining and describing inventory data models.  It provides an abstraction which enables the creation of software that is flexible and reuseable in a wider range of scenarios.  The IDMM also allows tools to interoperate on the same data, regardless of platform or implementation.  For example, mobile or personal data recorder (PDR) software, web or desktop-based data management software and data modeling tools that are designed to work with the IDMM would all be able work together and exchange data, regardless of vendor or inventory-specific details or functionality.
+		Inventory Data Modeling Language (IDML) is an XML implementation of the Inventory Data Metamodel (IDMM), providing a formal language for defining and describing inventory data models.  It is an abstraction which enables the creation of software that is flexible and reuseable in a wider range of scenarios.  The IDMM also allows tools to interoperate on the same field data, regardless of platform or implementation.  For example, mobile or personal data recorder (PDR) software, web or desktop-based data management software and data modeling tools that are designed to work with the IDMM would all be able work together and exchange data, regardless of vendor or inventory-specific details or functionality.
 		      
 		A specific usage or instance of the IDMM is called an inventory data model (IDM).  An inventory data model formally defines the variables recorded during an inventory, as well as metadata needed for transparent, consistent interpretation of collected data.  This includes definition of each entity and attribute and their respective data quality checks, precision, units, code lists and spatial reference systems.  Names and documentation for each of these elements may be specified in any number of languages.  These may then be used to generate standard reports for use in field manuals, online reporting and/or software help systems, for example.  This documentation is also essential for proper interpretation of primary data and results calculation.
 		      
 		Other features include versioning, which allow data models to evolve over time in a managed way.  New elements may be added and old ones deprecated, however operations which would compromise data integraty and comparability are inherently prohibited.  This also facilitates creation of easy-to-use tools for data and database management.  
 		
-		The IDMM has been implemented as both a Java API and an XML schema.  The latter is called the Inventory Data Modeling Language (IDML), and provides a human and machine-readable format for defining models. It is fully supported by [[Open Foris Collect]], without other tools in the development pipeline.
-		                     
 		Other features include versioning, which allow data models to evolve over time in a managed way.  New elements may be added and old ones deprecated, however operations which would compromise data integraty and comparability are inherently prohibited.  This also facilitates creation of easy-to-use tools for data and database management.  Custom expressions are represented in the W3C standard XPath language.  String patterns may also be specified using standard POSIX-like regular expressions.  
 	            
 		© Copyright 2012 Food and Agriculture Organization of the United Nations
@@ -90,9 +88,7 @@
       <xs:element name="code" maxOccurs="unbounded" minOccurs="1">
         <xs:annotation>
           <xs:documentation xml:lang="en">
-            A code used to refer to this item (e.g. 100, a).  Codes in any given coding scheme must be unique.  
-            
-            Alpha-numeric codes are considered case insensitive for purposes of uniqueness and search, however text formatting is to be maintained when presenting the codes to the user.  For example, if a code "Fhm" is defined in a particular coding scheme, code "FHM" may not also be defined.  However if a user enters "FHM", the value should  be automatically converted to the correct case "Fhm".  
+            A code used to refer to this item (e.g. 100, a).  By default, codes within a given code list must be unique.  Special behavior may be defined using the <codingScheme/> element.  
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -290,7 +286,7 @@
               <xs:element minOccurs="1" maxOccurs="unbounded" name="list">
                 <xs:annotation>
                   <xs:documentation xml:lang="en">
-                    Contains the definition of a single code list used in the inventory.
+                    Contains the definition of a single code list used in the inventory.  Code lists may be flat (one level) or hierarchical (multiple levels).  Additional information about the structure of the list may be defined in the <hierarchy/> and <codingScheme/> elements.
                   </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
@@ -350,7 +346,7 @@
                     <xs:element name="codingScheme" minOccurs="0" maxOccurs="unbounded">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          Optionally, multiple coding schemes may be used in the same list.  For example, a code list may have an ISO standard code, an custom alphanumeric code and a custom numeric code.  The various alternate schemes are defined here.    
+                          Optionally, multiple coding schemes may be used in the same list.  For example, a code list may have an ISO standard code, an custom alphanumeric code and a custom numeric code.  This element is used to define the details of these schemes.    
                         </xs:documentation>
                       </xs:annotation>                      
                       <xs:complexType>
@@ -358,14 +354,14 @@
                           <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText">
                             <xs:annotation>
                               <xs:documentation xml:lang="en">
-                                  TO-DO
+                                The human-readable name of the coding scheme (e.g. ISO 3166-1 Alpha-3 Country Codes)
                               </xs:documentation>
                             </xs:annotation>                      
                           </xs:element>
                           <xs:element name="description" maxOccurs="unbounded" minOccurs="0" type="formattedText">
                             <xs:annotation>
                               <xs:documentation xml:lang="en">
-                                TO-DO
+                                The human-readable description of the coding scheme.
                               </xs:documentation>
                             </xs:annotation>                      
                           </xs:element>
@@ -373,27 +369,39 @@
                         <xs:attribute name="name" use="optional" type="internalName">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
-                              TO-DO
+                              System name of the coding scheme (iso3). 
                             </xs:documentation>
                           </xs:annotation>                      
                         </xs:attribute>
-                        <xs:attribute name="scope" use="required">
+                        <xs:attribute name="scope" use="optional" default="scheme">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
-                              TO-DO
+                              For hierarhical code lists, defines at which level codes are considered unique.
                             </xs:documentation>
                           </xs:annotation>                      
                           <xs:simpleType>
                             <xs:restriction base="xs:string">
-                              <xs:enumeration value="scheme"/>
-                              <xs:enumeration value="local"/>
+                              <xs:enumeration value="scheme">
+                                <xs:annotation>
+                                  <xs:documentation xml:lang="en">
+                                    Codes are unique across the entire coding scheme (default).  The same code may not be used twice, even if under different parents in a hierarchical list.  This implies that each code in a hierachy completely identifies its related item.  For example, in a hierarchy of administrative units with two levels "Province" and "District", district code "002" may not be used under both province "A" and "B".  Instead, the district codes "A002" and "B002" could be used, both of which fully identify the district in question.
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:enumeration>
+                              <xs:enumeration value="local">
+                                <xs:annotation>
+                                  <xs:documentation xml:lang="en">
+                                    Codes are unique across the item's parent (in hierarchical lists only).  This implies that the same code may be used twice at different points in the hierarchy.  In this case, the code alone is not enough to identify the item in question; all ancestors are be required to do so.  In the above example, district code "002" would then be allowed below both province "A" and "B".  However to identify the district in this example, but province and district codes would be required.
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:enumeration>
                             </xs:restriction>
                           </xs:simpleType>
                         </xs:attribute>
                         <xs:attribute name="type" use="required">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
-                              TO-DO
+                              The type of codes used in the scheme.
                             </xs:documentation>
                           </xs:annotation>                      
                           <xs:simpleType>
@@ -401,14 +409,14 @@
                               <xs:enumeration value="numeric">
                                 <xs:annotation>
                                   <xs:documentation xml:lang="en">
-                                    TO-DO
+                                    Codes are treated as numbers (integers or reals) when entering and searching, however the format specified in this list is maintained.  For example, if a numeric code is defined as "001", the values "1", "01" or "1.0" will also match this code and turn to "001".  
                                   </xs:documentation>
                                 </xs:annotation>                      
                               </xs:enumeration>
                               <xs:enumeration value="alphanumeric">
                                 <xs:annotation>
                                   <xs:documentation xml:lang="en">
-                                    TO-DO
+                                    Alpha-numeric codes may contain both text and numbers.  They are treated as case insensitive text for purposes of uniqueness and search, and as case-sensitive for text formatting.  For example, if a code "Fhm" is defined in a particular coding scheme, code "FHM" may not also be defined.  However if a user enters "FHM", the value is matched and replaced with "Fhm".  Therefore "FHM" and "Fhm" are equivalent value, but the user is always presented with the codes as they are formatted in this list. 
                                   </xs:documentation>
                                 </xs:annotation>                      
                               </xs:enumeration>
@@ -418,21 +426,21 @@
                         <xs:attribute name="default" type="xs:boolean">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
-                              TO-DO
+                              When using multiple coding schemes, defines whether this scheme is the default scheme to be used in reports and user interfaces.
                             </xs:documentation>
                           </xs:annotation>                      
                         </xs:attribute>
                         <xs:attribute name="since" type="versionName">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
-                              TO-DO
+                              From what version of the survey model the coding scheme was used.
                             </xs:documentation>
                           </xs:annotation>                      
                         </xs:attribute>
                         <xs:attribute name="deprecated" type="versionName">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
-                              TO-DO
+                              From what version of the survey model the coding scheme was no longer used.
                             </xs:documentation>
                           </xs:annotation>                      
                         </xs:attribute>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="org.openforis.idm.metamodel.AttributeDefinition.details" size="1710,864" id="org.openforis.idm.metamodel" metadata="uml2-1.0" initialized="true" zoom="0.75" scrolledX="-5" tag="1000" key="32303037303533312D313030302069646D2D6170692F67696E6F">
-  <children xsi:type="editmodel:InterfaceEditModel" name="BooleanAttributeDefinition" location="915,469" size="243,71" id="org.openforis.idm.metamodel/BooleanAttributeDefinition" runTimeClassModel="affirmativeOnly">
+  <children xsi:type="editmodel:InterfaceEditModel" name="BooleanAttributeDefinition" location="1004,388" size="243,71" id="org.openforis.idm.metamodel/BooleanAttributeDefinition" runTimeClassModel="affirmativeOnly">
     <children xsi:type="editmodel:CompartmentEditModel" size="152,18">
       <children xsi:type="editmodel:AttributeEditModel" name="affirmativeOnly" id="org.openforis.idm.metamodel/BooleanAttributeDefinition#affirmativeOnly"/>
     </children>
@@ -45,9 +45,8 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" name="CodeAttributeDefinition" location="637,600" size="221,125" id="org.openforis.idm.metamodel/CodeAttributeDefinition" runTimeClassModel="list,parentExpression,key,allowUnlisted">
+  <children xsi:type="editmodel:InterfaceEditModel" name="CodeAttributeDefinition" location="637,600" size="221,107" id="org.openforis.idm.metamodel/CodeAttributeDefinition" runTimeClassModel="list,parentExpression,key,allowUnlisted">
     <children xsi:type="editmodel:CompartmentEditModel" size="154,72">
-      <children xsi:type="editmodel:AttributeEditModel" name="list" id="org.openforis.idm.metamodel/CodeAttributeDefinition#list"/>
       <children xsi:type="editmodel:AttributeEditModel" name="key" id="org.openforis.idm.metamodel/CodeAttributeDefinition#key"/>
       <children xsi:type="editmodel:AttributeEditModel" name="allowUnlisted" id="org.openforis.idm.metamodel/CodeAttributeDefinition#allowUnlisted"/>
       <children xsi:type="editmodel:AttributeEditModel" name="parentExpression" id="org.openforis.idm.metamodel/CodeAttributeDefinition#parentExpression"/>
@@ -66,7 +65,7 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" name="CoordinateAttributeDefinition" location="555,397" size="266,43" id="org.openforis.idm.metamodel/CoordinateAttributeDefinition" runTimeClassModel="">
+  <children xsi:type="editmodel:InterfaceEditModel" name="CoordinateAttributeDefinition" location="855,705" size="266,43" id="org.openforis.idm.metamodel/CoordinateAttributeDefinition" runTimeClassModel="">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
@@ -136,7 +135,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.6/@sourceConnections.0 //@children.12/@sourceConnections.0" name="TimestampAttributeDefinition" location="1184,449" size="267,43" id="org.openforis.idm.metamodel/TimestampAttributeDefinition" runTimeClassModel="">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.6/@sourceConnections.0 //@children.12/@sourceConnections.0" name="TimestampAttributeDefinition" location="1215,475" size="267,43" id="org.openforis.idm.metamodel/TimestampAttributeDefinition" runTimeClassModel="">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
@@ -151,9 +150,19 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.openforis.idm.metamodel/TimestampAttributeDefinition&lt;-org.openforis.idm.metamodel/TimeAttributeDefinition" source="//@children.12" target="//@children.11" targetEnd="//@children.12/@sourceConnections.0/@children.1" sourceEnd="//@children.12/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="74,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="171,43"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="6,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="260,43"/>
     </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="CodeList" location="314,370" size="273,107" id="org.openforis.idm.metamodel/CodeList" runTimeClassModel="name,labels,descriptions">
+    <children xsi:type="editmodel:CompartmentEditModel" size="250,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="descriptions" id="org.openforis.idm.metamodel/CodeList#descriptions"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="labels" id="org.openforis.idm.metamodel/CodeList#labels"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="org.openforis.idm.metamodel/CodeList#name"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
   <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1;Product=eUML2" autoName="false"/>

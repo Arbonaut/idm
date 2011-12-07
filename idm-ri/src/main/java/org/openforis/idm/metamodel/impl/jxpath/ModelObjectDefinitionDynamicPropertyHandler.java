@@ -32,6 +32,7 @@ public class ModelObjectDefinitionDynamicPropertyHandler implements DynamicPrope
 	 */
 	@Override
 	public Object getProperty(Object object, String propertyName) {
+
 		Object property = null;
 		if (propertyName.equals("__parent")) {
 			ModelObjectDefinition modelObjectDefinition = (ModelObjectDefinition) object;
@@ -46,6 +47,7 @@ public class ModelObjectDefinitionDynamicPropertyHandler implements DynamicPrope
 				return null;
 			}
 		}
+
 		return property;
 	}
 

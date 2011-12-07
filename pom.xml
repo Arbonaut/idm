@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openforis.idm</groupId>
 	<artifactId>idm</artifactId>
@@ -10,7 +9,7 @@
 		<module>idm-api</module>
 		<module>idm-ri</module>
 	</modules>
-	
+
 
 	<build>
 		<pluginManagement>
@@ -39,14 +38,19 @@
 		<connection>scm:git:git@github.com:openforis/idm.git</connection>
 		<url>scm:git:git@github.com:openforis/idm.git</url>
 		<developerConnection>scm:git:git@github.com:openforis/idm.git</developerConnection>
-	 </scm>
-	
+	</scm>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.10</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openforis.idm</groupId>
+				<artifactId>idm-api</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

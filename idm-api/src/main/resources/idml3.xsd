@@ -12,8 +12,6 @@
 		      
 		A specific usage or instance of the IDMM is called an inventory data model (IDM).  An inventory data model formally defines the variables recorded during an inventory, as well as metadata needed for transparent, consistent interpretation of collected data.  This includes definition of each entity and attribute and their respective data quality checks, precision, units, code lists and spatial reference systems.  Names and documentation for each of these elements may be specified in any number of languages.  These may then be used to generate standard reports for use in field manuals, online reporting and/or software help systems, for example.  This documentation is also essential for proper interpretation of primary data and results calculation.
 		      
-		Other features include versioning, which allow data models to evolve over time in a managed way.  New elements may be added and old ones deprecated, however operations which would compromise data integraty and comparability are inherently prohibited.  This also facilitates creation of easy-to-use tools for data and database management.  
-		
 		Other features include versioning, which allow data models to evolve over time in a managed way.  New elements may be added and old ones deprecated, however operations which would compromise data integraty and comparability are inherently prohibited.  This also facilitates creation of easy-to-use tools for data and database management.  Custom expressions are represented in the W3C standard XPath language.  String patterns may also be specified using standard POSIX-like regular expressions.  
 	            
 		© Copyright 2012 Food and Agriculture Organization of the United Nations

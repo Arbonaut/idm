@@ -36,7 +36,29 @@
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
-
+  
+  <xs:simpleType name="path">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        A path in W3C-standard XML Path Language (XPath) Version 1.0 pointing to an attrbiute or expresion.    
+        
+        Several custom functions are also provided:
+        
+          parent() - the parent of the entity or attribute containing the expression
+          blank()  - returns true if an attribute value is blank (does not include symbols)
+        
+        Also, a custom variable to point to the current value is defined:
+        
+          $this    - the value associatioed with the attribute where the expression is defined
+        
+        Expressions are generally evaluated from one level above the entity or attribute where they are defined.  For example:
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(/?([a-z]+|\.|\.\.|parent\(\)|blank\(\)))+"></xs:pattern>
+    </xs:restriction>
+  </xs:simpleType>
+  
   <xs:simpleType name="expression">    
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -700,7 +722,7 @@
       <xs:element name="label" minOccurs="0" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation xml:lang="en">
-            TO-DO
+            The human-readable label associated with an entity, entities, attribute value or values when displaying results, calculation and reporting.  
           </xs:documentation>
         </xs:annotation>                      
         <xs:complexType>
@@ -709,31 +731,72 @@
               <xs:attribute name="type" use="required">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:enumeration value="instance">
+                    <xs:enumeration value="single">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          TO-DO
+                          Indicates that the label applies to a single instance of an entity (e.g. "Tree") or attribute (e.g. "Use"). 
                         </xs:documentation>
                       </xs:annotation>                      
                     </xs:enumeration>
-                    <xs:enumeration value="list">
+                    <xs:enumeration value="multiple">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          TO-DO
-                        </xs:documentation>
-                      </xs:annotation>                      
-                    </xs:enumeration>
-                    <xs:enumeration value="prompt">
-                      <xs:annotation>
-                        <xs:documentation xml:lang="en">
-                          TO-DO
+                          Indicates that the label applies to multiple instances of an entity (e.g. "Trees") or attribute (e.g. "Uses").  Frequently used as a heading when displaying or printing lists of values or entities. 
                         </xs:documentation>
                       </xs:annotation>                      
                     </xs:enumeration>
                     <xs:enumeration value="number">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          TO-DO
+                          Indicates that the attribute or entity is associated with the specified numberic label in forms and reporting (e.g. 2a, IV) 
+                        </xs:documentation>
+                      </xs:annotation>                      
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+              <xs:anyAttribute namespace="##other" processContents="lax">
+                <xs:annotation>
+                  <xs:documentation>
+                    Application-specific attributes imported from other namespaces. 
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:anyAttribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      
+      <xs:element name="prompt" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            The human-readable text used when eliciting a value or response from a user, field team, or interviewee.   
+          </xs:documentation>
+        </xs:annotation>                      
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="unformattedText">
+              <xs:attribute name="type" use="required">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="interview">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                          Indicates a question phrase or statement read to an interviee (e.g. in socio-economic interviews) to obtain data.  
+                        </xs:documentation>
+                      </xs:annotation>                      
+                    </xs:enumeration>
+                    <xs:enumeration value="forms">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                          Indicates text appearing next to the item associated with this entity or value on forms used in the field. 
+                        </xs:documentation>
+                      </xs:annotation>                      
+                    </xs:enumeration>
+                    <xs:enumeration value="ui">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                          Indicates text shown in electronic user interfaces (web, mobile, etc.) used to prompt for this value or entity. 
                         </xs:documentation>
                       </xs:annotation>                      
                     </xs:enumeration>
@@ -755,13 +818,7 @@
       <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText">
         <xs:annotation>
           <xs:documentation xml:lang="en">
-            For of a entity, the description should include relevant details regarding size, shape and/or general meaning.
-            
-            For attributes, the description should briefly outline the details of how this value is obtained (e. the diameter perpendicular to the tree at 1.3m height)
-            
-            For identifiers, the description should describe the format and source of the unique id.
-            
-            For code lists, the description describes the contents of the list in more detail. 
+            Human-readable description of addition details regarding the entity or attribute (e.g. plot size/shape, how the value is obtained).  Used for documentation and software help systems.
           </xs:documentation>
         </xs:annotation>        
       </xs:element>

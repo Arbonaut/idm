@@ -2,6 +2,10 @@ package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.SpatialReferenceSystem;
 
+/**
+ * @author G. Miceli
+ * @author M. Togna
+ */
 public interface Coordinate extends Value {
 
 	/**

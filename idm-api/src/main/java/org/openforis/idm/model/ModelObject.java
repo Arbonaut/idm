@@ -1,13 +1,15 @@
 package org.openforis.idm.model;
 
-import org.openforis.idm.metamodel.ModelObjectDefinition;
-
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface ModelObject<D extends ModelObjectDefinition> {
+public interface ModelObject {
 
-	D getDefinition();
-
+	/**
+	 * @return  Returns the name.
+	 * @uml.property  name="name" readOnly="true"
+	 */
+	public String getName();
+	
 }

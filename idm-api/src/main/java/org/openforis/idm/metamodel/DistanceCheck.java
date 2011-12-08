@@ -4,7 +4,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface DistanceCheck extends ExplicitCheck {
+public interface DistanceCheck extends Check {
 
 	/**
 	 * @return Returns the destinationPointExpression.

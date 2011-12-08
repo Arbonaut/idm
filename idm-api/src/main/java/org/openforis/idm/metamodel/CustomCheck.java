@@ -4,7 +4,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface CustomCheck extends ExplicitCheck {
+public interface CustomCheck extends Check {
 
 	/**
 	 * @return Returns the expression.

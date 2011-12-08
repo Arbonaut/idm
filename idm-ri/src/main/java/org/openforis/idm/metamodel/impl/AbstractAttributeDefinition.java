@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
-import org.openforis.idm.metamodel.ExplicitCheck;
+import org.openforis.idm.metamodel.Check;
 
 /**
  * @author M. Togna
@@ -26,19 +26,19 @@ public abstract class AbstractAttributeDefinition extends AbstractModelObjectDef
 	@XmlElements({ @XmlElement(name = "distance", type = DistanceCheckImpl.class), @XmlElement(name = "pattern", type = PatternCheckImpl.class),
 			@XmlElement(name = "compare", type = ComparisonCheckImpl.class), @XmlElement(name = "check", type = CustomCheckImpl.class),
 			@XmlElement(name = "unique", type = UniquenessCheckImpl.class) })
-	private List<ExplicitCheck> explicitChecks;
+	private List<Check> checks;
 
 	@XmlElement(name = "default", type = AttributeDefaultImpl.class)
 	private List<AttributeDefault> attributeDefaults;
 
 	@Override
-	public List<ExplicitCheck> getExplicitChecks() {
-		return this.explicitChecks;
+	public List<Check> getExplicitChecks() {
+		return this.checks;
 	}
 
 	@Override
-	public void setExplicitCheck(List<ExplicitCheck> explicitCheck) {
-		this.explicitChecks = explicitCheck;
+	public void setExplicitCheck(List<Check> check) {
+		this.checks = check;
 	}
 
 	@Override

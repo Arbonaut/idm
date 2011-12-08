@@ -4,6 +4,6 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface SpecifiedCountCondition extends ExplicitCheck {
+public interface SpecifiedCountCondition extends Check {
 
 }

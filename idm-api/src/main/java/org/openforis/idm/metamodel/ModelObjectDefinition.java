@@ -17,8 +17,6 @@ public interface ModelObjectDefinition extends Versionable, Annotatable, ModelOb
 	 */
 	EntityDefinition getParentDefinition();
 
-	CardinalityCheck getCardinalityCheck();
-
 	/**
 	 * @return Returns the name.
 	 * @uml.property name="name"
@@ -34,6 +32,52 @@ public interface ModelObjectDefinition extends Versionable, Annotatable, ModelOb
 	 */
 	void setName(String name);
 
+
+	/**
+	 * @return Returns the requiredExpression.
+	 * @uml.property name="requiredExpression"
+	 */
+	String getRequiredExpression();
+
+	/**
+	 * Setter of the property <tt>requiredExpression</tt>
+	 * 
+	 * @param requiredExpression
+	 *            The requiredExpression to set.
+	 * @uml.property name="requiredExpression"
+	 */
+	void setRequiredExpression(String requiredExpression);
+
+	/**
+	 * @return Returns the minCount.
+	 * @uml.property name="minCount"
+	 */
+	Integer getMinCount();
+
+	/**
+	 * Setter of the property <tt>minCount</tt>
+	 * 
+	 * @param minCount
+	 *            The minCount to set.
+	 * @uml.property name="minCount"
+	 */
+	void setMinCount(Integer minCount);
+
+	/**
+	 * @return Returns the maxCount.
+	 * @uml.property name="maxCount"
+	 */
+	Integer getMaxCount();
+
+	/**
+	 * Setter of the property <tt>maxCount</tt>
+	 * 
+	 * @param maxCount
+	 *            The maxCount to set.
+	 * @uml.property name="maxCount"
+	 */
+	void setMaxCount(Integer maxCount);
+
 	/**
 	 * @return Returns the relevantExpression.
 	 * @uml.property name="relevantExpression"
@@ -48,7 +92,7 @@ public interface ModelObjectDefinition extends Versionable, Annotatable, ModelOb
 	 * @uml.property name="relevantExpression"
 	 */
 	void setRelevantExpression(String relevantExpression);
-
+	
 	/**
 	 * @return Returns the descriptions.
 	 * @uml.property name="descriptions"

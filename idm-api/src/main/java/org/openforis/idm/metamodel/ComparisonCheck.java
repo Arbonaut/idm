@@ -4,7 +4,7 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface ComparisonCheck extends ExplicitCheck {
+public interface ComparisonCheck extends Check {
 
 	/**
 	 * @return Returns the lessThanExpression.

@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.ExplicitCheck;
+import org.openforis.idm.metamodel.Check;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 
 /**
@@ -22,7 +22,7 @@ import org.openforis.idm.metamodel.LanguageSpecificText;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-public class AbstractExplicitCheck extends AbstractCheck implements ExplicitCheck {
+public class AbstractExplicitCheck extends AbstractCheck implements Check {
 
 	@XmlAttribute(name = "flag")
 	@XmlJavaTypeAdapter(value = FlagAdapter.class)

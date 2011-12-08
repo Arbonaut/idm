@@ -12,9 +12,9 @@ public interface AttributeDefinition extends ModelObjectDefinition {
 	 * @return Returns the checks.
 	 * @uml.property name="explicitChecks"
 	 * @uml.associationEnd multiplicity="(0 -1)" ordering="true" container="java.util.List" aggregation="composite"
-	 *                     inverse="attributeDefinition:org.openforis.idm.metamodel.ExplicitCheck"
+	 *                     inverse="attributeDefinition:org.openforis.idm.metamodel.Check"
 	 */
-	public List<ExplicitCheck> getExplicitChecks();
+	public List<Check> getExplicitChecks();
 
 	/**
 	 * Setter of the property <tt>checks</tt>
@@ -23,7 +23,7 @@ public interface AttributeDefinition extends ModelObjectDefinition {
 	 *            The checks to set.
 	 * @uml.property name="explicitChecks"
 	 */
-	public void setExplicitCheck(List<ExplicitCheck> explicitCheck);
+	public void setExplicitCheck(List<Check> check);
 
 	/**
 	 * @return Returns the attributeDefaults.

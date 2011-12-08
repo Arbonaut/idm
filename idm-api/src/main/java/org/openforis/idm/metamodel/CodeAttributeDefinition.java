@@ -8,62 +8,26 @@ public interface CodeAttributeDefinition extends AttributeDefinition {
 
 	/**
 	 * @return Returns the list.
-	 * @uml.property name="list"
+	 * @uml.property name="list" readOnly="true"
 	 */
 	public CodeList getList();
 
 	/**
-	 * Setter of the property <tt>list</tt>
-	 * 
-	 * @param list
-	 *            The list to set.
-	 * @uml.property name="list"
-	 */
-	public void setList(CodeList list);
-
-	/**
 	 * @return Returns the key.
-	 * @uml.property name="key"
+	 * @uml.property name="key" readOnly="true"
 	 */
 	public boolean isKey();
 
 	/**
-	 * Setter of the property <tt>key</tt>
-	 * 
-	 * @param key
-	 *            The key to set.
-	 * @uml.property name="key"
-	 */
-	public void setKey(boolean key);
-
-	/**
 	 * @return Returns the parentExpression.
-	 * @uml.property name="parentExpression"
+	 * @uml.property name="parentExpression" readOnly="true"
 	 */
 	public String getParentExpression();
 
 	/**
-	 * Setter of the property <tt>parentExpression</tt>
-	 * 
-	 * @param parentExpression
-	 *            The parentExpression to set.
-	 * @uml.property name="parentExpression"
-	 */
-	public void setParentExpression(String parentExpression);
-
-	/**
 	 * @return Returns the allowUnlisted.
-	 * @uml.property name="allowUnlisted"
+	 * @uml.property name="allowUnlisted" readOnly="true"
 	 */
 	public boolean getAllowUnlisted();
-
-	/**
-	 * Setter of the property <tt>allowUnlisted</tt>
-	 * 
-	 * @param allowUnlisted
-	 *            The allowUnlisted to set.
-	 * @uml.property name="allowUnlisted"
-	 */
-	public void setAllowUnlisted(boolean allowUnlisted);
 
 }

@@ -8,32 +8,15 @@ public interface AttributeDefault {
 
 	/**
 	 * @return Returns the expression.
-	 * @uml.property name="expression"
+	 * @uml.property name="expression" readOnly="true"
 	 */
 	public String getExpression();
 
-	/**
-	 * Setter of the property <tt>expression</tt>
-	 * 
-	 * @param expression
-	 *            The expression to set.
-	 * @uml.property name="expression"
-	 */
-	public void setExpression(String expression);
 
 	/**
 	 * @return Returns the condition.
-	 * @uml.property name="condition"
+	 * @uml.property name="condition" readOnly="true"
 	 */
 	public String getCondition();
-
-	/**
-	 * Setter of the property <tt>condition</tt>
-	 * 
-	 * @param condition
-	 *            The condition to set.
-	 * @uml.property name="condition"
-	 */
-	public void setCondition(String condition);
 
 }

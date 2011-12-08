@@ -9,10 +9,6 @@ public interface LanguageSpecificText {
 
 	String getLanguage();
 
-	void setLanguage(String language);
-
 	String getText();
-
-	void setText(String text);
 
 }

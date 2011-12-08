@@ -15,6 +15,4 @@ public interface CodeListLabel extends LanguageSpecificText {
 
 	Type getType();
 
-	void setType(Type type);
-
 }

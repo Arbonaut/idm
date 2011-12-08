@@ -12,13 +12,4 @@ public interface PatternCheck extends Check {
 	 */
 	public String getRegularExpression();
 
-	/**
-	 * Setter of the property <tt>regularExpression</tt>
-	 * 
-	 * @param regularExpression
-	 *            The regularExpression to set.
-	 * @uml.property name="regularExpression"
-	 */
-	public void setRegularExpression(String regularExpression);
-
 }

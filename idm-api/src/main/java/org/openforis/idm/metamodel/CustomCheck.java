@@ -12,13 +12,4 @@ public interface CustomCheck extends Check {
 	 */
 	public String getExpression();
 
-	/**
-	 * Setter of the property <tt>expression</tt>
-	 * 
-	 * @param expression
-	 *            The expression to set.
-	 * @uml.property name="expression"
-	 */
-	public void setExpression(String expression);
-
 }

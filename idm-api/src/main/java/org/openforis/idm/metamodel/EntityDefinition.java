@@ -16,13 +16,4 @@ public interface EntityDefinition extends ModelObjectDefinition {
 	 */
 	public List<ModelObjectDefinition> getChildDefinitions();
 
-	/**
-	 * Setter of the property <tt>children</tt>
-	 * 
-	 * @param children
-	 *            The children to set.
-	 * @uml.property name="childDefinitions"
-	 */
-	public void setChildDefinitions(List<ModelObjectDefinition> childDefinitions);
-
 }

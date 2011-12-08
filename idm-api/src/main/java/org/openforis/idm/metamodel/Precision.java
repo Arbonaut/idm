@@ -14,42 +14,15 @@ public interface Precision {
 	public Unit getUnit();
 
 	/**
-	 * Setter of the property <tt>unit</tt>
-	 * 
-	 * @param unit
-	 *            The unit to set.
-	 * @uml.property name="unit"
-	 */
-	public void setUnit(Unit unit);
-
-	/**
 	 * @return Returns the decimalDigits.
 	 * @uml.property name="decimalDigits"
 	 */
 	public Integer getDecimalDigits();
 
 	/**
-	 * Setter of the property <tt>decimalDigits</tt>
-	 * 
-	 * @param decimalDigits
-	 *            The decimalDigits to set.
-	 * @uml.property name="decimalDigits"
-	 */
-	public void setDecimalDigits(Integer decimalDigits);
-
-	/**
 	 * @return Returns the defaultPrecision.
 	 * @uml.property name="defaultPrecision"
 	 */
 	public boolean isDefaultPrecision();
-
-	/**
-	 * Setter of the property <tt>defaultPrecision</tt>
-	 * 
-	 * @param defaultPrecision
-	 *            The defaultPrecision to set.
-	 * @uml.property name="defaultPrecision"
-	 */
-	public void setDefaultPrecision(boolean defaultPrecision);
 
 }

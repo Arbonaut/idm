@@ -13,6 +13,4 @@ public interface ModelObjectLabel extends LanguageSpecificText {
 
 	LabelType getLabelType();
 
-	void setLabelType(LabelType labelType);
-
 }

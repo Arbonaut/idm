@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" size="1706,882" id="org.openforis.idm.model" metadata="uml2-1.0" initialized="true" zoom="0.75" tag="1000" key="32303037303533312D313030302069646D2D6170692F67696E6F">
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.1/@sourceConnections.0" name="Entity" location="734,375" size="94,171" id="org.openforis.idm.model/Entity" runTimeClassModel="add(Lorg.openforis.idm.model.ModelObject;I),get(Ljava.lang.String;),remove(Ljava.lang.String;I),clear(),set(Lorg.openforis.idm.model.ModelObject;I),clear(Ljava.lang.String;),get(Ljava.lang.String;I),add(Lorg.openforis.idm.model.ModelObject;)">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.1/@sourceConnections.0" name="Entity" location="734,375" size="94,171" id="org.openforis.idm.model/Entity" runTimeClassModel="add(Lorg.openforis.idm.model.ModelObject;I),get(Ljava.lang.String;),clear(),remove(Ljava.lang.String;I),set(Lorg.openforis.idm.model.ModelObject;I),clear(Ljava.lang.String;),get(Ljava.lang.String;I),add(Lorg.openforis.idm.model.ModelObject;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="71,108">
       <children xsi:type="editmodel:MethodEditModel" name="clear" id="org.openforis.idm.model/Entity#clear()"/>
       <children xsi:type="editmodel:MethodEditModel" name="set" id="org.openforis.idm.model/Entity#set(Lorg.openforis.idm.model.ModelObject;I)"/>
       <children xsi:type="editmodel:MethodEditModel" name="clear" id="org.openforis.idm.model/Entity#clear(Ljava.lang.String;)"/>
       <children xsi:type="editmodel:MethodEditModel" name="get" id="org.openforis.idm.model/Entity#get(Ljava.lang.String;I)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="add" id="org.openforis.idm.model/Entity#add(Lorg.openforis.idm.model.ModelObject;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="org.openforis.idm.model/Entity#add(Lorg.openforis.idm.model.ModelObject&lt;?>;I)"/>
       <children xsi:type="editmodel:MethodEditModel" name="remove" id="org.openforis.idm.model/Entity#remove(Ljava.lang.String;I)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>

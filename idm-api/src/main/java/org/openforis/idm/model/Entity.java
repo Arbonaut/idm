@@ -1,6 +1,6 @@
 package org.openforis.idm.model;
 
-import java.util.List;
+import org.openforis.idm.metamodel.EntityDefinition;
 
 /**
  * NOTE: METHODS ARE DRAFT; TO BE IMPLEMENTED AS NEEDED. UNUSED METHODS WILL BE REMOVED.
@@ -8,24 +8,30 @@ import java.util.List;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface Entity extends ModelObject {
+public interface Entity extends ModelObject<EntityDefinition> {
 
-	ModelObject get(String name, int index);
+	ModelObject<?> get(String name, int index);
 
 	/**
 	 * @return Immutable list containing all children with the specified name (entities and attributes), or an empty list if none exist.
 	 */
-	List<ModelObject> get(String name);
+//	List<ModelObject<?>> get(String name);
 
-	void add(ModelObject o);
+	int getCount(String name); 
+	
+	int move(String name, int oldIndex, int newIndex);
+	
+	void add(ModelObject<?> o);
 
-	void add(ModelObject o, int index);
+	void add(ModelObject<?> o, int index);
 
-	ModelObject remove(String name, int index);
+	ModelObject<?> remove(String name, int index);
 
-	void clear(String name);
+//	ModelObject<?> remove(ModelObject<?> o);
 
-	void clear();
+//	void remove(String name);
 
-	ModelObject set(ModelObject o, int index);
+//	void clear();
+	
+//	ModelObject<?> replace(ModelObject<?> o, int index);
 }

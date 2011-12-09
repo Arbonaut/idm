@@ -105,4 +105,7 @@ public interface Record {
 	void setVersion(ModelVersion version);
 
 	Survey getSurvey();
+	
+	// TODO Define arguments... is this needed?
+//	void notifyObservers(Object... args);
 }

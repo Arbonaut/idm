@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="org.openforis.idm.metamodel.Check" size="1706,882" id="org.openforis.idm.metamodel" metadata="uml2-1.0" initialized="true" zoom="0.75" tag="1000" key="32303037303533312D313030302069646D2D6170692F67696E6F">
-  <children xsi:type="editmodel:InterfaceEditModel" name="PatternCheck" location="895,327" size="180,71" id="org.openforis.idm.metamodel/PatternCheck" runTimeClassModel="regularExpression">
+  <children xsi:type="editmodel:InterfaceEditModel" name="PatternCheck" location="891,375" size="180,71" id="org.openforis.idm.metamodel/PatternCheck" runTimeClassModel="regularExpression">
     <children xsi:type="editmodel:CompartmentEditModel" size="157,18">
       <children xsi:type="editmodel:AttributeEditModel" name="regularExpression" id="org.openforis.idm.metamodel/PatternCheck#regularExpression"/>
     </children>
@@ -12,7 +12,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" name="CustomCheck" location="518,327" size="143,71" id="org.openforis.idm.metamodel/CustomCheck" runTimeClassModel="expression">
+  <children xsi:type="editmodel:InterfaceEditModel" name="CustomCheck" location="514,375" size="143,71" id="org.openforis.idm.metamodel/CustomCheck" runTimeClassModel="expression">
     <children xsi:type="editmodel:CompartmentEditModel" size="118,18">
       <children xsi:type="editmodel:AttributeEditModel" name="expression" id="org.openforis.idm.metamodel/CustomCheck#expression"/>
     </children>
@@ -24,7 +24,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" name="ComparisonCheck" location="1105,327" size="258,143" id="org.openforis.idm.metamodel/ComparisonCheck" runTimeClassModel="greaterThanOrEqualsExpression,greaterThanExpression,equalsExpression,lessThanExpression,lessThanOrEqualsExpression">
+  <children xsi:type="editmodel:InterfaceEditModel" name="ComparisonCheck" location="1101,375" size="258,143" id="org.openforis.idm.metamodel/ComparisonCheck" runTimeClassModel="greaterThanOrEqualsExpression,greaterThanExpression,equalsExpression,lessThanExpression,lessThanOrEqualsExpression">
     <children xsi:type="editmodel:CompartmentEditModel" size="235,90">
       <children xsi:type="editmodel:AttributeEditModel" name="lessThanExpression" id="org.openforis.idm.metamodel/ComparisonCheck#lessThanExpression"/>
       <children xsi:type="editmodel:AttributeEditModel" name="lessThanOrEqualsExpression" id="org.openforis.idm.metamodel/ComparisonCheck#lessThanOrEqualsExpression"/>
@@ -40,7 +40,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" name="DistanceCheck" location="258,327" size="230,125" id="org.openforis.idm.metamodel/DistanceCheck" runTimeClassModel="sourcePointExpression,minDistanceExpression,maxDistanceExpression,destinationPointExpression">
+  <children xsi:type="editmodel:InterfaceEditModel" name="DistanceCheck" location="254,375" size="230,125" id="org.openforis.idm.metamodel/DistanceCheck" runTimeClassModel="sourcePointExpression,minDistanceExpression,maxDistanceExpression,destinationPointExpression">
     <children xsi:type="editmodel:CompartmentEditModel" size="207,72">
       <children xsi:type="editmodel:AttributeEditModel" name="destinationPointExpression" id="org.openforis.idm.metamodel/DistanceCheck#destinationPointExpression"/>
       <children xsi:type="editmodel:AttributeEditModel" name="minDistanceExpression" id="org.openforis.idm.metamodel/DistanceCheck#minDistanceExpression"/>
@@ -55,7 +55,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" name="UniquenessCheck" location="691,327" size="174,71" id="org.openforis.idm.metamodel/UniquenessCheck" runTimeClassModel="expression">
+  <children xsi:type="editmodel:InterfaceEditModel" name="UniquenessCheck" location="687,375" size="174,71" id="org.openforis.idm.metamodel/UniquenessCheck" runTimeClassModel="expression">
     <children xsi:type="editmodel:CompartmentEditModel" size="118,18">
       <children xsi:type="editmodel:AttributeEditModel" name="expression" id="org.openforis.idm.metamodel/UniquenessCheck#expression"/>
     </children>
@@ -67,7 +67,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.1/@sourceConnections.0" name="Check" location="660,59" size="262,218" id="org.openforis.idm.metamodel/Check">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.1/@sourceConnections.0" name="Check" location="660,59" size="262,218" id="org.openforis.idm.metamodel/Check" runTimeClassModel="flag,org.openforis.idm.metamodel.Check.Flag,condition,messages">
     <children xsi:type="editmodel:CompartmentEditModel" size="239,54">
       <children xsi:type="editmodel:AttributeEditModel" name="condition" id="org.openforis.idm.metamodel/Check#condition"/>
       <children xsi:type="editmodel:AttributeEditModel" name="flag" id="org.openforis.idm.metamodel/Check#flag"/>

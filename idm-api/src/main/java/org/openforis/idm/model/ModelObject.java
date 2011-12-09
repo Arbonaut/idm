@@ -1,15 +1,24 @@
 package org.openforis.idm.model;
 
+import org.openforis.idm.metamodel.ModelObjectDefinition;
+
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface ModelObject {
+public interface ModelObject<D extends ModelObjectDefinition> {
 
+	D getDefinition();
+	
 	/**
-	 * @return  Returns the name.
+	 * @return  Convenience method, returns the name of the model object as specified in its definition.
 	 * @uml.property  name="name" readOnly="true"
 	 */
-	public String getName();
+	String getName();
 	
+	// DERIVED STATES
+	
+	boolean isRequired();
+	
+	boolean isRelevant();
 }

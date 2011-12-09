@@ -1,9 +1,12 @@
-package org.openforis.idm.validation;
+package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.Check;
 
-
-public interface CheckFailure extends ValidationResult {
+/**
+ * @author G. Miceli
+ * @author M. Togna
+ */
+public interface CheckFailure {
 
 	/**
 	 * @return  Returns the check.

@@ -7,7 +7,4 @@ package org.openforis.idm.model;
  * @author M. Togna
  */
 public interface Value {
-
-	boolean isBlank();
-
 }

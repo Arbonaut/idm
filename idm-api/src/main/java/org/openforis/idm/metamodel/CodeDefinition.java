@@ -18,5 +18,4 @@ public interface CodeDefinition {
 	 */
 	public CodingScheme getCodingScheme();
 
-
 }

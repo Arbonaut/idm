@@ -51,7 +51,7 @@ public class CodeAttributeDefinitionImpl extends AbstractAttributeDefinition imp
 	public boolean getAllowUnlisted() {
 		return this.allowUnlisted;
 	}
-	
+
 	@Override
 	public String getParentExpression() {
 		return this.parentExpression;
@@ -60,7 +60,7 @@ public class CodeAttributeDefinitionImpl extends AbstractAttributeDefinition imp
 	void setList(CodeList list) {
 		this.list = list;
 	}
-	
+
 	private static class AllowUnlistedAdapter extends XmlAdapter<Boolean, Boolean> {
 
 		@Override
@@ -74,6 +74,4 @@ public class CodeAttributeDefinitionImpl extends AbstractAttributeDefinition imp
 		}
 	}
 
-	
-	
 }

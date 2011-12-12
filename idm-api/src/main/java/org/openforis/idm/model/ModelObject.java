@@ -9,16 +9,16 @@ import org.openforis.idm.metamodel.ModelObjectDefinition;
 public interface ModelObject<D extends ModelObjectDefinition> {
 
 	D getDefinition();
-	
+
 	/**
-	 * @return  Convenience method, returns the name of the model object as specified in its definition.
-	 * @uml.property  name="name" readOnly="true"
+	 * @return Convenience method, returns the name of the model object as specified in its definition.
+	 * @uml.property name="name" readOnly="true"
 	 */
 	String getName();
-	
+
 	// DERIVED STATES
-	
+
 	boolean isRequired();
-	
+
 	boolean isRelevant();
 }

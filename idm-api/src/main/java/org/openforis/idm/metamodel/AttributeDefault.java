@@ -12,7 +12,6 @@ public interface AttributeDefault {
 	 */
 	public String getExpression();
 
-
 	/**
 	 * @return Returns the condition.
 	 * @uml.property name="condition" readOnly="true"

@@ -26,5 +26,4 @@ public class BooleanAttributeDefinitionImpl extends AbstractAttributeDefinition 
 		return this.affirmativeOnly;
 	}
 
-
 }

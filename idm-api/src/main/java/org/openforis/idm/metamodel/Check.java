@@ -6,7 +6,7 @@ import java.util.List;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface Check  {
+public interface Check {
 
 	public enum Flag {
 		ERROR, WARN

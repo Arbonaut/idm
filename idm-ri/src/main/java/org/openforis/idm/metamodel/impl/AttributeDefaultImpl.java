@@ -29,7 +29,6 @@ public class AttributeDefaultImpl implements AttributeDefault {
 		return this.expression;
 	}
 
-
 	@Override
 	public String getCondition() {
 		return this.condition;

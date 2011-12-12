@@ -14,13 +14,11 @@ public interface CodeList extends Versionable {
 	 */
 	public String getName();
 
-
 	/**
 	 * @return Returns the labels.
 	 * @uml.property name="labels" readOnly="true"
 	 */
 	public List<CodeListLabel> getLabels();
-
 
 	/**
 	 * @return Returns the descriptions.
@@ -51,6 +49,5 @@ public interface CodeList extends Versionable {
 	 *                     inverse="codeList:org.openforis.idm.metamodel.CodeListItem" readOnly="true"
 	 */
 	public List<CodeListItem> getItems();
-
 
 }

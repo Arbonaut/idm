@@ -29,10 +29,10 @@ public class CodeListImpl extends AbstractVersionable implements CodeList {
 
 	@XmlAttribute(name = "since")
 	String sinceAttribute;
-	
+
 	@XmlAttribute(name = "deprecated")
 	String deprecatedAttribute;
-	
+
 	@XmlAttribute(name = "name")
 	private String name;
 

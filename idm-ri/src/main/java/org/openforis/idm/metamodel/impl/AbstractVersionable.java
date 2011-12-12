@@ -20,16 +20,18 @@ public abstract class AbstractVersionable implements Versionable {
 	@XmlTransient
 	private ModelVersion deprecated;
 
+	@Override
 	public ModelVersion getSince() {
-		return since;
+		return this.since;
 	}
 
 	void setSince(ModelVersion since) {
 		this.since = since;
 	}
 
+	@Override
 	public ModelVersion getDeprecated() {
-		return deprecated;
+		return this.deprecated;
 	}
 
 	void setDeprecated(ModelVersion deprecated) {

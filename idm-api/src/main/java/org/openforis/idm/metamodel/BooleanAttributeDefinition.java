@@ -12,5 +12,4 @@ public interface BooleanAttributeDefinition extends AttributeDefinition {
 	 */
 	public boolean isAffirmativeOnly();
 
-
 }

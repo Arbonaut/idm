@@ -135,17 +135,17 @@ public abstract class AbstractModelObjectDefinition extends AbstractVersionable 
 
 	@Override
 	public String getRequiredExpression() {
-		return requiredExpression;
+		return this.requiredExpression;
 	}
 
 	@Override
 	public Integer getMinCount() {
-		return minCount;
+		return this.minCount;
 	}
 
 	@Override
 	public Integer getMaxCount() {
-		return maxCount;
+		return this.maxCount;
 	}
 
 }

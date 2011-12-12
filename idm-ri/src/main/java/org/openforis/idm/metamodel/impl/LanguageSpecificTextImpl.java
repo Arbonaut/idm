@@ -51,31 +51,11 @@ public class LanguageSpecificTextImpl implements LanguageSpecificText {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.openforis.idm.metamodel.impl.LanguageSpecificText#setLanguage(java.lang.String)
-	 */
-	@Override
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.openforis.idm.metamodel.impl.LanguageSpecificText#getText()
 	 */
 	@Override
 	public String getText() {
 		return this.text;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.openforis.idm.metamodel.impl.LanguageSpecificText#setText(java.lang.String)
-	 */
-	@Override
-	public void setText(String text) {
-		this.text = text;
 	}
 
 }

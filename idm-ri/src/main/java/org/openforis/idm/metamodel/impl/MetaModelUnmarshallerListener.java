@@ -5,14 +5,12 @@ import java.util.List;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.metamodel.CardinalityCheck;
 import org.openforis.idm.metamodel.CodeList;
 import org.openforis.idm.metamodel.CodingScheme;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.Unit;
-import org.openforis.idm.metamodel.Versionable;
 
 /**
  * @author M. Togna
@@ -84,20 +82,6 @@ public class MetaModelUnmarshallerListener extends Unmarshaller.Listener {
 	private void afterUnmarshallModelObjectDefinition(Object parent, AbstractModelObjectDefinition target) {
 		this.setModelVersions(target, target.sinceAttribute, target.deprecatedAttribute);
 
-		if ((target.minCount != null) || (target.maxCount != null) || StringUtils.isNotBlank(target.requiredExpression)) {
-			CardinalityCheck cardinalityCheck = new CardinalityCheckImpl();
-			if (target.minCount != null) {
-				cardinalityCheck.setMinCount(target.minCount);
-			}
-			if (target.maxCount != null) {
-				cardinalityCheck.setMaxCount(target.maxCount);
-			}
-			if (StringUtils.isNotBlank(target.requiredExpression)) {
-				cardinalityCheck.setRequiredExpression(target.requiredExpression);
-			}
-			target.setCardinalityCheck(cardinalityCheck);
-		}
-
 		if (parent instanceof EntityDefinition) {
 			EntityDefinition parentDefinition = (EntityDefinition) parent;
 			target.setParentDefinition(parentDefinition);
@@ -124,7 +108,7 @@ public class MetaModelUnmarshallerListener extends Unmarshaller.Listener {
 		return null;
 	}
 
-	private void setModelVersions(Versionable versionable, String since, String deprecated) {
+	private void setModelVersions(AbstractVersionable versionable, String since, String deprecated) {
 		if (StringUtils.isNotBlank(since)) {
 			ModelVersion version = this.getModelVersion(since);
 			versionable.setSince(version);

@@ -50,33 +50,13 @@ public class CodingSchemeImpl implements CodingScheme {
 	}
 
 	@Override
-	public void setCodeType(CodeType codeType) {
-		this.codeType = codeType;
-	}
-
-	@Override
 	public CodeScope getCodeScope() {
 		return this.codeScope;
 	}
 
 	@Override
-	public void setCodeScope(CodeScope codeScope) {
-		this.codeScope = codeScope;
-	}
-
-	@Override
 	public String getName() {
 		return this.name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public void setDefault(boolean isDefault) {
-		this.isDefault = isDefault;
 	}
 
 	@Override
@@ -90,18 +70,8 @@ public class CodingSchemeImpl implements CodingScheme {
 	}
 
 	@Override
-	public void setLabels(List<LanguageSpecificText> labels) {
-		this.labels = labels;
-	}
-
-	@Override
 	public List<LanguageSpecificText> getDescriptions() {
 		return this.descriptions;
-	}
-
-	@Override
-	public void setDescriptions(List<LanguageSpecificText> descriptions) {
-		this.descriptions = descriptions;
 	}
 
 	private static class CodeTypeAdapter extends XmlAdapter<String, CodeType> {

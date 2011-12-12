@@ -34,18 +34,8 @@ public class FileAttributeDefinitionImpl extends AbstractAttributeDefinition imp
 	}
 
 	@Override
-	public void setMaxSize(Integer maxSize) {
-		this.maxSize = maxSize;
-	}
-
-	@Override
 	public String[] getExtensions() {
 		return this.extensions;
-	}
-
-	@Override
-	public void setExtensions(String[] extensions) {
-		this.extensions = extensions;
 	}
 
 	public static class ExtensionsTypeAdapter extends XmlAdapter<String, String[]> {

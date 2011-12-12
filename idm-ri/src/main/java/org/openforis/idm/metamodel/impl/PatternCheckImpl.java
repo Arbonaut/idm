@@ -16,7 +16,7 @@ import org.openforis.idm.metamodel.PatternCheck;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class PatternCheckImpl extends AbstractExplicitCheck implements PatternCheck {
+public class PatternCheckImpl extends AbstractCheck implements PatternCheck {
 
 	@XmlAttribute(name = "regex")
 	private String regularExpression;
@@ -26,8 +26,4 @@ public class PatternCheckImpl extends AbstractExplicitCheck implements PatternCh
 		return this.regularExpression;
 	}
 
-	@Override
-	public void setRegularExpression(String regularExpression) {
-		this.regularExpression = regularExpression;
-	}
 }

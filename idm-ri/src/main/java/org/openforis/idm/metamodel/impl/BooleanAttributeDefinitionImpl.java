@@ -26,9 +26,5 @@ public class BooleanAttributeDefinitionImpl extends AbstractAttributeDefinition 
 		return this.affirmativeOnly;
 	}
 
-	@Override
-	public void setAffirmativeOnly(boolean affirmativeOnly) {
-		this.affirmativeOnly = affirmativeOnly;
-	}
 
 }

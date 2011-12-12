@@ -40,7 +40,7 @@ public class ModelObjectLabelImpl extends LanguageSpecificTextImpl implements Mo
 
 	public ModelObjectLabelImpl(LabelType labelType, String language, String text) {
 		this(language, text);
-		this.setLabelType(labelType);
+		this.labelType = labelType;
 	}
 
 	/*
@@ -51,16 +51,6 @@ public class ModelObjectLabelImpl extends LanguageSpecificTextImpl implements Mo
 	@Override
 	public LabelType getLabelType() {
 		return this.labelType;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.openforis.idm.metamodel.impl.ModelObjectLabel#setLabelType(org.openforis.idm.metamodel.impl.ModelObjectLabelImpl.LabelType)
-	 */
-	@Override
-	public void setLabelType(LabelType labelType) {
-		this.labelType = labelType;
 	}
 
 	private static class LabelTypeAdapter extends XmlAdapter<String, LabelType> {

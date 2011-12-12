@@ -13,14 +13,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.metamodel.CardinalityCheck;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.ModelAnnotation;
 import org.openforis.idm.metamodel.ModelObjectDefinition;
 import org.openforis.idm.metamodel.ModelObjectLabel;
 import org.openforis.idm.metamodel.ModelObjectLabel.LabelType;
-import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.metamodel.impl.jxpath.MetaModelExpression;
 
 /**
@@ -29,29 +27,23 @@ import org.openforis.idm.metamodel.impl.jxpath.MetaModelExpression;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-public abstract class AbstractModelObjectDefinition implements ModelObjectDefinition {
+public abstract class AbstractModelObjectDefinition extends AbstractVersionable implements ModelObjectDefinition {
 
 	@XmlAttribute(name = "since")
 	String sinceAttribute;
-	@XmlTransient
-	private ModelVersion since;
 
 	@XmlAttribute(name = "deprecated")
 	String deprecatedAttribute;
-	@XmlTransient
-	private ModelVersion deprecated;
 
 	@XmlTransient
 	private EntityDefinition parentDefinition;
 
 	@XmlAttribute(name = "required")
-	String requiredExpression;
+	private String requiredExpression;
 	@XmlAttribute(name = "minCount")
-	Integer minCount;
+	private Integer minCount;
 	@XmlAttribute(name = "maxCount")
-	Integer maxCount;
-	@XmlTransient
-	private CardinalityCheck cardinalityCheck;
+	private Integer maxCount;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -99,42 +91,8 @@ public abstract class AbstractModelObjectDefinition implements ModelObjectDefini
 	}
 
 	@Override
-	public CardinalityCheck getCardinalityCheck() {
-		return this.cardinalityCheck;
-	}
-
-	void setCardinalityCheck(CardinalityCheck cardinalityCheck) {
-		this.cardinalityCheck = cardinalityCheck;
-	}
-
-	@Override
-	public ModelVersion getSince() {
-		return this.since;
-	}
-
-	@Override
-	public void setSince(ModelVersion since) {
-		this.since = since;
-	}
-
-	@Override
-	public ModelVersion getDeprecated() {
-		return this.deprecated;
-	}
-
-	@Override
-	public void setDeprecated(ModelVersion deprecated) {
-		this.deprecated = deprecated;
-	}
-
-	@Override
 	public String getName() {
 		return this.name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	@Override
@@ -143,18 +101,8 @@ public abstract class AbstractModelObjectDefinition implements ModelObjectDefini
 	}
 
 	@Override
-	public void setRelevantExpression(String relevantExpression) {
-		this.relevantExpression = relevantExpression;
-	}
-
-	@Override
 	public boolean isMultiple() {
 		return this.multiple;
-	}
-
-	@Override
-	public void setMultiple(boolean multiple) {
-		this.multiple = multiple;
 	}
 
 	@Override
@@ -163,18 +111,8 @@ public abstract class AbstractModelObjectDefinition implements ModelObjectDefini
 	}
 
 	@Override
-	public void setAnnotations(List<ModelAnnotation> annotations) {
-		this.annotations = annotations;
-	}
-
-	@Override
 	public List<LanguageSpecificText> getDescriptions() {
 		return this.descriptions;
-	}
-
-	@Override
-	public void setDescriptions(List<LanguageSpecificText> descriptions) {
-		this.descriptions = descriptions;
 	}
 
 	@Override
@@ -196,8 +134,18 @@ public abstract class AbstractModelObjectDefinition implements ModelObjectDefini
 	}
 
 	@Override
-	public void setLabels(List<ModelObjectLabel> labels) {
-		this.labels = labels;
+	public String getRequiredExpression() {
+		return requiredExpression;
+	}
+
+	@Override
+	public Integer getMinCount() {
+		return minCount;
+	}
+
+	@Override
+	public Integer getMaxCount() {
+		return maxCount;
 	}
 
 }

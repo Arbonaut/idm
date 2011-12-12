@@ -36,11 +36,6 @@ public class EntityDefinitionImpl extends AbstractModelObjectDefinition implemen
 	}
 
 	@Override
-	public void setChildDefinitions(List<ModelObjectDefinition> childDefinitions) {
-		this.childDefinitions = childDefinitions;
-	}
-
-	@Override
 	public String toString() {
 		return "Entity " + this.getName();
 	}

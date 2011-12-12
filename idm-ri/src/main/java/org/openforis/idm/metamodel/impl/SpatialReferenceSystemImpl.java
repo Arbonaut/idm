@@ -42,18 +42,8 @@ public class SpatialReferenceSystemImpl implements SpatialReferenceSystem {
 	}
 
 	@Override
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	@Override
 	public List<LanguageSpecificText> getLabels() {
 		return this.labels;
-	}
-
-	@Override
-	public void setLabels(List<LanguageSpecificText> labels) {
-		this.labels = labels;
 	}
 
 	@Override
@@ -62,18 +52,8 @@ public class SpatialReferenceSystemImpl implements SpatialReferenceSystem {
 	}
 
 	@Override
-	public void setDescriptions(List<LanguageSpecificText> descriptions) {
-		this.descriptions = descriptions;
-	}
-
-	@Override
 	public String getWellKnownText() {
 		return this.wellKnownText;
-	}
-
-	@Override
-	public void setWellKnownText(String wellKnownText) {
-		this.wellKnownText = wellKnownText;
 	}
 
 }

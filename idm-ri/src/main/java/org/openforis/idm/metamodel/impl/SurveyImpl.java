@@ -72,18 +72,8 @@ public class SurveyImpl implements Survey {
 	}
 
 	@Override
-	public void setSchema(Schema schema) {
-		this.schema = schema;
-	}
-
-	@Override
 	public List<ModelVersion> getVersions() {
 		return this.versions;
-	}
-
-	@Override
-	public void setVersions(List<ModelVersion> versions) {
-		this.versions = versions;
 	}
 
 	@Override
@@ -92,18 +82,8 @@ public class SurveyImpl implements Survey {
 	}
 
 	@Override
-	public void setCodeLists(List<CodeList> codeLists) {
-		this.codeLists = codeLists;
-	}
-
-	@Override
 	public List<Unit> getUnits() {
 		return this.units;
-	}
-
-	@Override
-	public void setUnits(List<Unit> units) {
-		this.units = units;
 	}
 
 	@Override
@@ -112,18 +92,8 @@ public class SurveyImpl implements Survey {
 	}
 
 	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
 	public Integer getCycle() {
 		return this.cycle;
-	}
-
-	@Override
-	public void setCycle(Integer cycle) {
-		this.cycle = cycle;
 	}
 
 	@Override
@@ -132,18 +102,8 @@ public class SurveyImpl implements Survey {
 	}
 
 	@Override
-	public void setDescriptions(List<LanguageSpecificText> descriptions) {
-		this.descriptions = descriptions;
-	}
-
-	@Override
 	public Element getConfiguration() {
 		return this.configuration;
-	}
-
-	@Override
-	public void setConfiguration(Element configuration) {
-		this.configuration = configuration;
 	}
 
 	@Override
@@ -152,18 +112,8 @@ public class SurveyImpl implements Survey {
 	}
 
 	@Override
-	public void setSpatialReferenceSystems(Collection<SpatialReferenceSystem> spatialReferenceSystems) {
-		this.spatialReferenceSystems = spatialReferenceSystems;
-	}
-
-	@Override
 	public List<LanguageSpecificText> getProjectNames() {
 		return this.projectNames;
-	}
-
-	@Override
-	public void setProjectNames(List<LanguageSpecificText> projectNames) {
-		this.projectNames = projectNames;
 	}
 
 	private static class ConfigurationTypeAdapter extends XmlAdapter<Object, Object> {

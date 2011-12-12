@@ -37,18 +37,8 @@ public class PrecisionImpl implements Precision {
 	}
 
 	@Override
-	public void setUnit(Unit unit) {
-		this.unit = unit;
-	}
-
-	@Override
 	public Integer getDecimalDigits() {
 		return this.decimalDigits;
-	}
-
-	@Override
-	public void setDecimalDigits(Integer decimalDigits) {
-		this.decimalDigits = decimalDigits;
 	}
 
 	@Override
@@ -56,9 +46,8 @@ public class PrecisionImpl implements Precision {
 		return this.defaultPrecision;
 	}
 
-	@Override
-	public void setDefaultPrecision(boolean defaultPrecision) {
-		this.defaultPrecision = defaultPrecision;
+	void setUnit(Unit unit) {
+		this.unit = unit;
 	}
 
 }

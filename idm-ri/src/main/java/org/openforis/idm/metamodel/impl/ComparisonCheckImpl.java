@@ -16,7 +16,7 @@ import org.openforis.idm.metamodel.ComparisonCheck;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class ComparisonCheckImpl extends AbstractExplicitCheck implements ComparisonCheck {
+public class ComparisonCheckImpl extends AbstractCheck implements ComparisonCheck {
 
 	@XmlAttribute(name = "lt")
 	private String lessThanExpression;
@@ -39,18 +39,8 @@ public class ComparisonCheckImpl extends AbstractExplicitCheck implements Compar
 	}
 
 	@Override
-	public void setLessThanExpression(String lessThanExpression) {
-		this.lessThanExpression = lessThanExpression;
-	}
-
-	@Override
 	public String getLessThanOrEqualsExpression() {
 		return this.lessThanOrEqualsExpression;
-	}
-
-	@Override
-	public void setLessThanOrEqualsExpression(String lessThanOrEqualsExpression) {
-		this.lessThanOrEqualsExpression = lessThanOrEqualsExpression;
 	}
 
 	@Override
@@ -59,28 +49,13 @@ public class ComparisonCheckImpl extends AbstractExplicitCheck implements Compar
 	}
 
 	@Override
-	public void setGreaterThanExpression(String greaterThanExpression) {
-		this.greaterThanExpression = greaterThanExpression;
-	}
-
-	@Override
 	public String getGreaterThanOrEqualsExpression() {
 		return this.greaterThanOrEqualsExpression;
 	}
 
 	@Override
-	public void setGreaterThanOrEqualsExpression(String greaterThanOrEqualsExpression) {
-		this.greaterThanOrEqualsExpression = greaterThanOrEqualsExpression;
-	}
-
-	@Override
 	public String getEqualsExpression() {
 		return this.equalsExpression;
-	}
-
-	@Override
-	public void setEqualsExpression(String equalsExpression) {
-		this.equalsExpression = equalsExpression;
 	}
 
 }

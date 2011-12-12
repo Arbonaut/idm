@@ -36,9 +36,4 @@ public class SchemaImpl implements Schema {
 		return this.rootEntityDefinitions;
 	}
 
-	@Override
-	public void setRootEntityDefinitions(List<EntityDefinition> rootEntityDefinitions) {
-		this.rootEntityDefinitions = rootEntityDefinitions;
-	}
-
 }

@@ -37,28 +37,13 @@ public class CodeListLevelImpl implements CodeListLevel {
 	}
 
 	@Override
-	public void setLabels(List<LanguageSpecificText> labels) {
-		this.labels = labels;
-	}
-
-	@Override
 	public List<LanguageSpecificText> getDescriptions() {
 		return this.descriptions;
 	}
 
 	@Override
-	public void setDescriptions(List<LanguageSpecificText> descriptions) {
-		this.descriptions = descriptions;
-	}
-
-	@Override
 	public String getName() {
 		return this.name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
 	}
 
 }

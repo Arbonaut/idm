@@ -43,18 +43,8 @@ public class UnitImpl implements Unit {
 	}
 
 	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
 	public String getDimension() {
 		return this.dimension;
-	}
-
-	@Override
-	public void setDimension(String dimension) {
-		this.dimension = dimension;
 	}
 
 	@Override
@@ -63,27 +53,12 @@ public class UnitImpl implements Unit {
 	}
 
 	@Override
-	public void setConversionFactor(Number conversionFactor) {
-		this.conversionFactor = conversionFactor.floatValue();
-	}
-
-	@Override
 	public List<LanguageSpecificText> getLabels() {
 		return this.labels;
 	}
 
 	@Override
-	public void setLabels(List<LanguageSpecificText> labels) {
-		this.labels = labels;
-	}
-
-	@Override
 	public List<LanguageSpecificText> getAbbreviations() {
 		return this.abbreviations;
-	}
-
-	@Override
-	public void setAbbreviations(List<LanguageSpecificText> abbreviations) {
-		this.abbreviations = abbreviations;
 	}
 }

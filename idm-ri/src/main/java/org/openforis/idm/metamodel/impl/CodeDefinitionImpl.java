@@ -36,18 +36,11 @@ public class CodeDefinitionImpl implements CodeDefinition {
 	}
 
 	@Override
-	public void setCodingScheme(CodingScheme codingScheme) {
-		this.codingScheme = codingScheme;
-	}
-
-	@Override
 	public String getCode() {
 		return this.code;
 	}
 
-	@Override
-	public void setCode(String code) {
-		this.code = code;
+	void setCodingScheme(CodingScheme codingScheme) {
+		this.codingScheme = codingScheme;
 	}
-
 }

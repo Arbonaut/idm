@@ -37,18 +37,8 @@ public abstract class AbstractAttributeDefinition extends AbstractModelObjectDef
 	}
 
 	@Override
-	public void setExplicitCheck(List<Check> check) {
-		this.checks = check;
-	}
-
-	@Override
 	public List<AttributeDefault> getAttributeDefaults() {
 		return this.attributeDefaults;
-	}
-
-	@Override
-	public void setAttributeDefaults(List<AttributeDefault> attributeDefaults) {
-		this.attributeDefaults = attributeDefaults;
 	}
 
 	@Override

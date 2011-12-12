@@ -37,18 +37,8 @@ public abstract class AbstractNumericAttributeDefinition extends AbstractAttribu
 	}
 
 	@Override
-	public void setPrecisionDefinitions(List<Precision> precisionDefinitions) {
-		this.precisionDefinitions = precisionDefinitions;
-	}
-
-	@Override
 	public Type getType() {
 		return this.type;
-	}
-
-	@Override
-	public void setType(Type type) {
-		this.type = type;
 	}
 
 	private static class TypeAdapter extends XmlAdapter<String, Type> {

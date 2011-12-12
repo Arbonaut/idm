@@ -29,19 +29,10 @@ public class AttributeDefaultImpl implements AttributeDefault {
 		return this.expression;
 	}
 
-	@Override
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
 
 	@Override
 	public String getCondition() {
 		return this.condition;
-	}
-
-	@Override
-	public void setCondition(String condition) {
-		this.condition = condition;
 	}
 
 }

@@ -16,7 +16,7 @@ import org.openforis.idm.metamodel.UniquenessCheck;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class UniquenessCheckImpl extends AbstractExplicitCheck implements UniquenessCheck {
+public class UniquenessCheckImpl extends AbstractCheck implements UniquenessCheck {
 
 	@XmlAttribute(name = "expr")
 	private String expression;
@@ -24,11 +24,6 @@ public class UniquenessCheckImpl extends AbstractExplicitCheck implements Unique
 	@Override
 	public String getExpression() {
 		return this.expression;
-	}
-
-	@Override
-	public void setExpression(String expression) {
-		this.expression = expression;
 	}
 
 }

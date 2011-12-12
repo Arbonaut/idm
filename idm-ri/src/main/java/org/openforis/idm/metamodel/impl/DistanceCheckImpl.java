@@ -16,7 +16,7 @@ import org.openforis.idm.metamodel.DistanceCheck;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class DistanceCheckImpl extends AbstractExplicitCheck implements DistanceCheck {
+public class DistanceCheckImpl extends AbstractCheck implements DistanceCheck {
 
 	@XmlAttribute(name = "to")
 	private String destinationPointExpression;
@@ -36,18 +36,8 @@ public class DistanceCheckImpl extends AbstractExplicitCheck implements Distance
 	}
 
 	@Override
-	public void setDestinationPointExpression(String destinationPointExpression) {
-		this.destinationPointExpression = destinationPointExpression;
-	}
-
-	@Override
 	public String getMinDistanceExpression() {
 		return this.minDistanceExpression;
-	}
-
-	@Override
-	public void setMinDistanceExpression(String minDistanceExpression) {
-		this.minDistanceExpression = minDistanceExpression;
 	}
 
 	@Override
@@ -56,18 +46,8 @@ public class DistanceCheckImpl extends AbstractExplicitCheck implements Distance
 	}
 
 	@Override
-	public void setMaxDistanceExpression(String maxDistanceExpression) {
-		this.maxDistanceExpression = maxDistanceExpression;
-	}
-
-	@Override
 	public String getSourcePointExpression() {
 		return this.sourcePointExpression;
-	}
-
-	@Override
-	public void setSourcePointExpression(String sourcePointExpression) {
-		this.sourcePointExpression = sourcePointExpression;
 	}
 
 }

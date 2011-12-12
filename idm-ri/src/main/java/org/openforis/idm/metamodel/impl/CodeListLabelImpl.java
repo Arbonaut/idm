@@ -29,11 +29,6 @@ public class CodeListLabelImpl extends LanguageSpecificTextImpl implements CodeL
 		return this.type;
 	}
 
-	@Override
-	public void setType(Type type) {
-		this.type = type;
-	}
-
 	private static class CodeListLabelTypeAdapter extends XmlAdapter<String, Type> {
 
 		@Override

@@ -41,18 +41,8 @@ public class ModelVersionImpl implements ModelVersion {
 	}
 
 	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
 	public List<LanguageSpecificText> getLabels() {
 		return this.labels;
-	}
-
-	@Override
-	public void setLabels(List<LanguageSpecificText> labels) {
-		this.labels = labels;
 	}
 
 	@Override
@@ -61,18 +51,8 @@ public class ModelVersionImpl implements ModelVersion {
 	}
 
 	@Override
-	public void setDescriptions(List<LanguageSpecificText> descriptions) {
-		this.descriptions = descriptions;
-	}
-
-	@Override
 	public Date getDate() {
 		return this.date;
-	}
-
-	@Override
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 }

@@ -16,7 +16,7 @@ import org.openforis.idm.metamodel.CustomCheck;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class CustomCheckImpl extends AbstractExplicitCheck implements CustomCheck {
+public class CustomCheckImpl extends AbstractCheck implements CustomCheck {
 
 	@XmlAttribute(name = "expr")
 	private String expression;
@@ -24,11 +24,6 @@ public class CustomCheckImpl extends AbstractExplicitCheck implements CustomChec
 	@Override
 	public String getExpression() {
 		return this.expression;
-	}
-
-	@Override
-	public void setExpression(String expression) {
-		this.expression = expression;
 	}
 
 }

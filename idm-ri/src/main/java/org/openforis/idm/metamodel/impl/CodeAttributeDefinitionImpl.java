@@ -43,30 +43,24 @@ public class CodeAttributeDefinitionImpl extends AbstractAttributeDefinition imp
 	}
 
 	@Override
-	public void setList(CodeList list) {
-		this.list = list;
-	}
-
-	@Override
 	public boolean isKey() {
 		return this.key;
-	}
-
-	@Override
-	public void setKey(boolean key) {
-		this.key = key;
 	}
 
 	@Override
 	public boolean getAllowUnlisted() {
 		return this.allowUnlisted;
 	}
-
+	
 	@Override
-	public void setAllowUnlisted(boolean allowUnlisted) {
-		this.allowUnlisted = allowUnlisted;
+	public String getParentExpression() {
+		return this.parentExpression;
 	}
 
+	void setList(CodeList list) {
+		this.list = list;
+	}
+	
 	private static class AllowUnlistedAdapter extends XmlAdapter<Boolean, Boolean> {
 
 		@Override
@@ -80,13 +74,6 @@ public class CodeAttributeDefinitionImpl extends AbstractAttributeDefinition imp
 		}
 	}
 
-	@Override
-	public String getParentExpression() {
-		return this.parentExpression;
-	}
-
-	@Override
-	public void setParentExpression(String parentExpression) {
-		this.parentExpression = parentExpression;
-	}
+	
+	
 }

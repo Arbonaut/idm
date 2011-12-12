@@ -10,28 +10,28 @@ import org.openforis.idm.metamodel.EntityDefinition;
  */
 public interface Entity extends ModelObject<EntityDefinition> {
 
-	ModelObject<?> get(String name, int index);
+	ModelObject<? extends EntityDefinition> get(String name, int index);
 
 	/**
 	 * @return Immutable list containing all children with the specified name (entities and attributes), or an empty list if none exist.
 	 */
-//	List<ModelObject<?>> get(String name);
+	// List<ModelObject<?>> get(String name);
 
-	int getCount(String name); 
-	
+	int getCount(String name);
+
 	int move(String name, int oldIndex, int newIndex);
-	
-	void add(ModelObject<?> o);
 
-	void add(ModelObject<?> o, int index);
+	void add(ModelObject<? extends EntityDefinition> o);
 
-	ModelObject<?> remove(String name, int index);
+	void add(ModelObject<? extends EntityDefinition> o, int index);
 
-//	ModelObject<?> remove(ModelObject<?> o);
+	ModelObject<? extends EntityDefinition> remove(String name, int index);
 
-//	void remove(String name);
+	// ModelObject<?> remove(ModelObject<?> o);
 
-//	void clear();
-	
-//	ModelObject<?> replace(ModelObject<?> o, int index);
+	// void remove(String name);
+
+	// void clear();
+
+	// ModelObject<?> replace(ModelObject<?> o, int index);
 }

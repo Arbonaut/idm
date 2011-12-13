@@ -24,24 +24,6 @@ public interface ModelObjectDefinition extends Versionable, Annotatable, ModelOb
 	String getName();
 
 	/**
-	 * @return Returns the requiredExpression.
-	 * @uml.property name="requiredExpression"
-	 */
-	String getRequiredExpression();
-
-	/**
-	 * @return Returns the minCount.
-	 * @uml.property name="minCount"
-	 */
-	Integer getMinCount();
-
-	/**
-	 * @return Returns the maxCount.
-	 * @uml.property name="maxCount"
-	 */
-	Integer getMaxCount();
-
-	/**
 	 * @return Returns the relevantExpression.
 	 * @uml.property name="relevantExpression"
 	 */
@@ -66,4 +48,10 @@ public interface ModelObjectDefinition extends Versionable, Annotatable, ModelOb
 	 * @uml.property name="multiple"
 	 */
 	boolean isMultiple();
+
+	/**
+	 * @return Returns the cardinalityRule.
+	 * @uml.property name="cardinality" readOnly="true"
+	 */
+	public Cardinality getCardinality();
 }

@@ -32,7 +32,7 @@ public abstract class AbstractAttributeDefinition extends AbstractModelObjectDef
 	private List<AttributeDefault> attributeDefaults;
 
 	@Override
-	public List<Check> getExplicitChecks() {
+	public List<Check> getChecks() {
 		return this.checks;
 	}
 

@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.metamodel.Cardinality;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.ModelAnnotation;
@@ -44,6 +45,8 @@ public abstract class AbstractModelObjectDefinition extends AbstractVersionable 
 	private Integer minCount;
 	@XmlAttribute(name = "maxCount")
 	private Integer maxCount;
+	@XmlTransient
+	private Cardinality cardinality;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -134,18 +137,24 @@ public abstract class AbstractModelObjectDefinition extends AbstractVersionable 
 	}
 
 	@Override
-	public String getRequiredExpression() {
-		return this.requiredExpression;
+	public Cardinality getCardinality() {
+		return this.cardinality;
 	}
 
-	@Override
-	public Integer getMinCount() {
-		return this.minCount;
+	void setCardinality(Cardinality cardinality) {
+		this.cardinality = cardinality;
 	}
 
-	@Override
-	public Integer getMaxCount() {
-		return this.maxCount;
+	String getRequiredExpression() {
+		return requiredExpression;
+	}
+
+	Integer getMinCount() {
+		return minCount;
+	}
+
+	Integer getMaxCount() {
+		return maxCount;
 	}
 
 }

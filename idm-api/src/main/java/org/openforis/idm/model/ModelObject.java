@@ -16,6 +16,8 @@ public interface ModelObject<D extends ModelObjectDefinition> {
 	 */
 	String getName();
 
+	ModelObject<? extends ModelObjectDefinition> getParent();
+	
 	// DERIVED STATES
 
 	boolean isRequired();

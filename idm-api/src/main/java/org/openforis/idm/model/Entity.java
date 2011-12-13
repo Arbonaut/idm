@@ -1,5 +1,7 @@
 package org.openforis.idm.model;
 
+import java.util.Set;
+
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.ModelObjectDefinition;
 
@@ -14,13 +16,20 @@ public interface Entity extends ModelObject<EntityDefinition> {
 	ModelObject<? extends ModelObjectDefinition> get(String name, int index);
 
 	/**
+	 * Returns an unmodifiable set of the child names
+	 * 
+	 * @return
+	 */
+	Set<String> getChildNames();
+
+	/**
 	 * @return Immutable list containing all children with the specified name (entities and attributes), or an empty list if none exist.
 	 */
 	// List<ModelObject<?>> get(String name);
 
 	int getCount(String name);
 
-	int move(String name, int oldIndex, int newIndex);
+	void move(String name, int oldIndex, int newIndex);
 
 	void add(ModelObject<? extends ModelObjectDefinition> o);
 

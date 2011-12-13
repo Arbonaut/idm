@@ -82,6 +82,24 @@ public class MetaModelUnmarshallerListener extends Unmarshaller.Listener {
 	private void afterUnmarshallModelObjectDefinition(Object parent, AbstractModelObjectDefinition target) {
 		this.setModelVersions(target, target.sinceAttribute, target.deprecatedAttribute);
 
+		Integer minCount = target.getMinCount();
+		Integer maxCount = target.getMaxCount();
+		String requiredExpression = target.getRequiredExpression();
+		
+		if (StringUtils.isNotBlank(requiredExpression) || maxCount != null || minCount != null) {
+			CardinalityImpl cardinality = new CardinalityImpl();
+			if (StringUtils.isNotBlank(requiredExpression)) {
+				cardinality.setRequiredExpression(requiredExpression);
+			}
+			if (minCount != null) {
+				cardinality.setMinCount(minCount);
+			}
+			if (maxCount != null) {
+				cardinality.setMaxCount(maxCount);
+			}
+			target.setCardinality(cardinality);
+		}
+
 		if (parent instanceof EntityDefinition) {
 			EntityDefinition parentDefinition = (EntityDefinition) parent;
 			target.setParentDefinition(parentDefinition);

@@ -2,15 +2,20 @@ package org.openforis.idm.metamodel;
 
 import java.util.List;
 
+import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.Value;
+
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface Check {
+public interface Check extends Rule {
 
 	public enum Flag {
 		ERROR, WARN
 	}
+
+	boolean execute(Attribute<? extends AttributeDefinition, ? extends Value> attribute);
 
 	/**
 	 * @return Returns the flag.

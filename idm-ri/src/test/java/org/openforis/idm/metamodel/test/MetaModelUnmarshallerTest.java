@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller.Listener;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.ModelObjectDefinition;
@@ -27,7 +28,7 @@ import org.w3c.dom.Element;
  */
 public class MetaModelUnmarshallerTest {
 
-	// @Test
+	 @Test
 	public void unmarshallMetaModelTest() throws JAXBException, IOException {
 		Survey survey = getSurvey();
 

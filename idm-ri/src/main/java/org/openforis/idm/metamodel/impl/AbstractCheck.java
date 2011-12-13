@@ -22,11 +22,11 @@ import org.openforis.idm.metamodel.LanguageSpecificText;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-public class AbstractCheck implements Check {
+public abstract class AbstractCheck implements Check {
 
 	@XmlAttribute(name = "flag")
 	@XmlJavaTypeAdapter(value = FlagAdapter.class)
-	private Flag flag;
+	protected Flag flag;
 
 	@XmlAttribute(name = "if")
 	private String condition;

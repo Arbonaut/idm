@@ -13,19 +13,10 @@ public interface Record {
 
 	/**
 	 * @return Returns the rootEntity.
-	 * @uml.property name="rootEntity"
+	 * @uml.property name="rootEntity" readOnly="true"
 	 * @uml.associationEnd
 	 */
 	Entity getRootEntity();
-
-	/**
-	 * Setter of the property <tt>rootEntity</tt>
-	 * 
-	 * @param rootEntity
-	 *            The rootEntity to set.
-	 * @uml.property name="rootEntity"
-	 */
-	void setRootEntity(Entity rootEntity);
 
 	/**
 	 * @return Returns the creationDate.

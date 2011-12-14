@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
  */
 public class MetaModelUnmarshallerTest {
 
-	 @Test
+//	 @Test
 	public void unmarshallMetaModelTest() throws JAXBException, IOException {
 		Survey survey = getSurvey();
 

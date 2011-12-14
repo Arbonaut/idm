@@ -142,7 +142,7 @@
       <xs:element name="item" maxOccurs="unbounded" minOccurs="0" type="codeListItem">
         <xs:annotation>
           <xs:documentation xml:lang="en">
-            For hierarchical lists, onr or more sub-items may be defined below this item.  In this case, the "hierarchy"  element should be used to define the significance of each level in the list. 
+            For hierarchical lists, one or more sub-items may be defined below this item.  In this case, the "hierarchy"  element should be used to define the significance of each level in the list. 
           </xs:documentation>
         </xs:annotation>        
       </xs:element>

@@ -15,6 +15,7 @@ public interface Entity extends ModelObject<EntityDefinition> {
 
 	ModelObject<? extends ModelObjectDefinition> get(String name, int index);
 
+	// TODO Is getChildNames required?  Can use ModelObjectDefinition instead?
 	/**
 	 * Returns an unmodifiable set of the child names
 	 * 

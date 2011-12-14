@@ -23,6 +23,8 @@ import org.openforis.idm.model.Taxon;
 import org.openforis.idm.model.TextValue;
 import org.openforis.idm.model.TimestampValue;
 import org.openforis.idm.model.Value;
+import org.openforis.idm.model.impl.jxpath.ModelPropertyHandler;
+import org.openforis.idm.model.impl.jxpath.RecordPropertyHandler;
 
 /**
  * @author M. Togna

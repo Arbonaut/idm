@@ -4,6 +4,10 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface RealValue extends NumberValue<Double> {
+public class RealValue extends NumericValue<Double> {
+
+	public RealValue(Double number) {
+		super(number);
+	}
 
 }

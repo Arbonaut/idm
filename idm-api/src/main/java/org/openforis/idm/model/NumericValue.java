@@ -4,24 +4,23 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class TextValue implements Value {
+public abstract class NumericValue<T extends Number> implements Value {
 
-	private String string;
+	private T number;
 
-	public TextValue(String string) {
-		super();
-		this.string = string;
+	public NumericValue(T number) {
+		this.number = number;
 	}
 
-	public String getString() {
-		return string;
+	public T getNumber() {
+		return number;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((string == null) ? 0 : string.hashCode());
+		result = prime * result + ((number == null) ? 0 : number.hashCode());
 		return result;
 	}
 
@@ -33,11 +32,11 @@ public abstract class TextValue implements Value {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TextValue other = (TextValue) obj;
-		if (string == null) {
-			if (other.string != null)
+		NumericValue<?> other = (NumericValue<?>) obj;
+		if (number == null) {
+			if (other.number != null)
 				return false;
-		} else if (!string.equals(other.string))
+		} else if (!number.equals(other.number))
 			return false;
 		return true;
 	}

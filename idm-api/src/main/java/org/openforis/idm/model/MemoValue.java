@@ -4,6 +4,10 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface MemoValue extends TextValue {
+public class MemoValue extends TextValue {
+
+	public MemoValue(String string) {
+		super(string);
+	}
 
 }

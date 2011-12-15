@@ -4,35 +4,71 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface Taxon extends Value {
+public class Taxon implements Value {
 
-	/**
-	 * @return Returns the code.
-	 * @uml.property name="code" readOnly="true"
-	 */
-	public String getCode();
+	private String code;
+	private String scientificName;
+	private String vernacularName;
+	private String languageCode;
+	private String languageVariant;
 
-	/**
-	 * @return Returns the scientificName.
-	 * @uml.property name="scientificName" readOnly="true"
-	 */
-	public String getScientificName();
+	public Taxon(String code) {
+		super();
+		this.code = code;
+	}
 
-	/**
-	 * @return Returns the vernacularName.
-	 * @uml.property name="vernacularName" readOnly="true"
-	 */
-	public String getVernacularName();
+	public Taxon(String code, String scientificName, String vernacularName, String languageCode, String languageVariant) {
+		super();
+		this.code = code;
+		this.scientificName = scientificName;
+		this.vernacularName = vernacularName;
+		this.languageCode = languageCode;
+		this.languageVariant = languageVariant;
+	}
 
-	/**
-	 * @return Returns the ISO3 languageCode.
-	 * @uml.property name="languageCode" readOnly="true"
-	 */
-	public String getLanguageCode();
+	public String getCode() {
+		return code;
+	}
 
-	/**
-	 * @return Returns the languageVariant.
-	 * @uml.property name="languageVariant" readOnly="true"
-	 */
-	public String getLanguageVariant();
+	public String getLanguageCode() {
+		return languageCode;
+	}
+
+	public String getLanguageVariant() {
+		return languageVariant;
+	}
+
+	public String getScientificName() {
+		return scientificName;
+	}
+
+	public String getVernacularName() {
+		return vernacularName;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((code == null) ? 0 : code.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Taxon other = (Taxon) obj;
+		if (code == null) {
+			if (other.code != null)
+				return false;
+		} else if (!code.equals(other.code))
+			return false;
+		return true;
+	}
+
 }

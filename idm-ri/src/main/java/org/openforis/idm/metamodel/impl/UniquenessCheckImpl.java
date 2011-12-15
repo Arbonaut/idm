@@ -14,7 +14,7 @@ import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.UniquenessCheck;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Value;
-import org.openforis.idm.model.impl.ExpressionImpl;
+import org.openforis.idm.model.impl.ModelExpression;
 
 /**
  * @author M. Togna
@@ -34,7 +34,7 @@ public class UniquenessCheckImpl extends AbstractCheck implements UniquenessChec
 
 	@Override
 	public boolean execute(Attribute<? extends AttributeDefinition, ? extends Value> attribute) {
-		ExpressionImpl modelExpression = new ExpressionImpl(expression);
+		ModelExpression modelExpression = new ModelExpression(expression);
 		Iterator<?> iterator = modelExpression.Iterate(attribute);
 		if (iterator.hasNext()) {
 			boolean unique = true;

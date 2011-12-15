@@ -16,7 +16,7 @@ import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.Expression;
 import org.openforis.idm.model.FileValue;
 import org.openforis.idm.model.ModelObject;
-import org.openforis.idm.model.NumberValue;
+import org.openforis.idm.model.NumericValue;
 import org.openforis.idm.model.NumericRange;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.Taxon;
@@ -30,7 +30,7 @@ import org.openforis.idm.model.impl.jxpath.RecordPropertyHandler;
  * @author M. Togna
  * 
  */
-public class ExpressionImpl implements Expression {
+public class ModelExpression implements Expression {
 
 	private static JXPathContext CONTEXT;
 
@@ -39,15 +39,14 @@ public class ExpressionImpl implements Expression {
 		JXPathIntrospector.registerDynamicClass(Record.class, RecordPropertyHandler.class);
 
 		CONTEXT = JXPathContext.newContext(null);
-//		FunctionLibrary functionLibrary = new FunctionLibrary();
+		// FunctionLibrary functionLibrary = new FunctionLibrary();
 		// functionLibrary.addFunctions(new ClassFunctions(ModelDefinitionFunctions.class, "idm"));
-//		CONTEXT.setFunctions(functionLibrary);
+		// CONTEXT.setFunctions(functionLibrary);
 	}
 
 	private String expression;
 
-	public ExpressionImpl(String expression) {
-		super();
+	public ModelExpression(String expression) {
 		this.expression = expression;
 	}
 
@@ -72,13 +71,13 @@ public class ExpressionImpl implements Expression {
 	public Iterator<?> Iterate(ModelObject<? extends ModelObjectDefinition> context) {
 		ModelObject<? extends ModelObjectDefinition> parent = context.getParent();
 		JXPathContext jxPathContext = JXPathContext.newContext(CONTEXT, parent);
-		
+
 		if (context instanceof Attribute) {
 			@SuppressWarnings("unchecked")
 			Object value = getValue((Attribute<? extends AttributeDefinition, ? extends Value>) context);
 			jxPathContext.getVariables().declareVariable("this", value);
 		}
-		
+
 		String expr = this.expression.replaceAll("\\bparent\\(\\)", "__parent");
 		Iterator<?> iterator = jxPathContext.iterate(expr);
 		return iterator;
@@ -89,15 +88,15 @@ public class ExpressionImpl implements Expression {
 		if (attribute instanceof Code) {
 			value = ((Code<?>) attribute).getCode();
 		} else if (attribute instanceof BooleanValue) {
-			value = ((BooleanValue) attribute).getBoolean();
+			value = ((BooleanValue) attribute).getValue();
 		} else if (attribute instanceof TimestampValue) {
 			value = ((TimestampValue) attribute).toCalendar();
 		} else if (attribute instanceof FileValue) {
 			value = attribute;
 		} else if (attribute instanceof NumericRange) {
 			value = attribute;
-		} else if (attribute instanceof NumberValue) {
-			value = ((NumberValue<?>) attribute).getNumber();
+		} else if (attribute instanceof NumericValue) {
+			value = ((NumericValue<?>) attribute).getNumber();
 		} else if (attribute instanceof Taxon) {
 			value = attribute;
 		} else if (attribute instanceof TextValue) {

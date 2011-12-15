@@ -1,26 +1,46 @@
 package org.openforis.idm.model;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface DateValue extends TimestampValue {
+public class DateValue implements TimestampValue {
 
-	/**
-	 * @return Returns the day.
-	 * @uml.property name="day" readOnly="true"
-	 */
-	public Integer getDay();
+	private Integer day;
+	private Integer month;
+	private Integer year;
+	
+	public DateValue(Integer year, Integer month, Integer day) {
+		this.year = year;
+		this.month = month;
+		this.day = day;		
+	}
 
-	/**
-	 * @return Returns the month.
-	 * @uml.property name="month" readOnly="true"
-	 */
-	public Integer getMonth();
-
-	/**
-	 * @return Returns the year.
-	 * @uml.property name="year" readOnly="true"
-	 */
-	public Integer getYear();
+	public Integer getDay() {
+		return day;
+	}
+	
+	public Integer getMonth() {
+		return month;
+	}
+	
+	public Integer getYear() {
+		return year;
+	}
+	
+	@Override
+	public Calendar toCalendar() {
+		if ( year==null || month==null || day == null ) {
+			return null;
+		} else {
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.clear();
+			cal.setLenient(false);
+			cal.set(year, month-1, day);
+			return cal;
+		}
+	}
 }

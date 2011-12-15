@@ -4,18 +4,53 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface FileValue extends Value {
+public class FileValue implements Value {
 
-	/**
-	 * @return Returns the filename.
-	 * @uml.property name="filename" readOnly="true"
-	 */
-	public String getFilename();
+	private String filename;
+	private Long size;
 
-	/**
-	 * @return Returns the size.
-	 * @uml.property name="size" readOnly="true"
-	 */
-	public Long getSize();
+	public FileValue(String filename, Long size) {
+		this.filename = filename;
+		this.size = size;
+	}
 
+	public String getFilename() {
+		return filename;
+	}
+
+	public Long getSize() {
+		return size;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((filename == null) ? 0 : filename.hashCode());
+		result = prime * result + ((size == null) ? 0 : size.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FileValue other = (FileValue) obj;
+		if (filename == null) {
+			if (other.filename != null)
+				return false;
+		} else if (!filename.equals(other.filename))
+			return false;
+		if (size == null) {
+			if (other.size != null)
+				return false;
+		} else if (!size.equals(other.size))
+			return false;
+		return true;
+	}
 }

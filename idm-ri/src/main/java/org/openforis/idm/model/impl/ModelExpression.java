@@ -90,6 +90,7 @@ public class ModelExpression implements Expression {
 		} else if (attribute instanceof BooleanValue) {
 			value = ((BooleanValue) attribute).getValue();
 		} else if (attribute instanceof TimestampValue) {
+			// TODO Format to String
 			value = ((TimestampValue) attribute).toCalendar();
 		} else if (attribute instanceof FileValue) {
 			value = attribute;

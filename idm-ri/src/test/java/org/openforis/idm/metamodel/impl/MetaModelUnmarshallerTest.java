@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.metamodel.test;
+package org.openforis.idm.metamodel.impl;
 
 import java.io.IOException;
 import java.util.List;

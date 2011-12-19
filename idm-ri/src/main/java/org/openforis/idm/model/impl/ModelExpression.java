@@ -88,7 +88,7 @@ public class ModelExpression implements Expression {
 		if (attribute instanceof Code) {
 			value = ((Code<?>) attribute).getCode();
 		} else if (attribute instanceof BooleanValue) {
-			value = ((BooleanValue) attribute).getValue();
+			value = ((BooleanValue) attribute).getBoolean();
 		} else if (attribute instanceof TimestampValue) {
 			// TODO Format to String
 			value = ((TimestampValue) attribute).toCalendar();

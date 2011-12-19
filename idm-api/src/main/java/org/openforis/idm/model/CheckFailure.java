@@ -6,12 +6,6 @@ import org.openforis.idm.metamodel.Check;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface CheckFailure {
-
-	/**
-	 * @return Returns the check.
-	 * @uml.property name="check" readOnly="true"
-	 */
-	public Check getCheck();
-
+public interface CheckFailure extends RuleFailure {
+	Check getCheck();
 }

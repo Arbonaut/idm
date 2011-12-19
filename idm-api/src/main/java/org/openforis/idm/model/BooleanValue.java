@@ -12,7 +12,7 @@ public class BooleanValue implements Value {
 		this.value = value;
 	}
 
-	public Boolean getValue() {
+	public Boolean getBoolean() {
 		return value;
 	}
 

@@ -1,7 +1,5 @@
 package org.openforis.idm.model;
 
-import java.util.List;
-
 import org.openforis.idm.metamodel.AttributeDefinition;
 
 /**
@@ -23,14 +21,6 @@ public interface Attribute<D extends AttributeDefinition, V extends Value> exten
 	void setValue(V value);
 
 	// DERIVED STATES //
-
-	List<CheckFailure> getErrors();
-
-	List<CheckFailure> getWarnings();
-
-	boolean hasErrors();
-
-	boolean hasWarnings();
 
 	V getDefaultValue();
 }

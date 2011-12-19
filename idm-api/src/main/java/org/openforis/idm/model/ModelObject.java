@@ -12,15 +12,9 @@ public interface ModelObject<D extends ModelObjectDefinition> {
 
 	/**
 	 * @return Convenience method, returns the name of the model object as specified in its definition.
-	 * @uml.property name="name" readOnly="true"
+	 * @uml.property name="name" 
 	 */
 	String getName();
 
 	ModelObject<? extends ModelObjectDefinition> getParent();
-	
-	// DERIVED STATES
-
-	boolean isRequired();
-
-	boolean isRelevant();
 }

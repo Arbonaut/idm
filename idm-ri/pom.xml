@@ -36,6 +36,7 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+<!-- 
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
@@ -47,6 +48,7 @@
 		    <version>3.6.8.Final</version>
 		    <scope>test</scope>
 		</dependency>
+ -->		
 	</dependencies>
 
 	<build>

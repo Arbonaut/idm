@@ -6,9 +6,9 @@ package org.openforis.idm.model.impl.jxpath;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.jxpath.DynamicPropertyHandler;
+import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.ModelObjectDefinition;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Entity;
@@ -51,11 +51,14 @@ public class ModelPropertyHandler implements DynamicPropertyHandler {
 	@Override
 	public String[] getPropertyNames(Object object) {
 		if (object instanceof Entity) {
-			Set<String> childNames = ((Entity) object).getChildNames();
-			String[] array = new String[childNames.size()];
+			Entity entity = (Entity) object;
+			EntityDefinition entityDef = entity.getDefinition();
+			List<ModelObjectDefinition> childDefs = entityDef.getChildDefinitions();
+//			Set<String> childNames = ((DefaultEntity) object).getChildNames();
+			String[] array = new String[childDefs.size()];
 			int i = 0;
-			for (String string : childNames) {
-				array[i++] = string;
+			for (ModelObjectDefinition def : childDefs) {
+				array[i++] = def.getName();
 			}
 			return array;
 		}

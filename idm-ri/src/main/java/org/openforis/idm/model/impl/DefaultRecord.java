@@ -25,7 +25,7 @@ public class DefaultRecord implements Record {
 	private Date modifiedDate;
 	private String modifiedBy;
 
-	DefaultRecord(Survey survey, ModelVersion version) {
+	protected DefaultRecord(Survey survey, ModelVersion version) {
 		this.survey = survey;
 		this.version = version;
 	}

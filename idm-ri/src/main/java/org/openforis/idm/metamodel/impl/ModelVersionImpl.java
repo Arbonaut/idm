@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.LanguageSpecificText;
@@ -35,6 +36,9 @@ public class ModelVersionImpl implements ModelVersion {
 	@XmlElement(name = "description", type = LanguageSpecificTextImpl.class)
 	private List<LanguageSpecificText> descriptions;
 
+	@XmlTransient
+	private int position;
+
 	@Override
 	public String getName() {
 		return this.name;
@@ -53,6 +57,15 @@ public class ModelVersionImpl implements ModelVersion {
 	@Override
 	public Date getDate() {
 		return this.date;
+	}
+
+	@Override
+	public int getPosition() {
+		return position;
+	}
+
+	void setPosition(int position) {
+		this.position = position;
 	}
 
 }

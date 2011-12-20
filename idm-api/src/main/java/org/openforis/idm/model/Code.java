@@ -4,11 +4,11 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class Code<T>  {
+public abstract class Code<T> implements Value {
 
 	private T code;
 	private String qualifier;
-	
+
 	public Code(T code) {
 		this.code = code;
 	}
@@ -31,8 +31,7 @@ public abstract class Code<T>  {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((code == null) ? 0 : code.hashCode());
-		result = prime * result
-				+ ((qualifier == null) ? 0 : qualifier.hashCode());
+		result = prime * result + ((qualifier == null) ? 0 : qualifier.hashCode());
 		return result;
 	}
 
@@ -58,6 +57,5 @@ public abstract class Code<T>  {
 			return false;
 		return true;
 	}
-	
-	
+
 }

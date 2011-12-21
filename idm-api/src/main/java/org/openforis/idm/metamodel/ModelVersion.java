@@ -32,5 +32,11 @@ public interface ModelVersion {
 	 * @uml.property name="descriptions"
 	 */
 	public List<LanguageSpecificText> getDescriptions();
+	
+	/**
+	 * @return Returns the position.
+	 * @uml.property name="position"
+	 */
+	public int getPosition();
 
 }

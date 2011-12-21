@@ -20,6 +20,7 @@ public class MetaModelUnmarshallerListener extends Unmarshaller.Listener {
 
 	Survey survey;
 	CodeList currentCodeList;
+	private int modelVersionPosition = 0;
 
 	@Override
 	public void beforeUnmarshal(Object target, Object parent) {
@@ -27,7 +28,10 @@ public class MetaModelUnmarshallerListener extends Unmarshaller.Listener {
 			this.survey = (Survey) target;
 		} else if (target instanceof CodeList) {
 			this.currentCodeList = (CodeList) target;
+		} else if (target instanceof ModelVersionImpl) {
+			((ModelVersionImpl) target).setPosition(modelVersionPosition++);
 		}
+
 		super.beforeUnmarshal(target, parent);
 	}
 
@@ -85,7 +89,7 @@ public class MetaModelUnmarshallerListener extends Unmarshaller.Listener {
 		Integer minCount = target.getMinCount();
 		Integer maxCount = target.getMaxCount();
 		String requiredExpression = target.getRequiredExpression();
-		
+
 		if (StringUtils.isNotBlank(requiredExpression) || maxCount != null || minCount != null) {
 			CardinalityImpl cardinality = new CardinalityImpl();
 			if (StringUtils.isNotBlank(requiredExpression)) {

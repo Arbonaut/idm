@@ -18,7 +18,7 @@ import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.impl.EntityDefinitionImpl;
 import org.openforis.idm.metamodel.impl.MetaModelUnmarshallerListener;
-import org.openforis.idm.metamodel.impl.SurveyImpl;
+import org.openforis.idm.metamodel.impl.DefaultSurvey;
 import org.openforis.idm.util.XmlBindingUtil;
 import org.w3c.dom.Element;
 
@@ -52,10 +52,10 @@ public class MetaModelUnmarshallerTest {
 	 * @throws IOException
 	 */
 	private Survey getSurvey() throws JAXBException, IOException {
-		Class<SurveyImpl> clazz = SurveyImpl.class;
+		Class<DefaultSurvey> clazz = DefaultSurvey.class;
 		String filename = "/home/minotogna/dev/projects/faofin/tz/naforma-idm/tanzania-naforma.idm.xml";
 		Listener listener = new MetaModelUnmarshallerListener();
-		SurveyImpl survey = XmlBindingUtil.unmarshall(clazz, filename, listener);
+		DefaultSurvey survey = XmlBindingUtil.unmarshall(clazz, filename, listener);
 		return survey;
 	}
 

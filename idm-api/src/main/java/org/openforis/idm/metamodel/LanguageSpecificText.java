@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "")
+@XmlType(name="", propOrder = {"language", "text"})
 public class LanguageSpecificText {
 
 	@XmlAttribute(namespace = "http://www.w3.org/XML/1998/namespace", name = "lang")

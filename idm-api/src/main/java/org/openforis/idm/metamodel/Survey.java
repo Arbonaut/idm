@@ -1,8 +1,16 @@
 package org.openforis.idm.metamodel;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.Unmarshaller.Listener;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,8 +19,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.transform.TransformerConfigurationException;
 
+import org.apache.xml.serialize.OutputFormat;
+import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.Element;
+import org.xml.sax.ContentHandler;
 
 /**
  * @author G. Miceli
@@ -142,4 +154,74 @@ public class Survey {
 		}
 		return null;
 	}
+	
+	public static Survey unmarshal(InputStream is) throws IOException {
+		try {
+			JAXBContext jc = JAXBContext.newInstance(Survey.class);
+			Unmarshaller unmarshaller = jc.createUnmarshaller();
+			Listener listener = new UnmarshallerListener();
+			unmarshaller.setListener(listener);
+			Survey survey = (Survey) unmarshaller.unmarshal(is);
+			return survey;
+		} catch (JAXBException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private static class UnmarshallerListener extends Unmarshaller.Listener {
+
+		@Override
+		public void beforeUnmarshal(Object target, Object parent) {
+			if ( target instanceof ModelDefinition ) {
+				((ModelDefinition) target).beforeUnmarshal(parent);
+			}
+
+		}
+
+		@Override
+		public void afterUnmarshal(Object target, Object parent) {
+			if ( target instanceof ModelDefinition ) {
+				((ModelDefinition) target).afterUnmarshal(parent);
+			}
+		}
+
+	}
+
+	@SuppressWarnings("deprecation")
+	public void marshal(OutputStream os) throws IOException {
+		try {
+			JAXBContext jc = JAXBContext.newInstance(Survey.class);
+			Marshaller marshaller = jc.createMarshaller();
+//			marshaller.setProperty("jaxb.formatted.output", true);
+//			marshaller.setProperty("jaxb.encoding", "UTF-8");
+
+			// JAXP Transformer not respecting CDATA_SECTION_ELEMENTS
+//			SAXTransformerFactory tfactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+//			TransformerHandler handler = tfactory.newTransformerHandler();
+//			Transformer t = handler.getTransformer();
+//			t.setOutputProperty(OutputKeys.METHOD, "xml");
+//			t.setOutputProperty(OutputKeys.INDENT, "no");
+//			t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+//			t.setOutputProperty(OutputKeys.CDATA_SECTION_ELEMENTS, "{http://www.openforis.org/idml/3.0}wkt");
+//			Result outputResult = new StreamResult(System.out);
+//			handler.setResult(outputResult);
+			
+			// Using deprecated Xerces form now...
+			OutputFormat of = new OutputFormat();
+			of.setCDataElements(new String[] { "http://www.openforis.org/idml/3.0^wkt" }); //
+			of.setEncoding("UTF-8");
+			of.setIndenting(true);
+			XMLSerializer serializer1 = new XMLSerializer(of);
+			serializer1.setOutputByteStream(os);
+			XMLSerializer serializer = serializer1;
+			ContentHandler handler = serializer.asContentHandler();
+			
+			marshaller.marshal(this, handler);
+			// marshaller.marshal(this, os);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
 }

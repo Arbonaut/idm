@@ -3089,10 +3089,6 @@
             <code name="id" list="sampling_design" strict="false" key="true">
                 <label>Id</label>
             </code>
-            <code name="measurement" list="measurement" key="true">
-                <label>Measurement</label>
-                <default value="P"/>
-            </code>
             <code name="region" list="admin_unit" required="true">
                 <label>Region</label>
             </code>

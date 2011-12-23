@@ -6,6 +6,7 @@ package org.openforis.idm.metamodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -13,9 +14,10 @@ import javax.xml.bind.annotation.XmlType;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "unit", "decimalDigits", "defaultPrecision" })
+@XmlType(name = "", propOrder = { "unitName", "decimalDigits", "defaultPrecision" })
 public class Precision extends ModelDefinition {
 
+	@XmlTransient
 	private Unit unit;
 
 	@XmlAttribute(name = "decimalDigits")

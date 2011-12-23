@@ -6,32 +6,38 @@ package org.openforis.idm.metamodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Prompt extends LanguageSpecificText {
+public class Label extends LanguageSpecificText {
 
 	public enum Type {
-		INTERVIEW, PAPER, HANDHELD, PC;
+		HEADING, INSTANCE, NUMBER;
 	}
 
 	@XmlAttribute(name = "type")
 	@XmlJavaTypeAdapter(value = TypeAdapter.class)
 	private Type type;
 
-	public Prompt() {
+	public Label() {
 	}
 
-	public Prompt(String language, String text) {
+	/**
+	 * @param language
+	 * @param text
+	 */
+	public Label(String language, String text) {
 		super(language, text);
 	}
 
-	public Prompt(Type type, String language, String text) {
+	public Label(Type type, String language, String text) {
 		this(language, text);
 		this.type = type;
 	}
@@ -41,14 +47,16 @@ public class Prompt extends LanguageSpecificText {
 	}
 
 	private static class TypeAdapter extends XmlAdapter<String, Type> {
+
 		@Override
 		public Type unmarshal(String v) throws Exception {
-			return v==null ? null : Type.valueOf(v.toUpperCase());
+			return Type.valueOf(v.toUpperCase());
 		}
 
 		@Override
 		public String marshal(Type v) throws Exception {
-			return v==null ? null : v.toString().toLowerCase();
+			return v.toString().toLowerCase();
 		}
 	}
+
 }

@@ -44,12 +44,12 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition  {
 	private static class TypeAdapter extends XmlAdapter<String, Type> {
 		@Override
 		public Type unmarshal(String v) throws Exception {
-			return Type.valueOf(v.toUpperCase());
+			return v==null ? null : Type.valueOf(v.toUpperCase());
 		}
 
 		@Override
 		public String marshal(Type v) throws Exception {
-			return v.toString().toLowerCase();
+			return v==null ? null : v.toString().toLowerCase();
 		}
 	}
 }

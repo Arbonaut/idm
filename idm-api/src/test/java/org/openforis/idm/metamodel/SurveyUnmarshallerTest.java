@@ -3,26 +3,13 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller.Listener;
-
-import org.junit.Assert;
 import org.junit.Test;
-import org.openforis.idm.metamodel.AttributeDefinition;
-import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.EntityDefinition;
-import org.openforis.idm.metamodel.EntityDefinition;
-import org.openforis.idm.metamodel.SurveyUnmarshallerListener;
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
-import org.openforis.idm.metamodel.Schema;
-import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.util.XmlBindingUtil;
-import org.w3c.dom.Element;
 
 /**
  * @author G. Miceli
@@ -31,9 +18,15 @@ import org.w3c.dom.Element;
 public class SurveyUnmarshallerTest {
 
 	@Test
-	public void unmarshallSurveyTest() throws JAXBException, IOException {
-		Survey survey = getSurvey();
+	public void roundTripMarshallingTest() throws IOException {
+		URL idm = ClassLoader.getSystemResource("test.idm.xml");
+		InputStream is = idm.openStream();
+		Survey survey = Survey.unmarshal(is);
 
+		FileOutputStream fos = new FileOutputStream("marshalled.idm.xml");
+		survey.marshal(fos);
+		fos.flush();
+		fos.close();
 //		String name = survey.getName();
 //		System.err.println("Survey name " + name);
 //
@@ -47,20 +40,20 @@ public class SurveyUnmarshallerTest {
 //		Assert.assertTrue(survey.getConfiguration() instanceof Element);
 //		System.err.println("~~~END");
 	}
-
-	/**
-	 * @return
-	 * @throws JAXBException
-	 * @throws IOException
-	 */
-	private Survey getSurvey() throws JAXBException, IOException {
-		Class<Survey> clazz = Survey.class;
-		URL idm = ClassLoader.getSystemResource("test.idm.xml");
-		InputStream is = idm.openStream();
-		Listener listener = new SurveyUnmarshallerListener();
-		Survey survey = XmlBindingUtil.unmarshall(clazz, is, listener);
-		return survey;
-	}
+//
+//	/**
+//	 * @return
+//	 * @throws JAXBException
+//	 * @throws IOException
+//	 */
+//	private Survey getSurvey() throws JAXBException, IOException {
+//		Class<Survey> clazz = Survey.class;
+//		URL idm = ClassLoader.getSystemResource("test.idm.xml");
+//		InputStream is = idm.openStream();
+//		Listener listener = new SurveyUnmarshallerListener();
+//		Survey survey = XmlBindingUtil.unmarshall(clazz, is, listener);
+//		return survey;
+//	}
 
 	private void print(SchemaObjectDefinition mod, String p) {
 		if (mod instanceof EntityDefinition) {
@@ -76,14 +69,14 @@ public class SurveyUnmarshallerTest {
 	}
 
 	// @Test
-	public void jxpathExprTest() throws JAXBException, IOException {
-		Survey survey = getSurvey();
-		EntityDefinition entityDefinition = (EntityDefinition) survey.getSchema().getRootEntityDefinitions().get(0);
-		EntityDefinition plot = (EntityDefinition) entityDefinition.getChildDefinition("plot");
-		SchemaObjectDefinition dbh = plot.get("plot/tree/dbh");
-		System.out.println(dbh.getName());
-		SchemaObjectDefinition m2 = dbh.get("parent()");
-		System.out.println(m2.getName());
+//	public void jxpathExprTest() throws JAXBException, IOException {
+//		Survey survey = getSurvey();
+//		EntityDefinition entityDefinition = (EntityDefinition) survey.getSchema().getRootEntityDefinitions().get(0);
+//		EntityDefinition plot = (EntityDefinition) entityDefinition.getChildDefinition("plot");
+//		SchemaObjectDefinition dbh = plot.get("plot/tree/dbh");
+//		System.out.println(dbh.getName());
+//		SchemaObjectDefinition m2 = dbh.get("parent()");
+//		System.out.println(m2.getName());
 
 		// Pointer pointer = jxPathContext.getPointer ("../");
 		// System.err.println(pointer.getValue().toString());
@@ -92,7 +85,7 @@ public class SurveyUnmarshallerTest {
 		// Object value = jxPathContext.getValue("../../name");
 		// System.out.println(value);
 
-	}
+//	}
 
 	// @Test
 	// public void testNullable() {

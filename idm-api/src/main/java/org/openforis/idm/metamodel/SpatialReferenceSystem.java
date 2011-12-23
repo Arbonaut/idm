@@ -12,8 +12,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -35,7 +33,7 @@ public class SpatialReferenceSystem {
 	private List<LanguageSpecificText> descriptions;
 
 	@XmlElement(name = "wkt")
-	@XmlJavaTypeAdapter(NormalizedStringAdapter.class)
+//	@XmlJavaTypeAdapter(CDATAAdapter.class)
 	private String wellKnownText;
 
 	public String getId() {
@@ -53,4 +51,17 @@ public class SpatialReferenceSystem {
 	public String getWellKnownText() {
 		return this.wellKnownText;
 	}
+//	
+//	private static class CDATAAdapter extends XmlAdapter<String, String> {
+//
+//		@Override
+//		public String marshal(String v) throws Exception {
+//			return v==null ? null : "<![CDATA[" + v + "]]>";
+//		}
+//
+//		@Override
+//		public String unmarshal(String v) throws Exception {
+//			return v;
+//		}
+//	}
 }

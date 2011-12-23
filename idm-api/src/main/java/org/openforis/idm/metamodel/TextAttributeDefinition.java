@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="", propOrder = {"name", "type", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "since", "deprecated",
-	"labels", "prompts", "descriptions", "checks"})
+	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class TextAttributeDefinition extends AttributeDefinition {
 	public enum Type {
 		SHORT, MEMO
@@ -33,12 +33,12 @@ public class TextAttributeDefinition extends AttributeDefinition {
 	private static class TypeAdapter extends XmlAdapter<String, Type> {
 		@Override
 		public Type unmarshal(String v) throws Exception {
-			return Type.valueOf(v.toUpperCase());
+			return v==null ? null : Type.valueOf(v.toUpperCase());
 		}
 
 		@Override
 		public String marshal(Type v) throws Exception {
-			return v.toString().toLowerCase();
+			return v==null ? null : v.toString().toLowerCase();
 		}
 
 	}

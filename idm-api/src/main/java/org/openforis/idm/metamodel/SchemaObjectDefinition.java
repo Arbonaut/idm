@@ -7,9 +7,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.impl.jxpath.MetaModelExpression;
 
@@ -30,7 +34,7 @@ public abstract class SchemaObjectDefinition extends VersionableModelDefinition 
 	private String requiredExpression;
 
 	@XmlAttribute(name = "multiple")
-	private boolean multiple;
+	private Boolean multiple;
 
 	@XmlAttribute(name = "minCount")
 	private Integer minCount;
@@ -75,7 +79,7 @@ public abstract class SchemaObjectDefinition extends VersionableModelDefinition 
 	}
 
 	public boolean isMultiple() {
-		return this.multiple;
+		return multiple == null ? false : multiple;
 	}
 
 	public Integer getMinCount() {
@@ -155,6 +159,42 @@ public abstract class SchemaObjectDefinition extends VersionableModelDefinition 
 		super.beforeUnmarshal(parent);
 		if ( parent instanceof EntityDefinition ) {
 			this.parentDefinition = (EntityDefinition) parent;
+		}
+	}
+	
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static class Label extends LanguageSpecificText {
+
+		public enum Type {
+			HEADING, INSTANCE, NUMBER;
+		}
+
+		@XmlAttribute(name = "type")
+		@XmlJavaTypeAdapter(value = TypeAdapter.class)
+		private Type type;
+
+		protected Label() {
+		}
+
+		public Label(Type type, String language, String text) {
+			super(language, text);
+			this.type = type;
+		}
+
+		public Type getType() {
+			return this.type;
+		}
+
+		private static class TypeAdapter extends XmlAdapter<String, Type> {
+			@Override
+			public Type unmarshal(String v) throws Exception {
+				return v==null ? null : Type.valueOf(v.toUpperCase());
+			}
+
+			@Override
+			public String marshal(Type v) throws Exception {
+				return v==null ? null : v.toString().toLowerCase();
+			}
 		}
 	}
 }

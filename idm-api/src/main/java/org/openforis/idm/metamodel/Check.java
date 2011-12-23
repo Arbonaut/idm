@@ -52,12 +52,12 @@ public abstract class Check {
 
 		@Override
 		public Flag unmarshal(String v) throws Exception {
-			return Flag.valueOf(v.toUpperCase());
+			return v==null ? null : Flag.valueOf(v.toUpperCase());
 		}
 
 		@Override
 		public String marshal(Flag v) throws Exception {
-			return v.toString().toLowerCase();
+			return v==null ? null : v.toString().toLowerCase();
 		}
 	}
 }

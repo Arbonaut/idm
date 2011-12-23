@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"type", "lang", "text"})
 public class CodeListLabel extends LanguageSpecificText {
 
 	public enum Type { ITEM, LIST }
@@ -31,12 +30,12 @@ public class CodeListLabel extends LanguageSpecificText {
 	private static class CodeListLabelTypeAdapter extends XmlAdapter<String, Type> {
 		@Override
 		public Type unmarshal(String v) throws Exception {
-			return Type.valueOf(v.toUpperCase());
+			return v==null ? null : Type.valueOf(v.toUpperCase());
 		}
 
 		@Override
 		public String marshal(Type v) throws Exception {
-			return v.toString().toLowerCase();
+			return v==null ? null : v.toString().toLowerCase();
 		}
 	}
 }

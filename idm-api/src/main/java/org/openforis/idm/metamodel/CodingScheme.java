@@ -78,24 +78,24 @@ public class CodingScheme extends VersionableModelDefinition {
 	private static class CodeTypeAdapter extends XmlAdapter<String, CodeType> {
 		@Override
 		public CodeType unmarshal(String v) throws Exception {
-			return CodeType.valueOf(v.toUpperCase());
+			return v==null ? null : CodeType.valueOf(v.toUpperCase());
 		}
 
 		@Override
 		public String marshal(CodeType v) throws Exception {
-			return v.toString().toLowerCase();
+			return v==null ? null : v.toString().toLowerCase();
 		}
 	}
 
 	private static class CodeScopeAdapter extends XmlAdapter<String, CodeScope> {
 		@Override
 		public CodeScope unmarshal(String v) throws Exception {
-			return CodeScope.valueOf(v.toUpperCase());
+			return v==null ? null : CodeScope.valueOf(v.toUpperCase());
 		}
 
 		@Override
 		public String marshal(CodeScope v) throws Exception {
-			return v.toString().toLowerCase();
+			return v==null ? null : v.toString().toLowerCase();
 		}
 	}
 }

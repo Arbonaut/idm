@@ -13,6 +13,6 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "since", "deprecated", 
-	"labels", "prompts", "descriptions", "checks"})
+	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class TimeAttributeDefinition extends AttributeDefinition {
 }

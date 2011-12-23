@@ -78,12 +78,12 @@ public class CodeAttributeDefinition extends AttributeDefinition  {
 
 		@Override
 		public Boolean unmarshal(Boolean v) throws Exception {
-			return !v;
+			return v==null ? null : !v;
 		}
 
 		@Override
 		public Boolean marshal(Boolean v) throws Exception {
-			return !v;
+			return v==null ? null : !v;
 		}
 	}
 

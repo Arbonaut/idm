@@ -31,7 +31,7 @@ public class ModelVersion extends ModelDefinition {
 	private List<LanguageSpecificText> descriptions;
 
 	@XmlElement(name = "date")
-	private Date date;
+	private String date;
 
 	public String getName() {
 		return this.name;
@@ -45,7 +45,7 @@ public class ModelVersion extends ModelDefinition {
 		return Collections.unmodifiableList(this.descriptions);
 	}
 
-	public Date getDate() {
-		return this.date;
+	public String getDate() {
+		return date;
 	}
 }

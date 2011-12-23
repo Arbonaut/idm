@@ -1,12 +1,27 @@
+/**
+ * 
+ */
 package org.openforis.idm.metamodel;
 
+import java.util.Collections;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface CodingScheme {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {  "name", "codeScope", "codeType", "isDefault", "since", "deprecated", "labels", "descriptions" })
+public class CodingScheme extends VersionableModelDefinition {
+
 	public enum CodeType {
 		NUMERIC, ALPHANUMERIC
 	}
@@ -14,41 +29,73 @@ public interface CodingScheme {
 	public enum CodeScope {
 		SCHEME, LOCAL
 	}
+	
+	@XmlAttribute(name = "name")
+	private String name;
 
-	/**
-	 * @return Returns the codeType.
-	 * @uml.property name="codeType"
-	 */
-	public CodingScheme.CodeType getCodeType();
+	@XmlAttribute(name = "scope")
+	@XmlJavaTypeAdapter(value = CodeScopeAdapter.class)
+	private CodeScope codeScope;
 
-	/**
-	 * @return Returns the codeScope.
-	 * @uml.property name="codeScope"
-	 */
-	public CodingScheme.CodeScope getCodeScope();
+	@XmlAttribute(name = "type")
+	@XmlJavaTypeAdapter(value = CodeTypeAdapter.class)
+	private CodeType codeType;
 
-	/**
-	 * @return Returns the name.
-	 * @uml.property name="name"
-	 */
-	public String getName();
+	@XmlAttribute(name = "default")
+	private boolean isDefault;
 
-	/**
-	 * @return Returns the default.
-	 * @uml.property name="default"
-	 */
-	public boolean isDefault();
+	@XmlElement(name = "label", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> labels;
 
-	/**
-	 * @return Returns the descriptions.
-	 * @uml.property name="descriptions"
-	 */
-	public List<LanguageSpecificText> getDescriptions();
+	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> descriptions;
 
-	/**
-	 * @return Returns the labels.
-	 * @uml.property name="labels"
-	 */
-	public List<LanguageSpecificText> getLabels();
 
+	public CodeType getCodeType() {
+		return this.codeType;
+	}
+
+	public CodeScope getCodeScope() {
+		return this.codeScope;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public boolean isDefault() {
+		return this.isDefault;
+	}
+
+	public List<LanguageSpecificText> getLabels() {
+		return Collections.unmodifiableList(this.labels);
+	}
+
+	public List<LanguageSpecificText> getDescriptions() {
+		return Collections.unmodifiableList(this.descriptions);
+	}
+
+	private static class CodeTypeAdapter extends XmlAdapter<String, CodeType> {
+		@Override
+		public CodeType unmarshal(String v) throws Exception {
+			return CodeType.valueOf(v.toUpperCase());
+		}
+
+		@Override
+		public String marshal(CodeType v) throws Exception {
+			return v.toString().toLowerCase();
+		}
+	}
+
+	private static class CodeScopeAdapter extends XmlAdapter<String, CodeScope> {
+		@Override
+		public CodeScope unmarshal(String v) throws Exception {
+			return CodeScope.valueOf(v.toUpperCase());
+		}
+
+		@Override
+		public String marshal(CodeScope v) throws Exception {
+			return v.toString().toLowerCase();
+		}
+	}
 }

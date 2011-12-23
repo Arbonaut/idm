@@ -1,38 +1,63 @@
+/**
+ * 
+ */
 package org.openforis.idm.metamodel;
 
+import java.util.Collections;
 import java.util.List;
 
-import org.openforis.idm.model.Attribute;
-import org.openforis.idm.model.Value;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface Check extends Rule {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "")
+public abstract class Check {
 
 	public enum Flag {
 		ERROR, WARN
 	}
 
-	boolean execute(Attribute<? extends AttributeDefinition, ? extends Value> attribute);
+	@XmlAttribute(name = "flag")
+	@XmlJavaTypeAdapter(value = FlagAdapter.class)
+	protected Flag flag;
 
-	/**
-	 * @return Returns the flag.
-	 * @uml.property name="flag" readOnly="true"
-	 */
-	public Flag getFlag();
+	@XmlAttribute(name = "if")
+	private String condition;
 
-	/**
-	 * @return Returns the condition.
-	 * @uml.property name="condition" readOnly="true"
-	 */
-	public String getCondition();
+	@XmlElement(name = "message", type = LanguageSpecificText.class)
+	List<LanguageSpecificText> messages;
 
-	/**
-	 * @return Returns the messages.
-	 * @uml.property name="messages" readOnly="true"
-	 */
-	public List<LanguageSpecificText> getMessages();
+	public Flag getFlag() {
+		return this.flag;
+	}
 
+	public String getCondition() {
+		return this.condition;
+	}
+
+	public List<LanguageSpecificText> getMessages() {
+		return Collections.unmodifiableList(this.messages);
+	}
+
+	private static class FlagAdapter extends XmlAdapter<String, Flag> {
+
+		@Override
+		public Flag unmarshal(String v) throws Exception {
+			return Flag.valueOf(v.toUpperCase());
+		}
+
+		@Override
+		public String marshal(Flag v) throws Exception {
+			return v.toString().toLowerCase();
+		}
+	}
 }

@@ -12,14 +12,63 @@
 
 	<build>
 		<plugins>
+<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
+ 			<plugin>
+	            <groupId>org.jvnet.jaxb2.maven2</groupId>
+	            <artifactId>maven-jaxb2-plugin</artifactId>
+	            <executions>
+	                <execution>
+	                    <goals>
+	                        <goal>generate-sources</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
+	            <configuration>
+	                <args>
+	                    <arg>-Xcollection-setter-injector</arg>
+	                </args>
+	                <plugins>
+	                    <plugin>
+	                        <groupId>net.java.dev.vcc.thirdparty</groupId>
+	                        <artifactId>collection-setter-injector</artifactId>
+	                        <version>0.5.0-1</version>
+	                    </plugin>
+	                </plugins>
+	                <schemaDirectory>src/schemas</schemaDirectory>
+	                <generateDirectory>src/main/java</generateDirectory>
+	                <extension>true</extension>
+	            </configuration>
+	        </plugin>
+ -->
 		</plugins>
 	</build>
 
 	<dependencies>
+		<dependency>
+			<groupId>commons-jxpath</groupId>
+			<artifactId>commons-jxpath</artifactId>
+			<version>1.3</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openforis.idm</groupId>
+			<artifactId>idm-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

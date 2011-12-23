@@ -1,6 +1,6 @@
 package org.openforis.idm.model;
 
-import org.openforis.idm.metamodel.Cardinality;
+import org.openforis.idm.metamodel.SchemaObjectDefinition;
 
 /**
  * @author G. Miceli
@@ -11,6 +11,6 @@ public interface CardinalityError extends RuleFailure {
 		MIN_COUNT, MAX_COUNT, REQUIRED
 	}
 	
-	Cardinality getCardinality();
+	SchemaObjectDefinition getSchemaObjectDefinition();
 	Reason getReason();
 }

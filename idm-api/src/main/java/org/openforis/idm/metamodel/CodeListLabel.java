@@ -3,16 +3,40 @@
  */
 package org.openforis.idm.metamodel;
 
-/**
- * @author M. Togna
- * 
- */
-public interface CodeListLabel extends LanguageSpecificText {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-	public enum Type {
-		ITEM, LIST
+/**
+ * @author G. Miceli
+ * @author M. Togna
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name="", propOrder = {"type", "lang", "text"})
+public class CodeListLabel extends LanguageSpecificText {
+
+	public enum Type { ITEM, LIST }
+	
+	@XmlAttribute(name = "type")
+	@XmlJavaTypeAdapter(value = CodeListLabelTypeAdapter.class)
+	private Type type;
+
+	public Type getType() {
+		return this.type;
 	}
 
-	Type getType();
+	private static class CodeListLabelTypeAdapter extends XmlAdapter<String, Type> {
+		@Override
+		public Type unmarshal(String v) throws Exception {
+			return Type.valueOf(v.toUpperCase());
+		}
 
+		@Override
+		public String marshal(Type v) throws Exception {
+			return v.toString().toLowerCase();
+		}
+	}
 }

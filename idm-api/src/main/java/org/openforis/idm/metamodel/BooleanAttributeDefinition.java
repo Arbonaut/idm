@@ -1,15 +1,26 @@
+/**
+ * 
+ */
 package org.openforis.idm.metamodel;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface BooleanAttributeDefinition extends AttributeDefinition {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "since", "deprecated", 
+		"affirmativeOnly", "labels", "prompts", "descriptions", "precisionDefinitions", "checks" })
+public class BooleanAttributeDefinition extends AttributeDefinition {
 
-	/**
-	 * @return Returns the affirmativeOnly.
-	 * @uml.property name="affirmativeOnly" readOnly="true"
-	 */
-	public boolean isAffirmativeOnly();
+	@XmlAttribute(name = "affirmativeOnly")
+	private boolean affirmativeOnly;
 
+	public boolean isAffirmativeOnly() {
+		return this.affirmativeOnly;
+	}
 }

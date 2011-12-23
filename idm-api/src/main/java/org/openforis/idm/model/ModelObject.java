@@ -1,12 +1,12 @@
 package org.openforis.idm.model;
 
-import org.openforis.idm.metamodel.ModelObjectDefinition;
+import org.openforis.idm.metamodel.SchemaObjectDefinition;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface ModelObject<D extends ModelObjectDefinition> {
+public interface ModelObject<D extends SchemaObjectDefinition> {
 
 	D getDefinition();
 
@@ -16,5 +16,5 @@ public interface ModelObject<D extends ModelObjectDefinition> {
 	 */
 	String getName();
 
-	ModelObject<? extends ModelObjectDefinition> getParent();
+	ModelObject<? extends SchemaObjectDefinition> getParent();
 }

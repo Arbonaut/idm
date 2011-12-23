@@ -1,27 +1,39 @@
+/**
+ * 
+ */
 package org.openforis.idm.metamodel;
 
+import java.util.Collections;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlTransient;
+
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface AttributeDefinition extends ModelObjectDefinition {
+@XmlTransient
+public abstract class AttributeDefinition extends SchemaObjectDefinition {
 
-	/**
-	 * @return Returns the checks.
-	 * @uml.property name="explicitChecks"
-	 * @uml.associationEnd multiplicity="(0 -1)" ordering="true" container="java.util.List" aggregation="composite"
-	 *                     inverse="attributeDefinition:org.openforis.idm.metamodel.Check" readOnly="true"
-	 */
-	public List<Check> getChecks();
+	@XmlElements({ 
+		@XmlElement(name = "distance", type = DistanceCheck.class), 
+		@XmlElement(name = "pattern",  type = PatternCheck.class),
+		@XmlElement(name = "compare",  type = ComparisonCheck.class), 
+		@XmlElement(name = "check",    type = CustomCheck.class),
+		@XmlElement(name = "unique",   type = UniquenessCheck.class) })
+	private List<Check> checks;
 
-	/**
-	 * @return Returns the attributeDefaults.
-	 * @uml.property name="attributeDefaults"
-	 * @uml.associationEnd multiplicity="(0 -1)" ordering="true" container="java.util.List" aggregation="composite"
-	 *                     inverse="attributeDefinition:org.openforis.idm.metamodel.AttributeDefault" readOnly="true"
-	 */
-	public List<AttributeDefault> getAttributeDefaults();
+	@XmlElement(name = "default", type = AttributeDefault.class)
+	private List<AttributeDefault> attributeDefaults;
 
+	public List<Check> getChecks() {
+		return Collections.unmodifiableList(this.checks);
+	}
+
+	public List<AttributeDefault> getAttributeDefaults() {
+		return Collections.unmodifiableList(this.attributeDefaults);
+	}
 }

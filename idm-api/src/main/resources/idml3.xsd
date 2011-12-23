@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema 
-  xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0"
-  xmlns:idml="http://www.openforis.org/idml/3.0"
-  targetNamespace="http://www.openforis.org/idml/3.0"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0"
+  xmlns:idml="http://www.openforis.org/idml/3.0" targetNamespace="http://www.openforis.org/idml/3.0"
   xmlns="http://www.openforis.org/idml/3.0">
   <xs:annotation>
     <xs:documentation xml:lang="en">
@@ -18,14 +16,14 @@
 		      
 		G. Miceli, M. Togna, A. Pekkarinen, S. Ricci
     </xs:documentation>
-   </xs:annotation>
-  
+  </xs:annotation>
+
   <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
-  
+
   <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
   <!-- Types used throughout this schema -->
   <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-  
+
   <xs:simpleType name="regularExpression">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -34,7 +32,7 @@
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
-  
+
   <xs:simpleType name="path">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -53,11 +51,20 @@
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-      <xs:pattern value="(/?([a-z]+|\.|\.\.|parent\(\)|blank\(\)))+"></xs:pattern>
+      <xs:pattern value="(/?([a-z]+|\.|\.\.|parent\(\)|blank\(\)))+"/>
     </xs:restriction>
   </xs:simpleType>
+
+  <xs:simpleType name="attributeValue">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        A value which may be assigned to an IDM attribute
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
   
-  <xs:simpleType name="expression">    
+  <xs:simpleType name="expression">
     <xs:annotation>
       <xs:documentation xml:lang="en">
         Expressions may contain formulas and custom logic used for data checking, relevance features, default calculation and other features which depend on the values entered at run-time.  In IDM, the W3C-standard XML Path Language (XPath) Version 1.0 is used for this purpose.  Expressions may refer one or more elements (attributes or entities) in the data hierarchy.  
@@ -97,7 +104,7 @@
     </xs:annotation>
     <xs:restriction base="xs:token"/>
   </xs:simpleType>
-  
+
   <xs:complexType name="codeListItem">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -121,7 +128,7 @@
                   </xs:documentation>
                 </xs:annotation>
               </xs:attribute>
-            </xs:extension>            
+            </xs:extension>
           </xs:simpleContent>
         </xs:complexType>
       </xs:element>
@@ -130,21 +137,21 @@
           <xs:documentation xml:lang="en">
             Short label describing a particular code list item.
           </xs:documentation>
-        </xs:annotation>        
+        </xs:annotation>
       </xs:element>
       <xs:element name="description" maxOccurs="unbounded" minOccurs="0" type="formattedText">
         <xs:annotation>
           <xs:documentation xml:lang="en">
             Human-readable text describing the signficance of a particular code list item.
           </xs:documentation>
-        </xs:annotation>        
+        </xs:annotation>
       </xs:element>
       <xs:element name="item" maxOccurs="unbounded" minOccurs="0" type="codeListItem">
         <xs:annotation>
           <xs:documentation xml:lang="en">
             For hierarchical lists, one or more sub-items may be defined below this item.  In this case, the "hierarchy"  element should be used to define the significance of each level in the list. 
           </xs:documentation>
-        </xs:annotation>        
+        </xs:annotation>
       </xs:element>
     </xs:sequence>
     <xs:attribute name="qualifiable" type="xs:boolean">
@@ -152,30 +159,30 @@
         <xs:documentation xml:lang="en">
           Specifies whether additional information in the form of text may be provided when the code is used.  The most common use of this is for codes indicating "Other".  In these cases, the user is asked to qualify the use of that code with descriptive text.   
         </xs:documentation>
-      </xs:annotation>        
+      </xs:annotation>
     </xs:attribute>
     <xs:attribute name="since" type="versionName">
       <xs:annotation>
         <xs:documentation xml:lang="en">
           The version of the model in which a particular list item was introduced.  New items may be added, but for consistency, codes and labels are assumed constant through time. 
         </xs:documentation>
-      </xs:annotation>        
+      </xs:annotation>
     </xs:attribute>
     <xs:attribute name="deprecated" type="versionName">
       <xs:annotation>
         <xs:documentation xml:lang="en">
           The version of the model from which a particular list item was not longer used.  New items may be deprecated, but for consistency, codes and labels are assumed constant through time. 
         </xs:documentation>
-      </xs:annotation>        
+      </xs:annotation>
     </xs:attribute>
   </xs:complexType>
-  
+
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->
   <!-- Main Schema Hierarchy -->
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->
-  
+
   <xs:element name="survey" id="survey">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -184,15 +191,15 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        
-      	<xs:element name="name" type="internalName">
-      	  <xs:annotation>
-        	  <xs:documentation xml:lang="en">
+
+        <xs:element name="name" type="internalName">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
         	    Internal system code name for survey (e.g. archenlandnfi1).
         	  </xs:documentation>
-      	  </xs:annotation>
-      	</xs:element>
-        
+          </xs:annotation>
+        </xs:element>
+
         <xs:element name="project" type="unformattedText" minOccurs="1" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -200,7 +207,7 @@
             </xs:documentation>
           </xs:annotation>
         </xs:element>
-        
+
         <xs:element name="cycle" type="unformattedText" minOccurs="0" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -208,7 +215,7 @@
             </xs:documentation>
           </xs:annotation>
         </xs:element>
-        
+
         <xs:element name="description" type="formattedText" minOccurs="0" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -216,7 +223,7 @@
             </xs:documentation>
           </xs:annotation>
         </xs:element>
-        
+
         <xs:element name="configuration" minOccurs="0" maxOccurs="1">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -235,11 +242,11 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-              
+
         <!--~~~~~~~~~~~~-->
         <!-- Versioning -->
         <!--~~~~~~~~~~~~-->
-        
+
         <xs:element name="versioning" minOccurs="0" maxOccurs="1">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -263,19 +270,20 @@
                         </xs:documentation>
                       </xs:annotation>
                     </xs:element>
-                    <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText">
+                    <xs:element name="description" minOccurs="0" maxOccurs="unbounded"
+                      type="formattedText">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           Human-readable description of the model version.              
                         </xs:documentation>
-                      </xs:annotation>          
+                      </xs:annotation>
                     </xs:element>
                     <xs:element minOccurs="0" maxOccurs="1" name="date" type="xs:date">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           Date from which data was collected using this version of the model.
                         </xs:documentation>
-                      </xs:annotation>          
+                      </xs:annotation>
                     </xs:element>
                   </xs:sequence>
                   <xs:attribute name="name" type="versionName" use="required">
@@ -290,11 +298,11 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        
+
         <!--~~~~~~~~~~~~-->
         <!-- Code Lists -->
         <!--~~~~~~~~~~~~-->
-        
+
         <xs:element name="codeLists" minOccurs="0" maxOccurs="1">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -356,7 +364,8 @@
                         </xs:complexContent>
                       </xs:complexType>
                     </xs:element>
-                    <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText">
+                    <xs:element name="description" minOccurs="0" maxOccurs="unbounded"
+                      type="formattedText">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           A human-readable description for the code list for use in generated documentation and automated help systems.   
@@ -368,22 +377,24 @@
                         <xs:documentation xml:lang="en">
                           Optionally, multiple coding schemes may be used in the same list.  For example, a code list may have an ISO standard code, an custom alphanumeric code and a custom numeric code.  This element is used to define the details of these schemes.    
                         </xs:documentation>
-                      </xs:annotation>                      
+                      </xs:annotation>
                       <xs:complexType>
                         <xs:sequence>
-                          <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText">
+                          <xs:element name="label" maxOccurs="unbounded" minOccurs="0"
+                            type="unformattedText">
                             <xs:annotation>
                               <xs:documentation xml:lang="en">
                                 The human-readable name of the coding scheme (e.g. ISO 3166-1 Alpha-3 Country Codes)
                               </xs:documentation>
-                            </xs:annotation>                      
+                            </xs:annotation>
                           </xs:element>
-                          <xs:element name="description" maxOccurs="unbounded" minOccurs="0" type="formattedText">
+                          <xs:element name="description" maxOccurs="unbounded" minOccurs="0"
+                            type="formattedText">
                             <xs:annotation>
                               <xs:documentation xml:lang="en">
                                 The human-readable description of the coding scheme.
                               </xs:documentation>
-                            </xs:annotation>                      
+                            </xs:annotation>
                           </xs:element>
                         </xs:sequence>
                         <xs:attribute name="name" use="optional" type="internalName">
@@ -391,14 +402,14 @@
                             <xs:documentation xml:lang="en">
                               System name of the coding scheme (iso3). 
                             </xs:documentation>
-                          </xs:annotation>                      
+                          </xs:annotation>
                         </xs:attribute>
                         <xs:attribute name="scope" use="optional" default="scheme">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
                               For hierarhical code lists, defines at which level codes are considered unique.
                             </xs:documentation>
-                          </xs:annotation>                      
+                          </xs:annotation>
                           <xs:simpleType>
                             <xs:restriction base="xs:string">
                               <xs:enumeration value="scheme">
@@ -423,7 +434,7 @@
                             <xs:documentation xml:lang="en">
                               The type of codes used in the scheme.
                             </xs:documentation>
-                          </xs:annotation>                      
+                          </xs:annotation>
                           <xs:simpleType>
                             <xs:restriction base="xs:string">
                               <xs:enumeration value="numeric">
@@ -431,38 +442,38 @@
                                   <xs:documentation xml:lang="en">
                                     Codes are treated as numbers (integers or reals) when entering and searching, however the format specified in this list is maintained.  For example, if a numeric code is defined as "001", the values "1", "01" or "1.0" will also match this code and turn to "001".  
                                   </xs:documentation>
-                                </xs:annotation>                      
+                                </xs:annotation>
                               </xs:enumeration>
                               <xs:enumeration value="alphanumeric">
                                 <xs:annotation>
                                   <xs:documentation xml:lang="en">
                                     Alpha-numeric codes may contain both text and numbers.  They are treated as case insensitive text for purposes of uniqueness and search, and as case-sensitive for text formatting.  For example, if a code "Fhm" is defined in a particular coding scheme, code "FHM" may not also be defined.  However if a user enters "FHM", the value is matched and replaced with "Fhm".  Therefore "FHM" and "Fhm" are equivalent value, but the user is always presented with the codes as they are formatted in this list. 
                                   </xs:documentation>
-                                </xs:annotation>                      
+                                </xs:annotation>
                               </xs:enumeration>
                             </xs:restriction>
                           </xs:simpleType>
-                        </xs:attribute>            
+                        </xs:attribute>
                         <xs:attribute name="default" type="xs:boolean">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
                               When using multiple coding schemes, defines whether this scheme is the default scheme to be used in reports and user interfaces.
                             </xs:documentation>
-                          </xs:annotation>                      
+                          </xs:annotation>
                         </xs:attribute>
                         <xs:attribute name="since" type="versionName">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
                               From what version of the survey model the coding scheme was used.
                             </xs:documentation>
-                          </xs:annotation>                      
+                          </xs:annotation>
                         </xs:attribute>
                         <xs:attribute name="deprecated" type="versionName">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
                               From what version of the survey model the coding scheme was no longer used.
                             </xs:documentation>
-                          </xs:annotation>                      
+                          </xs:annotation>
                         </xs:attribute>
                       </xs:complexType>
                     </xs:element>
@@ -471,7 +482,7 @@
                         <xs:documentation xml:lang="en">
                           TO-DO
                         </xs:documentation>
-                      </xs:annotation>                      
+                      </xs:annotation>
                       <xs:complexType>
                         <xs:sequence>
                           <xs:element name="level" minOccurs="1" maxOccurs="unbounded">
@@ -479,22 +490,24 @@
                               <xs:documentation xml:lang="en">
                                 TO-DO
                               </xs:documentation>
-                            </xs:annotation>                      
+                            </xs:annotation>
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element name="label" type="unformattedText" minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="label" type="unformattedText" minOccurs="0"
+                                  maxOccurs="unbounded">
                                   <xs:annotation>
                                     <xs:documentation xml:lang="en">
                                       TO-DO
                                     </xs:documentation>
-                                  </xs:annotation>                      
+                                  </xs:annotation>
                                 </xs:element>
-                                <xs:element name="description" type="unformattedText" minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="description" type="unformattedText" minOccurs="0"
+                                  maxOccurs="unbounded">
                                   <xs:annotation>
                                     <xs:documentation xml:lang="en">
                                       TO-DO
                                     </xs:documentation>
-                                  </xs:annotation>                      
+                                  </xs:annotation>
                                 </xs:element>
                               </xs:sequence>
                               <xs:attribute name="name" type="internalName" use="required">
@@ -502,7 +515,7 @@
                                   <xs:documentation xml:lang="en">
                                     TO-DO
                                   </xs:documentation>
-                                </xs:annotation>                      
+                                </xs:annotation>
                               </xs:attribute>
                             </xs:complexType>
                           </xs:element>
@@ -514,15 +527,16 @@
                         <xs:documentation xml:lang="en">
                           TO-DO
                         </xs:documentation>
-                      </xs:annotation>                      
+                      </xs:annotation>
                       <xs:complexType>
                         <xs:sequence>
-                          <xs:element minOccurs="1" maxOccurs="unbounded" name="item" type="codeListItem">
+                          <xs:element minOccurs="1" maxOccurs="unbounded" name="item"
+                            type="codeListItem">
                             <xs:annotation>
                               <xs:documentation xml:lang="en">
                                 TO-DO
                               </xs:documentation>
-                            </xs:annotation>                      
+                            </xs:annotation>
                           </xs:element>
                         </xs:sequence>
                       </xs:complexType>
@@ -533,39 +547,39 @@
                       <xs:documentation xml:lang="en">
                         TO-DO
                       </xs:documentation>
-                    </xs:annotation>                      
+                    </xs:annotation>
                   </xs:attribute>
                   <xs:attribute name="lookup" type="xs:string">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
                         TO-DO
                       </xs:documentation>
-                    </xs:annotation>                      
-                  </xs:attribute> 
+                    </xs:annotation>
+                  </xs:attribute>
                   <xs:attribute name="since" type="versionName">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
                         TO-DO
                       </xs:documentation>
-                    </xs:annotation>                      
+                    </xs:annotation>
                   </xs:attribute>
                   <xs:attribute name="deprecated" type="versionName">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
                         TO-DO
                       </xs:documentation>
-                    </xs:annotation>                      
+                    </xs:annotation>
                   </xs:attribute>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        
+
         <!--~~~~~~~~~~~~~~~~~~~~~~-->
         <!-- Units of Measurement -->
         <!--~~~~~~~~~~~~~~~~~~~~~~-->
-        
+
         <xs:element name="units" minOccurs="0" maxOccurs="1">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -579,22 +593,24 @@
                   <xs:documentation xml:lang="en">
                     TO-DO
                   </xs:documentation>
-                </xs:annotation>                      
+                </xs:annotation>
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="label" minOccurs="0" maxOccurs="unbounded" type="unformattedText">
+                    <xs:element name="label" minOccurs="0" maxOccurs="unbounded"
+                      type="unformattedText">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           TO-DO
                         </xs:documentation>
-                      </xs:annotation>                                           
+                      </xs:annotation>
                     </xs:element>
-                    <xs:element name="abbreviation" minOccurs="0" maxOccurs="unbounded" type="unformattedText">
+                    <xs:element name="abbreviation" minOccurs="0" maxOccurs="unbounded"
+                      type="unformattedText">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           TO-DO
                         </xs:documentation>
-                      </xs:annotation>                      
+                      </xs:annotation>
                     </xs:element>
                   </xs:sequence>
                   <xs:attribute name="name" use="required" type="internalName">
@@ -602,32 +618,32 @@
                       <xs:documentation xml:lang="en">
                         TO-DO
                       </xs:documentation>
-                    </xs:annotation>                      
+                    </xs:annotation>
                   </xs:attribute>
                   <xs:attribute name="dimension" use="required" type="internalName">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
                         TO-DO
                       </xs:documentation>
-                    </xs:annotation>                                          
+                    </xs:annotation>
                   </xs:attribute>
                   <xs:attribute name="conversionFactor" use="optional" type="xs:decimal">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
                         TO-DO
                       </xs:documentation>
-                    </xs:annotation>                      
+                    </xs:annotation>
                   </xs:attribute>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        
+
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
         <!-- Spatial Reference Systems -->
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-        
+
         <xs:element name="spatialReferenceSystems" minOccurs="0" maxOccurs="1">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -636,7 +652,7 @@
           </xs:annotation>
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="spatialReferenceSystem" minOccurs="1" maxOccurs="unbounded"> 
+              <xs:element name="spatialReferenceSystem" minOccurs="1" maxOccurs="unbounded">
                 <xs:annotation>
                   <xs:documentation xml:lang="en">
                     Defines a single coordinate reference system used by the system.  Note that when using Universal Transverse Mercator coordinate system (UTM), each zone is to be encoded as a separate spatial reference system.  
@@ -644,14 +660,16 @@
                 </xs:annotation>
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText">
+                    <xs:element name="label" maxOccurs="unbounded" minOccurs="0"
+                      type="unformattedText">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           Human-readable name of the spatial reference system (e.g. UTM Zone 38).
                         </xs:documentation>
                       </xs:annotation>
                     </xs:element>
-                    <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText">
+                    <xs:element name="description" minOccurs="0" maxOccurs="unbounded"
+                      type="formattedText">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           Human-readable description of the spatial reference system.
@@ -678,7 +696,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        
+
         <!--~~~~~~~~-->
         <!-- Schema -->
         <!--~~~~~~~~-->
@@ -697,58 +715,58 @@
                   <xs:documentation xml:lang="en">
                     TO-DO
                   </xs:documentation>
-                </xs:annotation>                      
+                </xs:annotation>
                 <xs:unique name="entityChildNames">
                   <xs:selector xpath="*"/>
                   <xs:field xpath="@name"/>
-                </xs:unique>    
+                </xs:unique>
               </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-     </xs:sequence>
+      </xs:sequence>
     </xs:complexType>
-  </xs:element> 
-  
-  <xs:complexType name="schemaObject"> 
+  </xs:element>
+
+  <xs:complexType name="schemaObject">
     <xs:annotation>
       <xs:documentation xml:lang="en">
         TO-DO
       </xs:documentation>
-    </xs:annotation>                      
+    </xs:annotation>
     <xs:sequence>
       <xs:element name="label" minOccurs="0" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation xml:lang="en">
             The human-readable label associated with an entity, entities, attribute value or values when displaying results, calculation and reporting.  
           </xs:documentation>
-        </xs:annotation>                      
+        </xs:annotation>
         <xs:complexType>
           <xs:complexContent>
             <xs:extension base="unformattedText">
-              <xs:attribute name="type" use="required">
+              <xs:attribute name="type" use="optional" default="instance">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:enumeration value="single">
+                    <xs:enumeration value="instance">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           Indicates that the label applies to a single instance of an entity (e.g. "Tree") or attribute (e.g. "Use"). 
                         </xs:documentation>
-                      </xs:annotation>                      
+                      </xs:annotation>
                     </xs:enumeration>
-                    <xs:enumeration value="multiple">
+                    <xs:enumeration value="heading">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           Indicates that the label applies to multiple instances of an entity (e.g. "Trees") or attribute (e.g. "Uses").  Frequently used as a heading when displaying or printing lists of values or entities. 
                         </xs:documentation>
-                      </xs:annotation>                      
+                      </xs:annotation>
                     </xs:enumeration>
                     <xs:enumeration value="number">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          Indicates that the attribute or entity is associated with the specified numberic label in forms and reporting (e.g. 2a, IV) 
+                          Indicates the number associated with the attribute or entity.  This code commonly appears on field forms and PC or PDR software, and may be number (1, 2, 3) or alphanumeric (2a, IV).  
                         </xs:documentation>
-                      </xs:annotation>                      
+                      </xs:annotation>
                     </xs:enumeration>
                   </xs:restriction>
                 </xs:simpleType>
@@ -764,13 +782,13 @@
           </xs:complexContent>
         </xs:complexType>
       </xs:element>
-      
+
       <xs:element name="prompt" minOccurs="0" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation xml:lang="en">
             The human-readable text used when eliciting a value or response from a user, field team, or interviewee.   
           </xs:documentation>
-        </xs:annotation>                      
+        </xs:annotation>
         <xs:complexType>
           <xs:complexContent>
             <xs:extension base="unformattedText">
@@ -780,23 +798,30 @@
                     <xs:enumeration value="interview">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          Indicates a question phrase or statement read to an interviee (e.g. in socio-economic interviews) to obtain data.  
+                          Question, phrase or statement posed to an interviewee during interviews.  
                         </xs:documentation>
-                      </xs:annotation>                      
+                      </xs:annotation>
                     </xs:enumeration>
-                    <xs:enumeration value="forms">
+                    <xs:enumeration value="paper">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          Indicates text appearing next to the item associated with this entity or value on forms used in the field. 
+                          Text appearing next to the item associated with this entity or attribute on printed field forms. 
                         </xs:documentation>
-                      </xs:annotation>                      
+                      </xs:annotation>
                     </xs:enumeration>
-                    <xs:enumeration value="ui">
+                    <xs:enumeration value="handheld">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          Indicates text shown in electronic user interfaces (web, mobile, etc.) used to prompt for this value or entity. 
+                          Prompt shown on handheld computers when collecting data electronically in the field. 
                         </xs:documentation>
-                      </xs:annotation>                      
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="pc">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                          Prompt shown on PC-based software (e.g. Open Foris Collect.) when entering data in the field or office. 
+                        </xs:documentation>
+                      </xs:annotation>
                     </xs:enumeration>
                   </xs:restriction>
                 </xs:simpleType>
@@ -812,13 +837,13 @@
           </xs:complexContent>
         </xs:complexType>
       </xs:element>
-      
+
       <xs:element name="description" minOccurs="0" maxOccurs="unbounded" type="formattedText">
         <xs:annotation>
           <xs:documentation xml:lang="en">
             Human-readable description of addition details regarding the entity or attribute (e.g. plot size/shape, how the value is obtained).  Used for documentation and software help systems.
           </xs:documentation>
-        </xs:annotation>        
+        </xs:annotation>
       </xs:element>
     </xs:sequence>
     <xs:attribute name="name" type="internalName" use="required">
@@ -826,21 +851,21 @@
         <xs:documentation xml:lang="en">
           TO-DO
         </xs:documentation>
-      </xs:annotation>      
+      </xs:annotation>
     </xs:attribute>
     <xs:attribute name="since" type="versionName">
       <xs:annotation>
         <xs:documentation xml:lang="en">
           TO-DO
         </xs:documentation>
-      </xs:annotation>      
+      </xs:annotation>
     </xs:attribute>
     <xs:attribute name="deprecated" type="versionName">
       <xs:annotation>
         <xs:documentation xml:lang="en">
           TO-DO
         </xs:documentation>
-      </xs:annotation>      
+      </xs:annotation>
     </xs:attribute>
     <xs:anyAttribute namespace="##other" processContents="lax">
       <xs:annotation>
@@ -850,65 +875,65 @@
       </xs:annotation>
     </xs:anyAttribute>
   </xs:complexType>
-    
+
   <xs:complexType name="entityBase">
     <xs:annotation>
       <xs:documentation xml:lang="en">
         Defines an entity on which measurements or observations will be made.  Entities generally represent concrete objects like trees, shrubs or dead wood, or more abstract concepts such as biodiversity and plot center.  In both cases, the entity is a means of logically grouping together observations and measurements. 
       </xs:documentation>
     </xs:annotation>
-      <xs:complexContent>
-        <xs:extension base="schemaObject">
-          <xs:sequence>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-              
-              <xs:element name="entity" type="innerEntity">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
+    <xs:complexContent>
+      <xs:extension base="schemaObject">
+        <xs:sequence>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+            <xs:element name="entity" type="innerEntity">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
                     TO-DO
                   </xs:documentation>
-                </xs:annotation>
-                <xs:unique name="innerEntityChildNames">
-                  <xs:selector xpath="*"/>
-                  <xs:field xpath="@name"/>
-                </xs:unique>    
-              </xs:element>
-              
-              <xs:element name="number" type="numericAttribute">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
+              </xs:annotation>
+              <xs:unique name="innerEntityChildNames">
+                <xs:selector xpath="*"/>
+                <xs:field xpath="@name"/>
+              </xs:unique>
+            </xs:element>
+
+            <xs:element name="number" type="numericAttribute">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
                     TO-DO
                   </xs:documentation>
-                </xs:annotation>                
-              </xs:element>
-              
-              <xs:element name="range" type="numericAttribute">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
+              </xs:annotation>
+            </xs:element>
+
+            <xs:element name="range" type="numericAttribute">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
                     TO-DO
                   </xs:documentation>
-                </xs:annotation>                
-              </xs:element>
-              
-              <xs:element name="date" type="timestampAttribute">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
+              </xs:annotation>
+            </xs:element>
+
+            <xs:element name="date" type="timestampAttribute">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
                     TO-DO
                   </xs:documentation>
-                </xs:annotation>                
-              </xs:element>
-              
-              <xs:element name="time" type="timestampAttribute">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
+              </xs:annotation>
+            </xs:element>
+
+            <xs:element name="time" type="timestampAttribute">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
                     TO-DO
                   </xs:documentation>
-                </xs:annotation>                
-              </xs:element>
-              
-              <xs:element name="boolean">
-                <xs:annotation>
-                  <xs:documentation>
+              </xs:annotation>
+            </xs:element>
+
+            <xs:element name="boolean">
+              <xs:annotation>
+                <xs:documentation>
                     TO-DO
                     affirmativeOnly="false":  (default)
                     Measured   [ ] Yes  [x] No     true/false/null    
@@ -917,261 +942,262 @@
                     [ ] Measured                   true/null
                     
                   </xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                  <xs:complexContent>
-                    <xs:extension base="attribute">
-                      <xs:sequence>
-                        <xs:choice minOccurs="0" maxOccurs="unbounded">
-                          <xs:element name="check" type="customCheck">
-                            <xs:annotation>
-                              <xs:documentation>
-                                TO-DO
-                              </xs:documentation>
-                            </xs:annotation>
-                          </xs:element>            
-                        </xs:choice>
-                      </xs:sequence>
-                      <xs:attribute name="affirmativeOnly" type="xs:boolean" use="optional" default="false">
-                        <xs:annotation>
-                          <xs:documentation>
-                            TO-DO
-                          </xs:documentation>
-                        </xs:annotation>
-                      </xs:attribute>
-                    </xs:extension>
-                  </xs:complexContent>
-                </xs:complexType>
-              </xs:element>
-              
-              <xs:element name="file">
-                <xs:annotation>
-                  <xs:documentation>
-                    TO-DO
-                  </xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                  <xs:complexContent>
-                    <xs:extension base="attribute">
-                      <xs:attribute name="maxSize" use="required" type="xs:positiveInteger">
-                        <xs:annotation>
-                          <xs:documentation>
-                            Maximum file size expressed in number of bytes.
-                          </xs:documentation>
-                        </xs:annotation>
-                      </xs:attribute>
-                      <xs:attribute name="extensions" use="optional">
-                        <xs:annotation>
-                          <xs:documentation>
-                            Space-separated list of allowed file extensions.
-                          </xs:documentation>
-                        </xs:annotation>
-                        <xs:simpleType>
-                          <xs:list itemType="xs:string"/>
-                        </xs:simpleType>
-                      </xs:attribute>
-                    </xs:extension>
-                  </xs:complexContent>
-                </xs:complexType>
-              </xs:element>
-              
-              <xs:element name="code">
-                <xs:annotation>
-                  <xs:documentation>
-                    TO-DO
-                  </xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                  <xs:complexContent>
-                    <xs:extension base="attribute">
-                      <xs:sequence>
-                        <xs:choice minOccurs="0" maxOccurs="unbounded">
-                          <xs:element name="compare" type="compareCheck">
-                            <xs:annotation>
-                              <xs:documentation>For numeric codes (defining in coding scheme)</xs:documentation>
-                            </xs:annotation>
-                          </xs:element>
-                          <xs:element name="pattern" type="patternCheck">
-                            <xs:annotation>
-                              <xs:documentation>For alphanumeric codes (defining in coding scheme)</xs:documentation>
-                            </xs:annotation>
-                          </xs:element>
-                          <xs:element name="unique" type="uniquenessCheck">
-                            <xs:annotation>
-                              <xs:documentation>
-                                TO-DO
-                              </xs:documentation>
-                            </xs:annotation>
-                          </xs:element>
-                          <xs:element name="check" type="customCheck">
-                            <xs:annotation>
-                              <xs:documentation>
-                                TO-DO
-                              </xs:documentation>
-                            </xs:annotation>
-                          </xs:element>            
-                        </xs:choice>
-                      </xs:sequence>
-                      <xs:attribute name="strict" type="xs:boolean" use="optional" default="true">
-                        <xs:annotation>
-                          <xs:documentation>
-                            TO-DO
-                          </xs:documentation>
-                        </xs:annotation>
-                      </xs:attribute>
-                      <xs:attribute name="list" type="internalName">
-                        <xs:annotation>
-                          <xs:documentation>
-                            TO-DO
-                          </xs:documentation>
-                        </xs:annotation>
-                      </xs:attribute>
-                      <xs:attribute name="parent" type="expression">
-                        <xs:annotation>
-                          <xs:documentation>
-                            TO-DO
-                          </xs:documentation>
-                        </xs:annotation>
-                      </xs:attribute>
-                      <xs:attribute name="key" type="xs:boolean" use="optional" default="false">
-                        <xs:annotation>
-                          <xs:documentation>
-                            TO-DO
-                          </xs:documentation>
-                        </xs:annotation>
-                      </xs:attribute>
-                    </xs:extension>
-                  </xs:complexContent>
-                </xs:complexType>
-              </xs:element>
-              
-              <xs:element name="coordinate">
-                <xs:annotation>
-                  <xs:documentation>
-                    TO-DO
-                  </xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                  <xs:complexContent>
-                    <xs:extension base="attribute">
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="attribute">
+                    <xs:sequence>
                       <xs:choice minOccurs="0" maxOccurs="unbounded">
-                        <xs:element name="distance" type="distanceCheck">
+                        <xs:element name="check" type="customCheck">
                           <xs:annotation>
                             <xs:documentation>
-                              TO-DO
-                            </xs:documentation>
+                                TO-DO
+                              </xs:documentation>
                           </xs:annotation>
                         </xs:element>
                       </xs:choice>
-                    </xs:extension>
-                  </xs:complexContent>
-                </xs:complexType>
-              </xs:element>
-              
-              <xs:element name="taxon">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
+                    </xs:sequence>
+                    <xs:attribute name="affirmativeOnly" type="xs:boolean" use="optional"
+                      default="false">
+                      <xs:annotation>
+                        <xs:documentation>
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+
+            <xs:element name="file">
+              <xs:annotation>
+                <xs:documentation>
                     TO-DO
                   </xs:documentation>
-                </xs:annotation>                
-                <xs:complexType>
-                  <xs:complexContent>
-                    <xs:extension base="attribute">
-                      <xs:attribute name="taxonomy" type="xs:string">
-                        <xs:annotation>
-                          <xs:documentation xml:lang="en">
-                            TO-DO
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="attribute">
+                    <xs:attribute name="maxSize" use="required" type="xs:positiveInteger">
+                      <xs:annotation>
+                        <xs:documentation>
+                            Maximum file size expressed in number of bytes.
                           </xs:documentation>
-                        </xs:annotation>                
-                      </xs:attribute>
-                      <xs:attribute name="highestRank" type="xs:string">
-                        <xs:annotation>
-                          <xs:documentation xml:lang="en">
-                            TO-DO
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="extensions" use="optional">
+                      <xs:annotation>
+                        <xs:documentation>
+                            Space-separated list of allowed file extensions.
                           </xs:documentation>
-                        </xs:annotation>                
-                      </xs:attribute>
-                    </xs:extension>
-                  </xs:complexContent>
-                </xs:complexType>
-              </xs:element>
-              
-              <xs:element name="text">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:list itemType="xs:string"/>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+
+            <xs:element name="code">
+              <xs:annotation>
+                <xs:documentation>
                     TO-DO
                   </xs:documentation>
-                </xs:annotation>                
-                <xs:complexType>
-                   <xs:complexContent>
-                    <xs:extension base="attribute">
-                      <xs:sequence>
-                        <xs:choice minOccurs="0" maxOccurs="unbounded">
-                          <xs:element name="unique" type="uniquenessCheck">
-                            <xs:annotation>
-                              <xs:documentation xml:lang="en">
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="attribute">
+                    <xs:sequence>
+                      <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="compare" type="compareCheck">
+                          <xs:annotation>
+                            <xs:documentation>For numeric codes (defining in coding scheme)</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="pattern" type="patternCheck">
+                          <xs:annotation>
+                            <xs:documentation>For alphanumeric codes (defining in coding scheme)</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="unique" type="uniquenessCheck">
+                          <xs:annotation>
+                            <xs:documentation>
                                 TO-DO
                               </xs:documentation>
-                            </xs:annotation>
-                          </xs:element>
-                          <xs:element name="pattern" type="patternCheck">
-                            <xs:annotation>
-                              <xs:documentation xml:lang="en">
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="check" type="customCheck">
+                          <xs:annotation>
+                            <xs:documentation>
                                 TO-DO
                               </xs:documentation>
-                            </xs:annotation>
-                          </xs:element>
-                          <xs:element name="check" type="customCheck">
-                            <xs:annotation>
-                              <xs:documentation xml:lang="en">
-                                TO-DO
-                              </xs:documentation>
-                            </xs:annotation>
-                          </xs:element>            
-                        </xs:choice>
-                      </xs:sequence>
-                      <xs:attribute name="key" type="xs:boolean" use="optional" default="false">
-                        <xs:annotation>
-                          <xs:documentation xml:lang="en">
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:choice>
+                    </xs:sequence>
+                    <xs:attribute name="strict" type="xs:boolean" use="optional" default="true">
+                      <xs:annotation>
+                        <xs:documentation>
                             TO-DO
                           </xs:documentation>
-                        </xs:annotation>                
-                      </xs:attribute>
-                      <xs:attribute name="type" use="optional" default="short">
-                        <xs:annotation>
-                          <xs:documentation xml:lang="en">
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="list" type="internalName">
+                      <xs:annotation>
+                        <xs:documentation>
                             TO-DO
                           </xs:documentation>
-                        </xs:annotation>                      
-                        <xs:simpleType>
-                          <xs:restriction base="xs:string">
-                            <xs:enumeration value="short">
-                              <xs:annotation>
-                                <xs:documentation xml:lang="en">
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="parent" type="expression">
+                      <xs:annotation>
+                        <xs:documentation>
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="key" type="xs:boolean" use="optional" default="false">
+                      <xs:annotation>
+                        <xs:documentation>
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+
+            <xs:element name="coordinate">
+              <xs:annotation>
+                <xs:documentation>
+                    TO-DO
+                  </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="attribute">
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element name="distance" type="distanceCheck">
+                        <xs:annotation>
+                          <xs:documentation>
+                              TO-DO
+                            </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:choice>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+
+            <xs:element name="taxon">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    TO-DO
+                  </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="attribute">
+                    <xs:attribute name="taxonomy" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="highestRank" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+
+            <xs:element name="text">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    TO-DO
+                  </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="attribute">
+                    <xs:sequence>
+                      <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="unique" type="uniquenessCheck">
+                          <xs:annotation>
+                            <xs:documentation xml:lang="en">
+                                TO-DO
+                              </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="pattern" type="patternCheck">
+                          <xs:annotation>
+                            <xs:documentation xml:lang="en">
+                                TO-DO
+                              </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="check" type="customCheck">
+                          <xs:annotation>
+                            <xs:documentation xml:lang="en">
+                                TO-DO
+                              </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:choice>
+                    </xs:sequence>
+                    <xs:attribute name="key" type="xs:boolean" use="optional" default="false">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="type" use="optional" default="short">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:enumeration value="short">
+                            <xs:annotation>
+                              <xs:documentation xml:lang="en">
                                   TO-DO
                                 </xs:documentation>
-                              </xs:annotation>                      
-                            </xs:enumeration>
-                            <xs:enumeration value="memo">
-                              <xs:annotation>
-                                <xs:documentation xml:lang="en">
+                            </xs:annotation>
+                          </xs:enumeration>
+                          <xs:enumeration value="memo">
+                            <xs:annotation>
+                              <xs:documentation xml:lang="en">
                                   TO-DO
                                 </xs:documentation>
-                              </xs:annotation>                      
-                            </xs:enumeration>
-                          </xs:restriction>
-                        </xs:simpleType>
-                      </xs:attribute>            
-                    </xs:extension>
-                  </xs:complexContent>
-                </xs:complexType>
-              </xs:element>  
-            </xs:choice>
-          </xs:sequence>
-        </xs:extension>
+                            </xs:annotation>
+                          </xs:enumeration>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:choice>
+        </xs:sequence>
+      </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="innerEntity">
     <xs:complexContent>
       <xs:extension base="entityBase">
@@ -1180,28 +1206,28 @@
             <xs:documentation xml:lang="en">
               TO-DO
             </xs:documentation>
-          </xs:annotation>          
+          </xs:annotation>
         </xs:attribute>
         <xs:attribute name="required" type="expression" use="optional" default="false">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               TO-DO
             </xs:documentation>
-          </xs:annotation>          
+          </xs:annotation>
         </xs:attribute>
         <xs:attribute name="multiple" type="xs:boolean" use="optional" default="false">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               TO-DO
             </xs:documentation>
-          </xs:annotation>          
+          </xs:annotation>
         </xs:attribute>
         <xs:attribute name="minCount" type="xs:nonNegativeInteger" use="optional" default="0">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               TO-DO
             </xs:documentation>
-          </xs:annotation>          
+          </xs:annotation>
         </xs:attribute>
         <xs:attribute name="maxCount" type="xs:nonNegativeInteger" use="optional" default="0">
           <xs:annotation>
@@ -1230,7 +1256,14 @@
               </xs:documentation>
             </xs:annotation>
             <xs:complexType>
-              <xs:attribute name="expr" type="expression" use="required">
+              <xs:attribute name="value" type="attributeValue" use="optional">
+                <xs:annotation>
+                  <xs:documentation>
+                    TO-DO
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="expr" type="expression" use="optional">
                 <xs:annotation>
                   <xs:documentation>
                     TO-DO
@@ -1285,9 +1318,9 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <!-- Numeric Attributes -->
-  
+
   <xs:complexType name="numericAttribute">
     <xs:complexContent>
       <xs:extension base="attribute">
@@ -1338,7 +1371,7 @@
                   TO-DO
                 </xs:documentation>
               </xs:annotation>
-            </xs:element>            
+            </xs:element>
           </xs:choice>
         </xs:sequence>
         <xs:attribute name="key" type="xs:boolean" use="optional" default="false">
@@ -1376,7 +1409,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-   
+
   <xs:complexType name="timestampAttribute">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -1400,17 +1433,17 @@
                   TO-DO
                 </xs:documentation>
               </xs:annotation>
-            </xs:element>            
+            </xs:element>
           </xs:choice>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <!--~~~~~~~~~~~~~~-->
   <!-- Value Checks -->
   <!--~~~~~~~~~~~~~~-->
-  
+
   <xs:complexType name="checkBase">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -1454,7 +1487,7 @@
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
-  
+
   <xs:complexType name="compareCheck">
     <xs:annotation>
       <xs:documentation>
@@ -1462,46 +1495,46 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexContent>
-        <xs:extension base="checkBase">
-          <xs:attribute name="gte" type="expression">
-            <xs:annotation>
-              <xs:documentation>
+      <xs:extension base="checkBase">
+        <xs:attribute name="gte" type="expression">
+          <xs:annotation>
+            <xs:documentation>
                 TO-DO
               </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="lte" type="expression">
-            <xs:annotation>
-              <xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="lte" type="expression">
+          <xs:annotation>
+            <xs:documentation>
                 TO-DO
               </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="gt" type="expression">
-            <xs:annotation>
-              <xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="gt" type="expression">
+          <xs:annotation>
+            <xs:documentation>
                 TO-DO
               </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="lt" type="expression">
-            <xs:annotation>
-              <xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="lt" type="expression">
+          <xs:annotation>
+            <xs:documentation>
                 TO-DO
               </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="eq" type="expression">
-            <xs:annotation>
-              <xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="eq" type="expression">
+          <xs:annotation>
+            <xs:documentation>
                 TO-DO
               </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>            
-        </xs:extension>
-      </xs:complexContent>
-  </xs:complexType>      
-  
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
   <xs:complexType name="distanceCheck">
     <xs:annotation>
       <xs:documentation>
@@ -1560,7 +1593,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="customCheck">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -1579,7 +1612,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="uniquenessCheck">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -1598,7 +1631,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:simpleType name="internalName">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -1611,11 +1644,11 @@
       <xs:maxLength value="40"/>
     </xs:restriction>
   </xs:simpleType>
-  
+
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->
   <!-- Natural Language Text -->
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->
-  
+
   <xs:complexType name="unformattedText">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -1634,7 +1667,7 @@
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
-  
+
   <xs:complexType name="formattedText">
     <xs:annotation>
       <xs:documentation xml:lang="en">

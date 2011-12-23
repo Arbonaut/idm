@@ -103,11 +103,11 @@ public interface Record {
 	/**
 	 * Setter of the property <tt>version</tt>
 	 * 
-	 * @param version
+	 * @param modelVersion
 	 *            The version to set.
 	 * @uml.property name="version"
 	 */
-	void setVersion(ModelVersion version);
+	void setVersion(ModelVersion modelVersion);
 
 	Survey getSurvey();
 

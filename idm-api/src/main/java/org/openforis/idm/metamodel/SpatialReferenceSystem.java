@@ -1,35 +1,56 @@
+/**
+ * 
+ */
 package org.openforis.idm.metamodel;
 
+import java.util.Collections;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface SpatialReferenceSystem {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = { "id", "labels", "descriptions",  "wellKnownText" })
+@XmlRootElement(name = "spatialReferenceSystem")
+public class SpatialReferenceSystem {
 
-	/**
-	 * @return Returns the id.
-	 * @uml.property name="id"
-	 */
-	public String getId();
+	@XmlAttribute(name = "srid")
+	private String id;
 
-	/**
-	 * @return Returns the labels.
-	 * @uml.property name="labels"
-	 */
-	public List<LanguageSpecificText> getLabels();
+	@XmlElement(name = "label", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> labels;
 
-	/**
-	 * @return Returns the descriptions.
-	 * @uml.property name="descriptions"
-	 */
-	public List<LanguageSpecificText> getDescriptions();
+	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> descriptions;
 
-	/**
-	 * @return Returns the wellKnownText.
-	 * @uml.property name="wellKnownText"
-	 */
-	public String getWellKnownText();
+	@XmlElement(name = "wkt")
+	@XmlJavaTypeAdapter(NormalizedStringAdapter.class)
+	private String wellKnownText;
 
+	public String getId() {
+		return this.id;
+	}
+
+	public List<LanguageSpecificText> getLabels() {
+		return Collections.unmodifiableList(this.labels);
+	}
+
+	public List<LanguageSpecificText> getDescriptions() {
+		return Collections.unmodifiableList(this.descriptions);
+	}
+
+	public String getWellKnownText() {
+		return this.wellKnownText;
+	}
 }

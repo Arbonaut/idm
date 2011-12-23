@@ -1,42 +1,51 @@
+/**
+ * 
+ */
 package org.openforis.idm.metamodel;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface ModelVersion {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = { "name", "labels", "descriptions", "date" })
+public class ModelVersion extends ModelDefinition {
 
-	/**
-	 * @return Returns the name.
-	 * @uml.property name="name"
-	 */
-	public String getName();
+	@XmlAttribute(name = "name")
+	private String name;
 
-	/**
-	 * @return Returns the labels.
-	 * @uml.property name="labels"
-	 */
-	public List<LanguageSpecificText> getLabels();
+	@XmlElement(name = "label", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> labels;
 
-	/**
-	 * @return Returns the date.
-	 * @uml.property name="date"
-	 */
-	public Date getDate();
+	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> descriptions;
 
-	/**
-	 * @return Returns the descriptions.
-	 * @uml.property name="descriptions"
-	 */
-	public List<LanguageSpecificText> getDescriptions();
-	
-	/**
-	 * @return Returns the position.
-	 * @uml.property name="position"
-	 */
-	public int getPosition();
+	@XmlElement(name = "date")
+	private Date date;
 
+	public String getName() {
+		return this.name;
+	}
+
+	public List<LanguageSpecificText> getLabels() {
+		return Collections.unmodifiableList(this.labels);
+	}
+
+	public List<LanguageSpecificText> getDescriptions() {
+		return Collections.unmodifiableList(this.descriptions);
+	}
+
+	public Date getDate() {
+		return this.date;
+	}
 }

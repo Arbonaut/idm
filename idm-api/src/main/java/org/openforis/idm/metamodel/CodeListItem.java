@@ -1,45 +1,83 @@
+/**
+ * 
+ */
 package org.openforis.idm.metamodel;
 
+import java.util.Collections;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface CodeListItem extends Versionable {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = { "qualifiable", "since", "deprecated", "codes", "labels", "descriptions", "childItems" })
+public class CodeListItem extends VersionableModelDefinition {
 
-	/**
-	 * @return Returns the labels.
-	 * @uml.property name="labels" readOnly="true"
-	 */
-	public List<LanguageSpecificText> getLabels();
+	@XmlAttribute(name = "qualifiable")
+	private boolean qualifiable;
 
-	/**
-	 * @return Returns the descriptions.
-	 * @uml.property name="descriptions" readOnly="true"
-	 */
-	public List<LanguageSpecificText> getDescriptions();
+	@XmlElement(name = "code", type = CodeDefinition.class)
+	private List<CodeDefinition> codes;
 
-	/**
-	 * @return Returns the children.
-	 * @uml.property name="children"
-	 * @uml.associationEnd multiplicity="(0 -1)" ordering="true" container="java.util.List" aggregation="composite"
-	 *                     inverse="item1:org.openforis.idm.metamodel.CodeListItem" readOnly="true"
-	 */
-	public List<CodeListItem> getChildren();
+	@XmlElement(name = "label", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> labels;
 
-	/**
-	 * @return Returns the qualifiable.
-	 * @uml.property name="qualifiable" readOnly="true"
-	 */
-	public boolean isQualifiable();
+	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> descriptions;
 
-	/**
-	 * @return Returns the codes.
-	 * @uml.property name="codes"
-	 * @uml.associationEnd multiplicity="(0 -1)" ordering="true" container="java.util.List" aggregation="composite"
-	 *                     inverse="codeListItem:org.openforis.idm.metamodel.CodeDefinition" readOnly="true"
-	 */
-	public List<CodeDefinition> getCodes();
+	@XmlElement(name = "item", type = CodeListItem.class)
+	private List<CodeListItem> childItems;
 
+	@XmlTransient
+	private CodeList list;
+
+	@XmlTransient
+	private CodeListItem parentItem;
+
+	public boolean isQualifiable() {
+		return this.qualifiable;
+	}
+
+	public List<CodeDefinition> getCodes() {
+		return Collections.unmodifiableList(this.codes);
+	}
+
+	public List<LanguageSpecificText> getLabels() {
+		return Collections.unmodifiableList(this.labels);
+	}
+
+	public List<LanguageSpecificText> getDescriptions() {
+		return Collections.unmodifiableList(this.descriptions);
+	}
+
+	public List<CodeListItem> getChildItems() {
+		return Collections.unmodifiableList(this.childItems);
+	}
+
+	public CodeListItem getParentItem() {
+		return parentItem;
+	}
+	
+	public CodeList getCodeList() {
+		return list;
+	}
+	
+	@Override
+	protected void beforeUnmarshal(Object parent) {
+		super.beforeUnmarshal(parent);
+		if ( parent instanceof CodeDefinition ) {
+			this.parentItem = (CodeListItem) parent;
+			this.list = ((CodeListItem) parent).list;
+		} else if ( parent instanceof CodeList ) {
+			this.list = (CodeList) parent;
+		}
+	}
 }

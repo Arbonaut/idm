@@ -7,7 +7,6 @@
 
 	<modules>
 		<module>idm-api</module>
-		<module>idm-ri</module>
 	</modules>
 
 

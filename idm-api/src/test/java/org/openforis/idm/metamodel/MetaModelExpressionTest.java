@@ -31,16 +31,43 @@ public class MetaModelExpressionTest {
 		EntityDefinition cluster = survey.getSchema().getRootEntityDefinitions().get(0);
 		assertEquals("cluster", cluster.getName());
 	}
-	
+
 	@Test
 	public void testExpression() {
 		EntityDefinition cluster = survey.getSchema().getRootEntityDefinitions().get(0);
-		
+
 		MetaModelExpression expression = new MetaModelExpression("plot/tree");
 		Object obj = expression.evaluate(cluster);
 		assertEquals(EntityDefinition.class, obj.getClass());
-		
+
 		EntityDefinition tree = (EntityDefinition) obj;
 		assertEquals("tree", tree.getName());
+	}
+
+	@Test
+	public void testSODGetMethod() {
+		EntityDefinition cluster = survey.getSchema().getRootEntityDefinitions().get(0);
+		EntityDefinition tree = (EntityDefinition) cluster.get("plot/tree");
+		assertEquals("tree", tree.getName());
+	}
+
+	@Test
+	public void testSchemaGetMethod() {
+		Schema schema = survey.getSchema();
+		EntityDefinition tree = (EntityDefinition) schema.get("cluster/plot/tree");
+		assertEquals("tree", tree.getName());
+	}
+	
+	@Test
+	public void testParent() {
+		EntityDefinition cluster = survey.getSchema().getRootEntityDefinitions().get(0);
+		EntityDefinition tree = (EntityDefinition) cluster.get("plot/tree");
+		assertEquals("tree", tree.getName());
+		
+		EntityDefinition plot =  (EntityDefinition) tree.get("parent()");
+		assertEquals("plot", plot.getName());
+		
+		EntityDefinition cluster1 =  (EntityDefinition) tree.get("parent()/parent()");
+		assertEquals("cluster", cluster1.getName());
 	}
 }

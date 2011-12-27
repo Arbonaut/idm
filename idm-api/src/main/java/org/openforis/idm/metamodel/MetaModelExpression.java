@@ -3,12 +3,8 @@
  */
 package org.openforis.idm.metamodel;
 
-import org.apache.commons.jxpath.ClassFunctions;
-import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
-import org.apache.commons.jxpath.Pointer;
 
 /**
  * @author M. Togna
@@ -20,11 +16,9 @@ class MetaModelExpression {
 
 	static {
 		JXPathIntrospector.registerDynamicClass(SchemaObjectDefinition.class, SchemaObjectDefinitionPropertyHandler.class);
+		JXPathIntrospector.registerDynamicClass(Schema.class, SchemaPropertyHandler.class);
 
 		CONTEXT = JXPathContext.newContext(null);
-		FunctionLibrary functionLibrary = new FunctionLibrary();
-		functionLibrary.addFunctions(new ClassFunctions(MetaModelDefinitionFunctions.class, "idm"));
-		CONTEXT.setFunctions(functionLibrary);
 	}
 
 	private String expression;
@@ -33,13 +27,11 @@ class MetaModelExpression {
 		this.setExpression(expression);
 	}
 
-	Object evaluate(SchemaObjectDefinition schemaObjectDefinition) {
-		SchemaObjectDefinition context = schemaObjectDefinition;
-		if (context.getParentDefinition() != null) {
-			context = schemaObjectDefinition.getParentDefinition();
+	Object evaluate(ModelDefinition context) {
+		if (!(Schema.class.isAssignableFrom(context.getClass()) || SchemaObjectDefinition.class.isAssignableFrom(context.getClass()))) {
+			throw new IllegalArgumentException("Unable to evaluate expression with context class " + context.getClass().getName());
 		}
 		JXPathContext jxPathContext = JXPathContext.newContext(CONTEXT, context);
-		jxPathContext.getVariables().declareVariable("this", schemaObjectDefinition);
 
 		String expr = this.expression.replaceAll("\\bparent\\(\\)", "__parent");
 		Object result = jxPathContext.getValue(expr);
@@ -52,23 +44,6 @@ class MetaModelExpression {
 
 	void setExpression(String expression) {
 		this.expression = expression;
-	}
-
-	static class MetaModelDefinitionFunctions {
-
-		static Object parent(ExpressionContext context) {
-			Pointer pointer = context.getContextNodePointer();
-			Object value = pointer.getValue();
-			if ((value != null) && (value instanceof SchemaObjectDefinition)) {
-				return ((SchemaObjectDefinition) value).getParentDefinition();
-			}
-			return null;
-		}
-
-		public static Object parent(ExpressionContext context, SchemaObjectDefinition schemaObjectDefinition) {
-			return schemaObjectDefinition.getParentDefinition();
-		}
-
 	}
 
 }

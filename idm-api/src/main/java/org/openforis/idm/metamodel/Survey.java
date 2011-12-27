@@ -187,7 +187,7 @@ public class Survey {
 
 	}
 
-	@SuppressWarnings("deprecation")
+//	@SuppressWarnings("deprecation")
 	public void marshal(OutputStream os) throws IOException {
 		try {
 			JAXBContext jc = JAXBContext.newInstance(Survey.class);

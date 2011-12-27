@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "rootEntityDefinitions" })
 public class Schema extends ModelDefinition {
-	
+
 	@XmlElement(name = "entity", type = EntityDefinition.class)
 	private List<EntityDefinition> rootEntityDefinitions;
 
@@ -27,7 +27,11 @@ public class Schema extends ModelDefinition {
 	private Survey survey;
 
 	public SchemaObjectDefinition get(String path) {
-		// TODO Auto-generated method stub
+		MetaModelExpression expression = new MetaModelExpression(path);
+		Object object = expression.evaluate(this);
+		if (object instanceof SchemaObjectDefinition) {
+			return (SchemaObjectDefinition) object;
+		}
 		return null;
 	}
 
@@ -38,14 +42,14 @@ public class Schema extends ModelDefinition {
 	public Survey getSurvey() {
 		return survey;
 	}
-	
+
 	protected void setSurvey(Survey survey) {
 		this.survey = survey;
 	}
-	
+
 	@Override
 	protected void beforeUnmarshal(Object parent) {
-		if ( parent instanceof Survey ) {
+		if (parent instanceof Survey) {
 			this.survey = (Survey) parent;
 		}
 	}

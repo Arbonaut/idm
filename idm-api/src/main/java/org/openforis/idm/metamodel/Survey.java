@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import javax.xml.transform.TransformerConfigurationException;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
@@ -30,6 +29,7 @@ import org.xml.sax.ContentHandler;
  * @author G. Miceli
  * @author M. Togna
  */
+@SuppressWarnings("deprecation")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "configuration", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })

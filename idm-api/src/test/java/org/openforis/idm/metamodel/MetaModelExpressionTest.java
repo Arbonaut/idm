@@ -1,0 +1,46 @@
+/**
+ * 
+ */
+package org.openforis.idm.metamodel;
+
+import static org.junit.Assert.assertEquals;
+
+import java.io.InputStream;
+import java.net.URL;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+/**
+ * @author M. Togna
+ * 
+ */
+public class MetaModelExpressionTest {
+
+	private static Survey survey;
+
+	@BeforeClass
+	public static void setUp() throws Exception {
+		URL idm = ClassLoader.getSystemResource("test.idm.xml");
+		InputStream is = idm.openStream();
+		survey = Survey.unmarshal(is);
+	}
+
+	@Test
+	public void testRootEntityDefinition() {
+		EntityDefinition cluster = survey.getSchema().getRootEntityDefinitions().get(0);
+		assertEquals("cluster", cluster.getName());
+	}
+	
+	@Test
+	public void testExpression() {
+		EntityDefinition cluster = survey.getSchema().getRootEntityDefinitions().get(0);
+		
+		MetaModelExpression expression = new MetaModelExpression("plot/tree");
+		Object obj = expression.evaluate(cluster);
+		assertEquals(EntityDefinition.class, obj.getClass());
+		
+		EntityDefinition tree = (EntityDefinition) obj;
+		assertEquals("tree", tree.getName());
+	}
+}

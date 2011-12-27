@@ -15,8 +15,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.impl.jxpath.MetaModelExpression;
-
 /**
  * @author G. Miceli
  * @author M. Togna

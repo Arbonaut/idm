@@ -15,16 +15,19 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "unitName", "decimalDigits", "defaultPrecision" })
-public class Precision extends ModelDefinition {
+public class Precision {
 
 	@XmlTransient
 	private Unit unit;
 
+	@XmlTransient
+	private NumericAttributeDefinition definition;
+	
 	@XmlAttribute(name = "decimalDigits")
 	private Integer decimalDigits;
 
 	@XmlAttribute(name = "default")
-	private boolean defaultPrecision;
+	private Boolean defaultPrecision;
 
 	public Unit getUnit() {
 		return this.unit;
@@ -39,7 +42,7 @@ public class Precision extends ModelDefinition {
 		return unit == null ? null : unit.getName();
 	}
 	
-	void setUnitName(String name) {
+	protected void setUnitName(String name) {
 		Survey survey = getSurvey();
 		if ( survey == null ) {
 			throw new DetachedModelDefinitionException(Precision.class, Survey.class);
@@ -51,13 +54,23 @@ public class Precision extends ModelDefinition {
 		this.unit = newUnit;
 	}
 	
+	private Survey getSurvey() {
+		return definition == null ? null : definition.getSurvey();
+	}
+	
 	public Integer getDecimalDigits() {
 		return this.decimalDigits;
 	}
 
 	public boolean isDefaultPrecision() {
-		return this.defaultPrecision;
+		return defaultPrecision == null ? false : defaultPrecision;
 	}
 
+	public NumericAttributeDefinition getDefinition() {
+		return definition;
+	}
 
+	protected void setDefinition(NumericAttributeDefinition definition) {
+		this.definition = definition;
+	}
 }

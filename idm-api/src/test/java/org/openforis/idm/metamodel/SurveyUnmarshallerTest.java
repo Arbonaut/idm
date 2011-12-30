@@ -3,11 +3,11 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -23,8 +23,9 @@ public class SurveyUnmarshallerTest {
 		InputStream is = idm.openStream();
 		Survey survey = Survey.unmarshal(is);
 
-		FileOutputStream fos = new FileOutputStream("marshalled.idm.xml");
-		survey.marshal(fos);
+		new File("target/test/output").mkdirs();
+		FileOutputStream fos = new FileOutputStream("target/test/output/marshalled.idm.xml");
+		survey.marshal(fos, true);
 		fos.flush();
 		fos.close();
 //		String name = survey.getName();
@@ -50,11 +51,11 @@ public class SurveyUnmarshallerTest {
 //		Class<Survey> clazz = Survey.class;
 //		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 //		InputStream is = idm.openStream();
-//		Listener listener = new SurveyUnmarshallerListener();
+//		Listener listener = new UnmarshallerListener();
 //		Survey survey = XmlBindingUtil.unmarshall(clazz, is, listener);
 //		return survey;
 //	}
-
+/*
 	private void print(SchemaObjectDefinition mod, String p) {
 		if (mod instanceof EntityDefinition) {
 			System.err.println(p + "Entity " + mod.getName());
@@ -67,7 +68,7 @@ public class SurveyUnmarshallerTest {
 		}
 
 	}
-
+*/
 	// @Test
 //	public void jxpathExprTest() throws JAXBException, IOException {
 //		Survey survey = getSurvey();

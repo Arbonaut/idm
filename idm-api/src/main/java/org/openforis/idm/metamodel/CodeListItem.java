@@ -18,11 +18,11 @@ import javax.xml.bind.annotation.XmlType;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "qualifiable", "since", "deprecated", "codes", "labels", "descriptions", "childItems" })
-public class CodeListItem extends VersionableModelDefinition {
+@XmlType(name = "", propOrder = { "qualifiable", "sinceVersionName", "deprecatedVersionName", "codes", "labels", "descriptions", "childItems" })
+public class CodeListItem extends Versionable {
 
 	@XmlAttribute(name = "qualifiable")
-	private boolean qualifiable;
+	private Boolean qualifiable;
 
 	@XmlElement(name = "code", type = CodeDefinition.class)
 	private List<CodeDefinition> codes;
@@ -41,9 +41,9 @@ public class CodeListItem extends VersionableModelDefinition {
 
 	@XmlTransient
 	private CodeListItem parentItem;
-
+	
 	public boolean isQualifiable() {
-		return this.qualifiable;
+		return qualifiable == null ? false : qualifiable;
 	}
 
 	public List<CodeDefinition> getCodes() {
@@ -70,14 +70,17 @@ public class CodeListItem extends VersionableModelDefinition {
 		return list;
 	}
 	
+	protected void setParentItem(CodeListItem parent) {
+		this.parentItem = parent;
+		this.list = parent.list;
+	}
+
+	protected void setList(CodeList parent) {
+		this.list = parent;
+	}
+
 	@Override
-	protected void beforeUnmarshal(Object parent) {
-		super.beforeUnmarshal(parent);
-		if ( parent instanceof CodeDefinition ) {
-			this.parentItem = (CodeListItem) parent;
-			this.list = ((CodeListItem) parent).list;
-		} else if ( parent instanceof CodeList ) {
-			this.list = (CodeList) parent;
-		}
+	public Survey getSurvey() {
+		return list == null ? null : list.getSurvey();
 	}
 }

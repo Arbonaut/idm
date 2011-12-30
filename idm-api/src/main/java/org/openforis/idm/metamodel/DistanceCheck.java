@@ -8,8 +8,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.mockito.asm.tree.analysis.Value;
 import org.openforis.idm.model.Attribute;
-import org.openforis.idm.model.Value;
 
 
 /**

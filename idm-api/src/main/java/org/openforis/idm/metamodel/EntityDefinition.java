@@ -19,8 +19,8 @@ import javax.xml.bind.annotation.XmlType;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "since", "deprecated", "labels", "prompts", "descriptions", "childDefinitions" })
-public class EntityDefinition extends SchemaObjectDefinition implements SchemaObjectDefinitionContext  {
+@XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
+public class EntityDefinition extends SchemaObjectDefinition {
 
 	@XmlElements({
 		@XmlElement(name = "entity",     type = EntityDefinition.class), 

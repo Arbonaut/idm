@@ -78,7 +78,7 @@ public class ModelExpression implements Expression {
 		} else if (attribute instanceof TimestampValue) {
 			// TODO Format to String
 			value = ((TimestampValue) attribute).toCalendar();
-		} else if (attribute instanceof FileValue) {
+		} else if (attribute instanceof File) {
 			value = attribute;
 		} else if (attribute instanceof NumericRange) {
 			value = attribute;

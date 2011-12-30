@@ -4,7 +4,7 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public class Taxon implements Value {
+public class Taxon {
 
 	private String code;
 	private String scientificName;
@@ -71,4 +71,14 @@ public class Taxon implements Value {
 		return true;
 	}
 
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{code:").append(code);
+		sb.append(", scientificName:").append(scientificName);
+		// TODO append other names
+		sb.append("}");
+		return sb.toString();
+	}	
 }

@@ -4,7 +4,7 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public class Coordinate implements Value {
+public class Coordinate {
 
 	private Long x;
 	private Long y;
@@ -81,5 +81,18 @@ public class Coordinate implements Value {
 		} else if (!z.equals(other.z))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{x:").append(x);
+		sb.append(", y:").append(y);
+		if ( z!=null ) {
+			sb.append(", z:").append(z);
+		}
+		sb.append(", srsId:").append(srsId);
+		sb.append("}");
+		return sb.toString();
 	}
 }

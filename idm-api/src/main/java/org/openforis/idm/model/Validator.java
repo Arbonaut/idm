@@ -15,15 +15,15 @@ public class Validator {
 	}
 
 	// @SuppressWarnings("unchecked")
-	// public void validate(AbstractModelObject<? extends SchemaObjectDefinition> modelObject, boolean validateChildren, boolean validateDependant) {
-	// if (modelObject instanceof DefaultAttribute) {
-	// validate((DefaultAttribute<? extends AttributeDefinition, ? extends Value>) modelObject, validateDependant);
-	// } else if (modelObject instanceof DefaultEntity) {
-	// validate((DefaultEntity) modelObject, validateChildren, validateDependant);
+	// public void validate(ModelObject<? extends SchemaObjectDefinition> modelObject, boolean validateChildren, boolean validateDependant) {
+	// if (modelObject instanceof Attribute) {
+	// validate((Attribute<? extends AttributeDefinition, ? extends Value>) modelObject, validateDependant);
+	// } else if (modelObject instanceof Entity) {
+	// validate((Entity) modelObject, validateChildren, validateDependant);
 	// }
 	// }
 /*
-	public void validate(DefaultAttribute<? extends AttributeDefinition, ? extends AbstractValue> attribute, boolean validateDependant) {
+	public void validate(Attribute<? extends AttributeDefinition, ? extends AbstractValue> attribute, boolean validateDependant) {
 		Value value = attribute.getValue();
 		if (!value.isBlank()) {
 			if (!value.isFormatValid()) {
@@ -68,12 +68,12 @@ public class Validator {
 		return true;
 	}
 */
-	public void validate(DefaultEntity entity, boolean validateChildren, boolean validateDependant) {
+	public void validate(Entity entity, boolean validateChildren, boolean validateDependant) {
 
 	}
 
-	public void validate(DefaultRecord record) {
-		DefaultEntity rootEntity = (DefaultEntity) record.getRootEntity();
+	public void validate(Record record) {
+		Entity rootEntity = (Entity) record.getRootEntity();
 		validate(rootEntity, Boolean.TRUE, Boolean.FALSE);
 	}
 

@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -15,8 +16,11 @@ import javax.xml.bind.annotation.XmlType;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "since", "deprecated", "labels", "descriptions", "codingSchemes", "hierarchy", "items" })
-public class CodeList extends VersionableModelDefinition {
+@XmlType(name = "", propOrder = { "name", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingSchemes", "hierarchy", "items" })
+public class CodeList extends Versionable {
+	
+	@XmlTransient
+	private Survey survey;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -62,6 +66,14 @@ public class CodeList extends VersionableModelDefinition {
 		return Collections.unmodifiableList(this.items);
 	}
 	
+	public Survey getSurvey() {
+		return survey;
+	}
+
+	protected void setSurvey(Survey survey) {
+		this.survey = survey;
+	}
+
 	public CodingScheme getCodingScheme(String name) {
 		for (CodingScheme codingScheme : codingSchemes) {
 			if (codingScheme.getName().equals(name)) {

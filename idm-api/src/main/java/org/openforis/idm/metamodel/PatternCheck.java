@@ -14,8 +14,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.AlphanumericCode;
 import org.openforis.idm.model.Attribute;
-import org.openforis.idm.model.TextValue;
-import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -42,13 +40,13 @@ public class PatternCheck extends Check {
 		return pattern;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ? extends Value> attribute) {
-		Value value = attribute.getValue();
+	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
+		Object value = attribute.getValue();
 		String string = null;
 		// textvalue
 		// code
-		if (value instanceof TextValue) {
-			string = ((TextValue) value).getString();
+		if (value instanceof String) {
+			string = (String) value;
 		} else if (value instanceof AlphanumericCode) {
 			string = ((AlphanumericCode) value).getCode();
 		} else {

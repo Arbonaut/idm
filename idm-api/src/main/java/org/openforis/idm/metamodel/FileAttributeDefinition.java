@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="", propOrder = {"name", "maxSize", "extensions", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", 
-		"since", "deprecated", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
+		"sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class FileAttributeDefinition extends AttributeDefinition {
 
 	@XmlAttribute(name = "maxSize")

@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
+import org.mockito.asm.tree.analysis.Value;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.ModelExpression;
-import org.openforis.idm.model.Value;
 
 /**
  * @author M. Togna

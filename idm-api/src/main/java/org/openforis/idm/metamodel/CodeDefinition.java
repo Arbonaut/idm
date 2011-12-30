@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
@@ -15,10 +15,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CodeDefinition extends ModelDefinition {
+public class CodeDefinition  {
 
 //	@XmlAttribute(name = "scheme")
-//	@XmlJavaTypeAdapter(NormalizedStringAdapter.class)
+//	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 //	private String schemeName;
 	
 	@XmlTransient
@@ -28,7 +28,7 @@ public class CodeDefinition extends ModelDefinition {
 	private CodingScheme scheme;
 
 	@XmlValue
-	@XmlJavaTypeAdapter(NormalizedStringAdapter.class)
+	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	private String code;
 
 	public CodingScheme getScheme() {
@@ -61,9 +61,8 @@ public class CodeDefinition extends ModelDefinition {
 		}
 		this.scheme = newScheme;
 	}
-	
-	@Override
-	protected void beforeUnmarshal(Object parent) {
-		this.item = (CodeListItem) parent;
+
+	protected void setParentItem(CodeListItem item) {
+		this.item = item;
 	}
 }

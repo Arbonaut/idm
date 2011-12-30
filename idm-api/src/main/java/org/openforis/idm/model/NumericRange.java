@@ -4,7 +4,7 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class NumericRange<T extends Number> implements Value {
+public abstract class NumericRange<T extends Number> {
 
 	private T from;
 	private T to;
@@ -58,13 +58,13 @@ public abstract class NumericRange<T extends Number> implements Value {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
-		if ( from == to ) {
-			return String.valueOf(from);
-		} else {
-			return from+"-"+to;
-		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("{from:").append(from);
+		sb.append(", to:").append(to);
+		sb.append("}");
+		return sb.toString();
 	}
 }

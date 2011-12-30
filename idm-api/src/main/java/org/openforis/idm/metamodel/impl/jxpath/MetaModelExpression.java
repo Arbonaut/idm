@@ -10,7 +10,6 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.Pointer;
 import org.openforis.idm.metamodel.SchemaObjectDefinition;
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
 
 /**
  * @author M. Togna
@@ -37,9 +36,9 @@ public class MetaModelExpression {
 
 	public Object evaluate(SchemaObjectDefinition schemaObjectDefinition) {
 		SchemaObjectDefinition context = schemaObjectDefinition;
-		if (context.getParentDefinition() != null) {
-			context = schemaObjectDefinition.getParentDefinition();
-		}
+//		if (context.getParentDefinition() != null) {
+//			context = schemaObjectDefinition.getParentDefinition();
+//		}
 		JXPathContext jxPathContext = JXPathContext.newContext(CONTEXT, context);
 		jxPathContext.getVariables().declareVariable("this", schemaObjectDefinition);
 

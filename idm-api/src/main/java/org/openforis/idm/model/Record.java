@@ -1,116 +1,75 @@
+/**
+ * 
+ */
 package org.openforis.idm.model;
 
-import java.util.Date;
 
+import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.ModelVersion;
+import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.Survey;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface Record {
+public class Record {
 
-	/**
-	 * @return Returns the rootEntity.
-	 * @uml.property name="rootEntity" readOnly="true"
-	 * @uml.associationEnd
-	 */
-	Entity getRootEntity();
+	private Integer id;
+	private Survey survey;
+	private ModelVersion modelVersion;
+	private Entity rootEntity;
+	
+	public Record(Survey survey, String rootEntityName, String version) {
+		this.survey = survey;
+		Schema schema = survey.getSchema();
+		EntityDefinition rootEntityDefinition = schema.getRootEntityDefinition(rootEntityName);
+		if ( rootEntityDefinition == null ) {
+			throw new IllegalArgumentException("Invalid root entity '"+rootEntity+'"');			
+		}
+		this.rootEntity = new Entity(rootEntityDefinition);
+		this.modelVersion = survey.getVersion(version);
+		if ( modelVersion == null ) {
+			throw new IllegalArgumentException("Invalid version '"+version+'"');
+		}
+	}
+	
+	public Integer getId() {
+		return this.id;
+	}
 
-	/**
-	 * @return Returns the creationDate.
-	 * @uml.property name="creationDate"
-	 */
-	Date getCreationDate();
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-	/**
-	 * Setter of the property <tt>creationDate</tt>
-	 * 
-	 * @param creationDate
-	 *            The creationDate to set.
-	 * @uml.property name="creationDate"
-	 */
-	void setCreationDate(Date creationDate);
+	public Survey getSurvey() {
+		return this.survey;
+	}
 
-	/**
-	 * @return Returns the createdBy.
-	 * @uml.property name="createdBy"
-	 */
-	String getCreatedBy();
+	public Entity getRootEntity() {
+		return this.rootEntity;
+	}
 
-	/**
-	 * Setter of the property <tt>createdBy</tt>
-	 * 
-	 * @param createdBy
-	 *            The createdBy to set.
-	 * @uml.property name="createdBy"
-	 */
-	void setCreatedBy(String createdBy);
+	// TODO Need path?
+//	
+//	public void setRootEntity(Entity rootEntity) {
+//		Entity entityImpl = (Entity) rootEntity;
+//		this.rootEntity = entityImpl;
+//		entityImpl.setRecord(this);
+//		entityImpl.setPath("/" + rootEntity.getDefinition().getName());
+//	}
 
-	/**
-	 * @return Returns the modifiedDate.
-	 * @uml.property name="modifiedDate"
-	 */
-	Date getModifiedDate();
+	public ModelVersion getVersion() {
+		return this.modelVersion;
+	}
 
-	/**
-	 * Setter of the property <tt>modifiedDate</tt>
-	 * 
-	 * @param modifiedDate
-	 *            The modifiedDate to set.
-	 * @uml.property name="modifiedDate"
-	 */
-	void setModifiedDate(Date modifiedDate);
-
-	/**
-	 * @return Returns the modifiedBy.
-	 * @uml.property name="modifiedBy"
-	 */
-	String getModifiedBy();
-
-	/**
-	 * Setter of the property <tt>modifiedBy</tt>
-	 * 
-	 * @param modifiedBy
-	 *            The modifiedBy to set.
-	 * @uml.property name="modifiedBy"
-	 */
-	void setModifiedBy(String modifiedBy);
-
-	/**
-	 * @return Returns the id.
-	 * @uml.property name="id"
-	 */
-	Long getId();
-
-	/**
-	 * Setter of the property <tt>id</tt>
-	 * 
-	 * @param id
-	 *            The id to set.
-	 * @uml.property name="id"
-	 */
-	void setId(Long id);
-
-	/**
-	 * @return Returns the version.
-	 * @uml.property name="version"
-	 * @uml.associationEnd
-	 */
-	ModelVersion getVersion();
-
-	/**
-	 * Setter of the property <tt>version</tt>
-	 * 
-	 * @param modelVersion
-	 *            The version to set.
-	 * @uml.property name="version"
-	 */
-	void setVersion(ModelVersion modelVersion);
-
-	Survey getSurvey();
-
-	// TODO Define arguments... is this needed?
-	// void notifyObservers(Object... args);
+//	
+//	public void setVersion(ModelVersion modelVersion) {
+//		this.modelVersion = modelVersion;
+//	}
+/*
+	protected void notifyListener(ModelObject<? extends SchemaObjectDefinition> modelObject) {
+		this.listener.onStateChange(modelObject);
+	}
+*/
 }

@@ -54,7 +54,7 @@ public class ModelPropertyHandler implements DynamicPropertyHandler {
 			Entity entity = (Entity) object;
 			EntityDefinition entityDef = entity.getDefinition();
 			List<SchemaObjectDefinition> childDefs = entityDef.getChildDefinitions();
-//			Set<String> childNames = ((DefaultEntity) object).getChildNames();
+//			Set<String> childNames = ((Entity) object).getChildNames();
 			String[] array = new String[childDefs.size()];
 			int i = 0;
 			for (SchemaObjectDefinition def : childDefs) {

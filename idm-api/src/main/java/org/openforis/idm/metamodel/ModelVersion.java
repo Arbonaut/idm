@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "name", "labels", "descriptions", "date" })
-public class ModelVersion extends ModelDefinition {
+public class ModelVersion {
 
 	@XmlAttribute(name = "name")
 	private String name;

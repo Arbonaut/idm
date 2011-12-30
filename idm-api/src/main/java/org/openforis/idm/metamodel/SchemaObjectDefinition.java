@@ -22,8 +22,14 @@ import org.openforis.idm.metamodel.impl.jxpath.MetaModelExpression;
  * @author M. Togna
  */
 @XmlTransient
-public abstract class SchemaObjectDefinition extends VersionableModelDefinition implements Annotatable {
+public abstract class SchemaObjectDefinition extends Versionable implements Annotatable {
 
+	@XmlTransient
+	private Integer id;
+	
+	@XmlTransient
+	private Schema schema;
+	
 	@XmlAttribute(name = "name")
 	private String name;
 
@@ -57,13 +63,37 @@ public abstract class SchemaObjectDefinition extends VersionableModelDefinition 
 	@XmlTransient
 	private EntityDefinition parentDefinition;
 	
-	public SchemaObjectDefinition get(String path) {
+	public Integer getId() {
+		return id;
+	}
+
+	// TODO Encapsulate this better (e.g. using reflection or subclass)
+	public void setId(Integer id) {
+		this.id = id;
+		if ( schema != null ) {
+			schema.indexById(this);
+		}
+	}
+	
+	public Schema getSchema() {
+		return schema;
+	}
+
+	protected void setSchema(Schema schema) {
+		this.schema = schema;
+	}
+	
+	public SchemaObjectDefinition getDefinitionByRelativePath(String path) {
+//		if ( path.startsWith("/") ) {
+//			return getSchema().getByPath(path);
+//		} else {
 		MetaModelExpression expression = new MetaModelExpression(path);
 		Object object = expression.evaluate(this);
 		if (object instanceof SchemaObjectDefinition) {
 			return (SchemaObjectDefinition) object;
 		}
 		return null;
+//		}
 	}
 
 	public String getName() {
@@ -87,7 +117,7 @@ public abstract class SchemaObjectDefinition extends VersionableModelDefinition 
 	}
 
 	public Integer getMaxCount() {
-		return maxCount;
+		return isMultiple() ? maxCount : new Integer(1);
 	}
 
 	public List<Label> getLabels() {
@@ -130,11 +160,15 @@ public abstract class SchemaObjectDefinition extends VersionableModelDefinition 
 		return Collections.unmodifiableList(this.annotations);
 	}
 
-	/**
-	 * Convenience method to access schema directly
-	 */
-	public Schema getSchema() {
-		return getSurvey()==null ? null : getSurvey().getSchema();
+	public String getPath() {
+		SchemaObjectDefinition defn = this;
+		StringBuilder sb = new StringBuilder(64);
+		while (defn!=null) {
+			sb.insert(0, defn.getName());
+			sb.insert(0, "/");
+			defn = defn.getParentDefinition();
+		} 
+		return sb.toString();
 	}
 
 	public EntityDefinition getParentDefinition() {
@@ -143,23 +177,17 @@ public abstract class SchemaObjectDefinition extends VersionableModelDefinition 
 
 	protected void setParentDefinition(EntityDefinition parentDefinition) {
 		this.parentDefinition = parentDefinition;
+		this.schema = parentDefinition.getSchema();
+	}
+	
+	@Override
+	public Survey getSurvey() {
+		return schema == null ? null : schema.getSurvey();
 	}
 	
 	@Override
 	public String toString() {
-		if ( getName() == null ) {
-			return "Unnamed " +getClass().getName(); 
-		} else {
-			return getClass().getName() + getName();
-		}
-	}
-	
-	@Override
-	protected void beforeUnmarshal(Object parent) {
-		super.beforeUnmarshal(parent);
-		if ( parent instanceof EntityDefinition ) {
-			this.parentDefinition = (EntityDefinition) parent;
-		}
+		return getClass().getSimpleName() + "("+getName()+")";
 	}
 	
 	@XmlAccessorType(XmlAccessType.FIELD)

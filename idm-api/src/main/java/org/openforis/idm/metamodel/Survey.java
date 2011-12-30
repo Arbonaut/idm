@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -36,6 +37,9 @@ import org.xml.sax.ContentHandler;
 @XmlRootElement(name = "survey")
 public class Survey {
 
+	@XmlTransient
+	private Integer id;
+	
 	@XmlElement(name = "name")
 	private String name;
 
@@ -71,6 +75,15 @@ public class Survey {
 	@XmlElement(name = "schema", type = Schema.class)
 	private Schema schema;
 
+	public Integer getId() {
+		return id;
+	}
+	
+	// TODO Encapsulate this better (e.g. using reflection or subclass)
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public String getName() {
 		return this.name;
 	}
@@ -169,26 +182,85 @@ public class Survey {
 	}
 	
 	private static class UnmarshallerListener extends Unmarshaller.Listener {
-
 		@Override
 		public void beforeUnmarshal(Object target, Object parent) {
-			if ( target instanceof ModelDefinition ) {
-				((ModelDefinition) target).beforeUnmarshal(parent);
+			try {
+				if ( target instanceof Schema ) {
+					beforeUnmarshal((Schema) target, parent);
+				}
+				if ( target instanceof CodeDefinition  ) {
+					beforeUnmarshal((CodeDefinition) target, parent);
+				} 
+				if ( target instanceof CodeList ) {
+					beforeUnmarshal((CodeList) target, parent);
+				}
+				if ( target instanceof CodeListItem ) {
+					beforeUnmarshal((CodeListItem) target, parent);
+				}
+				if (target instanceof SchemaObjectDefinition ) {
+					beforeUnmarshal((SchemaObjectDefinition) target, parent);
+				}
+				if (target instanceof CodingScheme) {
+					beforeUnmarshal((CodingScheme) target, parent);
+				}
+				if (target instanceof Precision) {
+					beforeUnmarshal((Precision) target, parent);
+				}
+			} catch ( ClassCastException ce ) {
+				throw new RuntimeException("Unexpected sub-element while unmarshalling", ce);
 			}
+		}
+		
+		private void beforeUnmarshal(SchemaObjectDefinition target, Object parent) {
+			if ( parent instanceof EntityDefinition ) { 
+				target.setParentDefinition((EntityDefinition) parent);
+			} else {
+				target.setSchema((Schema) parent);
+			}
+		}
 
+		private void beforeUnmarshal(CodeDefinition target, Object parent) {
+			target.setParentItem((CodeListItem) parent);
+		}
+
+		private void beforeUnmarshal(CodeList target, Object parent) {
+			target.setSurvey((Survey) parent);
+		}
+
+		private void beforeUnmarshal(CodeListItem target, Object parent) {
+			if ( parent instanceof CodeListItem ) {
+				target.setParentItem((CodeListItem) parent);
+			} else if ( parent instanceof CodeList ) {
+				target.setList((CodeList) parent);
+			}
+		}
+
+		private void beforeUnmarshal(Schema target, Object parent) {
+			target.setSurvey((Survey) parent);
+		}
+
+		private void beforeUnmarshal(CodingScheme target, Object parent) {
+			target.setList((CodeList) parent);
+		}
+
+		private void beforeUnmarshal(Precision target, Object parent) {
+			target.setDefinition((NumericAttributeDefinition) parent);
 		}
 
 		@Override
 		public void afterUnmarshal(Object target, Object parent) {
-			if ( target instanceof ModelDefinition ) {
-				((ModelDefinition) target).afterUnmarshal(parent);
+			if (target instanceof SchemaObjectDefinition ) {
+				afterUnmarshal((SchemaObjectDefinition) target, parent);
 			}
+		}
+		
+		private void afterUnmarshal(SchemaObjectDefinition target, Object parent) {
+			target.getSchema().indexByPath(target);
 		}
 
 	}
 
-	@SuppressWarnings("deprecation")
-	public void marshal(OutputStream os) throws IOException {
+	public void marshal(OutputStream os, boolean indent) throws IOException {
 		try {
 			JAXBContext jc = JAXBContext.newInstance(Survey.class);
 			Marshaller marshaller = jc.createMarshaller();
@@ -210,7 +282,7 @@ public class Survey {
 			OutputFormat of = new OutputFormat();
 			of.setCDataElements(new String[] { "http://www.openforis.org/idml/3.0^wkt" }); //
 			of.setEncoding("UTF-8");
-			of.setIndenting(true);
+			of.setIndenting(indent);
 			XMLSerializer serializer1 = new XMLSerializer(of);
 			serializer1.setOutputByteStream(os);
 			XMLSerializer serializer = serializer1;

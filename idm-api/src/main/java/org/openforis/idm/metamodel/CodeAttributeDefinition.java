@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="", propOrder = {"name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression", "requiredExpression",
-		"multiple", "minCount", "maxCount", "since", "deprecated", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
+		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class CodeAttributeDefinition extends AttributeDefinition  {
 
 	public enum Type {
@@ -25,7 +25,7 @@ public class CodeAttributeDefinition extends AttributeDefinition  {
 	}
 
 	@XmlAttribute(name = "key")
-	private boolean key;
+	private Boolean key;
 
 	@XmlAttribute(name = "strict")
 	@XmlJavaTypeAdapter(value = AllowUnlistedAdapter.class)
@@ -63,13 +63,13 @@ public class CodeAttributeDefinition extends AttributeDefinition  {
 	}
 	
 	public boolean isKey() {
-		return this.key;
+		return this.key == null ? false : key;
 	}
 
-	public boolean getAllowUnlisted() {
-		return this.allowUnlisted;
+	public boolean isAllowUnlisted() {
+		return allowUnlisted == null ? false : allowUnlisted;
 	}
-
+	
 	public String getParentExpression() {
 		return this.parentExpression;
 	}

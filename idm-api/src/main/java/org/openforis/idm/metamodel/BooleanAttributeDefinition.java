@@ -13,14 +13,18 @@ import javax.xml.bind.annotation.XmlType;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "since", "deprecated", 
+@XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
 		"affirmativeOnly", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class BooleanAttributeDefinition extends AttributeDefinition {
 
 	@XmlAttribute(name = "affirmativeOnly")
-	private boolean affirmativeOnly;
+	private Boolean affirmativeOnly;
 
 	public boolean isAffirmativeOnly() {
-		return this.affirmativeOnly;
+		return affirmativeOnly == null ? false : affirmativeOnly;
+	}
+	
+	protected void setAffirmativeOnly(boolean affirmativeOnly) {
+		this.affirmativeOnly = affirmativeOnly ? true : null;
 	}
 }

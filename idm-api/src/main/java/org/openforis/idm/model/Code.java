@@ -4,7 +4,7 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class Code<T> implements Value {
+public abstract class Code<T> {
 
 	private T code;
 	private String qualifier;
@@ -57,5 +57,15 @@ public abstract class Code<T> implements Value {
 			return false;
 		return true;
 	}
-
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{code:").append(code);
+		if ( qualifier!=null ) {
+			sb.append(", qualifier:").append(qualifier);
+		}
+		sb.append("}");
+		return sb.toString();
+	}
 }

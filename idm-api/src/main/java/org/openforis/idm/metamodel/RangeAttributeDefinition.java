@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "since", "deprecated",
+@XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
 		"type", "labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
 public class RangeAttributeDefinition extends NumericAttributeDefinition {
 }

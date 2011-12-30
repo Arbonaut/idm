@@ -4,6 +4,8 @@
 package org.openforis.idm.model;
 
 
+import java.io.StringWriter;
+
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.metamodel.Schema;
@@ -63,6 +65,13 @@ public class Record {
 		return this.modelVersion;
 	}
 
+	@Override
+	public String toString() {
+		StringWriter sw = new StringWriter();
+		sw.append("id: ").append(String.valueOf(id)).append("\n");
+		rootEntity.write(sw, 0);
+		return sw.toString();
+	}
 //	
 //	public void setVersion(ModelVersion modelVersion) {
 //		this.modelVersion = modelVersion;

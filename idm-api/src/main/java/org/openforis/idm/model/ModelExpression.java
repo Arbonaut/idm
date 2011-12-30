@@ -60,7 +60,7 @@ public class ModelExpression implements Expression {
 
 		if (context instanceof Attribute) {
 			@SuppressWarnings("unchecked")
-			Object value = getValue((Attribute<? extends AttributeDefinition, ? extends Value>) context);
+			Object value = getValue((Attribute<? extends AttributeDefinition, ?>) context);
 			jxPathContext.getVariables().declareVariable("this", value);
 		}
 
@@ -68,8 +68,10 @@ public class ModelExpression implements Expression {
 		Iterator<?> iterator = jxPathContext.iterate(expr);
 		return iterator;
 	}
-
-	private Object getValue(Attribute<? extends AttributeDefinition, ? extends Value> attribute) {
+	
+	private Object getValue(Attribute<? extends AttributeDefinition, ?> attribute) {
+		// TODO
+		/*
 		Object value = null;
 		if (attribute instanceof Code) {
 			value = ((Code<?>) attribute).getCode();
@@ -92,6 +94,8 @@ public class ModelExpression implements Expression {
 			value = attribute;
 		}
 		return value;
+		 */
+		return null;
 	}
 
 }

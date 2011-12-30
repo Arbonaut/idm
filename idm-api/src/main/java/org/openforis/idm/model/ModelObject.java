@@ -64,7 +64,6 @@ public abstract class ModelObject<D extends SchemaObjectDefinition> {
 		return sw.toString();
 	}
 
-
 /*
 	protected Record getRecord() {
 		return this.record;

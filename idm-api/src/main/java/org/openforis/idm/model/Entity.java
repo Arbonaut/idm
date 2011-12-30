@@ -4,6 +4,7 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,9 +13,11 @@ import java.util.Map;
 
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
+import org.openforis.idm.metamodel.DateAttributeDefinition;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
 import org.openforis.idm.metamodel.SchemaObjectDefinition;
+import org.openforis.idm.metamodel.TimeAttributeDefinition;
 
 /**
  * @author G. Miceli
@@ -55,37 +58,54 @@ public class Entity extends ModelObject<EntityDefinition> {
 	}
 
 	public AlphanumericCodeAttribute addValue(String name, AlphanumericCode value, int idx) {
-		return (AlphanumericCodeAttribute) addValue(name, value, idx);
+		return addValueInternal(name, value, idx, AlphanumericCodeAttribute.class, CodeAttributeDefinition.class); 
 	}
-	
+
 	public AlphanumericCodeAttribute addValue(String name, AlphanumericCode value) {
-		return (AlphanumericCodeAttribute) addValue(name, value, null);
+		return addValueInternal(name, value, null, AlphanumericCodeAttribute.class, CodeAttributeDefinition.class); 
 	}
 	
 	public NumericCodeAttribute addValue(String name, NumericCode value, int idx) {
-		return (NumericCodeAttribute) addValue(name, value, idx);
+		return addValueInternal(name, value, idx, NumericCodeAttribute.class, CodeAttributeDefinition.class); 
 	}
 	
 	public NumericCodeAttribute addValue(String name, NumericCode value) {
-		return (NumericCodeAttribute) addValue(name, value, null);
+		return addValueInternal(name, value, null, NumericCodeAttribute.class, CodeAttributeDefinition.class); 
 	}
 
 	public RealAttribute addValue(String name, Double value, int idx) {
-		return (RealAttribute) addValue(name, value, idx);
+		return addValueInternal(name, value, idx, RealAttribute.class, NumberAttributeDefinition.class); 
 	}
 
 	public RealAttribute addValue(String name, Double value) {
-		return (RealAttribute) addValue(name, value, null);
+		return addValueInternal(name, value, null, RealAttribute.class, NumberAttributeDefinition.class); 
 	}
 
 	public IntegerAttribute addValue(String name, Integer value, int idx) {
-		return (IntegerAttribute) addValue(name, value, idx);
+		return addValueInternal(name, value, idx, IntegerAttribute.class, NumberAttributeDefinition.class); 
 	}
 
 	public IntegerAttribute addValue(String name, Integer value) {
-		return (IntegerAttribute) addValue(name, value, null);
+		return addValueInternal(name, value, null, IntegerAttribute.class, NumberAttributeDefinition.class); 
 	}
-	
+
+	public DateAttribute addValue(String name, Date value, int idx) {
+		return addValueInternal(name, value, idx, DateAttribute.class, DateAttributeDefinition.class); 
+	}
+
+	public DateAttribute addValue(String name, Date value) {
+		return addValueInternal(name, value, null, DateAttribute.class, DateAttributeDefinition.class); 
+	}
+
+	public TimeAttribute addValue(String name, Time value, int idx) {
+		return addValueInternal(name, value, idx, TimeAttribute.class, TimeAttributeDefinition.class); 
+	}
+
+	public TimeAttribute addValue(String name, Time value) {
+		return addValueInternal(name, value, null, TimeAttribute.class, TimeAttributeDefinition.class); 
+	}
+
+
 	// TODO other addXXX and setXXX methods
 
 	public ModelObject<? extends SchemaObjectDefinition> get(String name, int index) {
@@ -159,9 +179,19 @@ public class Entity extends ModelObject<EntityDefinition> {
 		}
 	}
 
-
-	private <V> Attribute<? extends AttributeDefinition, V> addValue(String name, V value, Integer idx) {
+/*
+	private <V> Attribute<? extends AttributeDefinition, V> addValueInternal(String name, V value, Integer idx) {
+		// TODO HANDLE NULL VALUES
 		Attribute<? extends AttributeDefinition, V> attr = createAttribute(name, value);
+		attr.setValue(value);
+		addInternal(attr, idx);
+		return attr;
+	}
+*/
+	private <T extends Attribute<D, V>, D extends AttributeDefinition, V> 
+			T addValueInternal(String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
+		T attr = createModelObject(name, type, definitionType);
+		attr.setValue(value);
 		addInternal(attr, idx);
 		return attr;
 	}
@@ -200,6 +230,24 @@ public class Entity extends ModelObject<EntityDefinition> {
 		o.setParent(this);
 	}
 	
+	// TODO ModelObject vs SchemaObject? 
+	private <T extends ModelObject<D>, D extends SchemaObjectDefinition> T createModelObject(String name, Class<T> type, Class<D> definitionType) {
+		try {
+			SchemaObjectDefinition definition = getChildDefinition(name, definitionType);
+			return type.getConstructor(definitionType).newInstance(definition);
+		} catch (SecurityException e) {
+			throw new RuntimeException(e);
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException(e);
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
+	}
+/*
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private <V> Attribute<? extends AttributeDefinition, V> createAttribute(String name, V value) {
 		Attribute attr;
@@ -215,13 +263,19 @@ public class Entity extends ModelObject<EntityDefinition> {
 		} else if ( value instanceof Integer ) {
 			NumberAttributeDefinition defn = getChildDefinition(name, NumberAttributeDefinition.class);
 			attr = new IntegerAttribute(defn);
+		} else if ( value instanceof Date ) { 
+			DateAttributeDefinition defn = getChildDefinition(name, DateAttributeDefinition.class);
+			attr = new DateAttribute(defn);
+		} else if ( value instanceof Time ) { 
+			TimeAttributeDefinition defn = getChildDefinition(name, TimeAttributeDefinition.class);
+			attr = new TimeAttribute(defn);
 		} else {
+			// TODO implement other factory methods
 			throw new UnsupportedOperationException("createAttribute() for "+value.getClass().getName()+" value not implemented");
 		}
-		attr.setValue(value);
 		return attr;
 	}
-	
+	*/
 	private Entity createEntity(String name) {
 		EntityDefinition defn = getChildDefinition(name, EntityDefinition.class);
 		Entity entity = new Entity(defn);
@@ -253,7 +307,7 @@ public class Entity extends ModelObject<EntityDefinition> {
 		return (T) childDefinition;
 	}
 
-	public List<ModelObject<? extends SchemaObjectDefinition>> getChildren(String name) {
+	public List<ModelObject<? extends SchemaObjectDefinition>> getAll(String name) {
 		List<ModelObject<? extends SchemaObjectDefinition>> children = childrenByName.get(name);
 		return children == null ? null : Collections.unmodifiableList(children);
 	}

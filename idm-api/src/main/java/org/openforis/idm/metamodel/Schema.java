@@ -44,7 +44,7 @@ public class Schema  {
 	public Survey getSurvey() {
 		return survey;
 	}
-	
+
 	protected void setSurvey(Survey survey) {
 		this.survey = survey;
 	}

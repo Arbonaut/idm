@@ -15,8 +15,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.impl.jxpath.MetaModelExpression;
-
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -109,7 +107,13 @@ public abstract class SchemaObjectDefinition extends Versionable implements Anno
 	}
 
 	public boolean isMultiple() {
-		return multiple == null ? false : multiple;
+		if ( maxCount != null && maxCount > 1 ) {
+			return true;
+		} else if ( multiple == null ) {
+			return false;
+		} else {
+			return multiple;
+		}
 	}
 
 	public Integer getMinCount() {
@@ -117,7 +121,11 @@ public abstract class SchemaObjectDefinition extends Versionable implements Anno
 	}
 
 	public Integer getMaxCount() {
-		return isMultiple() ? maxCount : new Integer(1);
+		if ( maxCount == null && !isMultiple() ) {
+			return Integer.valueOf(1);
+		} else {
+			return maxCount;
+		}
 	}
 
 	public List<Label> getLabels() {

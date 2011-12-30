@@ -9,7 +9,6 @@
 		<module>idm-api</module>
 	</modules>
 
-
 	<build>
 		<pluginManagement>
 			<plugins>

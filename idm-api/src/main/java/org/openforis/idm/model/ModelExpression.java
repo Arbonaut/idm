@@ -70,7 +70,7 @@ public class ModelExpression implements Expression {
 	}
 	
 	private Object getValue(Attribute<? extends AttributeDefinition, ?> attribute) {
-		// TODO
+		// TODO implement getValue, possibly with subcomponent as parameter?  should this be getMainValue or similar?
 		/*
 		Object value = null;
 		if (attribute instanceof Code) {

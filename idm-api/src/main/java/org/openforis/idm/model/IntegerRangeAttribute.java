@@ -10,5 +10,8 @@ public class IntegerRangeAttribute extends Attribute<RangeAttributeDefinition, I
 
 	public IntegerRangeAttribute(RangeAttributeDefinition definition) {
 		super(definition);
+		if ( !definition.isReal() ) {
+			throw new IllegalArgumentException("Attempted to create IntegerRangeAttribute with real definition");
+		}
 	}
 }

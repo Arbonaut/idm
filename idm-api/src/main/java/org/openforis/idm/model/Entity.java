@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
@@ -35,9 +36,8 @@ public class Entity extends ModelObject<EntityDefinition> {
 
 	/**
 	 * @param name
-	 * @param idx
-	 * @return
-	 * @throws ArrayIndexOutOfBoundsException if adding the Entity would break the maxCount rule
+	 * @return the newly created Entity
+	 * @throws ArrayIndexOutOfBoundsException if adding would break the maxCount rule
 	 */
 	public Entity addEntity(String name) {
 		Entity entity = createEntity(name);
@@ -48,8 +48,8 @@ public class Entity extends ModelObject<EntityDefinition> {
 	/**
 	 * @param name
 	 * @param idx
-	 * @return
-	 * @throws ArrayIndexOutOfBoundsException if adding the Entity would break the maxCount rule
+	 * @return the newly created Entity
+	 * @throws ArrayIndexOutOfBoundsException if adding would break the maxCount rule
 	 */
 	public Entity addEntity(String name, int idx) {
 		Entity entity = createEntity(name);
@@ -57,6 +57,38 @@ public class Entity extends ModelObject<EntityDefinition> {
 		return entity;
 	}
 
+//	public <T extends ModelObject<?>> T add(T o, int idx) {
+//		return addInternal(o, idx);
+//	}
+//
+//	public <T extends ModelObject<?>> T add(T o) {
+//		return addInternal(o, null);
+//	}
+
+//	public Entity addEntity(Entity entity) {
+//		addInternal(entity, null);
+//		return entity;
+//	}
+//
+//	public Entity addEntity(Entity entity, int idx) {
+//		addInternal(entity, idx);
+//		return entity;
+//	}
+
+//	public <A extends Attribute<?,?>> A addAttribute(A attr) {
+//		addInternal(attr, null);
+//		return attr;
+//	}
+//
+//	public <A extends Attribute<?,?>> A addAttribute(A attr, int idx) {
+//		addInternal(attr, idx);
+//		return attr;
+//	}
+
+//	public <A extends Attribute<D, V>, D extends AttributeDefinition, V> A addXXX(String name, V value, int idx) {
+//		return null;
+//	}
+	
 	public AlphanumericCodeAttribute addValue(String name, AlphanumericCode value, int idx) {
 		return addValueInternal(name, value, idx, AlphanumericCodeAttribute.class, CodeAttributeDefinition.class); 
 	}
@@ -104,7 +136,6 @@ public class Entity extends ModelObject<EntityDefinition> {
 	public TimeAttribute addValue(String name, Time value) {
 		return addValueInternal(name, value, null, TimeAttribute.class, TimeAttributeDefinition.class); 
 	}
-
 
 	// TODO other addXXX and setXXX methods
 
@@ -179,15 +210,6 @@ public class Entity extends ModelObject<EntityDefinition> {
 		}
 	}
 
-/*
-	private <V> Attribute<? extends AttributeDefinition, V> addValueInternal(String name, V value, Integer idx) {
-		// TODO HANDLE NULL VALUES
-		Attribute<? extends AttributeDefinition, V> attr = createAttribute(name, value);
-		attr.setValue(value);
-		addInternal(attr, idx);
-		return attr;
-	}
-*/
 	private <T extends Attribute<D, V>, D extends AttributeDefinition, V> 
 			T addValueInternal(String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
 		T attr = createModelObject(name, type, definitionType);
@@ -203,11 +225,20 @@ public class Entity extends ModelObject<EntityDefinition> {
 	 * @param idx
 	 * @throws ArrayIndexOutOfBoundsException if inserting object would break the maxCount rule
 	 */
-	private void addInternal(ModelObject<? extends SchemaObjectDefinition> o, Integer idx) {
-		// Get and/or create list
+	private <T extends ModelObject<?>> T addInternal(T o, Integer idx) {
+		Record record = getRecord();
+		
+		// Get child definition and name
 		SchemaObjectDefinition defn = o.getDefinition();
 		String name = defn.getName();
 		
+		// Get child's definition and check schema object definition is the same
+		SchemaObjectDefinition childDefn = getDefinition().getChildDefinition(name);
+		if ( defn != childDefn ) {
+			throw new IllegalArgumentException("Cannot add object; definitions do not match");
+		}
+		
+		// Get or create list containing children
 		List<ModelObject<? extends SchemaObjectDefinition>> children = childrenByName.get(name);
 		if (children == null) {
 			children = new ArrayList<ModelObject<? extends SchemaObjectDefinition>>();
@@ -227,10 +258,18 @@ public class Entity extends ModelObject<EntityDefinition> {
 		} else {
 			children.add(idx, o);
 		}
+		
 		o.setParent(this);
+		
+		// If attached to record, set id 
+		if ( record != null ) {
+			int id = record.nextId();
+			o.setId(id);
+		}
+		return o;
 	}
 	
-	// TODO ModelObject vs SchemaObject? 
+	// TODO Naming: ModelObject vs SchemaObject? 
 	private <T extends ModelObject<D>, D extends SchemaObjectDefinition> T createModelObject(String name, Class<T> type, Class<D> definitionType) {
 		try {
 			SchemaObjectDefinition definition = getChildDefinition(name, definitionType);
@@ -242,40 +281,16 @@ public class Entity extends ModelObject<EntityDefinition> {
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		} catch (InvocationTargetException e) {
-			throw new RuntimeException(e);
+			if ( e.getCause() instanceof RuntimeException ) {
+				throw (RuntimeException) e.getCause();
+			} else {
+				throw new RuntimeException(e);
+			}
 		} catch (NoSuchMethodException e) {
 			throw new RuntimeException(e);
 		}
 	}
-/*
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private <V> Attribute<? extends AttributeDefinition, V> createAttribute(String name, V value) {
-		Attribute attr;
-		if ( value instanceof AlphanumericCode ) {
-			CodeAttributeDefinition defn = getChildDefinition(name, CodeAttributeDefinition.class);
-			attr = new AlphanumericCodeAttribute(defn);
-		} else if ( value instanceof NumericCode ) {
-			CodeAttributeDefinition defn = getChildDefinition(name, CodeAttributeDefinition.class);
-			attr = new NumericCodeAttribute(defn);
-		} else if ( value instanceof Double ) {
-			NumberAttributeDefinition defn = getChildDefinition(name, NumberAttributeDefinition.class);
-			attr = new RealAttribute(defn);
-		} else if ( value instanceof Integer ) {
-			NumberAttributeDefinition defn = getChildDefinition(name, NumberAttributeDefinition.class);
-			attr = new IntegerAttribute(defn);
-		} else if ( value instanceof Date ) { 
-			DateAttributeDefinition defn = getChildDefinition(name, DateAttributeDefinition.class);
-			attr = new DateAttribute(defn);
-		} else if ( value instanceof Time ) { 
-			TimeAttributeDefinition defn = getChildDefinition(name, TimeAttributeDefinition.class);
-			attr = new TimeAttribute(defn);
-		} else {
-			// TODO implement other factory methods
-			throw new UnsupportedOperationException("createAttribute() for "+value.getClass().getName()+" value not implemented");
-		}
-		return attr;
-	}
-	*/
+
 	private Entity createEntity(String name) {
 		EntityDefinition defn = getChildDefinition(name, EntityDefinition.class);
 		Entity entity = new Entity(defn);
@@ -366,6 +381,45 @@ public class Entity extends ModelObject<EntityDefinition> {
 			}
 		}
 //		}
+	}
+
+	// Pre-order depth-first traversal from here down
+	public void traverse(ModelObjectVisitor visitor) {
+		// Initialize stack with root entity
+		ModelObjectStack stack = new ModelObjectStack(this);
+		// While there are still nodes to insert
+		while (!stack.isEmpty()) {
+			// Pop the next list of nodes to insert
+			List<ModelObject<? extends SchemaObjectDefinition>> nodes = stack.pop();
+			// Insert this list in order
+			for (int i=0; i<nodes.size(); i++) {
+				ModelObject<? extends SchemaObjectDefinition> node = nodes.get(i);
+				
+				visitor.visit(node, i);
+				
+				// For entities, add existing child nodes to the stack
+				if (node instanceof Entity) {
+					Entity entity = (Entity) node;
+					List<SchemaObjectDefinition> childDefns = entity.getDefinition().getChildDefinitions();
+					for (SchemaObjectDefinition childDefn : childDefns) {
+						List<ModelObject<? extends SchemaObjectDefinition>> children = entity.getAll(childDefn.getName());
+						if ( children != null ) {
+							stack.push(children);
+						}					
+					}
+				}
+			}
+		}
+	}
+
+	private class ModelObjectStack extends Stack<List<ModelObject<? extends SchemaObjectDefinition>>> {
+		private static final long serialVersionUID = 1L;
+		
+		public ModelObjectStack(Entity root) {
+			ArrayList<ModelObject<? extends SchemaObjectDefinition>> rootList = new ArrayList<ModelObject<? extends SchemaObjectDefinition>>(1);
+			rootList.add(root);
+			push(rootList);
+		}
 	}
 
 //	/**

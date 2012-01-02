@@ -18,7 +18,7 @@ public abstract class ModelObject<D extends SchemaObjectDefinition> {
 	
 	private D definition;
 
-//	private Record record;
+	private Record record;
 	private Entity parent;
 //	private String path;
 //	private String type;
@@ -47,16 +47,33 @@ public abstract class ModelObject<D extends SchemaObjectDefinition> {
 		return this.getDefinition().getName();
 	}
 
+	public Record getRecord() {
+		return record;
+	}
+	
+	protected void setRecord(Record record) {
+		this.record = record;
+	}
+	
 	public Entity getParent() {
 		return this.parent;
 	}
 
 	protected void setParent(Entity parent) {
 		this.parent = parent;
+		if ( parent.getRecord() != null ) {
+			this.record = parent.getRecord();
+		}
 	}
 
 	protected abstract void write(StringWriter sw, int indent);
 
+//	protected void notifyObservers() {
+//		if ( record != null ) {
+//			record.notifyObservers();
+//		}
+//	}
+	
 	@Override
 	public String toString() {
 		StringWriter sw = new StringWriter();

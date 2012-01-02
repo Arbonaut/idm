@@ -10,5 +10,8 @@ public class RealRangeAttribute extends Attribute<RangeAttributeDefinition, Real
 
 	public RealRangeAttribute(RangeAttributeDefinition definition) {
 		super(definition);
+		if ( !definition.isReal() ) {
+			throw new IllegalArgumentException("Attempted to create RealRangeAttribute with integer definition");
+		}
 	}
 }

@@ -37,6 +37,14 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition  {
 		return this.type;
 	}
 
+	public boolean isInteger() {
+		return type == Type.INTEGER;
+	}
+
+	public boolean isReal() {
+		return type == Type.REAL;
+	}
+	
 	public List<Precision> getPrecisionDefinitions() {
 		return Collections.unmodifiableList(this.precisionDefinitions);
 	}

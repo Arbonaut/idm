@@ -5,10 +5,15 @@ package org.openforis.idm.model;
 
 
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.metamodel.Schema;
+import org.openforis.idm.metamodel.SchemaObjectDefinition;
 import org.openforis.idm.metamodel.Survey;
 
 /**
@@ -21,7 +26,10 @@ public class Record {
 	private Survey survey;
 	private ModelVersion modelVersion;
 	private Entity rootEntity;
-	
+	private List<RecordObserver> observers;
+//	private Map<Integer, ModelObject<? extends SchemaObjectDefinition>> modelObjectsById;
+	private int nextId;
+
 	public Record(Survey survey, String rootEntityName, String version) {
 		this.survey = survey;
 		Schema schema = survey.getSchema();
@@ -29,11 +37,16 @@ public class Record {
 		if ( rootEntityDefinition == null ) {
 			throw new IllegalArgumentException("Invalid root entity '"+rootEntity+'"');			
 		}
-		this.rootEntity = new Entity(rootEntityDefinition);
 		this.modelVersion = survey.getVersion(version);
 		if ( modelVersion == null ) {
 			throw new IllegalArgumentException("Invalid version '"+version+'"');
 		}
+		this.rootEntity = new Entity(rootEntityDefinition);
+		this.rootEntity.setRecord(this);
+		this.rootEntity.setId(-1);
+		this.nextId = -2;
+//		this.modelObjectsById = new HashMap<Integer, ModelObject<? extends SchemaObjectDefinition>>();
+		this.observers = new ArrayList<RecordObserver>();
 	}
 	
 	public Integer getId() {
@@ -81,4 +94,29 @@ public class Record {
 		this.listener.onStateChange(modelObject);
 	}
 */
+//
+//	public ModelObject<? extends SchemaObjectDefinition> getModelObjectById(int id) {
+//		return this.modelObjectsById.get(id);
+//	}
+
+	public void addObserver(RecordObserver observer) {
+		observers.add(observer);
+	}
+	
+	public void notifyObservers(ModelObject<?> target, Object... args) {
+//		updateInternal(target);
+		for (RecordObserver observer : observers) {
+			observer.update(target, args);
+		}
+	}
+/*
+	protected void updateInternal(ModelObject<?> target) {
+		modelObjectsById
+		
+	}
+	*/
+
+	protected int nextId() {
+		return nextId--;
+	}
 }

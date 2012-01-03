@@ -41,11 +41,12 @@ public class Record {
 		if ( modelVersion == null ) {
 			throw new IllegalArgumentException("Invalid version '"+version+'"');
 		}
+		this.nodesById = new HashMap<Integer, Node<? extends NodeDefinition>>();
+		
 		this.rootEntity = new Entity(rootEntityDefinition);
 		this.nextId = 1;
 		this.rootEntity.setRecord(this);
 //		this.rootEntity.setId(1);
-		this.nodesById = new HashMap<Integer, Node<? extends NodeDefinition>>();
 		this.observers = new ArrayList<RecordObserver>();
 	}
 	

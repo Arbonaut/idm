@@ -14,7 +14,7 @@ import org.openforis.idm.metamodel.Survey;
 public class EntityTest {
 
 	private static Survey survey;
-	
+
 	@BeforeClass
 	public static void setUp() throws IOException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
@@ -24,46 +24,52 @@ public class EntityTest {
 
 	@Test
 	public void testAddNullAlphanumericCode() {
-		Entity cluster = new Entity(survey.getSchema().getRootEntityDefinition("cluster"));
+		Entity cluster = getRootEntity();
 		cluster.addValue("id", (AlphanumericCode) null);
 	}
-	
-	@Test(expected=ArrayIndexOutOfBoundsException.class)
+
+	@Test(expected = ArrayIndexOutOfBoundsException.class)
 	public void testAddTooManySingleAttributes() {
-		Entity cluster = new Entity(survey.getSchema().getRootEntityDefinition("cluster"));
+		Entity cluster = getRootEntity();
 		cluster.addValue("id", new AlphanumericCode("123_456"));
 		cluster.addValue("id", new AlphanumericCode("789_012"));
 	}
-	
-	@Test(expected=ArrayIndexOutOfBoundsException.class)
+
+	@Test(expected = ArrayIndexOutOfBoundsException.class)
 	public void testAddTooManyMultipleEntities() {
-		Entity cluster = new Entity(survey.getSchema().getRootEntityDefinition("cluster"));
+		Entity cluster = getRootEntity();
 		cluster.addEntity("time_study");
 		cluster.addEntity("time_study");
 		cluster.addEntity("time_study");
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testAddAttributeOnEntity() {
-		Entity cluster = new Entity(survey.getSchema().getRootEntityDefinition("cluster"));
+		Entity cluster = getRootEntity();
 		cluster.addValue("plot", new AlphanumericCode("123_456"));
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testAddEntityOnAttribute() {
-		Entity cluster = new Entity(survey.getSchema().getRootEntityDefinition("cluster"));
+		Entity cluster = getRootEntity();
 		cluster.addEntity("id");
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testAddUndefinedEntity() {
-		Entity cluster = new Entity(survey.getSchema().getRootEntityDefinition("cluster"));
+		Entity cluster = getRootEntity();
 		cluster.addEntity("xxx");
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testAddUndefinedAttribute() {
-		Entity cluster = new Entity(survey.getSchema().getRootEntityDefinition("cluster"));
+		Entity cluster = getRootEntity();
 		cluster.addValue("xxx", 2.0);
+	}
+
+	private Entity getRootEntity() {
+		Record record = new Record(survey, "cluster", "2.0");
+		Entity entity = record.getRootEntity();
+		return entity;
 	}
 }

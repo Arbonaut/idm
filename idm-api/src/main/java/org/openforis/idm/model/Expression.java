@@ -12,7 +12,7 @@ public interface Expression {
 
 	Object evaluate(Record context);
 
-	Object evaluate(ModelObject<? extends NodeDefinition> context);
+	Object evaluate(Node<? extends NodeDefinition> context);
 
-	Iterator<?> Iterate(ModelObject<? extends NodeDefinition> context);
+	Iterator<?> Iterate(Node<? extends NodeDefinition> context);
 }

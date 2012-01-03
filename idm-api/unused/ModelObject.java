@@ -1,12 +1,12 @@
 package org.openforis.idm.model;
 
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public interface ModelObject<D extends SchemaObjectDefinition> {
+public interface Node<D extends NodeDefinition> {
 
 	D getDefinition();
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.model.impl.jxpath;
+package org.openforis.idm.model.jxpath;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,7 @@ import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Entity;
-import org.openforis.idm.model.ModelObject;
+import org.openforis.idm.model.Node;
 
 /**
  * @author M. Togna
@@ -26,13 +26,13 @@ public class ModelPropertyHandler implements DynamicPropertyHandler {
 		Object property = null;
 		if (propertyName.equals("__parent")) {
 			@SuppressWarnings("unchecked")
-			ModelObject<? extends NodeDefinition> o = (ModelObject<? extends NodeDefinition>) object;
+			Node<? extends NodeDefinition> o = (Node<? extends NodeDefinition>) object;
 			property = o.getParent();
 		} else if (object instanceof Entity) {
 			Entity entity = (Entity) object;
-			List<ModelObject<? extends NodeDefinition>> list = new ArrayList<ModelObject<? extends NodeDefinition>>();
+			List<Node<? extends NodeDefinition>> list = new ArrayList<Node<? extends NodeDefinition>>();
 			for (int i = 0; i < entity.getCount(propertyName); i++) {
-				ModelObject<? extends NodeDefinition> e = entity.get(propertyName, i);
+				Node<? extends NodeDefinition> e = entity.get(propertyName, i);
 				list.add(e);
 			}
 			property = Collections.unmodifiableList(list);

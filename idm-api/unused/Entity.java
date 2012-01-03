@@ -3,7 +3,7 @@ package org.openforis.idm.model;
 import java.util.List;
 
 import org.openforis.idm.metamodel.EntityDefinition;
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
 
 /**
  * NOTE: METHODS ARE DRAFT; TO BE IMPLEMENTED AS NEEDED. UNUSED METHODS WILL BE REMOVED.
@@ -11,32 +11,32 @@ import org.openforis.idm.metamodel.SchemaObjectDefinition;
  * @author G. Miceli
  * @author M. Togna
  */
-public interface Entity extends ModelObject<EntityDefinition> {
+public interface Entity extends Node<EntityDefinition> {
 
-	ModelObject<? extends SchemaObjectDefinition> get(String name, int index);
+	Node<? extends NodeDefinition> get(String name, int index);
 
 	/**
 	 * @return Immutable list containing all children with the specified name (entities and attributes), or an empty list if none exist.
 	 */
-	// List<ModelObject<?>> get(String name);
+	// List<Node<?>> get(String name);
 
 	int getCount(String name);
 
 	void move(String name, int oldIndex, int newIndex);
 
-	void add(ModelObject<? extends SchemaObjectDefinition> o);
+	void add(Node<? extends NodeDefinition> o);
 
-	void add(ModelObject<? extends SchemaObjectDefinition> o, int index);
+	void add(Node<? extends NodeDefinition> o, int index);
 
-	ModelObject<? extends SchemaObjectDefinition> remove(String name, int index);
+	Node<? extends NodeDefinition> remove(String name, int index);
 
-	// ModelObject<?> remove(ModelObject<?> o);
+	// Node<?> remove(Node<?> o);
 
 	// void remove(String name);
 
 	// void clear();
 
-	// ModelObject<?> replace(ModelObject<?> o, int index);
+	// Node<?> replace(Node<?> o, int index);
 	
 
 

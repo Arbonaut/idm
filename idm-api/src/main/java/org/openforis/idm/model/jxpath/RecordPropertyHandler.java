@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.model.impl.jxpath;
+package org.openforis.idm.model.jxpath;
 
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.openforis.idm.model.Entity;

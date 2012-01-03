@@ -27,7 +27,7 @@ public class Record {
 	private ModelVersion modelVersion;
 	private Entity rootEntity;
 	private List<RecordObserver> observers;
-	private Map<Integer, ModelObject<? extends NodeDefinition>> modelObjectsById;
+	private Map<Integer, Node<? extends NodeDefinition>> nodesById;
 	private int nextId;
 
 	public Record(Survey survey, String rootEntityName, String version) {
@@ -45,7 +45,7 @@ public class Record {
 		this.nextId = 1;
 		this.rootEntity.setRecord(this);
 //		this.rootEntity.setId(1);
-		this.modelObjectsById = new HashMap<Integer, ModelObject<? extends NodeDefinition>>();
+		this.nodesById = new HashMap<Integer, Node<? extends NodeDefinition>>();
 		this.observers = new ArrayList<RecordObserver>();
 	}
 	
@@ -90,32 +90,32 @@ public class Record {
 //		this.modelVersion = modelVersion;
 //	}
 /*
-	protected void notifyListener(ModelObject<? extends NodeDefinition> modelObject) {
-		this.listener.onStateChange(modelObject);
+	protected void notifyListener(Node<? extends NodeDefinition> node) {
+		this.listener.onStateChange(node);
 	}
 */
 //
-	public ModelObject<? extends NodeDefinition> getModelObjectById(int id) {
-		return this.modelObjectsById.get(id);
+	public Node<? extends NodeDefinition> getNodeById(int id) {
+		return this.nodesById.get(id);
 	}
 
 	public void addObserver(RecordObserver observer) {
 		observers.add(observer);
 	}
 	
-	public void notifyObservers(ModelObject<?> target, Object... args) {
+	public void notifyObservers(Node<?> target, Object... args) {
 //		updateInternal(target);
 		for (RecordObserver observer : observers) {
 			observer.update(target, args);
 		}
 	}
 	
-	protected void put(ModelObject<? extends NodeDefinition> modelObject){
-		this.modelObjectsById.put(modelObject.getId(), modelObject);
+	protected void put(Node<? extends NodeDefinition> node){
+		this.nodesById.put(node.getId(), node);
 	}
 /*
-	protected void updateInternal(ModelObject<?> target) {
-		modelObjectsById
+	protected void updateInternal(Node<?> target) {
+		nodesById
 		
 	}
 	*/

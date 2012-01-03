@@ -12,7 +12,7 @@ import org.openforis.idm.metamodel.NodeDefinition;
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class ModelObject<D extends NodeDefinition> {
+public abstract class Node<D extends NodeDefinition> {
 
 	private Integer id;
 	
@@ -23,7 +23,7 @@ public abstract class ModelObject<D extends NodeDefinition> {
 //	private String path;
 //	private String type;
 
-	public ModelObject(D definition) {
+	public Node(D definition) {
 		if ( definition == null ) {
 			throw new NullPointerException("Null definition");
 		}

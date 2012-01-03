@@ -11,6 +11,6 @@ public interface CardinalityError extends RuleFailure {
 		MIN_COUNT, MAX_COUNT, REQUIRED
 	}
 	
-	NodeDefinition getSchemaObjectDefinition();
+	NodeDefinition getNodeDefinition();
 	Reason getReason();
 }

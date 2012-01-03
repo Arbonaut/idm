@@ -60,8 +60,8 @@ public class SurveyUnmarshallerTest {
 		if (mod instanceof EntityDefinition) {
 			System.err.println(p + "Entity " + mod.getName());
 			List<NodeDefinition> childDefinitions = ((EntityDefinition) mod).getChildDefinitions();
-			for (NodeDefinition schemaObjectDefinition : childDefinitions) {
-				print(schemaObjectDefinition, p + "\t");
+			for (NodeDefinition nodeDefinition : childDefinitions) {
+				print(nodeDefinition, p + "\t");
 			}
 		} else if (mod instanceof AttributeDefinition) {
 			System.out.println("\t" + p + "Attr: " + mod.getName());

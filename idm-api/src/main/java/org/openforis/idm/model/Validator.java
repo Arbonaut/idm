@@ -15,11 +15,11 @@ public class Validator {
 	}
 
 	// @SuppressWarnings("unchecked")
-	// public void validate(ModelObject<? extends NodeDefinition> modelObject, boolean validateChildren, boolean validateDependant) {
-	// if (modelObject instanceof Attribute) {
-	// validate((Attribute<? extends AttributeDefinition, ? extends Value>) modelObject, validateDependant);
-	// } else if (modelObject instanceof Entity) {
-	// validate((Entity) modelObject, validateChildren, validateDependant);
+	// public void validate(Node<? extends NodeDefinition> node, boolean validateChildren, boolean validateDependant) {
+	// if (node instanceof Attribute) {
+	// validate((Attribute<? extends AttributeDefinition, ? extends Value>) node, validateDependant);
+	// } else if (node instanceof Entity) {
+	// validate((Entity) node, validateChildren, validateDependant);
 	// }
 	// }
 /*

@@ -11,7 +11,7 @@ import org.openforis.idm.metamodel.AttributeDefinition;
  * @author M. Togna
  * @author G. Miceli
  */
-public abstract class Attribute<D extends AttributeDefinition, V> extends ModelObject<D> {
+public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D> {
 
 	public Attribute(D definition) {
 		super(definition);

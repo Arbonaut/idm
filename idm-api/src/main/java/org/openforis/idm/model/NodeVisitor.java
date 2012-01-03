@@ -5,8 +5,8 @@ import org.openforis.idm.metamodel.NodeDefinition;
 /**
  * @author G. Miceli
  */
-public interface ModelObjectVisitor {
+public interface NodeVisitor {
 
-	void visit(ModelObject<? extends NodeDefinition> node, int idx);
+	void visit(Node<? extends NodeDefinition> node, int idx);
 
 }

@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
  * @author G. Miceli
  */
-public class SchemaObjectDefinitionTest {
+public class NodeDefinitionTest {
 
 	@Test
 	public void testGetPathAtRoot() {

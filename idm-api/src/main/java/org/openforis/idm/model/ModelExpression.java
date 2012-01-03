@@ -9,8 +9,8 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
-import org.openforis.idm.model.impl.jxpath.ModelPropertyHandler;
-import org.openforis.idm.model.impl.jxpath.RecordPropertyHandler;
+import org.openforis.idm.model.jxpath.ModelPropertyHandler;
+import org.openforis.idm.model.jxpath.RecordPropertyHandler;
 
 /**
  * @author M. Togna
@@ -21,7 +21,7 @@ public class ModelExpression implements Expression {
 	private static JXPathContext CONTEXT;
 
 	static {
-		JXPathIntrospector.registerDynamicClass(ModelObject.class, ModelPropertyHandler.class);
+		JXPathIntrospector.registerDynamicClass(Node.class, ModelPropertyHandler.class);
 		JXPathIntrospector.registerDynamicClass(Record.class, RecordPropertyHandler.class);
 
 		CONTEXT = JXPathContext.newContext(null);
@@ -43,7 +43,7 @@ public class ModelExpression implements Expression {
 	}
 
 	@Override
-	public Object evaluate(ModelObject<? extends NodeDefinition> context) {
+	public Object evaluate(Node<? extends NodeDefinition> context) {
 
 		Iterator<?> iterator = Iterate(context);
 		if (iterator.hasNext()) {
@@ -54,8 +54,8 @@ public class ModelExpression implements Expression {
 	}
 
 	@Override
-	public Iterator<?> Iterate(ModelObject<? extends NodeDefinition> context) {
-		ModelObject<? extends NodeDefinition> parent = context.getParent();
+	public Iterator<?> Iterate(Node<? extends NodeDefinition> context) {
+		Node<? extends NodeDefinition> parent = context.getParent();
 		JXPathContext jxPathContext = JXPathContext.newContext(CONTEXT, parent);
 
 		if (context instanceof Attribute) {

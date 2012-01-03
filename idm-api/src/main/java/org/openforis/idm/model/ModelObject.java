@@ -5,14 +5,14 @@ package org.openforis.idm.model;
 
 import java.io.StringWriter;
 
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
 
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class ModelObject<D extends SchemaObjectDefinition> {
+public abstract class ModelObject<D extends NodeDefinition> {
 
 	private Integer id;
 	

@@ -9,7 +9,7 @@ import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.Pointer;
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
 
 /**
  * @author M. Togna
@@ -20,7 +20,7 @@ public class MetaModelExpression {
 	private static JXPathContext CONTEXT;
 
 	static {
-		JXPathIntrospector.registerDynamicClass(SchemaObjectDefinition.class, ModelObjectDefinitionDynamicPropertyHandler.class);
+		JXPathIntrospector.registerDynamicClass(NodeDefinition.class, ModelObjectDefinitionDynamicPropertyHandler.class);
 
 		CONTEXT = JXPathContext.newContext(null);
 		FunctionLibrary functionLibrary = new FunctionLibrary();
@@ -34,13 +34,13 @@ public class MetaModelExpression {
 		this.setExpression(expression);
 	}
 
-	public Object evaluate(SchemaObjectDefinition schemaObjectDefinition) {
-		SchemaObjectDefinition context = schemaObjectDefinition;
+	public Object evaluate(NodeDefinition nodeDefinition) {
+		NodeDefinition context = nodeDefinition;
 //		if (context.getParentDefinition() != null) {
 //			context = schemaObjectDefinition.getParentDefinition();
 //		}
 		JXPathContext jxPathContext = JXPathContext.newContext(CONTEXT, context);
-		jxPathContext.getVariables().declareVariable("this", schemaObjectDefinition);
+		jxPathContext.getVariables().declareVariable("this", nodeDefinition);
 
 		String expr = this.expression.replaceAll("\\bparent\\(\\)", "__parent");
 		Object result = jxPathContext.getValue(expr);
@@ -60,14 +60,14 @@ public class MetaModelExpression {
 		public static Object parent(ExpressionContext context) {
 			Pointer pointer = context.getContextNodePointer();
 			Object value = pointer.getValue();
-			if ((value != null) && (value instanceof SchemaObjectDefinition)) {
-				return ((SchemaObjectDefinition) value).getParentDefinition();
+			if ((value != null) && (value instanceof NodeDefinition)) {
+				return ((NodeDefinition) value).getParentDefinition();
 			}
 			return null;
 		}
 
-		public static Object parent(ExpressionContext context, SchemaObjectDefinition schemaObjectDefinition) {
-			return schemaObjectDefinition.getParentDefinition();
+		public static Object parent(ExpressionContext context, NodeDefinition nodeDefinition) {
+			return nodeDefinition.getParentDefinition();
 		}
 
 	}

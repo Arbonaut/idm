@@ -56,11 +56,11 @@ public class SurveyUnmarshallerTest {
 //		return survey;
 //	}
 /*
-	private void print(SchemaObjectDefinition mod, String p) {
+	private void print(NodeDefinition mod, String p) {
 		if (mod instanceof EntityDefinition) {
 			System.err.println(p + "Entity " + mod.getName());
-			List<SchemaObjectDefinition> childDefinitions = ((EntityDefinition) mod).getChildDefinitions();
-			for (SchemaObjectDefinition schemaObjectDefinition : childDefinitions) {
+			List<NodeDefinition> childDefinitions = ((EntityDefinition) mod).getChildDefinitions();
+			for (NodeDefinition schemaObjectDefinition : childDefinitions) {
 				print(schemaObjectDefinition, p + "\t");
 			}
 		} else if (mod instanceof AttributeDefinition) {
@@ -74,9 +74,9 @@ public class SurveyUnmarshallerTest {
 //		Survey survey = getSurvey();
 //		EntityDefinition entityDefinition = (EntityDefinition) survey.getSchema().getRootEntityDefinitions().get(0);
 //		EntityDefinition plot = (EntityDefinition) entityDefinition.getChildDefinition("plot");
-//		SchemaObjectDefinition dbh = plot.get("plot/tree/dbh");
+//		NodeDefinition dbh = plot.get("plot/tree/dbh");
 //		System.out.println(dbh.getName());
-//		SchemaObjectDefinition m2 = dbh.get("parent()");
+//		NodeDefinition m2 = dbh.get("parent()");
 //		System.out.println(m2.getName());
 
 		// Pointer pointer = jxPathContext.getPointer ("../");

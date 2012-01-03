@@ -36,7 +36,7 @@ public class MetaModelExpressionTest {
 	public void testExpression() {
 		EntityDefinition cluster = survey.getSchema().getRootEntityDefinitions().get(0);
 
-		MetaModelExpression expression = new MetaModelExpression("plot/tree");
+		SchemaExpression expression = new SchemaExpression("plot/tree");
 		Object obj = expression.evaluate(cluster);
 		assertEquals(EntityDefinition.class, obj.getClass());
 

@@ -28,17 +28,17 @@ public class Schema  {
 	private List<EntityDefinition> rootEntityDefinitions;
 
 	@XmlTransient
-	private Map<String, SchemaObjectDefinition> definitionsByPath;
+	private Map<String, NodeDefinition> definitionsByPath;
 
 	@XmlTransient
-	private Map<Integer, SchemaObjectDefinition> definitionsById;
+	private Map<Integer, NodeDefinition> definitionsById;
 	
 	@XmlTransient
 	private Survey survey;
 	
 	public Schema() {
-		definitionsByPath = new HashMap<String, SchemaObjectDefinition>(); 
-		definitionsById = new HashMap<Integer, SchemaObjectDefinition>(); 
+		definitionsByPath = new HashMap<String, NodeDefinition>(); 
+		definitionsById = new HashMap<Integer, NodeDefinition>(); 
 	}
 	
 	public Survey getSurvey() {
@@ -49,20 +49,20 @@ public class Schema  {
 		this.survey = survey;
 	}
 	
-	public SchemaObjectDefinition getByPath(String absolutePath) {
+	public NodeDefinition getByPath(String absolutePath) {
 		return definitionsByPath.get(absolutePath);
 	}
 	
-	public SchemaObjectDefinition getById(int id) {
+	public NodeDefinition getById(int id) {
 		return definitionsById.get(id);
 	}
 	
-	protected void indexByPath(SchemaObjectDefinition definition) {
+	protected void indexByPath(NodeDefinition definition) {
 		String path = definition.getPath();
 		definitionsByPath.put(path, definition);
 	}
 
-	protected void indexById(SchemaObjectDefinition definition) {
+	protected void indexById(NodeDefinition definition) {
 		Integer id = definition.getId();
 		if ( id != null ) {
 			definitionsById.put(id, definition);
@@ -73,7 +73,7 @@ public class Schema  {
 		return Collections.unmodifiableSet(definitionsByPath.keySet());
 	}
 
-	public Collection<SchemaObjectDefinition> getDefinitions() {
+	public Collection<NodeDefinition> getDefinitions() {
 		return Collections.unmodifiableCollection(definitionsByPath.values());
 	}
 	

@@ -197,8 +197,8 @@ public class Survey {
 				if ( target instanceof CodeListItem ) {
 					beforeUnmarshal((CodeListItem) target, parent);
 				}
-				if (target instanceof SchemaObjectDefinition ) {
-					beforeUnmarshal((SchemaObjectDefinition) target, parent);
+				if (target instanceof NodeDefinition ) {
+					beforeUnmarshal((NodeDefinition) target, parent);
 				}
 				if (target instanceof CodingScheme) {
 					beforeUnmarshal((CodingScheme) target, parent);
@@ -211,7 +211,7 @@ public class Survey {
 			}
 		}
 		
-		private void beforeUnmarshal(SchemaObjectDefinition target, Object parent) {
+		private void beforeUnmarshal(NodeDefinition target, Object parent) {
 			if ( parent instanceof EntityDefinition ) { 
 				target.setParentDefinition((EntityDefinition) parent);
 			} else {
@@ -249,12 +249,12 @@ public class Survey {
 
 		@Override
 		public void afterUnmarshal(Object target, Object parent) {
-			if (target instanceof SchemaObjectDefinition ) {
-				afterUnmarshal((SchemaObjectDefinition) target, parent);
+			if (target instanceof NodeDefinition ) {
+				afterUnmarshal((NodeDefinition) target, parent);
 			}
 		}
 		
-		private void afterUnmarshal(SchemaObjectDefinition target, Object parent) {
+		private void afterUnmarshal(NodeDefinition target, Object parent) {
 			target.getSchema().indexByPath(target);
 		}
 

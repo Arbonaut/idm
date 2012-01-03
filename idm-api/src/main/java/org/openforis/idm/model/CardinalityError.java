@@ -1,6 +1,6 @@
 package org.openforis.idm.model;
 
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
 
 /**
  * @author G. Miceli
@@ -11,6 +11,6 @@ public interface CardinalityError extends RuleFailure {
 		MIN_COUNT, MAX_COUNT, REQUIRED
 	}
 	
-	SchemaObjectDefinition getSchemaObjectDefinition();
+	NodeDefinition getSchemaObjectDefinition();
 	Reason getReason();
 }

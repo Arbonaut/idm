@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
-public class EntityDefinition extends SchemaObjectDefinition {
+public class EntityDefinition extends NodeDefinition {
 
 	@XmlElements({
 		@XmlElement(name = "entity",     type = EntityDefinition.class), 
@@ -34,15 +34,15 @@ public class EntityDefinition extends SchemaObjectDefinition {
 		@XmlElement(name = "coordinate", type = CoordinateAttributeDefinition.class), 
 		@XmlElement(name = "code",       type = CodeAttributeDefinition.class),
 		@XmlElement(name = "text",       type = TextAttributeDefinition.class) })
-	private List<SchemaObjectDefinition> childDefinitions;
+	private List<NodeDefinition> childDefinitions;
 
-	public List<SchemaObjectDefinition> getChildDefinitions() {
+	public List<NodeDefinition> getChildDefinitions() {
 		return Collections.unmodifiableList(childDefinitions);
 	}
 	
-	public SchemaObjectDefinition getChildDefinition(String name) {
+	public NodeDefinition getChildDefinition(String name) {
 		if (childDefinitions != null) {
-			for (SchemaObjectDefinition childDefinition : childDefinitions) {
+			for (NodeDefinition childDefinition : childDefinitions) {
 				if (childDefinition.getName().equals(name)) {
 					return childDefinition;
 				}

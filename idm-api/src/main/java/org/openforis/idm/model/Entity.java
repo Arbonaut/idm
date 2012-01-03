@@ -17,7 +17,7 @@ import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.DateAttributeDefinition;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
 
 /**
@@ -27,11 +27,11 @@ import org.openforis.idm.metamodel.TimeAttributeDefinition;
  */
 public class Entity extends ModelObject<EntityDefinition> {
 
-	private Map<String, List<ModelObject<? extends SchemaObjectDefinition>>> childrenByName;
+	private Map<String, List<ModelObject<? extends NodeDefinition>>> childrenByName;
 
 	public Entity(EntityDefinition definition) {
 		super(definition);
-		this.childrenByName = new HashMap<String, List<ModelObject<? extends SchemaObjectDefinition>>>();
+		this.childrenByName = new HashMap<String, List<ModelObject<? extends NodeDefinition>>>();
 	}
 
 	/**
@@ -139,8 +139,8 @@ public class Entity extends ModelObject<EntityDefinition> {
 
 	// TODO other addXXX and setXXX methods
 
-	public ModelObject<? extends SchemaObjectDefinition> get(String name, int index) {
-		List<ModelObject<? extends SchemaObjectDefinition>> list = childrenByName.get(name);
+	public ModelObject<? extends NodeDefinition> get(String name, int index) {
+		List<ModelObject<? extends NodeDefinition>> list = childrenByName.get(name);
 		if (list == null) {
 			return null;
 		} else {
@@ -154,7 +154,7 @@ public class Entity extends ModelObject<EntityDefinition> {
 	}
 */
 	public int getCount(String name) {
-		List<ModelObject<? extends SchemaObjectDefinition>> list = childrenByName.get(name);
+		List<ModelObject<? extends NodeDefinition>> list = childrenByName.get(name);
 		return list == null ? 0 : list.size();
 	}
 
@@ -190,21 +190,21 @@ public class Entity extends ModelObject<EntityDefinition> {
 	}
 
 	public void move(String name, int oldIndex, int newIndex) {
-		List<ModelObject<? extends SchemaObjectDefinition>> list = childrenByName.get(name);
+		List<ModelObject<? extends NodeDefinition>> list = childrenByName.get(name);
 		if ( list != null ) {
-			ModelObject<? extends SchemaObjectDefinition> obj = list.remove(oldIndex);
+			ModelObject<? extends NodeDefinition> obj = list.remove(oldIndex);
 			list.add(newIndex, obj);
 		}
 //		updateList(newIndex, name);
 	}
 
 	
-	public ModelObject<? extends SchemaObjectDefinition> remove(String name, int index) {
-		List<ModelObject<? extends SchemaObjectDefinition>> list = childrenByName.get(name);
+	public ModelObject<? extends NodeDefinition> remove(String name, int index) {
+		List<ModelObject<? extends NodeDefinition>> list = childrenByName.get(name);
 		if ( list == null ) {
 			return null;
 		} else {
-			ModelObject<? extends SchemaObjectDefinition> modelObject = list.remove(index);
+			ModelObject<? extends NodeDefinition> modelObject = list.remove(index);
 //		this.updateList(index, name);
 			return modelObject;
 		}
@@ -232,19 +232,19 @@ public class Entity extends ModelObject<EntityDefinition> {
 		}
 		
 		// Get child definition and name
-		SchemaObjectDefinition defn = o.getDefinition();
+		NodeDefinition defn = o.getDefinition();
 		String name = defn.getName();
 		
 		// Get child's definition and check schema object definition is the same
-		SchemaObjectDefinition childDefn = getDefinition().getChildDefinition(name);
+		NodeDefinition childDefn = getDefinition().getChildDefinition(name);
 		if ( defn != childDefn ) {
 			throw new IllegalArgumentException("Cannot add object; definitions do not match");
 		}
 		
 		// Get or create list containing children
-		List<ModelObject<? extends SchemaObjectDefinition>> children = childrenByName.get(name);
+		List<ModelObject<? extends NodeDefinition>> children = childrenByName.get(name);
 		if (children == null) {
-			children = new ArrayList<ModelObject<? extends SchemaObjectDefinition>>();
+			children = new ArrayList<ModelObject<? extends NodeDefinition>>();
 			childrenByName.put(name, children);
 		}
 
@@ -268,9 +268,9 @@ public class Entity extends ModelObject<EntityDefinition> {
 	}
 	
 	// TODO Naming: ModelObject vs SchemaObject? 
-	private <T extends ModelObject<D>, D extends SchemaObjectDefinition> T createModelObject(String name, Class<T> type, Class<D> definitionType) {
+	private <T extends ModelObject<D>, D extends NodeDefinition> T createModelObject(String name, Class<T> type, Class<D> definitionType) {
 		try {
-			SchemaObjectDefinition definition = getChildDefinition(name, definitionType);
+			NodeDefinition definition = getChildDefinition(name, definitionType);
 			return type.getConstructor(definitionType).newInstance(definition);
 		} catch (SecurityException e) {
 			throw new RuntimeException(e);
@@ -299,8 +299,8 @@ public class Entity extends ModelObject<EntityDefinition> {
 	 * Get child definition
 	 * @throws IllegalArgumentException if not defined in model
 	 */
-	private SchemaObjectDefinition getChildDefinition(String name) {
-		SchemaObjectDefinition childDefinition = getDefinition().getChildDefinition(name);
+	private NodeDefinition getChildDefinition(String name) {
+		NodeDefinition childDefinition = getDefinition().getChildDefinition(name);
 		if ( childDefinition == null ) {
 			throw new IllegalArgumentException("Undefined schema object "+getDefinition().getPath()+"/"+name);
 		}
@@ -313,15 +313,15 @@ public class Entity extends ModelObject<EntityDefinition> {
 	 */
 	@SuppressWarnings("unchecked")
 	private <T> T getChildDefinition(String name, Class<T> definitionClass) {
-		SchemaObjectDefinition childDefinition = getChildDefinition(name);
+		NodeDefinition childDefinition = getChildDefinition(name);
 		if ( !childDefinition.getClass().isAssignableFrom(definitionClass) ) {
 			throw new IllegalArgumentException(childDefinition.getPath()+" is not a "+definitionClass.getSimpleName());			
 		}
 		return (T) childDefinition;
 	}
 
-	public List<ModelObject<? extends SchemaObjectDefinition>> getAll(String name) {
-		List<ModelObject<? extends SchemaObjectDefinition>> children = childrenByName.get(name);
+	public List<ModelObject<? extends NodeDefinition>> getAll(String name) {
+		List<ModelObject<? extends NodeDefinition>> children = childrenByName.get(name);
 		return children == null ? null : Collections.unmodifiableList(children);
 	}
 
@@ -336,25 +336,25 @@ public class Entity extends ModelObject<EntityDefinition> {
 	// }
 
 	// 
-	// public ModelObject<? extends SchemaObjectDefinition> set(ModelObject<? extends SchemaObjectDefinition> o, int index) {
+	// public ModelObject<? extends NodeDefinition> set(ModelObject<? extends NodeDefinition> o, int index) {
 	// this.beforeUpdate(o);
 	// String name = o.getDefinition().getName();
-	// List<ModelObject<? extends SchemaObjectDefinition>> list = this.get(name);
-	// ModelObject<? extends SchemaObjectDefinition> object = list.set(index, o);
+	// List<ModelObject<? extends NodeDefinition>> list = this.get(name);
+	// ModelObject<? extends NodeDefinition> object = list.set(index, o);
 	//
 	// this.updateList(index, name);
 	//
 	// return object;
 	// }
 
-/*	private void beforeUpdate(ModelObject<? extends SchemaObjectDefinition> o) {
-		((ModelObject<? extends SchemaObjectDefinition>) o).setRecord(this.getRecord());
+/*	private void beforeUpdate(ModelObject<? extends NodeDefinition> o) {
+		((ModelObject<? extends NodeDefinition>) o).setRecord(this.getRecord());
 	}
 
 	private void updateList(int fromIndex, String name) {
-		List<ModelObject<? extends SchemaObjectDefinition>> list = this.children.get(name);
+		List<ModelObject<? extends NodeDefinition>> list = this.children.get(name);
 		for (int i = fromIndex; i < list.size(); i++) {
-			ModelObject<? extends SchemaObjectDefinition> modelObject = (ModelObject<? extends SchemaObjectDefinition>) list.get(i);
+			ModelObject<? extends NodeDefinition> modelObject = (ModelObject<? extends NodeDefinition>) list.get(i);
 			modelObject.setPath(this.getPath() + "/" + name + "[" + i + "]");
 		}
 	}
@@ -367,13 +367,13 @@ public class Entity extends ModelObject<EntityDefinition> {
 		}
 		sw.append(getName());
 		sw.append(":\n");
-//		List<ModelObject<? extends SchemaObjectDefinition>> children = getChildren();
-//		for (ModelObject<? extends SchemaObjectDefinition> child : children) {
-		List<SchemaObjectDefinition> definitions = getDefinition().getChildDefinitions();
-		for (SchemaObjectDefinition defn : definitions) {
-			List<ModelObject<? extends SchemaObjectDefinition>> children = childrenByName.get(defn.getName());
+//		List<ModelObject<? extends NodeDefinition>> children = getChildren();
+//		for (ModelObject<? extends NodeDefinition> child : children) {
+		List<NodeDefinition> definitions = getDefinition().getChildDefinitions();
+		for (NodeDefinition defn : definitions) {
+			List<ModelObject<? extends NodeDefinition>> children = childrenByName.get(defn.getName());
 			if ( children != null ) {
-				for (ModelObject<? extends SchemaObjectDefinition> child : children) {
+				for (ModelObject<? extends NodeDefinition> child : children) {
 					child.write(sw, indent+1);
 				}
 			}
@@ -388,19 +388,19 @@ public class Entity extends ModelObject<EntityDefinition> {
 		// While there are still nodes to insert
 		while (!stack.isEmpty()) {
 			// Pop the next list of nodes to insert
-			List<ModelObject<? extends SchemaObjectDefinition>> nodes = stack.pop();
+			List<ModelObject<? extends NodeDefinition>> nodes = stack.pop();
 			// Insert this list in order
 			for (int i=0; i<nodes.size(); i++) {
-				ModelObject<? extends SchemaObjectDefinition> node = nodes.get(i);
+				ModelObject<? extends NodeDefinition> node = nodes.get(i);
 				
 				visitor.visit(node, i);
 				
 				// For entities, add existing child nodes to the stack
 				if (node instanceof Entity) {
 					Entity entity = (Entity) node;
-					List<SchemaObjectDefinition> childDefns = entity.getDefinition().getChildDefinitions();
-					for (SchemaObjectDefinition childDefn : childDefns) {
-						List<ModelObject<? extends SchemaObjectDefinition>> children = entity.getAll(childDefn.getName());
+					List<NodeDefinition> childDefns = entity.getDefinition().getChildDefinitions();
+					for (NodeDefinition childDefn : childDefns) {
+						List<ModelObject<? extends NodeDefinition>> children = entity.getAll(childDefn.getName());
 						if ( children != null ) {
 							stack.push(children);
 						}					
@@ -410,11 +410,11 @@ public class Entity extends ModelObject<EntityDefinition> {
 		}
 	}
 
-	private class ModelObjectStack extends Stack<List<ModelObject<? extends SchemaObjectDefinition>>> {
+	private class ModelObjectStack extends Stack<List<ModelObject<? extends NodeDefinition>>> {
 		private static final long serialVersionUID = 1L;
 		
 		public ModelObjectStack(Entity root) {
-			ArrayList<ModelObject<? extends SchemaObjectDefinition>> rootList = new ArrayList<ModelObject<? extends SchemaObjectDefinition>>(1);
+			ArrayList<ModelObject<? extends NodeDefinition>> rootList = new ArrayList<ModelObject<? extends NodeDefinition>>(1);
 			rootList.add(root);
 			push(rootList);
 		}
@@ -424,13 +424,13 @@ public class Entity extends ModelObject<EntityDefinition> {
 //	 * 
 //	 * @return Unmodifiable list of child instances, sorted by their schema order.
 //	 */
-//	public List<ModelObject<? extends SchemaObjectDefinition>> getChildren() {
-//		List<ModelObject<? extends SchemaObjectDefinition>> result = new ArrayList<ModelObject<? extends SchemaObjectDefinition>>(); 
-//		List<SchemaObjectDefinition> definitions = getDefinition().getChildDefinitions();
-//		for (SchemaObjectDefinition defn : definitions) {
-//			List<ModelObject<? extends SchemaObjectDefinition>> children = childrenByName.get(defn.getName());
+//	public List<ModelObject<? extends NodeDefinition>> getChildren() {
+//		List<ModelObject<? extends NodeDefinition>> result = new ArrayList<ModelObject<? extends NodeDefinition>>(); 
+//		List<NodeDefinition> definitions = getDefinition().getChildDefinitions();
+//		for (NodeDefinition defn : definitions) {
+//			List<ModelObject<? extends NodeDefinition>> children = childrenByName.get(defn.getName());
 //			if ( children != null ) {
-//				for (ModelObject<? extends SchemaObjectDefinition> child : children) {
+//				for (ModelObject<? extends NodeDefinition> child : children) {
 //					result.add(child);
 //				}
 //			}

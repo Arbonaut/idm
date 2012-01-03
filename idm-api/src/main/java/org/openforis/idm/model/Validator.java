@@ -15,7 +15,7 @@ public class Validator {
 	}
 
 	// @SuppressWarnings("unchecked")
-	// public void validate(ModelObject<? extends SchemaObjectDefinition> modelObject, boolean validateChildren, boolean validateDependant) {
+	// public void validate(ModelObject<? extends NodeDefinition> modelObject, boolean validateChildren, boolean validateDependant) {
 	// if (modelObject instanceof Attribute) {
 	// validate((Attribute<? extends AttributeDefinition, ? extends Value>) modelObject, validateDependant);
 	// } else if (modelObject instanceof Entity) {

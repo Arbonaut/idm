@@ -11,7 +11,7 @@ public class SchemaObjectDefinitionTest {
 
 	@Test
 	public void testGetPathAtRoot() {
-		SchemaObjectDefinition mock = mock(SchemaObjectDefinition.class);
+		NodeDefinition mock = mock(NodeDefinition.class);
 		
 		when(mock.getName()).thenReturn("cluster");
 		doCallRealMethod().when(mock).getPath();
@@ -23,7 +23,7 @@ public class SchemaObjectDefinitionTest {
 	@Test
 	public void testGetPathAtSecondLevel() {
 		EntityDefinition parentMock = mock(EntityDefinition.class);
-		SchemaObjectDefinition mock = mock(SchemaObjectDefinition.class);
+		NodeDefinition mock = mock(NodeDefinition.class);
 		
 		when(parentMock.getName()).thenReturn("cluster");
 		when(mock.getName()).thenReturn("plot");

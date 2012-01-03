@@ -2,7 +2,7 @@ package org.openforis.idm.model;
 
 import java.util.Iterator;
 
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
 
 /**
  * @author G. Miceli
@@ -12,7 +12,7 @@ public interface Expression {
 
 	Object evaluate(Record context);
 
-	Object evaluate(ModelObject<? extends SchemaObjectDefinition> context);
+	Object evaluate(ModelObject<? extends NodeDefinition> context);
 
-	Iterator<?> Iterate(ModelObject<? extends SchemaObjectDefinition> context);
+	Iterator<?> Iterate(ModelObject<? extends NodeDefinition> context);
 }

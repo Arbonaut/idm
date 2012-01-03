@@ -13,7 +13,7 @@ import java.util.Map;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.metamodel.Schema;
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Survey;
 
 /**
@@ -27,7 +27,7 @@ public class Record {
 	private ModelVersion modelVersion;
 	private Entity rootEntity;
 	private List<RecordObserver> observers;
-	private Map<Integer, ModelObject<? extends SchemaObjectDefinition>> modelObjectsById;
+	private Map<Integer, ModelObject<? extends NodeDefinition>> modelObjectsById;
 	private int nextId;
 
 	public Record(Survey survey, String rootEntityName, String version) {
@@ -45,7 +45,7 @@ public class Record {
 		this.nextId = 1;
 		this.rootEntity.setRecord(this);
 //		this.rootEntity.setId(1);
-		this.modelObjectsById = new HashMap<Integer, ModelObject<? extends SchemaObjectDefinition>>();
+		this.modelObjectsById = new HashMap<Integer, ModelObject<? extends NodeDefinition>>();
 		this.observers = new ArrayList<RecordObserver>();
 	}
 	
@@ -90,12 +90,12 @@ public class Record {
 //		this.modelVersion = modelVersion;
 //	}
 /*
-	protected void notifyListener(ModelObject<? extends SchemaObjectDefinition> modelObject) {
+	protected void notifyListener(ModelObject<? extends NodeDefinition> modelObject) {
 		this.listener.onStateChange(modelObject);
 	}
 */
 //
-	public ModelObject<? extends SchemaObjectDefinition> getModelObjectById(int id) {
+	public ModelObject<? extends NodeDefinition> getModelObjectById(int id) {
 		return this.modelObjectsById.get(id);
 	}
 
@@ -110,7 +110,7 @@ public class Record {
 		}
 	}
 	
-	protected void put(ModelObject<? extends SchemaObjectDefinition> modelObject){
+	protected void put(ModelObject<? extends NodeDefinition> modelObject){
 		this.modelObjectsById.put(modelObject.getId(), modelObject);
 	}
 /*

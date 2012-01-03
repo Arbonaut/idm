@@ -8,7 +8,7 @@ import java.util.Iterator;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.openforis.idm.metamodel.AttributeDefinition;
-import org.openforis.idm.metamodel.SchemaObjectDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.impl.jxpath.ModelPropertyHandler;
 import org.openforis.idm.model.impl.jxpath.RecordPropertyHandler;
 
@@ -43,7 +43,7 @@ public class ModelExpression implements Expression {
 	}
 
 	@Override
-	public Object evaluate(ModelObject<? extends SchemaObjectDefinition> context) {
+	public Object evaluate(ModelObject<? extends NodeDefinition> context) {
 
 		Iterator<?> iterator = Iterate(context);
 		if (iterator.hasNext()) {
@@ -54,8 +54,8 @@ public class ModelExpression implements Expression {
 	}
 
 	@Override
-	public Iterator<?> Iterate(ModelObject<? extends SchemaObjectDefinition> context) {
-		ModelObject<? extends SchemaObjectDefinition> parent = context.getParent();
+	public Iterator<?> Iterate(ModelObject<? extends NodeDefinition> context) {
+		ModelObject<? extends NodeDefinition> parent = context.getParent();
 		JXPathContext jxPathContext = JXPathContext.newContext(CONTEXT, parent);
 
 		if (context instanceof Attribute) {

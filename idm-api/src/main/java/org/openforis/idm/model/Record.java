@@ -27,7 +27,7 @@ public class Record {
 	private ModelVersion modelVersion;
 	private Entity rootEntity;
 	private List<RecordObserver> observers;
-//	private Map<Integer, ModelObject<? extends SchemaObjectDefinition>> modelObjectsById;
+	private Map<Integer, ModelObject<? extends SchemaObjectDefinition>> modelObjectsById;
 	private int nextId;
 
 	public Record(Survey survey, String rootEntityName, String version) {
@@ -42,10 +42,10 @@ public class Record {
 			throw new IllegalArgumentException("Invalid version '"+version+'"');
 		}
 		this.rootEntity = new Entity(rootEntityDefinition);
+		this.nextId = 1;
 		this.rootEntity.setRecord(this);
-		this.rootEntity.setId(-1);
-		this.nextId = -2;
-//		this.modelObjectsById = new HashMap<Integer, ModelObject<? extends SchemaObjectDefinition>>();
+//		this.rootEntity.setId(1);
+		this.modelObjectsById = new HashMap<Integer, ModelObject<? extends SchemaObjectDefinition>>();
 		this.observers = new ArrayList<RecordObserver>();
 	}
 	
@@ -95,9 +95,9 @@ public class Record {
 	}
 */
 //
-//	public ModelObject<? extends SchemaObjectDefinition> getModelObjectById(int id) {
-//		return this.modelObjectsById.get(id);
-//	}
+	public ModelObject<? extends SchemaObjectDefinition> getModelObjectById(int id) {
+		return this.modelObjectsById.get(id);
+	}
 
 	public void addObserver(RecordObserver observer) {
 		observers.add(observer);
@@ -109,6 +109,10 @@ public class Record {
 			observer.update(target, args);
 		}
 	}
+	
+	protected void put(ModelObject<? extends SchemaObjectDefinition> modelObject){
+		this.modelObjectsById.put(modelObject.getId(), modelObject);
+	}
 /*
 	protected void updateInternal(ModelObject<?> target) {
 		modelObjectsById
@@ -117,6 +121,6 @@ public class Record {
 	*/
 
 	protected int nextId() {
-		return nextId--;
+		return nextId++;
 	}
 }

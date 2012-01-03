@@ -34,11 +34,6 @@ public abstract class ModelObject<D extends SchemaObjectDefinition> {
 		return id;
 	}
 	
-	// TODO encapsulate better?
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
 	public D getDefinition() {
 		return this.definition;
 	}
@@ -53,6 +48,8 @@ public abstract class ModelObject<D extends SchemaObjectDefinition> {
 	
 	protected void setRecord(Record record) {
 		this.record = record;
+		this.id = record.nextId();
+		record.put(this);
 	}
 	
 	public Entity getParent() {
@@ -62,7 +59,7 @@ public abstract class ModelObject<D extends SchemaObjectDefinition> {
 	protected void setParent(Entity parent) {
 		this.parent = parent;
 		if ( parent.getRecord() != null ) {
-			this.record = parent.getRecord();
+			setRecord(parent.getRecord());
 		}
 	}
 

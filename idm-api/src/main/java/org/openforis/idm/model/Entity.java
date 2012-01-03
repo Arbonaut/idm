@@ -227,6 +227,9 @@ public class Entity extends ModelObject<EntityDefinition> {
 	 */
 	private <T extends ModelObject<?>> T addInternal(T o, Integer idx) {
 		Record record = getRecord();
+		if (record  == null) {
+			throw new IllegalStateException("Cannot add object to a detached entity");
+		}
 		
 		// Get child definition and name
 		SchemaObjectDefinition defn = o.getDefinition();
@@ -261,11 +264,6 @@ public class Entity extends ModelObject<EntityDefinition> {
 		
 		o.setParent(this);
 		
-		// If attached to record, set id 
-		if ( record != null ) {
-			int id = record.nextId();
-			o.setId(id);
-		}
 		return o;
 	}
 	

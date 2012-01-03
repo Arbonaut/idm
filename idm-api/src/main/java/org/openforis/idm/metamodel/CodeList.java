@@ -91,6 +91,14 @@ public class CodeList extends Versionable {
 		}
 	}
 
+	public boolean isAlphanumeric() {
+		return getCodeType() == CodeType.ALPHANUMERIC;
+	}
+
+	public boolean isNumeric() {
+		return getCodeType() == CodeType.NUMERIC;
+	}
+	
 	public Survey getSurvey() {
 		return survey;
 	}

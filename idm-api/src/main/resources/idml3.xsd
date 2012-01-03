@@ -372,13 +372,14 @@
                         </xs:documentation>
                       </xs:annotation>
                     </xs:element>
-                    <xs:element name="codingScheme" minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="codingScheme" minOccurs="0" maxOccurs="1">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          Optionally, multiple coding schemes may be used in the same list.  For example, a code list may have an ISO standard code, an custom alphanumeric code and a custom numeric code.  This element is used to define the details of these schemes.    
+                          Additional settings on how code values are to be treated and interpreted.     
                         </xs:documentation>
                       </xs:annotation>
                       <xs:complexType>
+                        <!--
                         <xs:sequence>
                           <xs:element name="label" maxOccurs="unbounded" minOccurs="0"
                             type="unformattedText">
@@ -404,6 +405,7 @@
                             </xs:documentation>
                           </xs:annotation>
                         </xs:attribute>
+                        -->
                         <xs:attribute name="scope" use="optional" default="scheme">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
@@ -454,6 +456,7 @@
                             </xs:restriction>
                           </xs:simpleType>
                         </xs:attribute>
+                        <!--
                         <xs:attribute name="default" type="xs:boolean">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
@@ -475,6 +478,7 @@
                             </xs:documentation>
                           </xs:annotation>
                         </xs:attribute>
+                        -->
                       </xs:complexType>
                     </xs:element>
                     <xs:element name="hierarchy" minOccurs="0">

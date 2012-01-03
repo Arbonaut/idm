@@ -12,20 +12,23 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "qualifiable", "sinceVersionName", "deprecatedVersionName", "codes", "labels", "descriptions", "childItems" })
+@XmlType(name = "", propOrder = { "qualifiable", "sinceVersionName", "deprecatedVersionName", "code", "labels", "descriptions", "childItems" })
 public class CodeListItem extends Versionable {
 
 	@XmlAttribute(name = "qualifiable")
 	private Boolean qualifiable;
 
-	@XmlElement(name = "code", type = CodeDefinition.class)
-	private List<CodeDefinition> codes;
+	@XmlElement(name = "code")
+	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	private String code;
 
 	@XmlElement(name = "label", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> labels;
@@ -46,8 +49,8 @@ public class CodeListItem extends Versionable {
 		return qualifiable == null ? false : qualifiable;
 	}
 
-	public List<CodeDefinition> getCodes() {
-		return Collections.unmodifiableList(this.codes);
+	public String getCode() {
+		return code;
 	}
 
 	public List<LanguageSpecificText> getLabels() {

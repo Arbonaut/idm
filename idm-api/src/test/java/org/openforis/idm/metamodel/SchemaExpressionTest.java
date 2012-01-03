@@ -15,7 +15,7 @@ import org.junit.Test;
  * @author M. Togna
  * 
  */
-public class MetaModelExpressionTest {
+public class SchemaExpressionTest {
 
 	private static Survey survey;
 

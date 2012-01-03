@@ -188,9 +188,6 @@ public class Survey {
 				if ( target instanceof Schema ) {
 					beforeUnmarshal((Schema) target, parent);
 				}
-				if ( target instanceof CodeDefinition  ) {
-					beforeUnmarshal((CodeDefinition) target, parent);
-				} 
 				if ( target instanceof CodeList ) {
 					beforeUnmarshal((CodeList) target, parent);
 				}
@@ -199,9 +196,6 @@ public class Survey {
 				}
 				if (target instanceof NodeDefinition ) {
 					beforeUnmarshal((NodeDefinition) target, parent);
-				}
-				if (target instanceof CodingScheme) {
-					beforeUnmarshal((CodingScheme) target, parent);
 				}
 				if (target instanceof Precision) {
 					beforeUnmarshal((Precision) target, parent);
@@ -219,10 +213,6 @@ public class Survey {
 			}
 		}
 
-		private void beforeUnmarshal(CodeDefinition target, Object parent) {
-			target.setParentItem((CodeListItem) parent);
-		}
-
 		private void beforeUnmarshal(CodeList target, Object parent) {
 			target.setSurvey((Survey) parent);
 		}
@@ -237,10 +227,6 @@ public class Survey {
 
 		private void beforeUnmarshal(Schema target, Object parent) {
 			target.setSurvey((Survey) parent);
-		}
-
-		private void beforeUnmarshal(CodingScheme target, Object parent) {
-			target.setList((CodeList) parent);
 		}
 
 		private void beforeUnmarshal(Precision target, Object parent) {

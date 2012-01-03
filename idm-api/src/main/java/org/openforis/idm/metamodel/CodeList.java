@@ -10,15 +10,25 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingSchemes", "hierarchy", "items" })
+@XmlType(name = "", propOrder = { "name", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
 public class CodeList extends Versionable {
-	
+
+	public enum CodeType {
+		NUMERIC, ALPHANUMERIC
+	}
+
+	public enum CodeScope {
+		SCHEME, LOCAL
+	}
+
 	@XmlTransient
 	private Survey survey;
 
@@ -31,8 +41,11 @@ public class CodeList extends Versionable {
 	@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
+//	@XmlElement(name = "codingScheme", type = CodingScheme.class)
+//	private List<CodingScheme> codingSchemes;
+
 	@XmlElement(name = "codingScheme", type = CodingScheme.class)
-	private List<CodingScheme> codingSchemes;
+	private CodingScheme codingScheme;
 
 	@XmlElement(name = "level", type = CodeListLevel.class)
 	@XmlElementWrapper(name = "hierarchy")
@@ -54,10 +67,6 @@ public class CodeList extends Versionable {
 		return Collections.unmodifiableList(this.descriptions);
 	}
 
-	public List<CodingScheme> getCodingSchemes() {
-		return Collections.unmodifiableList(this.codingSchemes);
-	}
-
 	public List<CodeListLevel> getHierarchy() {
 		return Collections.unmodifiableList(this.hierarchy);
 	}
@@ -66,6 +75,22 @@ public class CodeList extends Versionable {
 		return Collections.unmodifiableList(this.items);
 	}
 	
+	public CodeType getCodeType() {
+		if ( codingScheme == null || codingScheme.getCodeType() == null ) {
+			return CodeType.ALPHANUMERIC;
+		} else {
+			return codingScheme.getCodeType();
+		}
+	}
+
+	public CodeScope getCodeScope() {
+		if ( codingScheme == null || codingScheme.getCodeScope() == null ) {
+			return CodeScope.LOCAL;
+		} else {
+			return codingScheme.getCodeScope();
+		}
+	}
+
 	public Survey getSurvey() {
 		return survey;
 	}
@@ -74,12 +99,50 @@ public class CodeList extends Versionable {
 		this.survey = survey;
 	}
 
-	public CodingScheme getCodingScheme(String name) {
-		for (CodingScheme codingScheme : codingSchemes) {
-			if (codingScheme.getName().equals(name)) {
-				return codingScheme;
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@XmlType(name = "", propOrder = {  "codeScope", "codeType" })
+	private static class CodingScheme {
+
+		@XmlAttribute(name = "scope")
+		@XmlJavaTypeAdapter(value = CodeScopeAdapter.class)
+		private CodeScope codeScope;
+
+		@XmlAttribute(name = "type")
+		@XmlJavaTypeAdapter(value = CodeTypeAdapter.class)
+		private CodeType codeType;
+
+		public CodeType getCodeType() {
+			return this.codeType;
+		}
+
+		public CodeScope getCodeScope() {
+			return this.codeScope;
+		}
+
+		private static class CodeTypeAdapter extends XmlAdapter<String, CodeType> {
+			@Override
+			public CodeType unmarshal(String v) throws Exception {
+				return v==null ? null : CodeType.valueOf(v.toUpperCase());
+			}
+
+			@Override
+			public String marshal(CodeType v) throws Exception {
+				return v==null ? null : v.toString().toLowerCase();
 			}
 		}
-		return null;
+
+		private static class CodeScopeAdapter extends XmlAdapter<String, CodeScope> {
+			@Override
+			public CodeScope unmarshal(String v) throws Exception {
+				return v==null ? null : CodeScope.valueOf(v.toUpperCase());
+			}
+
+			@Override
+			public String marshal(CodeScope v) throws Exception {
+				return v==null ? null : v.toString().toLowerCase();
+			}
+		}
 	}
+	
+	
 }

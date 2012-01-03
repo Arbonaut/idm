@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-import org.mockito.asm.tree.analysis.Value;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.ModelExpression;
 
@@ -28,7 +27,7 @@ public class CustomCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ? extends Value> attribute) {
+	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
 		ModelExpression modelExpression = new ModelExpression(expression);
 		Boolean b = (Boolean) modelExpression.evaluate(attribute);
 		return b;

@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-import org.mockito.asm.tree.analysis.Value;
 import org.openforis.idm.model.Attribute;
 
 
@@ -48,7 +47,7 @@ public class DistanceCheck extends Check {
 		return this.sourcePointExpression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ? extends Value> attribute) {
+	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
 		// TODO Auto-generated method stub
 		return false;
 	}

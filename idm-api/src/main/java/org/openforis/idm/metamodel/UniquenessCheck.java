@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-import org.mockito.asm.tree.analysis.Value;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.ModelExpression;
 
@@ -30,7 +29,7 @@ public class UniquenessCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ? extends Value> attribute) {
+	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
 		ModelExpression modelExpression = new ModelExpression(expression);
 		Iterator<?> iterator = modelExpression.Iterate(attribute);
 		if (iterator.hasNext()) {
@@ -39,7 +38,7 @@ public class UniquenessCheck extends Check {
 				Object object = (Object) iterator.next();
 				if (object instanceof Attribute) {
 					@SuppressWarnings("unchecked")
-					Value value = ((Attribute<? extends AttributeDefinition, ? extends Value>) object).getValue();
+					Object value = ((Attribute<? extends AttributeDefinition, ?>) object).getValue();
 					if (value.equals(attribute.getValue())) {
 						unique = false;
 						break;

@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
-import org.mockito.asm.tree.analysis.Value;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.ModelExpression;
 
@@ -68,7 +67,7 @@ public class ComparisonCheck extends Check  {
 		return this.equalsExpression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ? extends Value> attribute) {
+	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
 		ExpressionBuilder expressionBuilder = this.new ExpressionBuilder(this);
 		String expression = expressionBuilder.getExpression();
 		ModelExpression modelExpression = new ModelExpression(expression);

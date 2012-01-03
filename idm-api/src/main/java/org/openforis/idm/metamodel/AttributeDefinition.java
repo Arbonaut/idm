@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author M. Togna
  */
 @XmlTransient
-public abstract class AttributeDefinition extends SchemaObjectDefinition {
+public abstract class AttributeDefinition extends NodeDefinition {
 
 	@XmlElements({ 
 		@XmlElement(name = "distance", type = DistanceCheck.class), 

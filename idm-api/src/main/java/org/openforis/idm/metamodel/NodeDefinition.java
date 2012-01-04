@@ -10,14 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
 /**
@@ -53,8 +49,8 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	@XmlAttribute(name = "maxCount")
 	private Integer maxCount;
 
-	@XmlElement(name = "label", type = Label.class)
-	private List<Label> labels;
+	@XmlElement(name = "label", type = NodeDefinitionLabel.class)
+	private List<NodeDefinitionLabel> labels;
 
 	@XmlElement(name = "prompt", type = Prompt.class)
 	private List<Prompt> prompts;
@@ -166,14 +162,14 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		}
 	}
 
-	public List<Label> getLabels() {
+	public List<NodeDefinitionLabel> getLabels() {
 		return Collections.unmodifiableList(this.labels);
 	}
 
-	public List<Label> getLabels(Label.Type type) {
-		List<Label> list = new ArrayList<Label>();
+	public List<NodeDefinitionLabel> getLabels(NodeDefinitionLabel.Type type) {
+		List<NodeDefinitionLabel> list = new ArrayList<NodeDefinitionLabel>();
 		if (this.labels != null) {
-			for (Label label : this.labels) {
+			for (NodeDefinitionLabel label : this.labels) {
 				if (label.getType().equals(type)) {
 					list.add(label);
 				}
@@ -230,41 +226,5 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + "("+getName()+")";
-	}
-	
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static class Label extends LanguageSpecificText {
-
-		public enum Type {
-			HEADING, INSTANCE, NUMBER;
-		}
-
-		@XmlAttribute(name = "type")
-		@XmlJavaTypeAdapter(value = TypeAdapter.class)
-		private Type type;
-
-		protected Label() {
-		}
-
-		public Label(Type type, String language, String text) {
-			super(language, text);
-			this.type = type;
-		}
-
-		public Type getType() {
-			return this.type;
-		}
-
-		private static class TypeAdapter extends XmlAdapter<String, Type> {
-			@Override
-			public Type unmarshal(String v) throws Exception {
-				return v==null ? null : Type.valueOf(v.toUpperCase());
-			}
-
-			@Override
-			public String marshal(Type v) throws Exception {
-				return v==null ? null : v.toString().toLowerCase();
-			}
-		}
 	}
 }

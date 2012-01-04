@@ -16,6 +16,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CodeListLabel extends LanguageSpecificText {
 
+	private static final long serialVersionUID = 1L;
+
 	public enum Type { ITEM, LIST }
 	
 	@XmlAttribute(name = "type")

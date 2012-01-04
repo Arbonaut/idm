@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,7 +23,9 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "rootEntityDefinitions" })
-public class Schema  {
+public class Schema  implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	@XmlElement(name = "entity", type = EntityDefinition.class)
 	private List<EntityDefinition> rootEntityDefinitions;

@@ -20,10 +20,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class CodeAttributeDefinition extends AttributeDefinition  {
 
+
 	public enum Type {
 		ITEM, LIST
 	}
 
+	private static final long serialVersionUID = 1L;
+	
 	@XmlAttribute(name = "key")
 	private Boolean key;
 

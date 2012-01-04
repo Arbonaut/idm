@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,7 +19,9 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "name", "dimension", "conversionFactor", "labels", "abbreviations" })
-public class Unit {
+public class Unit implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@XmlAttribute(name = "name")
 	private String name;

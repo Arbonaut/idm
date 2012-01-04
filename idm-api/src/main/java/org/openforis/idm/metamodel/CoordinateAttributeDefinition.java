@@ -15,4 +15,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
 		"labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class CoordinateAttributeDefinition extends AttributeDefinition  {
+
+	private static final long serialVersionUID = 1L;
 }

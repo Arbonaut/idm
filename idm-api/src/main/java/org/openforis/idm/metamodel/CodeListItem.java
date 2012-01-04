@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,7 +22,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "qualifiable", "sinceVersionName", "deprecatedVersionName", "code", "labels", "descriptions", "childItems" })
-public class CodeListItem extends Versionable {
+public class CodeListItem extends Versionable implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@XmlAttribute(name = "qualifiable")
 	private Boolean qualifiable;

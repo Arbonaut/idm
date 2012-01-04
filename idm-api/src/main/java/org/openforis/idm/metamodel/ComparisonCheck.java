@@ -21,6 +21,8 @@ import org.openforis.idm.model.ModelExpression;
 @XmlType
 public class ComparisonCheck extends Check  {
 
+	private static final long serialVersionUID = 1L;
+
 	@XmlTransient
 	private enum OPERATION {
 		LT("<"), LTE("<="), GT(">"), GTE(">="), EQ("=");

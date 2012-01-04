@@ -17,6 +17,8 @@ import javax.xml.bind.annotation.XmlType;
 		"affirmativeOnly", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class BooleanAttributeDefinition extends AttributeDefinition {
 
+	private static final long serialVersionUID = 1L;
+	
 	@XmlAttribute(name = "affirmativeOnly")
 	private Boolean affirmativeOnly;
 

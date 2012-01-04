@@ -3,6 +3,8 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -14,7 +16,9 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="", propOrder={"value", "expression", "condition"})
-public class AttributeDefault {
+public class AttributeDefault implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@XmlAttribute(name = "value")
 	private String value;

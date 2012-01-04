@@ -18,10 +18,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name="", propOrder = {"name", "type", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
 	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class TextAttributeDefinition extends AttributeDefinition {
+
 	public enum Type {
 		SHORT, MEMO
 	}
 
+	private static final long serialVersionUID = 1L;
+	
 	@XmlAttribute(name = "type")
 	@XmlJavaTypeAdapter(value = TypeAdapter.class)
 	private Type type;

@@ -23,6 +23,8 @@ import org.openforis.idm.model.Attribute;
 @XmlType
 public class PatternCheck extends Check {
 
+	private static final long serialVersionUID = 1L;
+
 	@XmlTransient
 	private Pattern pattern;
 

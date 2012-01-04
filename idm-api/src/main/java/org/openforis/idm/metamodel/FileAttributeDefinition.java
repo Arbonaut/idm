@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlType;
 		"sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class FileAttributeDefinition extends AttributeDefinition {
 
+	private static final long serialVersionUID = 1L;
+
 	@XmlAttribute(name = "maxSize")
 	private Integer maxSize;
 

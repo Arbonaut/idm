@@ -18,6 +18,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlTransient
 public abstract class AttributeDefinition extends NodeDefinition {
 
+	private static final long serialVersionUID = 1L;
+
 	@XmlElements({ 
 		@XmlElement(name = "distance", type = DistanceCheck.class), 
 		@XmlElement(name = "pattern",  type = PatternCheck.class),

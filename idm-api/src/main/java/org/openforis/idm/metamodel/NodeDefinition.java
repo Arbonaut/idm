@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +25,9 @@ import javax.xml.namespace.QName;
  * @author M. Togna
  */
 @XmlTransient
-public abstract class NodeDefinition extends Versionable implements Annotatable {
+public abstract class NodeDefinition extends Versionable implements Annotatable, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@XmlTransient
 	private Integer id;

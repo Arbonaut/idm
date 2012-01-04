@@ -3,6 +3,7 @@ package org.openforis.idm.metamodel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +36,9 @@ import org.xml.sax.ContentHandler;
 @XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "configurationElement", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
 @XmlRootElement(name = "survey")
-public class Survey {
+public class Survey implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@XmlTransient
 	private Integer id;

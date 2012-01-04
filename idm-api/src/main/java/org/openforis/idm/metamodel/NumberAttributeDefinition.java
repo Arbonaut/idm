@@ -16,4 +16,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name="", propOrder = {"name", "type", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
 		"labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
 public class NumberAttributeDefinition extends NumericAttributeDefinition {
+
+	private static final long serialVersionUID = 1L;
 }

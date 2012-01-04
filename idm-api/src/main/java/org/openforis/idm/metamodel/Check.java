@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +21,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-public abstract class Check {
+public abstract class Check implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public enum Flag {
 		ERROR, WARN

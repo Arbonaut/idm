@@ -19,6 +19,8 @@ import org.openforis.idm.model.Attribute;
 @XmlType
 public class DistanceCheck extends Check {
 
+	private static final long serialVersionUID = 1L;
+
 	@XmlAttribute(name = "to")
 	private String destinationPointExpression;
 

@@ -1,5 +1,6 @@
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,8 +11,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author G. Miceli
@@ -19,7 +18,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "name", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
-public class CodeList extends Versionable {
+public class CodeList extends Versionable implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public enum CodeType {
 		NUMERIC, ALPHANUMERIC
@@ -105,51 +106,6 @@ public class CodeList extends Versionable {
 
 	protected void setSurvey(Survey survey) {
 		this.survey = survey;
-	}
-
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlType(name = "", propOrder = {  "codeScope", "codeType" })
-	private static class CodingScheme {
-
-		@XmlAttribute(name = "scope")
-		@XmlJavaTypeAdapter(value = CodeScopeAdapter.class)
-		private CodeScope codeScope;
-
-		@XmlAttribute(name = "type")
-		@XmlJavaTypeAdapter(value = CodeTypeAdapter.class)
-		private CodeType codeType;
-
-		public CodeType getCodeType() {
-			return this.codeType;
-		}
-
-		public CodeScope getCodeScope() {
-			return this.codeScope;
-		}
-
-		private static class CodeTypeAdapter extends XmlAdapter<String, CodeType> {
-			@Override
-			public CodeType unmarshal(String v) throws Exception {
-				return v==null ? null : CodeType.valueOf(v.toUpperCase());
-			}
-
-			@Override
-			public String marshal(CodeType v) throws Exception {
-				return v==null ? null : v.toString().toLowerCase();
-			}
-		}
-
-		private static class CodeScopeAdapter extends XmlAdapter<String, CodeScope> {
-			@Override
-			public CodeScope unmarshal(String v) throws Exception {
-				return v==null ? null : CodeScope.valueOf(v.toUpperCase());
-			}
-
-			@Override
-			public String marshal(CodeScope v) throws Exception {
-				return v==null ? null : v.toString().toLowerCase();
-			}
-		}
 	}
 	
 	

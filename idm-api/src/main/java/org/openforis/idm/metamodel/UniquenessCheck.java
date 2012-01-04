@@ -22,6 +22,8 @@ import org.openforis.idm.model.ModelExpression;
 @XmlType
 public class UniquenessCheck extends Check {
 
+	private static final long serialVersionUID = 1L;
+	
 	@XmlAttribute(name = "expr")
 	private String expression;
 

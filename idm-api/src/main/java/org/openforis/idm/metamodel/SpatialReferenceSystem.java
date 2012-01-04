@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,7 +22,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "id", "labels", "descriptions",  "wellKnownText" })
 @XmlRootElement(name = "spatialReferenceSystem")
-public class SpatialReferenceSystem {
+public class SpatialReferenceSystem implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@XmlAttribute(name = "srid")
 	private String id;

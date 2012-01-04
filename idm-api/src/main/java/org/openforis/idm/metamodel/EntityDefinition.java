@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
 public class EntityDefinition extends NodeDefinition {
 
+	private static final long serialVersionUID = 1L;
+	
 	@XmlElements({
 		@XmlElement(name = "entity",     type = EntityDefinition.class), 
 		@XmlElement(name = "number",     type = NumberAttributeDefinition.class),

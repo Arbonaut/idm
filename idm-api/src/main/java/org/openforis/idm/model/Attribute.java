@@ -18,6 +18,8 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 
 	private V value;
+	
+	private AttributeMetadata metadata;
 
 	public V getValue() {
 		return this.value;
@@ -28,8 +30,16 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 
 	public V getDefaultValue() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Evaluate defaultExpression in definition on value
+		throw new UnsupportedOperationException();
+	}
+	
+	public AttributeMetadata getMetadata() {
+		return metadata;
+	}
+	
+	public void setMetadata(AttributeMetadata metadata) {
+		this.metadata = metadata;
 	}
 /*
 	public List<CheckFailure> getErrors() {

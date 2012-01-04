@@ -28,6 +28,7 @@ public class SurveyUnmarshallerTest {
 		survey.marshal(fos, true);
 		fos.flush();
 		fos.close();
+		
 //		String name = survey.getName();
 //		System.err.println("Survey name " + name);
 //

@@ -32,7 +32,7 @@ import org.xml.sax.ContentHandler;
  */
 @SuppressWarnings("deprecation")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "configuration", "modelVersions",
+@XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "configurationElement", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
 @XmlRootElement(name = "survey")
 public class Survey {
@@ -53,8 +53,8 @@ public class Survey {
 	private List<LanguageSpecificText> descriptions;
 
 	@XmlElement(name = "configuration")
-	@XmlJavaTypeAdapter(value = ElementTypeAdapter.class)
-	private Element configuration;
+	@XmlJavaTypeAdapter(value = ConfigurationElementAdapter.class)
+	private Element configurationElement;
 
 	@XmlElement(name = "version", type = ModelVersion.class)
 	@XmlElementWrapper(name = "versioning")
@@ -100,8 +100,8 @@ public class Survey {
 		return Collections.unmodifiableList(this.descriptions);
 	}
 
-	public Element getConfiguration() {
-		return this.configuration;
+	public Element getConfigurationElement() {
+		return configurationElement;
 	}
 	
 	public List<ModelVersion> getVersions() {
@@ -127,7 +127,7 @@ public class Survey {
 	/**
 	 * Passes DOM Element directly without conversion
 	 */
-	private static class ElementTypeAdapter extends XmlAdapter<Object, Object> {
+	private static class ConfigurationElementAdapter extends XmlAdapter<Object, Object> {
 		@Override
 		public Object unmarshal(Object v) {
 			return v;
@@ -180,7 +180,7 @@ public class Survey {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private static class UnmarshallerListener extends Unmarshaller.Listener {
 		@Override
 		public void beforeUnmarshal(Object target, Object parent) {
@@ -274,6 +274,7 @@ public class Survey {
 			XMLSerializer serializer = serializer1;
 			ContentHandler handler = serializer.asContentHandler();
 			
+			// TODO when JDK includes a custom NamespacePrefixMapper, use it to avoid repeated namespace declarations 
 			marshaller.marshal(this, handler);
 			// marshaller.marshal(this, os);
 		} catch (JAXBException e) {

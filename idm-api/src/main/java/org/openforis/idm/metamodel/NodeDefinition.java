@@ -6,14 +6,18 @@ package org.openforis.idm.metamodel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.namespace.QName;
 
 /**
  * @author G. Miceli
@@ -55,8 +59,39 @@ public abstract class NodeDefinition extends Versionable implements Annotatable 
 	@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-	@XmlTransient
-	private List<ModelAnnotation> annotations;
+	@XmlAnyAttribute
+	private Map<QName,String> annotations;
+	
+	public String getAnnotation(QName qname) {
+		return annotations == null ? null : annotations.get(qname);
+	}
+
+	public Set<QName> getAnnotationNames() {
+		return annotations == null ? null : Collections.unmodifiableSet(annotations.keySet());
+	}
+//	protected void setAnnotationAttributes(Map<QName,String> attrMap) {
+//		this.annotations = new ArrayList<ModelAnnotation>(attrMap.size()); 
+//		for (Map.Entry<QName, String> entry : attrMap.entrySet()) {
+//			String namespaceURI = entry.getKey().getNamespaceURI();
+//			String name = entry.getKey().getLocalPart();
+//			String value = entry.getValue();
+//			ModelAnnotation ann = new ModelAnnotation(namespaceURI, name, value);
+//			annotations.add(ann);
+//		}
+//	}
+//	
+//	protected Map<QName,String> getAnnotationAttributes() {
+//		if ( annotations == null ) {
+//			return null;
+//		}
+//		Map<QName,String> attrMap = new HashMap<QName, String>(annotations.size());
+//		for (ModelAnnotation ann : annotations) {
+//			QName qname = new QName(ann.getNamespace(), localPart)
+//		}
+//	}	
+	
+//	@XmlTransient
+//	private List<ModelAnnotation> annotations;
 	
 	@XmlTransient
 	private EntityDefinition parentDefinition;
@@ -164,10 +199,6 @@ public abstract class NodeDefinition extends Versionable implements Annotatable 
 		return Collections.unmodifiableList(this.descriptions);
 	}
 	
-	public List<ModelAnnotation> getAnnotations() {
-		return Collections.unmodifiableList(this.annotations);
-	}
-
 	public String getPath() {
 		NodeDefinition defn = this;
 		StringBuilder sb = new StringBuilder(64);

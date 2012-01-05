@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NodeDefinitionLabel extends LanguageSpecificText {
+public class NodeLabel extends LanguageSpecificText {
 
 	private static final long serialVersionUID = 1L;
 
@@ -16,29 +16,29 @@ public class NodeDefinitionLabel extends LanguageSpecificText {
 	}
 
 	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(value = NodeDefinitionLabel.TypeAdapter.class)
-	private NodeDefinitionLabel.Type type;
+	@XmlJavaTypeAdapter(value = TypeAdapter.class)
+	private NodeLabel.Type type;
 
-	protected NodeDefinitionLabel() {
+	protected NodeLabel() {
 	}
 
-	public NodeDefinitionLabel(NodeDefinitionLabel.Type type, String language, String text) {
+	public NodeLabel(Type type, String language, String text) {
 		super(language, text);
 		this.type = type;
 	}
 
-	public NodeDefinitionLabel.Type getType() {
+	public NodeLabel.Type getType() {
 		return this.type;
 	}
 
-	private static class TypeAdapter extends XmlAdapter<String, NodeDefinitionLabel.Type> {
+	private static class TypeAdapter extends XmlAdapter<String, NodeLabel.Type> {
 		@Override
-		public NodeDefinitionLabel.Type unmarshal(String v) throws Exception {
+		public Type unmarshal(String v) throws Exception {
 			return v == null ? null : Type.valueOf(v.toUpperCase());
 		}
 
 		@Override
-		public String marshal(NodeDefinitionLabel.Type v) throws Exception {
+		public String marshal(Type v) throws Exception {
 			return v == null ? null : v.toString().toLowerCase();
 		}
 	}

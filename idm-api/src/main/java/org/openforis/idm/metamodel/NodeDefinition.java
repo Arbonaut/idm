@@ -49,8 +49,8 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	@XmlAttribute(name = "maxCount")
 	private Integer maxCount;
 
-	@XmlElement(name = "label", type = NodeDefinitionLabel.class)
-	private List<NodeDefinitionLabel> labels;
+	@XmlElement(name = "label", type = NodeLabel.class)
+	private List<NodeLabel> labels;
 
 	@XmlElement(name = "prompt", type = Prompt.class)
 	private List<Prompt> prompts;
@@ -162,14 +162,14 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		}
 	}
 
-	public List<NodeDefinitionLabel> getLabels() {
+	public List<NodeLabel> getLabels() {
 		return Collections.unmodifiableList(this.labels);
 	}
 
-	public List<NodeDefinitionLabel> getLabels(NodeDefinitionLabel.Type type) {
-		List<NodeDefinitionLabel> list = new ArrayList<NodeDefinitionLabel>();
+	public List<NodeLabel> getLabels(NodeLabel.Type type) {
+		List<NodeLabel> list = new ArrayList<NodeLabel>();
 		if (this.labels != null) {
-			for (NodeDefinitionLabel label : this.labels) {
+			for (NodeLabel label : this.labels) {
 				if (label.getType().equals(type)) {
 					list.add(label);
 				}

@@ -4,16 +4,17 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public class Coordinate {
+public final class Coordinate {
 
-	private Long x;
-	private Long y;
-	private Long z;
-	private String srsId;
+	private final Long x;
+	private final Long y;
+	private final Long z;
+	private final String srsId;
 	
 	public Coordinate(Long x, Long y, String srsId) {
 		this.x = x;
 		this.y = y;
+		this.z = null;
 		this.srsId = srsId;
 	}
 	

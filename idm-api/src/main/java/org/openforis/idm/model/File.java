@@ -4,10 +4,10 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public class File {
+public final class File {
 
-	private String filename;
-	private Long size;
+	private final String filename;
+	private final Long size;
 
 	public File(String filename, Long size) {
 		this.filename = filename;

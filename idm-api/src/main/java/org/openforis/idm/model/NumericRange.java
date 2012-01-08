@@ -6,15 +6,15 @@ package org.openforis.idm.model;
  */
 public abstract class NumericRange<T extends Number> {
 
-	private T from;
-	private T to;
+	private final T from;
+	private final T to;
 
-	public NumericRange(T value) {
+	NumericRange(T value) {
 		this.from = value;
 		this.to = value;
 	}
 
-	public NumericRange(T from, T to) {
+	NumericRange(T from, T to) {
 		this.from = from;
 		this.to = to;
 	}

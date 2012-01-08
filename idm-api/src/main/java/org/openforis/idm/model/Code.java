@@ -6,14 +6,15 @@ package org.openforis.idm.model;
  */
 public abstract class Code<T> {
 
-	private T code;
-	private String qualifier;
+	private final T code;
+	private final String qualifier;
 
-	public Code(T code) {
+	Code(T code) {
 		this.code = code;
+		this.qualifier = null;
 	}
 
-	public Code(T code, String qualifier) {
+	Code(T code, String qualifier) {
 		this.code = code;
 		this.qualifier = qualifier;
 	}

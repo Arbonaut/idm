@@ -4,7 +4,7 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public class AlphanumericCode extends Code<String> {
+public final class AlphanumericCode extends Code<String> {
 
 	public AlphanumericCode(String code) {
 		super(code);

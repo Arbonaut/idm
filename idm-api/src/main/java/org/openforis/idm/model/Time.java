@@ -7,10 +7,10 @@ import java.util.GregorianCalendar;
  * @author G. Miceli
  * @author M. Togna
  */
-public class Time {
+public final class Time {
 
-	private Integer hour;
-	private Integer minute;
+	private final Integer hour;
+	private final Integer minute;
 
 	public Time(Integer hour, Integer minute) {
 		super();

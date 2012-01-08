@@ -7,11 +7,11 @@ import java.util.GregorianCalendar;
  * @author G. Miceli
  * @author M. Togna
  */
-public class Date {
+public final class Date {
 
-	private Integer day;
-	private Integer month;
-	private Integer year;
+	private final Integer day;
+	private final Integer month;
+	private final Integer year;
 	
 	public Date(Integer year, Integer month, Integer day) {
 		this.year = year;

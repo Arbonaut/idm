@@ -4,18 +4,13 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public class Taxon {
+public final class Taxon {
 
-	private String code;
-	private String scientificName;
-	private String vernacularName;
-	private String languageCode;
-	private String languageVariant;
-
-	public Taxon(String code) {
-		super();
-		this.code = code;
-	}
+	private final String code;
+	private final String scientificName;
+	private final String vernacularName;
+	private final String languageCode;
+	private final String languageVariant;
 
 	public Taxon(String code, String scientificName, String vernacularName, String languageCode, String languageVariant) {
 		super();

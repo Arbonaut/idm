@@ -57,15 +57,27 @@ public class CodeListItem extends Versionable implements Serializable {
 	}
 
 	public List<LanguageSpecificText> getLabels() {
-		return Collections.unmodifiableList(this.labels);
+		if(this.labels != null) {
+			return Collections.unmodifiableList(this.labels);
+		} else {
+			return null;
+		}
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return Collections.unmodifiableList(this.descriptions);
+		if(this.descriptions != null) {
+			return Collections.unmodifiableList(this.descriptions);
+		} else {
+			return null;
+		}
 	}
 
 	public List<CodeListItem> getChildItems() {
-		return Collections.unmodifiableList(this.childItems);
+		if(this.childItems != null) {
+			return Collections.unmodifiableList(this.childItems);
+		} else {
+			return null;
+		}
 	}
 
 	public CodeListItem getParentItem() {

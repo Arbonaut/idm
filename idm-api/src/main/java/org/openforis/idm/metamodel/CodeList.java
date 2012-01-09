@@ -61,19 +61,35 @@ public class CodeList extends Versionable implements Serializable {
 	}
 
 	public List<CodeListLabel> getLabels() {
-		return Collections.unmodifiableList(this.labels);
+		if(this.labels != null) {
+			return Collections.unmodifiableList(this.labels);
+		} else {
+			return null;
+		}
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return Collections.unmodifiableList(this.descriptions);
+		if(this.descriptions != null) {
+			return Collections.unmodifiableList(this.descriptions);
+		} else {
+			return null;
+		}
 	}
 
 	public List<CodeListLevel> getHierarchy() {
-		return Collections.unmodifiableList(this.hierarchy);
+		if(this.hierarchy != null) {
+			return Collections.unmodifiableList(this.hierarchy);
+		} else {
+			return null;
+		}
 	}
 
 	public List<CodeListItem> getItems() {
-		return Collections.unmodifiableList(this.items);
+		if(this.items != null) {
+			return Collections.unmodifiableList(this.items);
+		} else {
+			return null;
+		}
 	}
 	
 	public CodeType getCodeType() {

@@ -33,11 +33,19 @@ public class CodeListLevel implements Serializable {
 	private List<LanguageSpecificText> descriptions;
 
 	public List<LanguageSpecificText> getLabels() {
-		return Collections.unmodifiableList(this.labels);
+		if(this.labels != null) {
+			return Collections.unmodifiableList(this.labels);
+		} else {
+			return null;
+		}
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return Collections.unmodifiableList(this.descriptions);
+		if(this.descriptions != null) {
+			return Collections.unmodifiableList(this.descriptions);
+		} else {
+			return null;
+		}
 	}
 
 	public String getName() {

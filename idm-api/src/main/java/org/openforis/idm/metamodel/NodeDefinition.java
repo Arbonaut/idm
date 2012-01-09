@@ -163,7 +163,8 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 
 	public List<NodeLabel> getLabels() {
-		return Collections.unmodifiableList(this.labels);
+		List<NodeLabel> list = this.labels != null ? this.labels : new ArrayList<NodeLabel>();
+		return Collections.unmodifiableList(list);
 	}
 
 	public List<NodeLabel> getLabels(NodeLabel.Type type) {
@@ -179,7 +180,8 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 
 	public List<Prompt> getPrompts() {
-		return Collections.unmodifiableList(this.prompts);
+		List<Prompt> list = this.prompts != null ? this.prompts : new ArrayList<Prompt>();
+		return Collections.unmodifiableList(list);
 	}
 
 	public List<Prompt> getPrompts(Prompt.Type type) {
@@ -195,7 +197,8 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 	
 	public List<LanguageSpecificText> getDescriptions() {
-		return Collections.unmodifiableList(this.descriptions);
+		List<LanguageSpecificText> list = this.descriptions != null ? this.descriptions : new ArrayList<LanguageSpecificText>();
+		return Collections.unmodifiableList(list);
 	}
 	
 	public String getPath() {

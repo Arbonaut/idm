@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.EnumAdapter;
+import org.openforis.idm.metamodel.xml.internal.EnumAdapter;
 
 /**
  * @author G. Miceli

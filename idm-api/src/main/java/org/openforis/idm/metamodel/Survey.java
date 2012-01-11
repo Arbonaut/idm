@@ -6,22 +6,23 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.w3c.dom.Element;
+import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
+
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "configurationElement", "modelVersions",
+@XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "configuration", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
 @XmlRootElement(name = "survey")
 public final class Survey implements Serializable{
@@ -44,9 +45,8 @@ public final class Survey implements Serializable{
 	private List<LanguageSpecificText> descriptions;
 
 	@XmlElement(name = "configuration")
-	@XmlJavaTypeAdapter(value = ConfigurationElementAdapter.class)
-	private Element configurationElement;
-
+	private ConfigurationWrapper configuration;
+	
 	@XmlElement(name = "version", type = ModelVersion.class)
 	@XmlElementWrapper(name = "versioning")
 	private List<ModelVersion> modelVersions;
@@ -90,10 +90,6 @@ public final class Survey implements Serializable{
 		return Collections.unmodifiableList(this.descriptions);
 	}
 
-	public Element getConfigurationElement() {
-		return configurationElement;
-	}
-	
 	public List<ModelVersion> getVersions() {
 		return Collections.unmodifiableList(this.modelVersions);
 	}
@@ -114,21 +110,6 @@ public final class Survey implements Serializable{
 		return this.schema;
 	}
 	
-	/**
-	 * Passes DOM Element directly without conversion
-	 */
-	private static class ConfigurationElementAdapter extends XmlAdapter<Object, Object> {
-		@Override
-		public Object unmarshal(Object v) {
-			return v;
-		}
-
-		@Override
-		public Object marshal(Object v) throws Exception {
-			return v;
-		}
-	}
-
 	public ModelVersion getVersion(String name) {
 		if ( modelVersions != null ) {
 			for (ModelVersion v : modelVersions) {
@@ -158,5 +139,24 @@ public final class Survey implements Serializable{
 		return null;
 	}
 
-
+	@SuppressWarnings("unchecked")
+	public List<Configuration> getConfiguration() {
+		if ( configuration == null ) {
+			return (List<Configuration>) Collections.EMPTY_LIST;
+		} else {
+			return Collections.unmodifiableList(configuration.list);
+		}
+	}
+	
+	/**
+	 * Workaround for JAXB since @XmlAnyElement, @XmlElementWrapper and @XmlJavaTypeAdapter 
+	 * wouldn't play nice together
+	 */
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@XmlType
+	private static class ConfigurationWrapper {
+		@XmlAnyElement
+		@XmlJavaTypeAdapter(ConfigurationXmlAdapter.class)
+		List<Configuration> list;
+	}
 }

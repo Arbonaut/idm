@@ -7,8 +7,12 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.openforis.idm.metamodel.Check.Flag;
+import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
+import org.openforis.idm.metamodel.xml.internal.DefaultConfigurationAdapter;
+import org.openforis.idm.metamodel.xml.internal.EnumAdapter;
 import org.openforis.idm.metamodel.CodeList;
 import org.openforis.idm.metamodel.CodeListLabel;
+import org.openforis.idm.metamodel.Configuration;
 import org.openforis.idm.metamodel.NodeLabel;
 import org.openforis.idm.metamodel.NumericAttributeDefinition;
 import org.openforis.idm.metamodel.Prompt;
@@ -44,15 +48,25 @@ class BindingContext {
 		return INSTANCE;
 	}
 	
-	public static void setAdapters(Marshaller marshaller) {
+	public static void setAdapters(Marshaller marshaller, ConfigurationAdapter<? extends Configuration> configurationAdapter) {
 		for (XmlAdapter<?,?> adapter : ADAPTERS) {
 			marshaller.setAdapter(adapter);
 		}
+		if ( configurationAdapter == null ) {
+			marshaller.setAdapter(new ConfigurationXmlAdapter(DefaultConfigurationAdapter.getInstance()));
+		} else {
+			marshaller.setAdapter(new ConfigurationXmlAdapter(configurationAdapter));
+		}
 	}
 	
-	public static void setAdapters(Unmarshaller marshaller) {
+	public static void setAdapters(Unmarshaller unmarshaller, ConfigurationAdapter<? extends Configuration> configurationAdapter) {
 		for (XmlAdapter<?,?> adapter : ADAPTERS) {
-			marshaller.setAdapter(adapter);
+			unmarshaller.setAdapter(adapter);
+		}
+		if ( configurationAdapter == null ) {
+			unmarshaller.setAdapter(new ConfigurationXmlAdapter(DefaultConfigurationAdapter.getInstance()));
+		} else {
+			unmarshaller.setAdapter(new ConfigurationXmlAdapter(configurationAdapter));
 		}
 	}
 }

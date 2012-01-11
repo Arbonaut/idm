@@ -17,8 +17,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.metamodel.xml.XmlInit;
-import org.openforis.idm.metamodel.xml.XmlParent;
+import org.openforis.idm.metamodel.xml.internal.XmlInit;
+import org.openforis.idm.metamodel.xml.internal.XmlParent;
 
 /**
  * @author G. Miceli

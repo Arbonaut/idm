@@ -16,8 +16,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
 
-import org.openforis.idm.metamodel.xml.XmlInherited;
-import org.openforis.idm.metamodel.xml.XmlParent;
+import org.openforis.idm.metamodel.xml.internal.XmlInherited;
+import org.openforis.idm.metamodel.xml.internal.XmlParent;
 
 /**
  * @author G. Miceli

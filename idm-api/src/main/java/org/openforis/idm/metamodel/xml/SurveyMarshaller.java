@@ -9,8 +9,8 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
+import org.openforis.idm.metamodel.Configuration;
 import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.Check.Flag;
 import org.xml.sax.ContentHandler;
 
 /**
@@ -18,11 +18,31 @@ import org.xml.sax.ContentHandler;
  */
 public class SurveyMarshaller {
 
-	public void marshal(Survey survey, OutputStream os, boolean indent) throws IOException {
+	private ConfigurationAdapter<? extends Configuration> configurationAdapter;
+	private boolean indent;
+	
+	public ConfigurationAdapter<? extends Configuration> getConfigurationAdapter() {
+		return configurationAdapter;
+	}
+
+	public void setConfigurationAdapter(ConfigurationAdapter<? extends Configuration> configurationAdapter) {
+		this.configurationAdapter = configurationAdapter;
+	}
+	
+	public boolean isIndent() {
+		return indent;
+	}
+
+	public void setIndent(boolean indent) {
+		this.indent = indent;
+	}
+
+	public void marshal(Survey survey, OutputStream os) throws IOException {
 		try {
 			JAXBContext jc = BindingContext.getInstance();
 			Marshaller marshaller = jc.createMarshaller();
-			BindingContext.setAdapters(marshaller);
+			BindingContext.setAdapters(marshaller, configurationAdapter);
+			
 //			marshaller.setProperty("jaxb.formatted.output", true);
 //			marshaller.setProperty("jaxb.encoding", "UTF-8");
 

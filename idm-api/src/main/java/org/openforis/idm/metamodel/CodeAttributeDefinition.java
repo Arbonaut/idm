@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.InvertBooleanAdapter;
+import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
 
 /**
  * @author G. Miceli

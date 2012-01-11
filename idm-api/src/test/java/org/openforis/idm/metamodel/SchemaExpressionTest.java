@@ -10,6 +10,7 @@ import java.net.URL;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 
 /**
  * @author M. Togna
@@ -23,7 +24,8 @@ public class SchemaExpressionTest {
 	public static void setUp() throws Exception {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
-		survey = Survey.unmarshal(is);
+		SurveyUnmarshaller su = new SurveyUnmarshaller();
+		survey = su.unmarshal(is);
 	}
 
 	@Test

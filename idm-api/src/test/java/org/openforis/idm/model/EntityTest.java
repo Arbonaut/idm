@@ -7,6 +7,7 @@ import java.net.URL;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 
 /**
  * @author G. Miceli
@@ -19,7 +20,8 @@ public class EntityTest {
 	public static void setUp() throws IOException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
-		survey = Survey.unmarshal(is);
+		SurveyUnmarshaller su = new SurveyUnmarshaller();
+		survey = su.unmarshal(is);
 	}
 
 	@Test

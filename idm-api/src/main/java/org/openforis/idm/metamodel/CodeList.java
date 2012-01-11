@@ -12,6 +12,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.metamodel.xml.XmlParent;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -31,6 +33,7 @@ public class CodeList extends Versionable implements Serializable {
 	}
 
 	@XmlTransient
+	@XmlParent
 	private Survey survey;
 
 	@XmlAttribute(name = "name")

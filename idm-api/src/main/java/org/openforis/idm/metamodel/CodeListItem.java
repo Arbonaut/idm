@@ -16,6 +16,9 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.openforis.idm.metamodel.xml.XmlInherited;
+import org.openforis.idm.metamodel.xml.XmlParent;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -43,9 +46,12 @@ public class CodeListItem extends Versionable implements Serializable {
 	private List<CodeListItem> childItems;
 
 	@XmlTransient
+	@XmlInherited("list")
+	@XmlParent
 	private CodeList list;
 
 	@XmlTransient
+	@XmlParent
 	private CodeListItem parentItem;
 	
 	public boolean isQualifiable() {
@@ -86,15 +92,6 @@ public class CodeListItem extends Versionable implements Serializable {
 	
 	public CodeList getCodeList() {
 		return list;
-	}
-	
-	protected void setParentItem(CodeListItem parent) {
-		this.parentItem = parent;
-		this.list = parent.list;
-	}
-
-	protected void setList(CodeList parent) {
-		this.list = parent;
 	}
 
 	@Override

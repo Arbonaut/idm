@@ -17,6 +17,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.metamodel.xml.XmlInit;
+import org.openforis.idm.metamodel.xml.XmlParent;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -37,6 +40,7 @@ public class Schema  implements Serializable {
 	private Map<Integer, NodeDefinition> definitionsById;
 	
 	@XmlTransient
+	@XmlParent
 	private Survey survey;
 	
 	public Schema() {
@@ -47,10 +51,6 @@ public class Schema  implements Serializable {
 	public Survey getSurvey() {
 		return survey;
 	}
-
-	protected void setSurvey(Survey survey) {
-		this.survey = survey;
-	}
 	
 	public NodeDefinition getByPath(String absolutePath) {
 		return definitionsByPath.get(absolutePath);
@@ -60,12 +60,27 @@ public class Schema  implements Serializable {
 		return definitionsById.get(id);
 	}
 	
-	protected void indexByPath(NodeDefinition definition) {
+	@XmlInit
+	void reindexDefinitions() {
+		 definitionsById.clear();
+		 definitionsByPath.clear();
+		 for (EntityDefinition entityDefn : getRootEntityDefinitions()) {
+			entityDefn.traverse(new NodeDefinitionVisitor() {
+				@Override
+				public void visit(NodeDefinition definition) {
+					indexByPath(definition);
+					indexById(definition);
+				}
+			});
+		} 
+	}
+
+	void indexByPath(NodeDefinition definition) {
 		String path = definition.getPath();
 		definitionsByPath.put(path, definition);
 	}
 
-	protected void indexById(NodeDefinition definition) {
+	void indexById(NodeDefinition definition) {
 		Integer id = definition.getId();
 		if ( id != null ) {
 			definitionsById.put(id, definition);

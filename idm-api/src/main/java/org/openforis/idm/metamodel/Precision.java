@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.metamodel.xml.XmlParent;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -21,6 +23,7 @@ public class Precision {
 	private Unit unit;
 
 	@XmlTransient
+	@XmlParent
 	private NumericAttributeDefinition definition;
 	
 	@XmlAttribute(name = "decimalDigits")

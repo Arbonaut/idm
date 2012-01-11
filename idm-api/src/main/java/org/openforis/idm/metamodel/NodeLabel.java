@@ -3,8 +3,9 @@ package org.openforis.idm.metamodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.openforis.idm.metamodel.xml.EnumAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NodeLabel extends LanguageSpecificText {
@@ -16,7 +17,7 @@ public class NodeLabel extends LanguageSpecificText {
 	}
 
 	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(value = TypeAdapter.class)
+	@XmlJavaTypeAdapter(EnumAdapter.class)
 	private NodeLabel.Type type;
 
 	protected NodeLabel() {
@@ -29,17 +30,5 @@ public class NodeLabel extends LanguageSpecificText {
 
 	public NodeLabel.Type getType() {
 		return this.type;
-	}
-
-	private static class TypeAdapter extends XmlAdapter<String, NodeLabel.Type> {
-		@Override
-		public Type unmarshal(String v) throws Exception {
-			return v == null ? null : Type.valueOf(v.toUpperCase());
-		}
-
-		@Override
-		public String marshal(Type v) throws Exception {
-			return v == null ? null : v.toString().toLowerCase();
-		}
 	}
 }

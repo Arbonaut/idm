@@ -16,6 +16,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
 
+import org.openforis.idm.metamodel.xml.XmlInherited;
+import org.openforis.idm.metamodel.xml.XmlParent;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -29,6 +32,12 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	private Integer id;
 	
 	@XmlTransient
+	@XmlParent
+	private EntityDefinition parentDefinition;
+	
+	@XmlTransient
+	@XmlParent
+	@XmlInherited("schema")
 	private Schema schema;
 	
 	@XmlAttribute(name = "name")
@@ -91,9 +100,6 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	
 //	@XmlTransient
 //	private List<ModelAnnotation> annotations;
-	
-	@XmlTransient
-	private EntityDefinition parentDefinition;
 	
 	public Integer getId() {
 		return id;

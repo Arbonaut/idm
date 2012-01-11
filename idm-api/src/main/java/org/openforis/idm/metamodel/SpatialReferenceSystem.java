@@ -36,7 +36,6 @@ public class SpatialReferenceSystem implements Serializable {
 	private List<LanguageSpecificText> descriptions;
 
 	@XmlElement(name = "wkt")
-//	@XmlJavaTypeAdapter(CDATAAdapter.class)
 	private String wellKnownText;
 
 	public String getId() {
@@ -54,17 +53,4 @@ public class SpatialReferenceSystem implements Serializable {
 	public String getWellKnownText() {
 		return this.wellKnownText;
 	}
-//	
-//	private static class CDATAAdapter extends XmlAdapter<String, String> {
-//
-//		@Override
-//		public String marshal(String v) throws Exception {
-//			return v==null ? null : "<![CDATA[" + v + "]]>";
-//		}
-//
-//		@Override
-//		public String unmarshal(String v) throws Exception {
-//			return v;
-//		}
-//	}
 }

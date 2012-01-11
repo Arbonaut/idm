@@ -8,8 +8,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.openforis.idm.metamodel.xml.InvertBooleanAdapter;
 
 /**
  * @author G. Miceli
@@ -20,18 +21,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class CodeAttributeDefinition extends AttributeDefinition  {
 
-
-	public enum Type {
-		ITEM, LIST
-	}
-
 	private static final long serialVersionUID = 1L;
 	
 	@XmlAttribute(name = "key")
 	private Boolean key;
 
 	@XmlAttribute(name = "strict")
-	@XmlJavaTypeAdapter(value = AllowUnlistedAdapter.class)
+	@XmlJavaTypeAdapter(value = InvertBooleanAdapter.class)
 	private Boolean allowUnlisted;
 
 	@XmlAttribute(name = "parent")
@@ -76,18 +72,4 @@ public class CodeAttributeDefinition extends AttributeDefinition  {
 	public String getParentExpression() {
 		return this.parentExpression;
 	}
-
-	private static class AllowUnlistedAdapter extends XmlAdapter<Boolean, Boolean> {
-
-		@Override
-		public Boolean unmarshal(Boolean v) throws Exception {
-			return v==null ? null : !v;
-		}
-
-		@Override
-		public Boolean marshal(Boolean v) throws Exception {
-			return v==null ? null : !v;
-		}
-	}
-
 }

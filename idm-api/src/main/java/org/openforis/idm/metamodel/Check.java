@@ -12,8 +12,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author G. Miceli
@@ -30,14 +28,13 @@ public abstract class Check implements Serializable {
 	}
 
 	@XmlAttribute(name = "flag")
-	@XmlJavaTypeAdapter(value = FlagAdapter.class)
-	protected Flag flag;
+	private Flag flag;
 
 	@XmlAttribute(name = "if")
 	private String condition;
 
 	@XmlElement(name = "message", type = LanguageSpecificText.class)
-	List<LanguageSpecificText> messages;
+	private List<LanguageSpecificText> messages;
 
 	public Flag getFlag() {
 		return this.flag;
@@ -49,18 +46,5 @@ public abstract class Check implements Serializable {
 
 	public List<LanguageSpecificText> getMessages() {
 		return Collections.unmodifiableList(this.messages);
-	}
-
-	private static class FlagAdapter extends XmlAdapter<String, Flag> {
-
-		@Override
-		public Flag unmarshal(String v) throws Exception {
-			return v==null ? null : Flag.valueOf(v.toUpperCase());
-		}
-
-		@Override
-		public String marshal(Flag v) throws Exception {
-			return v==null ? null : v.toString().toLowerCase();
-		}
 	}
 }

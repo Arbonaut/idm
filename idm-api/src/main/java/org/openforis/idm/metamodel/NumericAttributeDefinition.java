@@ -11,8 +11,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.openforis.idm.metamodel.xml.EnumAdapter;
 
 /**
  * @author G. Miceli
@@ -22,12 +23,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class NumericAttributeDefinition extends AttributeDefinition  {
 
+	private static final long serialVersionUID = 1L;
+
 	public enum Type {
 		INTEGER, REAL
 	}
 	
 	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(value = TypeAdapter.class)
+	@XmlJavaTypeAdapter(EnumAdapter.class)
 	private Type type;
 
 	@XmlElement(name = "precision", type = Precision.class)
@@ -47,17 +50,5 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition  {
 	
 	public List<Precision> getPrecisionDefinitions() {
 		return Collections.unmodifiableList(this.precisionDefinitions);
-	}
-
-	private static class TypeAdapter extends XmlAdapter<String, Type> {
-		@Override
-		public Type unmarshal(String v) throws Exception {
-			return v==null ? null : Type.valueOf(v.toUpperCase());
-		}
-
-		@Override
-		public String marshal(Type v) throws Exception {
-			return v==null ? null : v.toString().toLowerCase();
-		}
 	}
 }

@@ -5,14 +5,13 @@ package org.openforis.idm.metamodel;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
-
-
 
 /**
  * @author G. Miceli
@@ -51,5 +50,30 @@ public class EntityDefinition extends NodeDefinition {
 			}
 		}
 		return null;
+	}
+	
+
+	// Pre-order depth-first traversal from here down
+	public void traverse(NodeDefinitionVisitor visitor) {
+		// Initialize stack with root entity
+		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
+		stack.push(this);
+		// While there are still nodes to insert
+		while (!stack.isEmpty()) {
+			// Pop the next list of nodes to insert
+			NodeDefinition defn = stack.pop();
+			// Insert this list in order
+
+			visitor.visit(defn);
+
+			// For entities, add existing child nodes to the stack
+			if (defn instanceof EntityDefinition) {
+				EntityDefinition entityDefn = (EntityDefinition) defn;
+				List<NodeDefinition> childDefns = entityDefn.getChildDefinitions();
+				for (NodeDefinition childDefn : childDefns) {
+					stack.push(childDefn);
+				}
+			}
+		}		
 	}
 }

@@ -11,6 +11,7 @@ import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.openforis.idm.metamodel.Configuration;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
 import org.xml.sax.ContentHandler;
 
 /**
@@ -41,7 +42,11 @@ public class SurveyMarshaller {
 		try {
 			JAXBContext jc = BindingContext.getInstance();
 			Marshaller marshaller = jc.createMarshaller();
-			BindingContext.setAdapters(marshaller, configurationAdapter);
+			if ( configurationAdapter == null ) {
+				marshaller.setAdapter(BindingContext.getDefaultConfigurationAdapter());
+			} else {
+				marshaller.setAdapter(new ConfigurationXmlAdapter(configurationAdapter));
+			}
 			
 //			marshaller.setProperty("jaxb.formatted.output", true);
 //			marshaller.setProperty("jaxb.encoding", "UTF-8");

@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.internal.EnumAdapter;
+import org.openforis.idm.metamodel.xml.internal.NodeLabelTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NodeLabel extends LanguageSpecificText {
@@ -17,7 +17,7 @@ public class NodeLabel extends LanguageSpecificText {
 	}
 
 	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(EnumAdapter.class)
+	@XmlJavaTypeAdapter(NodeLabelTypeAdapter.class)
 	private NodeLabel.Type type;
 
 	protected NodeLabel() {

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.internal.EnumAdapter;
+import org.openforis.idm.metamodel.xml.internal.PromptTypeAdapter;
 
 /**
  * @author G. Miceli
@@ -24,7 +24,7 @@ public class Prompt extends LanguageSpecificText {
 	}
 
 	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(EnumAdapter.class)
+	@XmlJavaTypeAdapter(PromptTypeAdapter.class)
 	private Type type;
 
 	public Prompt() {

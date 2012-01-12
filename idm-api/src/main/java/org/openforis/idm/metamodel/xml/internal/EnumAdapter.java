@@ -15,14 +15,21 @@ public class EnumAdapter<T extends Enum<T>> extends XmlAdapter<String, T> {
 	}
 	
 	@Override
-	public T unmarshal(String v) throws Exception {
-		T value = Enum.valueOf(enumType, v.toUpperCase());
-		return v==null ? null : value;
+	public T unmarshal(String v) {
+		if ( v == null ) {
+			return null;
+		} else {
+			return Enum.valueOf(enumType, v.toUpperCase());
+		}
 	}
 
 	@Override
-	public String marshal(T v) throws Exception {
-		return v==null ? null : v.toString().toLowerCase();
+	public String marshal(T v) {
+		if ( v==null ) {
+			return null;
+		} else {
+			return v.toString().toLowerCase();
+		}
 	}
 
 }

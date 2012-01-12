@@ -9,7 +9,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import javax.xml.bind.ValidationEvent;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyMarshaller;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 
@@ -19,65 +24,33 @@ import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
  */
 public class XmlBindingIntegrationTest {
 
+	private Log log = LogFactory.getLog(XmlBindingIntegrationTest.class);
+	
 	@Test
-	public void roundTripMarshallingTest() throws IOException {
-		URL idm = ClassLoader.getSystemResource("test.idm.xml");
-		InputStream is = idm.openStream();
-		SurveyUnmarshaller su = new SurveyUnmarshaller();
-//		su.setConfigurationAdapter(new TestConfigurationAdapter());
-		Survey survey = su.unmarshal(is);
-		
-		new File("target/test/output").mkdirs();
-		FileOutputStream fos = new FileOutputStream("target/test/output/marshalled.idm.xml");
-		SurveyMarshaller sm = new SurveyMarshaller();
-		sm.setIndent(true);
-		sm.marshal(survey, fos);
-		fos.flush();
-		fos.close();
-		
-//		String name = survey.getName();
-//		System.err.println("Survey name " + name);
-//
-//		Schema schema = survey.getSchema();
-//		List<EntityDefinition> rootEntityDefinitions = schema.getRootEntityDefinitions();
-//		for (EntityDefinition entityDefinition : rootEntityDefinitions) {
-//			System.err.println("root entity: " + entityDefinition.getName());
-//			print(entityDefinition, "");
-//		}
-//
-//		Assert.assertTrue(survey.getConfiguration() instanceof Element);
-//		System.err.println("~~~END");
+	public void roundTripMarshallingTest() throws IOException, InvalidIdmlException {
+		try {
+			URL idm = ClassLoader.getSystemResource("test.idm.xml");
+			InputStream is = idm.openStream();
+			SurveyUnmarshaller su = new SurveyUnmarshaller();
+	//		su.setConfigurationAdapter(new TestConfigurationAdapter());
+			Survey survey = su.unmarshal(is);
+		       
+			new File("target/test/output").mkdirs();
+			FileOutputStream fos = new FileOutputStream("target/test/output/marshalled.idm.xml");
+			SurveyMarshaller sm = new SurveyMarshaller();
+			sm.setIndent(true);
+			sm.marshal(survey, fos);
+			fos.flush();
+			fos.close();
+		} catch (InvalidIdmlException e) {
+			ValidationEvent[] validationEvents = e.getValidationEvents();
+			for (ValidationEvent validationEvent : validationEvents) {
+				log.error(validationEvent.getMessage());
+			}
+			throw e;
+		}
 	}
-//	
-//	private class TestConfiguration implements Configuration {
-//		private String config;
-//
-//		public TestConfiguration(String config) {
-//			this.config = config;
-//		}
-//
-//		@Override
-//		public String toString() {
-//			return config;
-//		}
-//	}
-//	
-//	private class TestConfigurationAdapter implements ConfigurationAdapter<TestConfiguration> {
-//
-//		@Override
-//		public TestConfiguration unmarshal(Element elem) {
-//			String xml = elementToString(elem);
-//			return new TestConfiguration(xml);
-//		}
-//
-//		@Override
-//		public Element marshal(TestConfiguration config) {
-//			String xml = config.toString();
-//			return stringToElement(xml);
-//		}
-//		
-//	}
-//	
+
 //	private static String elementToString(Element elem) {
 //		try {
 //			java.io.StringWriter out = new java.io.StringWriter();

@@ -9,11 +9,11 @@ import java.lang.reflect.Method;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.util.ValidationEventCollector;
 
 import org.openforis.idm.metamodel.Configuration;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
-import org.openforis.idm.metamodel.xml.internal.DefaultConfigurationAdapter;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlInit;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
@@ -33,14 +33,25 @@ public class SurveyUnmarshaller {
 		this.configurationAdapter = configurationAdapter;
 	}
 
-	public Survey unmarshal(InputStream is) throws IOException {
+	public Survey unmarshal(InputStream is) throws IOException, InvalidIdmlException {
 		try {
 			JAXBContext jc = BindingContext.getInstance();
 			Unmarshaller unmarshaller = jc.createUnmarshaller();
-			BindingContext.setAdapters(unmarshaller, configurationAdapter);
+			if ( configurationAdapter == null ) {
+				unmarshaller.setAdapter(BindingContext.getDefaultConfigurationAdapter());
+			} else {
+				unmarshaller.setAdapter(new ConfigurationXmlAdapter(configurationAdapter));
+			}
 			Listener listener = new Listener();
 			unmarshaller.setListener(listener);
+			ValidationEventCollector vec = new ValidationEventCollector();
+			unmarshaller.setEventHandler( vec );
+
 			Survey survey = (Survey) unmarshaller.unmarshal(is);
+
+			if ( vec.hasEvents() ) {
+				throw new InvalidIdmlException(vec.getEvents());
+			}
 			return survey;
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);

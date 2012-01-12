@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.internal.EnumAdapter;
+import org.openforis.idm.metamodel.xml.internal.NumericAttributeDefinitionTypeAdapter;
 
 /**
  * @author G. Miceli
@@ -30,7 +30,7 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition  {
 	}
 	
 	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(EnumAdapter.class)
+	@XmlJavaTypeAdapter(NumericAttributeDefinitionTypeAdapter.class)
 	private Type type;
 
 	@XmlElement(name = "precision", type = Precision.class)

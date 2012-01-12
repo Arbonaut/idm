@@ -12,6 +12,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.openforis.idm.metamodel.xml.internal.CheckFlagAdapter;
 
 /**
  * @author G. Miceli
@@ -28,6 +31,7 @@ public abstract class Check implements Serializable {
 	}
 
 	@XmlAttribute(name = "flag")
+	@XmlJavaTypeAdapter(CheckFlagAdapter.class)
 	private Flag flag;
 
 	@XmlAttribute(name = "if")

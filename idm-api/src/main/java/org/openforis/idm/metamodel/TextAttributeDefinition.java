@@ -7,6 +7,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.openforis.idm.metamodel.xml.internal.TextAttributeDefinitionTypeAdapter;
 
 /**
  * @author G. Miceli
@@ -24,6 +27,7 @@ public class TextAttributeDefinition extends AttributeDefinition {
 	private static final long serialVersionUID = 1L;
 	
 	@XmlAttribute(name = "type")
+	@XmlJavaTypeAdapter(TextAttributeDefinitionTypeAdapter.class)
 	private Type type;
 
 	public Type getType() {

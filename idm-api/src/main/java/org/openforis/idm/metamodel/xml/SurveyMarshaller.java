@@ -3,15 +3,12 @@ package org.openforis.idm.metamodel.xml;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
-import org.openforis.idm.metamodel.Configuration;
 import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
 import org.xml.sax.ContentHandler;
 
 /**
@@ -19,17 +16,14 @@ import org.xml.sax.ContentHandler;
  */
 public class SurveyMarshaller {
 
-	private ConfigurationAdapter<? extends Configuration> configurationAdapter;
 	private boolean indent;
-	
-	public ConfigurationAdapter<? extends Configuration> getConfigurationAdapter() {
-		return configurationAdapter;
+	private Marshaller marshaller;
+
+	SurveyMarshaller(Marshaller marshaller) {
+		super();
+		this.marshaller = marshaller;
 	}
 
-	public void setConfigurationAdapter(ConfigurationAdapter<? extends Configuration> configurationAdapter) {
-		this.configurationAdapter = configurationAdapter;
-	}
-	
 	public boolean isIndent() {
 		return indent;
 	}
@@ -40,14 +34,7 @@ public class SurveyMarshaller {
 
 	public void marshal(Survey survey, OutputStream os) throws IOException {
 		try {
-			JAXBContext jc = BindingContext.getInstance();
-			Marshaller marshaller = jc.createMarshaller();
-			if ( configurationAdapter == null ) {
-				marshaller.setAdapter(BindingContext.getDefaultConfigurationAdapter());
-			} else {
-				marshaller.setAdapter(new ConfigurationXmlAdapter(configurationAdapter));
-			}
-			
+		
 //			marshaller.setProperty("jaxb.formatted.output", true);
 //			marshaller.setProperty("jaxb.encoding", "UTF-8");
 

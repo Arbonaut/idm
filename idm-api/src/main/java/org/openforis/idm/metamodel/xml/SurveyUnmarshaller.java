@@ -23,25 +23,14 @@ import org.openforis.idm.metamodel.xml.internal.XmlParent;
  */
 public class SurveyUnmarshaller {
 
-	private ConfigurationAdapter<? extends Configuration> configurationAdapter;
-	
-	public ConfigurationAdapter<? extends Configuration> getConfigurationAdapter() {
-		return configurationAdapter;
-	}
+	private Unmarshaller unmarshaller;
 
-	public void setConfigurationAdapter(ConfigurationAdapter<? extends Configuration> configurationAdapter) {
-		this.configurationAdapter = configurationAdapter;
+	SurveyUnmarshaller(Unmarshaller unmarshaller) {
+		this.unmarshaller = unmarshaller;
 	}
 
 	public Survey unmarshal(InputStream is) throws IOException, InvalidIdmlException {
 		try {
-			JAXBContext jc = BindingContext.getInstance();
-			Unmarshaller unmarshaller = jc.createUnmarshaller();
-			if ( configurationAdapter == null ) {
-				unmarshaller.setAdapter(BindingContext.getDefaultConfigurationAdapter());
-			} else {
-				unmarshaller.setAdapter(new ConfigurationXmlAdapter(configurationAdapter));
-			}
 			Listener listener = new Listener();
 			unmarshaller.setListener(listener);
 			ValidationEventCollector vec = new ValidationEventCollector();

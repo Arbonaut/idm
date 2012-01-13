@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
@@ -52,6 +53,18 @@ public class EntityDefinition extends NodeDefinition {
 		return null;
 	}
 	
+	public List<KeyAttributeDefinition> getKeyAttributeDefinitions() {
+		ArrayList<KeyAttributeDefinition> result = new ArrayList<KeyAttributeDefinition>();
+		for (NodeDefinition nodeDefinition : childDefinitions) {
+			if(nodeDefinition instanceof KeyAttributeDefinition) {
+				KeyAttributeDefinition keyAttributeDefinition = (KeyAttributeDefinition) nodeDefinition;
+				if(keyAttributeDefinition.isKey()) {
+					result.add(keyAttributeDefinition);
+				}
+			}
+		}
+		return Collections.unmodifiableList(result);
+	}
 
 	// Pre-order depth-first traversal from here down
 	public void traverse(NodeDefinitionVisitor visitor) {

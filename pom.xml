@@ -50,6 +50,11 @@
 				<artifactId>idm-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-impl</artifactId>
+				<version>2.2.2</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

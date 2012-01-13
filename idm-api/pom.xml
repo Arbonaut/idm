@@ -76,6 +76,11 @@
 			<version>2.10.0</version>
 		</dependency>
 		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+		</dependency>  
+		
+		<dependency>
 			  <groupId>org.mockito</groupId>
 			  <artifactId>mockito-all</artifactId>  
 			  <version>1.9.0</version> 

@@ -16,9 +16,9 @@ import org.openforis.idm.metamodel.xml.internal.TextAttributeDefinitionTypeAdapt
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "type", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+@XmlType(name="", propOrder = {"name", "type", "key", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
 	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
-public class TextAttributeDefinition extends AttributeDefinition {
+public class TextAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition {
 
 	public enum Type {
 		SHORT, MEMO
@@ -30,7 +30,15 @@ public class TextAttributeDefinition extends AttributeDefinition {
 	@XmlJavaTypeAdapter(TextAttributeDefinitionTypeAdapter.class)
 	private Type type;
 
+	@XmlAttribute(name = "key")
+	private Boolean key;
+
 	public Type getType() {
 		return this.type;
+	}
+	
+	@Override
+	public boolean isKey() {
+		return this.key == null ? false : key;
 	}
 }

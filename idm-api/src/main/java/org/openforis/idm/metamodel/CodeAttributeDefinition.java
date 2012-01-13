@@ -19,7 +19,7 @@ import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="", propOrder = {"name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression", "requiredExpression",
 		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
-public class CodeAttributeDefinition extends AttributeDefinition  {
+public class CodeAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
 	

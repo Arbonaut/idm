@@ -53,13 +53,13 @@ public class EntityDefinition extends NodeDefinition {
 		return null;
 	}
 	
-	public List<KeyAttributeDefinition> getKeyAttributeDefinitions() {
-		ArrayList<KeyAttributeDefinition> result = new ArrayList<KeyAttributeDefinition>();
+	public List<AttributeDefinition> getKeyAttributeDefinitions() {
+		ArrayList<AttributeDefinition> result = new ArrayList<AttributeDefinition>();
 		for (NodeDefinition nodeDefinition : childDefinitions) {
 			if(nodeDefinition instanceof KeyAttributeDefinition) {
 				KeyAttributeDefinition keyAttributeDefinition = (KeyAttributeDefinition) nodeDefinition;
 				if(keyAttributeDefinition.isKey()) {
-					result.add(keyAttributeDefinition);
+					result.add((AttributeDefinition) keyAttributeDefinition);
 				}
 			}
 		}

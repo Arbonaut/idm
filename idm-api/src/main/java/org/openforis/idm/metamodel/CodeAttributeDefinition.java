@@ -52,7 +52,7 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	protected void setListName(String name) {
 		Survey survey = getSurvey();
 		if ( survey == null ) {
-			throw new DetachedModelDefinitionException(CodeAttributeDefinition.class, Survey.class);
+			throw new DetachedNodeDefinitionException(CodeAttributeDefinition.class, Survey.class);
 		}
 		CodeList newList = survey.getCodeList(name);
 		if ( newList == null ) {

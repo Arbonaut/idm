@@ -17,6 +17,7 @@ import org.openforis.idm.metamodel.BooleanAttributeDefinition;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
 import org.openforis.idm.metamodel.DateAttributeDefinition;
+import org.openforis.idm.metamodel.DetachedNodeDefinitionException;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.FileAttributeDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
@@ -263,7 +264,7 @@ public class Entity extends Node<EntityDefinition> {
 	private <T extends Node<?>> T addInternal(T o, Integer idx) {
 		Record record = getRecord();
 		if (record == null) {
-			throw new IllegalStateException("Cannot add object to a detached entity");
+			throw new DetachedNodeDefinitionException(o.getDefinition().getClass(), this.getClass());
 		}
 
 		// Get child definition and name

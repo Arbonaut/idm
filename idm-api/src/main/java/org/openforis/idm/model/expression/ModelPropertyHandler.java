@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.model.jxpath;
+package org.openforis.idm.model.expression;
 
 import java.util.ArrayList;
 import java.util.Collections;

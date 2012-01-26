@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.metamodel.jxpath;
+package org.openforis.idm.metamodel.expression;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
@@ -13,7 +13,7 @@ import org.openforis.idm.metamodel.NodeDefinition;
  * @author M. Togna
  * 
  */
-public class NodeDefinitionDynamicPropertyHandler implements DynamicPropertyHandler {
+public class NodeDefinitionPropertyHandler implements DynamicPropertyHandler {
 
 	/*
 	 * (non-Javadoc)

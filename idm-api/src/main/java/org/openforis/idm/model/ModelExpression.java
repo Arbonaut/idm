@@ -9,8 +9,8 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
-import org.openforis.idm.model.jxpath.ModelPropertyHandler;
-import org.openforis.idm.model.jxpath.RecordPropertyHandler;
+import org.openforis.idm.model.expression.ModelPropertyHandler;
+import org.openforis.idm.model.expression.RecordPropertyHandler;
 
 /**
  * @author M. Togna

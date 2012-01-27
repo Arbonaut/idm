@@ -48,7 +48,7 @@ public class Precision {
 	protected void setUnitName(String name) {
 		Survey survey = getSurvey();
 		if ( survey == null ) {
-			throw new DetachedModelDefinitionException(Precision.class, Survey.class);
+			throw new DetachedNodeDefinitionException(Precision.class, Survey.class);
 		}
 		Unit newUnit = survey.getUnit(name);
 		if ( newUnit == null ) {

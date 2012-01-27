@@ -431,6 +431,7 @@
                             </xs:restriction>
                           </xs:simpleType>
                         </xs:attribute>
+                        <!-- 
                         <xs:attribute name="type" use="required">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
@@ -456,6 +457,7 @@
                             </xs:restriction>
                           </xs:simpleType>
                         </xs:attribute>
+                         -->
                         <!--
                         <xs:attribute name="default" type="xs:boolean">
                           <xs:annotation>

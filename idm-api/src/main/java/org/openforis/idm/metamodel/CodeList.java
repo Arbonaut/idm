@@ -95,14 +95,6 @@ public class CodeList extends Versionable implements Serializable {
 		}
 	}
 	
-	public CodeType getCodeType() {
-		if ( codingScheme == null || codingScheme.getCodeType() == null ) {
-			return CodeType.ALPHANUMERIC;
-		} else {
-			return codingScheme.getCodeType();
-		}
-	}
-
 	public CodeScope getCodeScope() {
 		if ( codingScheme == null || codingScheme.getCodeScope() == null ) {
 			return CodeScope.LOCAL;
@@ -111,14 +103,6 @@ public class CodeList extends Versionable implements Serializable {
 		}
 	}
 
-	public boolean isAlphanumeric() {
-		return getCodeType() == CodeType.ALPHANUMERIC;
-	}
-
-	public boolean isNumeric() {
-		return getCodeType() == CodeType.NUMERIC;
-	}
-	
 	public Survey getSurvey() {
 		return survey;
 	}

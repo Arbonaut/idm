@@ -95,20 +95,20 @@ public class Entity extends Node<EntityDefinition> {
 	// return null;
 	// }
 
-	public AlphanumericCodeAttribute addValue(String name, AlphanumericCode value, int idx) {
-		return addValueInternal(name, value, idx, AlphanumericCodeAttribute.class, CodeAttributeDefinition.class);
-	}
-
-	public AlphanumericCodeAttribute addValue(String name, AlphanumericCode value) {
-		return addValueInternal(name, value, null, AlphanumericCodeAttribute.class, CodeAttributeDefinition.class);
-	}
-
 	public BooleanAttribute addValue(String name, Boolean value, int idx) {
 		return addValueInternal(name, value, idx, BooleanAttribute.class, BooleanAttributeDefinition.class);
 	}
 
 	public BooleanAttribute addValue(String name, Boolean value) {
 		return addValueInternal(name, value, null, BooleanAttribute.class, BooleanAttributeDefinition.class);
+	}
+
+	public CodeAttribute addValue(String name, Code value, int idx) {
+		return addValueInternal(name, value, idx, CodeAttribute.class, CodeAttributeDefinition.class);
+	}
+
+	public CodeAttribute addValue(String name, Code value) {
+		return addValueInternal(name, value, null, CodeAttribute.class, CodeAttributeDefinition.class);
 	}
 
 	public CoordinateAttribute addValue(String name, Coordinate value, int idx) {
@@ -125,14 +125,6 @@ public class Entity extends Node<EntityDefinition> {
 
 	public FileAttribute addValue(String name, File value) {
 		return addValueInternal(name, value, null, FileAttribute.class, FileAttributeDefinition.class);
-	}
-
-	public NumericCodeAttribute addValue(String name, NumericCode value, int idx) {
-		return addValueInternal(name, value, idx, NumericCodeAttribute.class, CodeAttributeDefinition.class);
-	}
-
-	public NumericCodeAttribute addValue(String name, NumericCode value) {
-		return addValueInternal(name, value, null, NumericCodeAttribute.class, CodeAttributeDefinition.class);
 	}
 
 	public RealAttribute addValue(String name, Double value, int idx) {

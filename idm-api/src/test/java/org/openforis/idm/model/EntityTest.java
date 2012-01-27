@@ -28,16 +28,16 @@ public class EntityTest {
 	}
 
 	@Test
-	public void testAddNullAlphanumericCode() {
+	public void testAddNullCode() {
 		Entity cluster = getRootEntity();
-		cluster.addValue("id", (AlphanumericCode) null);
+		cluster.addValue("id", (Code) null);
 	}
 
 	@Test(expected = ArrayIndexOutOfBoundsException.class)
 	public void testAddTooManySingleAttributes() {
 		Entity cluster = getRootEntity();
-		cluster.addValue("id", new AlphanumericCode("123_456"));
-		cluster.addValue("id", new AlphanumericCode("789_012"));
+		cluster.addValue("id", new Code("123_456"));
+		cluster.addValue("id", new Code("789_012"));
 	}
 
 	@Test(expected = ArrayIndexOutOfBoundsException.class)
@@ -51,7 +51,7 @@ public class EntityTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddAttributeOnEntity() {
 		Entity cluster = getRootEntity();
-		cluster.addValue("plot", new AlphanumericCode("123_456"));
+		cluster.addValue("plot", new Code("123_456"));
 	}
 
 	@Test(expected = IllegalArgumentException.class)

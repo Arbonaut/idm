@@ -49,6 +49,8 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition  {
 	}
 	
 	public List<Precision> getPrecisionDefinitions() {
-		return Collections.unmodifiableList(this.precisionDefinitions);
+		if(this.precisionDefinitions != null) {
+			return Collections.unmodifiableList(this.precisionDefinitions);
+		} else return null;
 	}
 }

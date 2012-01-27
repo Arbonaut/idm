@@ -12,8 +12,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.model.AlphanumericCode;
 import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.Code;
 
 /**
  * @author G. Miceli
@@ -49,8 +49,8 @@ public class PatternCheck extends Check {
 		// code
 		if (value instanceof String) {
 			string = (String) value;
-		} else if (value instanceof AlphanumericCode) {
-			string = ((AlphanumericCode) value).getCode();
+		} else if (value instanceof Code) {
+			string = ((Code) value).getCode();
 		} else {
 			throw new IllegalArgumentException("Pattern check cannot be applied to value type " + value.getClass().getName());
 		}

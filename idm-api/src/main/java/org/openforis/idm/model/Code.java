@@ -4,22 +4,22 @@ package org.openforis.idm.model;
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class Code<T> {
+public class Code {
 
-	private final T code;
+	private final String code;
 	private final String qualifier;
 
-	Code(T code) {
+	public Code(String code) {
 		this.code = code;
 		this.qualifier = null;
 	}
 
-	Code(T code, String qualifier) {
+	public Code(String code, String qualifier) {
 		this.code = code;
 		this.qualifier = qualifier;
 	}
 
-	public T getCode() {
+	public String getCode() {
 		return code;
 	}
 
@@ -44,8 +44,7 @@ public abstract class Code<T> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		@SuppressWarnings("unchecked")
-		Code<T> other = (Code<T>) obj;
+		Code other = (Code) obj;
 		if (code == null) {
 			if (other.code != null)
 				return false;

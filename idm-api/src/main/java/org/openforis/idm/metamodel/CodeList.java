@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -60,35 +61,19 @@ public class CodeList extends Versionable implements Serializable {
 	}
 
 	public List<CodeListLabel> getLabels() {
-		if(this.labels != null) {
-			return Collections.unmodifiableList(this.labels);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(this.labels);
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		if(this.descriptions != null) {
-			return Collections.unmodifiableList(this.descriptions);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(this.descriptions);
 	}
 
 	public List<CodeListLevel> getHierarchy() {
-		if(this.hierarchy != null) {
-			return Collections.unmodifiableList(this.hierarchy);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(this.hierarchy);
 	}
 
 	public List<CodeListItem> getItems() {
-		if(this.items != null) {
-			return Collections.unmodifiableList(this.items);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(this.items);
 	}
 	
 	public CodeScope getCodeScope() {

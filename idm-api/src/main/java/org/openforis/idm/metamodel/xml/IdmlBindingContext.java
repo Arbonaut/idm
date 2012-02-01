@@ -13,13 +13,13 @@ import org.openforis.idm.metamodel.xml.internal.DefaultConfigurationAdapter;
 /**
  * @author G. Miceli
  */
-public class BindingContext {
+public class IdmlBindingContext {
 	private final JAXBContext surveyJaxbContext;
 	private static final ConfigurationXmlAdapter DEFAULT_CONFIG_ADAPTER;
 
 	private ConfigurationAdapter<? extends Configuration> configurationAdapter;
 
-	public BindingContext() {
+	public IdmlBindingContext() {
 		try {
 			this.surveyJaxbContext = JAXBContext.newInstance(Survey.class);
 		} catch (JAXBException e) {

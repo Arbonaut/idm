@@ -14,7 +14,7 @@ import javax.xml.bind.ValidationEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-import org.openforis.idm.metamodel.xml.BindingContext;
+import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyMarshaller;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
@@ -32,13 +32,13 @@ public class XmlBindingIntegrationTest {
 		try {
 			URL idm = ClassLoader.getSystemResource("test.idm.xml");
 			InputStream is = idm.openStream();
-			BindingContext bindingContext = new BindingContext();
-			SurveyUnmarshaller su = bindingContext.createSurveyUnmarshaller();
+			IdmlBindingContext idmlBindingContext = new IdmlBindingContext();
+			SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
 			Survey survey = su.unmarshal(is);
 		       
 			new File("target/test/output").mkdirs();
 			FileOutputStream fos = new FileOutputStream("target/test/output/marshalled.idm.xml");
-			SurveyMarshaller sm = bindingContext.createSurveyMarshaller();
+			SurveyMarshaller sm = idmlBindingContext.createSurveyMarshaller();
 			sm.setIndent(true);
 			sm.marshal(survey, fos);
 			fos.flush();

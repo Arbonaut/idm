@@ -7,7 +7,7 @@ import java.net.URL;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.xml.BindingContext;
+import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 
@@ -22,8 +22,8 @@ public class EntityTest {
 	public static void setUp() throws IOException, InvalidIdmlException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
-		BindingContext bindingContext = new BindingContext();
-		SurveyUnmarshaller su = bindingContext.createSurveyUnmarshaller();
+		IdmlBindingContext idmlBindingContext = new IdmlBindingContext();
+		SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
 		survey = su.unmarshal(is);
 	}
 

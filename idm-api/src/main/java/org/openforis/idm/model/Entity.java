@@ -171,6 +171,8 @@ public class Entity extends Node<EntityDefinition> {
 	// TODO other addXXX and setXXX methods
 
 	public Node<? extends NodeDefinition> get(String name, int index) {
+		checkChildDefinition(name);
+
 		List<Node<? extends NodeDefinition>> list = childrenByName.get(name);
 		if (list == null) {
 			return null;
@@ -179,20 +181,27 @@ public class Entity extends Node<EntityDefinition> {
 		}
 	}
 
+	private void checkChildDefinition(String name) {
+		getChildDefinition(name);
+	}
+
 	/*
 	 * public Set<String> getChildNames() { Set<String> childNames = childrenByName.keySet(); return Collections.unmodifiableSet(childNames); }
 	 */
 	public int getCount(String name) {
+		checkChildDefinition(name);
 		List<Node<? extends NodeDefinition>> list = childrenByName.get(name);
 		return list == null ? 0 : list.size();
 	}
 
 	public List<RuleFailure> getErrors(String name) {
+		checkChildDefinition(name);
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List<RuleFailure> getWarnings(String name) {
+		checkChildDefinition(name);
 		// TODO Auto-generated method stub
 		return null;
 	}

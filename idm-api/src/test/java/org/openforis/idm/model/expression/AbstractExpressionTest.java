@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 import org.junit.Before;
 import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.xml.BindingContext;
+import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 import org.openforis.idm.model.Code;
@@ -27,11 +27,11 @@ public abstract class AbstractExpressionTest {
 	private static final String TEST_IDM = "test.idm.xml";
 	private Survey survey;
 	private Record record;
-	private BindingContext bindingContext;
+	private IdmlBindingContext bindingContext;
 
 	@Before
 	public void initTest() throws IOException, InvalidIdmlException {
-		bindingContext = new BindingContext();
+		bindingContext = new IdmlBindingContext();
 		survey = unmarshalSurvey();
 		record = createRecord();
 	}

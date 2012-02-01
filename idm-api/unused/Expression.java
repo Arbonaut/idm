@@ -10,9 +10,11 @@ import org.openforis.idm.metamodel.NodeDefinition;
  */
 public interface Expression {
 
+	//?
 	Object evaluate(Record context);
 
 	Object evaluate(Node<? extends NodeDefinition> context);
 
 	Iterator<?> Iterate(Node<? extends NodeDefinition> context);
+	
 }

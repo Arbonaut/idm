@@ -9,7 +9,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Attribute;
-import org.openforis.idm.model.ModelExpression;
+import org.openforis.idm.model.expression.CheckExpression;
+import org.openforis.idm.model.expression.InvalidPathException;
 
 
 /**
@@ -29,9 +30,9 @@ public class CustomCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
-		ModelExpression modelExpression = new ModelExpression(expression);
-		Boolean b = (Boolean) modelExpression.evaluate(attribute);
+	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
+		CheckExpression checkExpression = new CheckExpression(expression);
+		boolean b = checkExpression.evaluate(attribute);
 		return b;
 	}
 }

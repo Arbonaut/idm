@@ -73,8 +73,8 @@ public class EntityTest {
 	}
 
 	private Entity getRootEntity() {
-		Record record = new Record(survey, "cluster", "2.0");
-		Entity entity = record.getRootEntity();
+		Record record = new Record(survey, "2.0");
+		Entity entity = record.createRootEntity("cluster");
 		return entity;
 	}
 }

@@ -45,9 +45,9 @@ public abstract class AbstractExpressionTest {
 
 	private Record createRecord() {
 
-		Record record = new Record(getSurvey(), "cluster", "2.0");
+		Record record = new Record(getSurvey(), "2.0");
 
-		Entity cluster = record.getRootEntity();
+		Entity cluster = record.createRootEntity("cluster");
 		String id = "123_456";
 		cluster.addValue("id", new Code(id));
 		cluster.addValue("gps_realtime", Boolean.TRUE);

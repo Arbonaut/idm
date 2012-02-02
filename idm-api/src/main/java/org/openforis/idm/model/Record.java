@@ -5,15 +5,13 @@ package org.openforis.idm.model;
 
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.ModelVersion;
-import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.Survey;
 
 /**
@@ -25,29 +23,32 @@ public class Record {
 	private Integer id;
 	private Survey survey;
 	private ModelVersion modelVersion;
-	private Entity rootEntity;
-	private List<RecordObserver> observers;
 	private Map<Integer, Node<? extends NodeDefinition>> nodesById;
 	private int nextId;
+	private Entity rootEntity;
 
-	public Record(Survey survey, String rootEntityName, String version) {
+	public Record(Survey survey, String version) {
 		this.survey = survey;
-		Schema schema = survey.getSchema();
-		EntityDefinition rootEntityDefinition = schema.getRootEntityDefinition(rootEntityName);
-		if ( rootEntityDefinition == null ) {
-			throw new IllegalArgumentException("Invalid root entity '"+rootEntity+'"');			
-		}
 		this.modelVersion = survey.getVersion(version);
 		if ( modelVersion == null ) {
 			throw new IllegalArgumentException("Invalid version '"+version+'"');
 		}
 		this.nodesById = new HashMap<Integer, Node<? extends NodeDefinition>>();
-		
-		this.rootEntity = new Entity(rootEntityDefinition);
-		this.nextId = 1;
-		this.rootEntity.setRecord(this);
-//		this.rootEntity.setId(1);
-		this.observers = new ArrayList<RecordObserver>();
+		this.nextId = 0;
+	}
+	
+	public Entity createRootEntity(String name) {
+		if ( rootEntity != null ) {
+			throw new IllegalStateException("Record already has an associated root entity");
+		}
+		Schema schema = survey.getSchema();
+		EntityDefinition rootEntityDefinition = schema.getRootEntityDefinition(name);
+		if ( rootEntityDefinition == null ) {
+			throw new IllegalArgumentException("Invalid root entity '"+rootEntity+'"');			
+		}
+		rootEntity = new Entity(rootEntityDefinition);
+		rootEntity.setRecord(this);
+		return rootEntity;
 	}
 	
 	public Integer getId() {
@@ -90,36 +91,13 @@ public class Record {
 //	public void setVersion(ModelVersion modelVersion) {
 //		this.modelVersion = modelVersion;
 //	}
-/*
-	protected void notifyListener(Node<? extends NodeDefinition> node) {
-		this.listener.onStateChange(node);
-	}
-*/
-//
 	public Node<? extends NodeDefinition> getNodeById(int id) {
 		return this.nodesById.get(id);
-	}
-
-	public void addObserver(RecordObserver observer) {
-		observers.add(observer);
-	}
-	
-	public void notifyObservers(Node<?> target, Object... args) {
-//		updateInternal(target);
-		for (RecordObserver observer : observers) {
-			observer.update(target, args);
-		}
 	}
 	
 	protected void put(Node<? extends NodeDefinition> node){
 		this.nodesById.put(node.getId(), node);
 	}
-/*
-	protected void updateInternal(Node<?> target) {
-		nodesById
-		
-	}
-	*/
 
 	protected int nextId() {
 		return nextId++;

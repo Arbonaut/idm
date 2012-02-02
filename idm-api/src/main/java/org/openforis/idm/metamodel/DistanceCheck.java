@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.CoordinateAttribute;
 import org.openforis.idm.validation.ExternalLookupProvider;
+import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author G. Miceli
@@ -49,7 +50,7 @@ public class DistanceCheck extends Check {
 		return this.sourcePointExpression;
 	}
 
-	public boolean execute(ExternalLookupProvider provider, CoordinateAttribute coordinate) {
+	public boolean execute(ValidationContext validationContext, CoordinateAttribute coordinate) {
 		// coordinate.
 		return false;
 	}

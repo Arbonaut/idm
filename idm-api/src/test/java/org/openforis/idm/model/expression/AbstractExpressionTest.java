@@ -17,6 +17,7 @@ import org.openforis.idm.model.Date;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.Time;
+import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author M. Togna
@@ -28,12 +29,14 @@ public abstract class AbstractExpressionTest {
 	private Survey survey;
 	private Record record;
 	private IdmlBindingContext bindingContext;
+	private ValidationContext validationContext;
 
 	@Before
 	public void initTest() throws IOException, InvalidIdmlException {
 		bindingContext = new IdmlBindingContext();
 		survey = unmarshalSurvey();
 		record = createRecord();
+		validationContext = new ValidationContext();
 	}
 
 	private Survey unmarshalSurvey() throws IOException, InvalidIdmlException {
@@ -73,7 +76,7 @@ public abstract class AbstractExpressionTest {
 			Entity plot = cluster.addEntity("plot");
 			plot.addValue("no", new Code("1"));
 			plot.addValue("share", 80d);
-			plot.addValue("subplot","A");
+			plot.addValue("subplot", "A");
 			Entity tree1 = plot.addEntity("tree");
 			tree1.addValue("dbh", 54.2);
 			tree1.addValue("total_height", 2.0);
@@ -86,7 +89,7 @@ public abstract class AbstractExpressionTest {
 			Entity plot = cluster.addEntity("plot");
 			plot.addValue("no", new Code("1"));
 			plot.addValue("share", 20d);
-			plot.addValue("subplot","B");
+			plot.addValue("subplot", "B");
 		}
 		{
 			Entity plot = cluster.addEntity("plot");
@@ -108,5 +111,9 @@ public abstract class AbstractExpressionTest {
 
 	protected Record getRecord() {
 		return record;
+	}
+
+	protected ValidationContext getValidationContext() {
+		return validationContext;
 	}
 }

@@ -8,19 +8,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathIntrospector;
-import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
-import org.apache.commons.jxpath.ri.model.NodePointerFactory;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.model.Record;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 import org.openforis.idm.model.expression.internal.ModelNodePointer;
-import org.openforis.idm.model.expression.internal.ModelNodePointerFactory;
-import org.openforis.idm.model.expression.internal.ModelPropertyHandler;
-import org.openforis.idm.model.expression.internal.RecordPropertyHandler;
 
 /**
  * @author M. Togna
@@ -28,26 +21,12 @@ import org.openforis.idm.model.expression.internal.RecordPropertyHandler;
  */
 abstract class AbstractExpression {
 
-	private static JXPathContext CONTEXT;
-	private static NodePointerFactory NODE_POINTER_FACTORY;
-
 	private String expression;
+	private JXPathContext jxPathContext;
 
-	protected AbstractExpression(String expression) {
+	protected AbstractExpression(String expression, JXPathContext context) {
 		this.expression = expression;
-	}
-
-	static {
-		NODE_POINTER_FACTORY = new ModelNodePointerFactory();
-		JXPathContextReferenceImpl.addNodePointerFactory(NODE_POINTER_FACTORY);
-
-		JXPathIntrospector.registerDynamicClass(Node.class, ModelPropertyHandler.class);
-		JXPathIntrospector.registerDynamicClass(Record.class, RecordPropertyHandler.class);
-
-		CONTEXT = ModelJXPathContext.newContext(null);
-		// FunctionLibrary functionLibrary = new FunctionLibrary();
-		// functionLibrary.addFunctions(new ClassFunctions(ModelDefinitionFunctions.class, "idm"));
-		// CONTEXT.setFunctions(functionLibrary);
+		this.jxPathContext = context;
 	}
 
 	protected Object evaluateSingle(Node<? extends NodeDefinition> context) throws InvalidPathException {
@@ -97,7 +76,7 @@ abstract class AbstractExpression {
 	}
 
 	protected JXPathContext getContext(Node<? extends NodeDefinition> context) {
-		JXPathContext jxPathContext = ModelJXPathContext.newContext(CONTEXT, context);
+		JXPathContext jxPathContext = ModelJXPathContext.newContext(this.jxPathContext, context);
 		if (context instanceof Attribute) {
 			@SuppressWarnings("unchecked")
 			Object value = ((Attribute<? extends AttributeDefinition, ?>) context).getValue();

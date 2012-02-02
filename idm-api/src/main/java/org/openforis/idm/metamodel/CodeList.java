@@ -1,7 +1,6 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;

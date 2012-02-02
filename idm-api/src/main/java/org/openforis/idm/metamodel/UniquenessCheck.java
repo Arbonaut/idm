@@ -14,6 +14,7 @@ import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.model.expression.ModelPathExpression;
+import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author G. Miceli
@@ -32,8 +33,8 @@ public class UniquenessCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
-		ModelPathExpression pathExpression = new ModelPathExpression(expression);
+	public boolean execute(ValidationContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
+		ModelPathExpression pathExpression = validationContext.getExpressionFactory().createModelPathExpression(getExpression());
 		List<Node<NodeDefinition>> list = pathExpression.iterate(attribute);
 		if (list != null && list.size() > 0) {
 			boolean unique = true;

@@ -68,7 +68,7 @@ public class RequiredExpressionTest extends AbstractExpressionTest {
 	}
 
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
-		RequiredExpression expression = new RequiredExpression(expr);
+		RequiredExpression expression = getValidationContext().getExpressionFactory().createRequiredExpression(expr);
 		boolean b = expression.evaluate(context);
 		return b;
 	}

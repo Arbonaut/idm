@@ -8,8 +8,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.model.Attribute;
-
+import org.openforis.idm.model.CoordinateAttribute;
+import org.openforis.idm.validation.ExternalLookupProvider;
+import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author G. Miceli
@@ -49,8 +50,8 @@ public class DistanceCheck extends Check {
 		return this.sourcePointExpression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
-		// TODO Auto-generated method stub
+	public boolean execute(ValidationContext validationContext, CoordinateAttribute coordinate) {
+		// coordinate.
 		return false;
 	}
 

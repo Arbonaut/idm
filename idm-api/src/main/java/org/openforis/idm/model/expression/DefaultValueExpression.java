@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.model.expression;
 
+import org.apache.commons.jxpath.JXPathContext;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
 
@@ -12,8 +13,8 @@ import org.openforis.idm.model.Node;
  */
 public class DefaultValueExpression extends AbstractExpression {
 
-	public DefaultValueExpression(String expression) {
-		super(expression);
+	protected DefaultValueExpression(String expression, JXPathContext context) {
+		super(expression, context);
 	}
 
 	public Object evaluate(Node<? extends NodeDefinition> context) throws InvalidPathException {

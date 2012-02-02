@@ -17,7 +17,7 @@ import org.openforis.idm.model.Record;
  * 
  */
 public class ConditionalExpressionTest extends AbstractExpressionTest {
-	
+
 	@Test
 	public void testTrue() throws InvalidPathException {
 		Record record = getRecord();
@@ -29,7 +29,7 @@ public class ConditionalExpressionTest extends AbstractExpressionTest {
 		boolean b = evaluateExpression(expr, plotDirection);
 		Assert.assertTrue(b);
 	}
-	
+
 	@Test
 	public void testFalse() throws InvalidPathException {
 		Record record = getRecord();
@@ -41,7 +41,7 @@ public class ConditionalExpressionTest extends AbstractExpressionTest {
 		boolean b = evaluateExpression(expr, plotDirection);
 		Assert.assertFalse(b);
 	}
-	
+
 	@Test
 	public void testDefaultWithMissingNode() throws InvalidPathException {
 		Record record = getRecord();
@@ -53,9 +53,9 @@ public class ConditionalExpressionTest extends AbstractExpressionTest {
 		boolean b = evaluateExpression(expr, plotDirection);
 		Assert.assertFalse(b);
 	}
-	
+
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
-		ConditionalExpression expression = new ConditionalExpression(expr);
+		ConditionalExpression expression = getValidationContext().getExpressionFactory().createConditionalExpression(expr);
 		boolean b = expression.evaluate(context);
 		return b;
 	}

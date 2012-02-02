@@ -5,6 +5,7 @@ package org.openforis.idm.model.expression;
 
 import java.util.List;
 
+import org.apache.commons.jxpath.JXPathContext;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
 
@@ -14,8 +15,8 @@ import org.openforis.idm.model.Node;
  */
 public class ModelPathExpression extends AbstractExpression {
 
-	public ModelPathExpression(String expression) {
-		super(expression);
+	protected ModelPathExpression(String expression, JXPathContext context) {
+		super(expression, context);
 	}
 
 	public Object evaluate(Node<? extends NodeDefinition> context) throws InvalidPathException {

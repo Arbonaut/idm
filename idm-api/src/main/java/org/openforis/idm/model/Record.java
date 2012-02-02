@@ -12,8 +12,8 @@ import java.util.Map;
 
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.ModelVersion;
-import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.Survey;
 
 /**

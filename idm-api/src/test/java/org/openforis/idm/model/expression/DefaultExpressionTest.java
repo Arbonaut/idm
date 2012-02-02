@@ -20,7 +20,7 @@ public class DefaultExpressionTest extends AbstractExpressionTest {
 		String name = rootEntity.getName();
 		Assert.assertEquals("cluster", name);
 
-		DefaultValueExpression expression = new DefaultValueExpression(expr);
+		DefaultValueExpression expression = getValidationContext().getExpressionFactory().createDefaultValueExpression(expr);
 		Object object = expression.evaluate(rootEntity);
 		return object;
 	}

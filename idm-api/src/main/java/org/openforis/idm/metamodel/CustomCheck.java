@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
-
+import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author G. Miceli
@@ -22,7 +22,7 @@ import org.openforis.idm.model.expression.InvalidPathException;
 public class CustomCheck extends Check {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@XmlAttribute(name = "expr")
 	private String expression;
 
@@ -30,8 +30,8 @@ public class CustomCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
-		CheckExpression checkExpression = new CheckExpression(expression);
+	public boolean execute(ValidationContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
+		CheckExpression checkExpression = validationContext.getExpressionFactory().createCheckExpression(getExpression());
 		boolean b = checkExpression.evaluate(attribute);
 		return b;
 	}

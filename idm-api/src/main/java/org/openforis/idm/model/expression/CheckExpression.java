@@ -3,14 +3,16 @@
  */
 package org.openforis.idm.model.expression;
 
+import org.apache.commons.jxpath.JXPathContext;
+
 /**
  * @author M. Togna
- *
+ * 
  */
 public class CheckExpression extends AbstractBooleanExpression {
 
-	public CheckExpression(String expression) {
-		super(expression, Boolean.TRUE);
+	protected CheckExpression(String expression, JXPathContext context) {
+		super(expression, context, Boolean.TRUE);
 	}
 
 }

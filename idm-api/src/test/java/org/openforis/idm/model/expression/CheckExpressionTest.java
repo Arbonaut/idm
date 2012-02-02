@@ -29,7 +29,7 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 		boolean b = evaluateExpression(expr, plotDirection);
 		Assert.assertTrue(b);
 	}
-	
+
 	@Test
 	public void testFalse() throws InvalidPathException {
 		Record record = getRecord();
@@ -41,7 +41,7 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 		boolean b = evaluateExpression(expr, plotDirection);
 		Assert.assertFalse(b);
 	}
-	
+
 	@Test
 	public void testDefaultWithMissingNode() throws InvalidPathException {
 		Record record = getRecord();
@@ -53,9 +53,9 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 		boolean b = evaluateExpression(expr, plotDirection);
 		Assert.assertTrue(b);
 	}
-	
+
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
-		CheckExpression expression = new CheckExpression(expr);
+		CheckExpression expression = getValidationContext().getExpressionFactory().createCheckExpression(expr);
 		boolean b = expression.evaluate(context);
 		return b;
 	}

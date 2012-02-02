@@ -17,7 +17,7 @@ import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 public class EntityTest {
 
 	private static Survey survey;
-	
+
 	@BeforeClass
 	public static void setUp() throws IOException, InvalidIdmlException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");

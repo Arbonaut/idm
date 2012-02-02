@@ -1,7 +1,9 @@
 package org.openforis.idm.metamodel;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
 
 /**
@@ -14,7 +16,7 @@ public class NodeDefinitionTest {
 		NodeDefinition mock = mock(NodeDefinition.class);
 		when(mock.getName()).thenReturn("cluster");
 		when(mock.getPath()).thenCallRealMethod();
-		
+
 		String path = mock.getPath();
 		assertEquals("/cluster", path);
 	}
@@ -27,7 +29,7 @@ public class NodeDefinitionTest {
 		when(mock.getName()).thenReturn("plot");
 		when(mock.getParentDefinition()).thenReturn(parentMock);
 		when(mock.getPath()).thenCallRealMethod();
-		
+
 		String path = mock.getPath();
 		assertEquals("/cluster/plot", path);
 	}

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author M. Togna
@@ -37,7 +38,7 @@ public class ComparisonCheck extends Check {
 
 	@XmlTransient
 	private String expression;
-	
+
 	@XmlAttribute(name = "lt")
 	private String lessThanExpression;
 
@@ -73,17 +74,17 @@ public class ComparisonCheck extends Check {
 		return this.equalsExpression;
 	}
 
-	public String getExpression(){
-		if(expression == null){
+	public String getExpression() {
+		if (expression == null) {
 			ExpressionBuilder expressionBuilder = this.new ExpressionBuilder(this);
-			expression = expressionBuilder.getExpression();	
+			expression = expressionBuilder.getExpression();
 		}
 		return expression;
 	}
-	
-	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
+
+	public boolean execute(ValidationContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
 		String expr = getExpression();
-		CheckExpression checkExpression = new CheckExpression(expr);
+		CheckExpression checkExpression = validationContext.getExpressionFactory().createCheckExpression(expr);
 		boolean b = checkExpression.evaluate(attribute);
 		return b;
 	}

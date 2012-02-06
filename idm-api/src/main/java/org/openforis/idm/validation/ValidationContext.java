@@ -12,22 +12,19 @@ import org.openforis.idm.model.expression.ExpressionFactory;
 public final class ValidationContext {
 
 	private ExpressionFactory expressionFactory;
-	
+
 	public ValidationContext() {
-		this.expressionFactory = new ExpressionFactory();
 	}
 
 	public ExpressionFactory getExpressionFactory() {
+		if(expressionFactory == null){
+			expressionFactory = new ExpressionFactory();
+		}
 		return expressionFactory;
 	}
-	
-	public ExternalLookupProvider getExternalLookupProvider() {
-		return getExpressionFactory().getExternalLookupProvider();
-	}
 
-	public void setExternalLookupProvider(ExternalLookupProvider externalLookupProvider) {
-		getExpressionFactory().setExternalLookupProvider(externalLookupProvider);
+	public void setExpressionFactory(ExpressionFactory expressionFactory) {
+		this.expressionFactory = expressionFactory;
 	}
-	
 	
 }

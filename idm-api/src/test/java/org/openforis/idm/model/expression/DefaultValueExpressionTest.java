@@ -12,7 +12,7 @@ import org.openforis.idm.model.Record;
  * @author M. Togna
  * 
  */
-public class DefaultExpressionTest extends AbstractExpressionTest {
+public class DefaultValueExpressionTest extends AbstractExpressionTest {
 
 	private Object evaluateExpression(String expr) throws InvalidPathException {
 		Record record = getRecord();
@@ -56,6 +56,13 @@ public class DefaultExpressionTest extends AbstractExpressionTest {
 	public void testInvalidPath() throws InvalidPathException {
 		String expr = "plot[1]/asdf/tree[3]/dbh/parent()/dbh";
 		evaluateExpression(expr);
+	}
+
+	@Test
+	public void testConstant() throws InvalidPathException {
+		String expr = "543534";
+		Object object = evaluateExpression(expr);
+		Assert.assertEquals(Double.valueOf(expr), object);
 	}
 
 }

@@ -1,23 +1,53 @@
 package org.openforis.idm.model;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author G. Miceli
  * @author M. Togna
  */
 public final class Coordinate {
 
-	private final Long x;
-	private final Long y;
-	private final Long z;
-	private final String srsId;
+	private static final String STRING_FORMAT = "SRID=(.+);POINT\\((\\d+)\\s(\\d+)\\)";
+	private static final Pattern PATTERN = Pattern.compile(STRING_FORMAT);
 	
+	private Long x;
+	private Long y;
+	private Long z;
+	private String srsId;
+
+
+	/**
+	 * Returns a Coordinate parsed from the string in input the string representation is based on posgis data type
+	 * http://postgis.refractions.net/docs/ch04.html#OpenGISWKBWKT SRID=32632;POINT(0 0) -- XY with SRID
+	 * 
+	 * @param string
+	 */
+	public static Coordinate parseCoordinate(String string) {
+		Matcher matcher = PATTERN.matcher(string);
+		if (matcher.matches()) {
+			String srsId = matcher.group(1);
+
+			String group2 = matcher.group(2);
+			String group3 = matcher.group(3);
+			long x = Long.parseLong(group2);
+			long y = Long.parseLong(group3);
+
+			Coordinate coordinate = new Coordinate(x, y, srsId);
+			return coordinate;
+		} else {
+			throw new IllegalArgumentException("Unable to convert " + string + " to a valid coordinate");
+		}
+	}
+
 	public Coordinate(Long x, Long y, String srsId) {
 		this.x = x;
 		this.y = y;
 		this.z = null;
 		this.srsId = srsId;
 	}
-	
+
 	public Coordinate(Long x, Long y, Long z, String srsId) {
 		this.x = x;
 		this.y = y;
@@ -89,7 +119,7 @@ public final class Coordinate {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{x:").append(x);
 		sb.append(", y:").append(y);
-		if ( z!=null ) {
+		if (z != null) {
 			sb.append(", z:").append(z);
 		}
 		sb.append(", srsId:").append(srsId);

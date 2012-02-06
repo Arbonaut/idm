@@ -5,12 +5,12 @@ package org.openforis.idm.model.expression;
 
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
+import org.openforis.idm.model.expression.internal.IDMFunctions;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 import org.openforis.idm.model.expression.internal.ModelNodePointerFactory;
 import org.openforis.idm.model.expression.internal.ModelPropertyHandler;
@@ -23,12 +23,11 @@ import org.openforis.idm.validation.ExternalLookupProvider;
  */
 public class ExpressionFactory {
 
-	private JXPathContext jxPathContext;
-	private NodePointerFactory nodePointerFactory;
+	private ModelJXPathContext jxPathContext;
 	private ExternalLookupProvider externalLookupProvider;
 
 	public ExpressionFactory() {
-		nodePointerFactory = new ModelNodePointerFactory();
+		NodePointerFactory nodePointerFactory = new ModelNodePointerFactory();
 		JXPathContextReferenceImpl.addNodePointerFactory(nodePointerFactory);
 
 		JXPathIntrospector.registerDynamicClass(Node.class, ModelPropertyHandler.class);
@@ -67,8 +66,10 @@ public class ExpressionFactory {
 
 	public void setExternalLookupProvider(ExternalLookupProvider externalLookupProvider) {
 		this.externalLookupProvider = externalLookupProvider;
+		jxPathContext.setExternalLookupProvider(externalLookupProvider);
+		
 		FunctionLibrary functionLibrary = new FunctionLibrary();
-		functionLibrary.addFunctions(new ClassFunctions(externalLookupProvider.getClass(), "idm"));
+		functionLibrary.addFunctions(new ClassFunctions(IDMFunctions.class, "idm"));
 		jxPathContext.setFunctions(functionLibrary);
 	}
 

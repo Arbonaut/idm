@@ -3,9 +3,9 @@
  */
 package org.openforis.idm.model.expression;
 
-import org.apache.commons.jxpath.JXPathContext;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
  * @author M. Togna
@@ -13,7 +13,7 @@ import org.openforis.idm.model.Node;
  */
 public class DefaultValueExpression extends AbstractExpression {
 
-	protected DefaultValueExpression(String expression, JXPathContext context) {
+	protected DefaultValueExpression(String expression, ModelJXPathContext context) {
 		super(expression, context);
 	}
 

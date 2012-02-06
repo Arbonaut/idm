@@ -3,9 +3,9 @@
  */
 package org.openforis.idm.model.expression;
 
-import org.apache.commons.jxpath.JXPathContext;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
  * @author M. Togna
@@ -15,7 +15,7 @@ abstract class AbstractBooleanExpression extends AbstractExpression {
 
 	private boolean defaultValue;
 
-	protected AbstractBooleanExpression(String expression, JXPathContext context, boolean defaultValue) {
+	protected AbstractBooleanExpression(String expression, ModelJXPathContext context, boolean defaultValue) {
 		super(expression, context);
 		this.defaultValue = defaultValue;
 	}

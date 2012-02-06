@@ -22,15 +22,15 @@ import org.openforis.idm.model.expression.internal.ModelNodePointer;
 abstract class AbstractExpression {
 
 	private String expression;
-	private JXPathContext jxPathContext;
+	private ModelJXPathContext jxPathContext;
 
-	protected AbstractExpression(String expression, JXPathContext context) {
+	protected AbstractExpression(String expression, ModelJXPathContext context) {
 		this.expression = expression;
 		this.jxPathContext = context;
 	}
 
 	protected Object evaluateSingle(Node<? extends NodeDefinition> context) throws InvalidPathException {
-		JXPathContext jxPathContext = getContext(context);
+		JXPathContext jxPathContext = createJXPathContext(context);
 		String expr = getExpression();
 		Object object = null;
 		try {
@@ -43,7 +43,7 @@ abstract class AbstractExpression {
 
 	protected List<Node<NodeDefinition>> evaluateMultiple(Node<? extends NodeDefinition> context) throws InvalidPathException {
 		List<Node<NodeDefinition>> list = new ArrayList<Node<NodeDefinition>>();
-		JXPathContext jxPathContext = getContext(context);
+		JXPathContext jxPathContext = createJXPathContext(context);
 		String expr = getExpression();
 		Iterator<?> pointers = jxPathContext.iteratePointers(expr);
 		while (pointers.hasNext()) {
@@ -61,7 +61,7 @@ abstract class AbstractExpression {
 	@SuppressWarnings("unused")
 	@Deprecated
 	private Iterator<?> evaluateInternal(Node<? extends NodeDefinition> context) throws InvalidPathException {
-		JXPathContext jxPathContext = getContext(context);
+		JXPathContext jxPathContext = createJXPathContext(context);
 		String expr = getExpression();
 		try {
 			Iterator<?> iterator = jxPathContext.iterate(expr);
@@ -75,7 +75,7 @@ abstract class AbstractExpression {
 		return expression.replaceAll("\\bparent\\(\\)", "__parent");
 	}
 
-	protected JXPathContext getContext(Node<? extends NodeDefinition> context) {
+	protected JXPathContext createJXPathContext(Node<? extends NodeDefinition> context) {
 		JXPathContext jxPathContext = ModelJXPathContext.newContext(this.jxPathContext, context);
 		if (context instanceof Attribute) {
 			@SuppressWarnings("unchecked")

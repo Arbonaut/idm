@@ -5,9 +5,9 @@ package org.openforis.idm.model.expression;
 
 import java.util.List;
 
-import org.apache.commons.jxpath.JXPathContext;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
  * @author M. Togna
@@ -15,7 +15,7 @@ import org.openforis.idm.model.Node;
  */
 public class ModelPathExpression extends AbstractExpression {
 
-	protected ModelPathExpression(String expression, JXPathContext context) {
+	protected ModelPathExpression(String expression, ModelJXPathContext context) {
 		super(expression, context);
 	}
 

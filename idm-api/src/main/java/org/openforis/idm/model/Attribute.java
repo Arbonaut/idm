@@ -13,13 +13,15 @@ import org.openforis.idm.metamodel.AttributeDefinition;
  */
 public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D> {
 
+	private V value;
+	private String remarks;
+	private String symbol;
+	
+	private AttributeMetadata metadata;
+	
 	public Attribute(D definition) {
 		super(definition);
 	}
-
-	private V value;
-	
-	private AttributeMetadata metadata;
 
 	public V getValue() {
 		return this.value;
@@ -41,7 +43,24 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	public void setMetadata(AttributeMetadata metadata) {
 		this.metadata = metadata;
 	}
-/*
+	
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public String getSymbol() {
+		return symbol;
+	}
+
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+
+	/*
 	public List<CheckFailure> getErrors() {
 		List<CheckFailure> errors = this.errors != null ? this.errors : new ArrayList<CheckFailure>();
 		return Collections.unmodifiableList(errors);
@@ -78,6 +97,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		this.warnings.add(checkFailure);
 	}
 */
+	
 	@Override
 	protected void write(StringWriter sw, int indent) {
 		for (int i = 0; i < indent; i++) {

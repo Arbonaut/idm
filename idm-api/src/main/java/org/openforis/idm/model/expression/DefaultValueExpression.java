@@ -18,7 +18,7 @@ public class DefaultValueExpression extends AbstractExpression {
 		super(expression, context);
 	}
 
-	protected Object evaluate(Node<? extends NodeDefinition> context) throws InvalidPathException {
+	public Object evaluate(Node<? extends NodeDefinition> context) throws InvalidPathException {
 		Object object = super.evaluateSingle(context);
 		return object;
 	}

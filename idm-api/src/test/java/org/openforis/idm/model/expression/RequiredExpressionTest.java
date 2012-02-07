@@ -22,7 +22,7 @@ public class RequiredExpressionTest extends AbstractExpressionTest {
 		Record record = getRecord();
 		Entity rootEntity = record.getRootEntity();
 		CodeAttribute region = (CodeAttribute) rootEntity.get("region", 0);
-		String expr = "true";
+		String expr = "true()";
 		boolean b = evaluateExpression(expr, region);
 		Assert.assertTrue(b);
 	}
@@ -32,7 +32,7 @@ public class RequiredExpressionTest extends AbstractExpressionTest {
 		Record record = getRecord();
 		Entity rootEntity = record.getRootEntity();
 		CodeAttribute region = (CodeAttribute) rootEntity.get("region", 0);
-		String expr = "false";
+		String expr = "false()";
 		boolean b = evaluateExpression(expr, region);
 		Assert.assertFalse(b);
 	}

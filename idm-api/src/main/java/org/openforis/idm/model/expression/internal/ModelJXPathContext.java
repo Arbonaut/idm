@@ -3,42 +3,64 @@
  */
 package org.openforis.idm.model.expression.internal;
 
+import java.lang.ref.SoftReference;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.jxpath.CompiledExpression;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
+import org.apache.commons.jxpath.ri.Parser;
+import org.apache.commons.jxpath.ri.compiler.Expression;
 import org.openforis.idm.validation.ExternalLookupProvider;
 
 /**
  * @author M. Togna
  * 
  */
+@SuppressWarnings("rawtypes")
 public class ModelJXPathContext extends JXPathContextReferenceImpl {
 
+	private static int cleanupCount = 0;
+	private static final Compiler COMPILER = new ModelTreeCompiler();
+	// The frequency of the cache cleanup
+	private static final int CLEANUP_THRESHOLD = 500;
+
 	private ExternalLookupProvider externalLookupProvider;
+	private Map<String, Object> compiled;
 
 	protected ModelJXPathContext(JXPathContext parentContext, Object contextBean) {
 		super(parentContext, contextBean);
+		this.compiled = new HashMap<String, Object>();
 	}
 
-	public static ModelJXPathContext newContext(Object contextBean) {
-		return newContext(null, contextBean);
-	}
-
-	public static ModelJXPathContext newContext(ModelJXPathContext parentContext, Object contextBean) {
+	public static ModelJXPathContext newContext(JXPathContext parentContext, Object contextBean) {
 		ModelJXPathContext jxPathContext = new ModelJXPathContext(parentContext, contextBean);
 		copyProperties(parentContext, jxPathContext);
 		return jxPathContext;
 	}
 
-	private static void copyProperties(ModelJXPathContext fromContext, ModelJXPathContext toContext) {
-		if ( !(fromContext == null || toContext == null) ) {
-			toContext.setExternalLookupProvider(fromContext.getExternalLookupProvider());
+	private static void copyProperties(JXPathContext fromContext, ModelJXPathContext toContext) {
+		if (!(fromContext == null || toContext == null)) {
+			if (fromContext instanceof ModelJXPathContext) {
+				toContext.setExternalLookupProvider(((ModelJXPathContext) fromContext).getExternalLookupProvider());
+			}
 		}
 	}
 
 	@Override
+	protected CompiledExpression compilePath(String xpath) {
+		Expression expr = compileExpression(xpath);
+		CompiledExpression compiledExpression = new ModelJXPathCompiledExpression(xpath, expr);
+		return compiledExpression;
+	}
+
+	@Override
 	protected Compiler getCompiler() {
-		return new ModelTreeCompiler();
+		return COMPILER;
 	}
 
 	public ExternalLookupProvider getExternalLookupProvider() {
@@ -49,4 +71,46 @@ public class ModelJXPathContext extends JXPathContextReferenceImpl {
 		this.externalLookupProvider = lookupProvider;
 	}
 
+	@SuppressWarnings("unchecked")
+	private Expression compileExpression(String xpath) {
+		Expression expr;
+
+		synchronized (compiled) {
+			if (USE_SOFT_CACHE) {
+				expr = null;
+				SoftReference ref = (SoftReference) compiled.get(xpath);
+				if (ref != null) {
+					expr = (Expression) ref.get();
+				}
+			} else {
+				expr = (Expression) compiled.get(xpath);
+			}
+		}
+
+		if (expr != null) {
+			return expr;
+		}
+
+		expr = (Expression) Parser.parseExpression(xpath, getCompiler());
+
+		synchronized (compiled) {
+			if (USE_SOFT_CACHE) {
+				if (cleanupCount++ >= CLEANUP_THRESHOLD) {
+					Iterator it = compiled.entrySet().iterator();
+					while (it.hasNext()) {
+						Entry me = (Entry) it.next();
+						if (((SoftReference) me.getValue()).get() == null) {
+							it.remove();
+						}
+					}
+					cleanupCount = 0;
+				}
+				compiled.put(xpath, new SoftReference(expr));
+			} else {
+				compiled.put(xpath, expr);
+			}
+		}
+
+		return expr;
+	}
 }

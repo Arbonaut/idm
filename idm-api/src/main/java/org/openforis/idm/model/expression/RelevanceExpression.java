@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.model.expression;
 
+import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
@@ -11,8 +12,7 @@ import org.openforis.idm.model.expression.internal.ModelJXPathContext;
  */
 public class RelevanceExpression extends AbstractBooleanExpression {
 
-	protected RelevanceExpression(String expression, ModelJXPathContext context) {
+	protected RelevanceExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
 		super(expression, context, Boolean.TRUE);
 	}
-
 }

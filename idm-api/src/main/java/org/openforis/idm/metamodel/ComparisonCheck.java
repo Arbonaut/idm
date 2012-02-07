@@ -11,7 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Attribute;
-import org.openforis.idm.model.ModelExpression;
+import org.openforis.idm.model.expression.CheckExpression;
+import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author M. Togna
@@ -19,7 +21,7 @@ import org.openforis.idm.model.ModelExpression;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class ComparisonCheck extends Check  {
+public class ComparisonCheck extends Check {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,6 +35,9 @@ public class ComparisonCheck extends Check  {
 			this.xpathSymbol = xpathSymbol;
 		}
 	}
+
+	@XmlTransient
+	private String expression;
 
 	@XmlAttribute(name = "lt")
 	private String lessThanExpression;
@@ -69,11 +74,18 @@ public class ComparisonCheck extends Check  {
 		return this.equalsExpression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
-		ExpressionBuilder expressionBuilder = this.new ExpressionBuilder(this);
-		String expression = expressionBuilder.getExpression();
-		ModelExpression modelExpression = new ModelExpression(expression);
-		Boolean b = (Boolean) modelExpression.evaluate(attribute);
+	public String getExpression() {
+		if (expression == null) {
+			ExpressionBuilder expressionBuilder = this.new ExpressionBuilder(this);
+			expression = expressionBuilder.getExpression();
+		}
+		return expression;
+	}
+
+	public boolean execute(ValidationContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
+		String expr = getExpression();
+		CheckExpression checkExpression = validationContext.getExpressionFactory().createCheckExpression(expr);
+		boolean b = checkExpression.evaluate(attribute);
 		return b;
 	}
 
@@ -88,17 +100,17 @@ public class ComparisonCheck extends Check  {
 		}
 
 		private void buildExpression(ComparisonCheck c) {
-			if (StringUtils.isNotBlank(c.getLessThanExpression())) {
-				addOperation(OPERATION.LT, c.getLessThanExpression());
-			}
-			if (StringUtils.isNotBlank(c.getLessThanOrEqualsExpression())) {
-				addOperation(OPERATION.LTE, c.getLessThanOrEqualsExpression());
-			}
 			if (StringUtils.isNotBlank(c.getGreaterThanExpression())) {
 				addOperation(OPERATION.GT, c.getGreaterThanExpression());
 			}
 			if (StringUtils.isNotBlank(c.getGreaterThanOrEqualsExpression())) {
 				addOperation(OPERATION.GTE, c.getGreaterThanOrEqualsExpression());
+			}
+			if (StringUtils.isNotBlank(c.getLessThanExpression())) {
+				addOperation(OPERATION.LT, c.getLessThanExpression());
+			}
+			if (StringUtils.isNotBlank(c.getLessThanOrEqualsExpression())) {
+				addOperation(OPERATION.LTE, c.getLessThanOrEqualsExpression());
 			}
 			if (StringUtils.isNotBlank(c.getEqualsExpression())) {
 				addOperation(OPERATION.EQ, c.getEqualsExpression());
@@ -107,7 +119,7 @@ public class ComparisonCheck extends Check  {
 
 		private void addOperation(OPERATION o, String value) {
 			if (firstOperation) {
-				firstOperation = true;
+				firstOperation = Boolean.FALSE;
 			} else {
 				expression.append(" ");
 				expression.append("and");

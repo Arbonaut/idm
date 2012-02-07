@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.model;
+package org.openforis.idm.model.expression;
 
 import java.util.Iterator;
 
@@ -9,8 +9,10 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
-import org.openforis.idm.model.jxpath.ModelPropertyHandler;
-import org.openforis.idm.model.jxpath.RecordPropertyHandler;
+import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.Expression;
+import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Record;
 
 /**
  * @author M. Togna

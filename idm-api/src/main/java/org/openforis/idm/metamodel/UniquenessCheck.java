@@ -3,7 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -11,8 +11,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Attribute;
-import org.openforis.idm.model.ModelExpression;
-
+import org.openforis.idm.model.Node;
+import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.model.expression.ModelPathExpression;
+import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author G. Miceli
@@ -23,7 +25,7 @@ import org.openforis.idm.model.ModelExpression;
 public class UniquenessCheck extends Check {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@XmlAttribute(name = "expr")
 	private String expression;
 
@@ -31,16 +33,14 @@ public class UniquenessCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
-		ModelExpression modelExpression = new ModelExpression(expression);
-		Iterator<?> iterator = modelExpression.Iterate(attribute);
-		if (iterator.hasNext()) {
+	public boolean execute(ValidationContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
+		ModelPathExpression pathExpression = validationContext.getExpressionFactory().createModelPathExpression(getExpression());
+		List<Node<NodeDefinition>> list = pathExpression.iterate(attribute);
+		if (list != null && list.size() > 0) {
 			boolean unique = true;
-			while (iterator.hasNext()) {
-				Object object = (Object) iterator.next();
+			for (Node<NodeDefinition> object : list) {
 				if (object instanceof Attribute) {
-					@SuppressWarnings("unchecked")
-					Object value = ((Attribute<? extends AttributeDefinition, ?>) object).getValue();
+					Object value = ((Attribute<?, ?>) object).getValue();
 					if (value.equals(attribute.getValue())) {
 						unique = false;
 						break;

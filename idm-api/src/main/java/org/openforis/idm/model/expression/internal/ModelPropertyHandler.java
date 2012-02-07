@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.model.jxpath;
+package org.openforis.idm.model.expression.internal;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +13,7 @@ import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.expression.MissingValueException;
 
 /**
  * @author M. Togna
@@ -35,7 +36,11 @@ public class ModelPropertyHandler implements DynamicPropertyHandler {
 				Node<? extends NodeDefinition> e = entity.get(propertyName, i);
 				list.add(e);
 			}
+			if(list.size() == 0){
+				throw new MissingValueException();
+			}
 			property = Collections.unmodifiableList(list);
+			
 		} else if ((property == null) || (object instanceof Attribute)) {
 			try {
 				// property = PropertyUtils.getProperty(object, propertyName);
@@ -44,7 +49,6 @@ public class ModelPropertyHandler implements DynamicPropertyHandler {
 				return null;
 			}
 		}
-
 		return property;
 	}
 

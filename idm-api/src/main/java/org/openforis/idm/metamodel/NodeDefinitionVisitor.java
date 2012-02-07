@@ -1,6 +1,5 @@
 package org.openforis.idm.metamodel;
 
-import org.openforis.idm.metamodel.NodeDefinition;
 
 /**
  * @author G. Miceli

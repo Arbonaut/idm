@@ -14,4 +14,5 @@ public class RealAttribute extends NumberAttribute<Double> {
 			throw new IllegalArgumentException("Attempted to create RealAttribute with integer NumberDefinition");
 		}
 	}
+	
 }

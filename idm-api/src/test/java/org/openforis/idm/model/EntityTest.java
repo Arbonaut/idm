@@ -7,7 +7,7 @@ import java.net.URL;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.xml.BindingContext;
+import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 
@@ -17,27 +17,27 @@ import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 public class EntityTest {
 
 	private static Survey survey;
-	
+
 	@BeforeClass
 	public static void setUp() throws IOException, InvalidIdmlException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
-		BindingContext bindingContext = new BindingContext();
-		SurveyUnmarshaller su = bindingContext.createSurveyUnmarshaller();
+		IdmlBindingContext idmlBindingContext = new IdmlBindingContext();
+		SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
 		survey = su.unmarshal(is);
 	}
 
 	@Test
-	public void testAddNullAlphanumericCode() {
+	public void testAddNullCode() {
 		Entity cluster = getRootEntity();
-		cluster.addValue("id", (AlphanumericCode) null);
+		cluster.addValue("id", (Code) null);
 	}
 
 	@Test(expected = ArrayIndexOutOfBoundsException.class)
 	public void testAddTooManySingleAttributes() {
 		Entity cluster = getRootEntity();
-		cluster.addValue("id", new AlphanumericCode("123_456"));
-		cluster.addValue("id", new AlphanumericCode("789_012"));
+		cluster.addValue("id", new Code("123_456"));
+		cluster.addValue("id", new Code("789_012"));
 	}
 
 	@Test(expected = ArrayIndexOutOfBoundsException.class)
@@ -51,7 +51,7 @@ public class EntityTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddAttributeOnEntity() {
 		Entity cluster = getRootEntity();
-		cluster.addValue("plot", new AlphanumericCode("123_456"));
+		cluster.addValue("plot", new Code("123_456"));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -73,8 +73,8 @@ public class EntityTest {
 	}
 
 	private Entity getRootEntity() {
-		Record record = new Record(survey, "cluster", "2.0");
-		Entity entity = record.getRootEntity();
+		Record record = new Record(survey, "2.0");
+		Entity entity = record.createRootEntity("cluster");
 		return entity;
 	}
 }

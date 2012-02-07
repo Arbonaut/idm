@@ -1,7 +1,6 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,6 +12,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -23,10 +23,6 @@ import org.openforis.idm.metamodel.xml.internal.XmlParent;
 public class CodeList extends Versionable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	public enum CodeType {
-		NUMERIC, ALPHANUMERIC
-	}
 
 	public enum CodeScope {
 		SCHEME, LOCAL
@@ -64,45 +60,21 @@ public class CodeList extends Versionable implements Serializable {
 	}
 
 	public List<CodeListLabel> getLabels() {
-		if(this.labels != null) {
-			return Collections.unmodifiableList(this.labels);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(this.labels);
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		if(this.descriptions != null) {
-			return Collections.unmodifiableList(this.descriptions);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(this.descriptions);
 	}
 
 	public List<CodeListLevel> getHierarchy() {
-		if(this.hierarchy != null) {
-			return Collections.unmodifiableList(this.hierarchy);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(this.hierarchy);
 	}
 
 	public List<CodeListItem> getItems() {
-		if(this.items != null) {
-			return Collections.unmodifiableList(this.items);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(this.items);
 	}
 	
-	public CodeType getCodeType() {
-		if ( codingScheme == null || codingScheme.getCodeType() == null ) {
-			return CodeType.ALPHANUMERIC;
-		} else {
-			return codingScheme.getCodeType();
-		}
-	}
-
 	public CodeScope getCodeScope() {
 		if ( codingScheme == null || codingScheme.getCodeScope() == null ) {
 			return CodeScope.LOCAL;
@@ -111,14 +83,6 @@ public class CodeList extends Versionable implements Serializable {
 		}
 	}
 
-	public boolean isAlphanumeric() {
-		return getCodeType() == CodeType.ALPHANUMERIC;
-	}
-
-	public boolean isNumeric() {
-		return getCodeType() == CodeType.NUMERIC;
-	}
-	
 	public Survey getSurvey() {
 		return survey;
 	}

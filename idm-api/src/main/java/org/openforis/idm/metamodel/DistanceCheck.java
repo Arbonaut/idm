@@ -3,13 +3,21 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.model.Attribute;
-
+import org.openforis.idm.geotools.CoordinateOperations;
+import org.openforis.idm.model.Coordinate;
+import org.openforis.idm.model.CoordinateAttribute;
+import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.Node;
+import org.openforis.idm.model.expression.DefaultValueExpression;
+import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author G. Miceli
@@ -49,9 +57,56 @@ public class DistanceCheck extends Check {
 		return this.sourcePointExpression;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean execute(ValidationContext validationContext, CoordinateAttribute coordinateAttribute) {
+		try {
+			boolean valid = true;
+			beforeExecute(coordinateAttribute);
+
+			Entity parentEntity = coordinateAttribute.getParent();
+			Coordinate from = getCoordinate(validationContext, getSourcePointExpression(), parentEntity, coordinateAttribute.getValue());
+			Coordinate to = getCoordinate(validationContext, getDestinationPointExpression(), parentEntity, null);
+
+			double distance = CoordinateOperations.orthodromicDistance(from, to);
+
+			if (getMaxDistanceExpression() != null) {
+				Double maxDistance = evaluateDistanceExpression(validationContext, parentEntity, getMaxDistanceExpression());
+				if (distance > maxDistance) {
+					valid = false;
+				}
+			}
+			if (getMinDistanceExpression() != null) {
+				Double minDistance = evaluateDistanceExpression(validationContext, parentEntity, getMinDistanceExpression());
+				if (distance < minDistance) {
+					valid = false;
+				}
+			}
+
+			return valid;
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to execute distance check", e);
+		}
+	}
+
+	private double evaluateDistanceExpression(ValidationContext validationContext, Entity context, String expression) throws InvalidPathException {
+		DefaultValueExpression defaultValueExpression = validationContext.getExpressionFactory().createDefaultValueExpression(expression);
+		Double value = (Double) defaultValueExpression.evaluate(context);
+		return value;
+	}
+
+	private Coordinate getCoordinate(ValidationContext validationContext, String expression, Node<?> context, Coordinate defaultCoordinate) throws InvalidPathException {
+		if (expression == null) {
+			return defaultCoordinate;
+		} else {
+			DefaultValueExpression valueExpression = validationContext.getExpressionFactory().createDefaultValueExpression(expression);
+			Coordinate coordinate = (Coordinate) valueExpression.evaluate(context);
+			return coordinate;
+		}
+	}
+
+	private void beforeExecute(CoordinateAttribute coordinate) {
+		Survey survey = coordinate.getDefinition().getSurvey();
+		List<SpatialReferenceSystem> list = survey.getSpatialReferenceSystems();
+		CoordinateOperations.parseSRS(list);
 	}
 
 }

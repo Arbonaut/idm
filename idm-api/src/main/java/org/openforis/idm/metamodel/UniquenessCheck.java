@@ -35,10 +35,10 @@ public class UniquenessCheck extends Check {
 
 	public boolean execute(ValidationContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
 		ModelPathExpression pathExpression = validationContext.getExpressionFactory().createModelPathExpression(getExpression());
-		List<Node<NodeDefinition>> list = pathExpression.iterate(attribute);
+		List<Node<?>> list = pathExpression.iterate(attribute);
 		if (list != null && list.size() > 0) {
 			boolean unique = true;
-			for (Node<NodeDefinition> object : list) {
+			for (Node<?> object : list) {
 				if (object instanceof Attribute) {
 					Object value = ((Attribute<?, ?>) object).getValue();
 					if (value.equals(attribute.getValue())) {

@@ -5,6 +5,7 @@ package org.openforis.idm.model.expression;
 
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
@@ -13,7 +14,7 @@ import org.openforis.idm.model.expression.internal.ModelJXPathContext;
  */
 public class DefaultValueExpression extends AbstractExpression {
 
-	protected DefaultValueExpression(String expression, ModelJXPathContext context) {
+	protected DefaultValueExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
 		super(expression, context);
 	}
 

@@ -20,7 +20,7 @@ import org.openforis.idm.model.expression.MissingValueException;
  * 
  */
 public class ModelPropertyHandler implements DynamicPropertyHandler {
-            
+
 	@Override
 	public Object getProperty(Object object, String propertyName) {
 
@@ -36,11 +36,11 @@ public class ModelPropertyHandler implements DynamicPropertyHandler {
 				Node<? extends NodeDefinition> e = entity.get(propertyName, i);
 				list.add(e);
 			}
-			if(list.size() == 0){
+			if (list.size() == 0) {
 				throw new MissingValueException();
 			}
 			property = Collections.unmodifiableList(list);
-			
+
 		} else if ((property == null) || (object instanceof Attribute)) {
 			try {
 				// property = PropertyUtils.getProperty(object, propertyName);
@@ -58,7 +58,7 @@ public class ModelPropertyHandler implements DynamicPropertyHandler {
 			Entity entity = (Entity) object;
 			EntityDefinition entityDef = entity.getDefinition();
 			List<NodeDefinition> childDefs = entityDef.getChildDefinitions();
-//			Set<String> childNames = ((Entity) object).getChildNames();
+			// Set<String> childNames = ((Entity) object).getChildNames();
 			String[] array = new String[childDefs.size()];
 			int i = 0;
 			for (NodeDefinition def : childDefs) {

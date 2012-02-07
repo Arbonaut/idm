@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.model.expression;
 
+import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
@@ -13,7 +14,7 @@ import org.openforis.idm.model.expression.internal.ModelJXPathContext;
  */
 public class ConditionalExpression extends AbstractBooleanExpression {
 
-	protected ConditionalExpression(String expression, ModelJXPathContext context) {
+	protected ConditionalExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
 		super(expression, context, Boolean.FALSE);
 	}
 

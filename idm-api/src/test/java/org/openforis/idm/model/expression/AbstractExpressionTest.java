@@ -17,8 +17,8 @@ import org.openforis.idm.model.Date;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.RecordContext;
+import org.openforis.idm.model.TestRecordContext;
 import org.openforis.idm.model.Time;
-import org.openforis.idm.validation.ExternalLookupProvider;
 
 /**
  * @author M. Togna
@@ -30,18 +30,12 @@ public abstract class AbstractExpressionTest {
 	private Survey survey;
 	private Record record;
 	private IdmlBindingContext bindingContext;
-	private RecordContext recordContext;
 
 	@Before
 	public void initTest() throws IOException, InvalidIdmlException {
 		bindingContext = new IdmlBindingContext();
 		survey = unmarshalSurvey();
 		record = createRecord();
-		recordContext = new RecordContext();
-		ExpressionFactory expressionFactory = new ExpressionFactory();
-		ExternalLookupProvider externalLookupProvider = new ExternalLookupProviderTestImpl();
-		expressionFactory.setExternalLookupProvider(externalLookupProvider);
-		recordContext.setExpressionFactory(expressionFactory);
 	}
 
 	private Survey unmarshalSurvey() throws IOException, InvalidIdmlException {
@@ -53,7 +47,7 @@ public abstract class AbstractExpressionTest {
 
 	private Record createRecord() {
 
-		Record record = new Record(getSurvey(), "2.0");
+		Record record = new Record(new TestRecordContext(), getSurvey(), "2.0");
 
 		Entity cluster = record.createRootEntity("cluster");
 		String id = "123_456";
@@ -119,7 +113,7 @@ public abstract class AbstractExpressionTest {
 	}
 
 	protected RecordContext getRecordContext() {
-		return recordContext;
+		return record.getContext();
 	}
 
 	protected ExpressionFactory getExpressionFactory() {

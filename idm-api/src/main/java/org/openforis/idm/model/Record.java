@@ -26,8 +26,13 @@ public class Record {
 	private Map<Integer, Node<? extends NodeDefinition>> nodesById;
 	private int nextId;
 	private Entity rootEntity;
-
-	public Record(Survey survey, String version) {
+	private RecordContext context;
+	
+	public Record(RecordContext context, Survey survey, String version) {
+		if ( context == null ) {
+			throw new IllegalArgumentException("Invalid context '"+context+'"');
+		}
+		this.context = context;
 		this.survey = survey;
 		this.modelVersion = survey.getVersion(version);
 		if ( modelVersion == null ) {
@@ -59,6 +64,10 @@ public class Record {
 		this.id = id;
 	}
 
+	public RecordContext getContext() {
+		return context;
+	}
+	
 	public Survey getSurvey() {
 		return this.survey;
 	}

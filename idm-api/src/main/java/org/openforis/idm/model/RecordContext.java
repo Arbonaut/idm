@@ -9,22 +9,8 @@ import org.openforis.idm.model.expression.ExpressionFactory;
  * @author M. Togna
  * 
  */
-public final class RecordContext {
+public interface RecordContext {
 
-	private ExpressionFactory expressionFactory;
+	ExpressionFactory getExpressionFactory();
 
-	public RecordContext() {
-	}
-
-	public ExpressionFactory getExpressionFactory() {
-		if(expressionFactory == null){
-			expressionFactory = new ExpressionFactory();
-		}
-		return expressionFactory;
-	}
-
-	public void setExpressionFactory(ExpressionFactory expressionFactory) {
-		this.expressionFactory = expressionFactory;
-	}
-	
 }

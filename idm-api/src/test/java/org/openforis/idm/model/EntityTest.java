@@ -73,7 +73,7 @@ public class EntityTest {
 	}
 
 	private Entity getRootEntity() {
-		Record record = new Record(survey, "2.0");
+		Record record = new Record(new TestRecordContext(), survey, "2.0");
 		Entity entity = record.createRootEntity("cluster");
 		return entity;
 	}

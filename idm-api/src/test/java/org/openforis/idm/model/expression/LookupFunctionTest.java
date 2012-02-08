@@ -15,7 +15,7 @@ import org.openforis.idm.model.Record;
  */
 public class LookupFunctionTest extends AbstractExpressionTest {
 
-	static Coordinate TEST_COORDINATE = Coordinate.parseCoordinate("SRID=32632;POINT(0 0)");
+	public static Coordinate TEST_COORDINATE = Coordinate.parseCoordinate("SRID=32632;POINT(0 0)");
 
 	@Test
 	public void testLookupFunction() throws InvalidPathException {

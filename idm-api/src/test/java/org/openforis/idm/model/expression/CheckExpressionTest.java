@@ -55,7 +55,7 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 	}
 
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
-		CheckExpression expression = getValidationContext().getExpressionFactory().createCheckExpression(expr);
+		CheckExpression expression = getRecordContext().getExpressionFactory().createCheckExpression(expr);
 		boolean b = expression.evaluate(context);
 		return b;
 	}

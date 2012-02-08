@@ -16,9 +16,9 @@ import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.Date;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
+import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.Time;
 import org.openforis.idm.validation.ExternalLookupProvider;
-import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author M. Togna
@@ -30,18 +30,18 @@ public abstract class AbstractExpressionTest {
 	private Survey survey;
 	private Record record;
 	private IdmlBindingContext bindingContext;
-	private ValidationContext validationContext;
+	private RecordContext recordContext;
 
 	@Before
 	public void initTest() throws IOException, InvalidIdmlException {
 		bindingContext = new IdmlBindingContext();
 		survey = unmarshalSurvey();
 		record = createRecord();
-		validationContext = new ValidationContext();
+		recordContext = new RecordContext();
 		ExpressionFactory expressionFactory = new ExpressionFactory();
 		ExternalLookupProvider externalLookupProvider = new ExternalLookupProviderTestImpl();
 		expressionFactory.setExternalLookupProvider(externalLookupProvider);
-		validationContext.setExpressionFactory(expressionFactory);
+		recordContext.setExpressionFactory(expressionFactory);
 	}
 
 	private Survey unmarshalSurvey() throws IOException, InvalidIdmlException {
@@ -118,11 +118,11 @@ public abstract class AbstractExpressionTest {
 		return record;
 	}
 
-	protected ValidationContext getValidationContext() {
-		return validationContext;
+	protected RecordContext getRecordContext() {
+		return recordContext;
 	}
 
 	protected ExpressionFactory getExpressionFactory() {
-		return getValidationContext().getExpressionFactory();
+		return getRecordContext().getExpressionFactory();
 	}
 }

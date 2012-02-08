@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
-import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author G. Miceli
@@ -30,7 +30,7 @@ public class CustomCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(ValidationContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
+	public boolean execute(RecordContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
 		CheckExpression checkExpression = validationContext.getExpressionFactory().createCheckExpression(getExpression());
 		boolean b = checkExpression.evaluate(attribute);
 		return b;

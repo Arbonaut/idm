@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.validation;
+package org.openforis.idm.model;
 
 import org.openforis.idm.model.expression.ExpressionFactory;
 
@@ -9,11 +9,11 @@ import org.openforis.idm.model.expression.ExpressionFactory;
  * @author M. Togna
  * 
  */
-public final class ValidationContext {
+public final class RecordContext {
 
 	private ExpressionFactory expressionFactory;
 
-	public ValidationContext() {
+	public RecordContext() {
 	}
 
 	public ExpressionFactory getExpressionFactory() {

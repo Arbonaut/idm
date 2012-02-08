@@ -54,7 +54,7 @@ public class RelevanceExpressionTest extends AbstractExpressionTest {
 	}
 
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
-		RelevanceExpression expression = getValidationContext().getExpressionFactory().createRelevanceExpression(expr);
+		RelevanceExpression expression = getRecordContext().getExpressionFactory().createRelevanceExpression(expr);
 		boolean b = expression.evaluate(context);
 		return b;
 	}

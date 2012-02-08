@@ -16,9 +16,9 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	private V value;
 	private String remarks;
 	private String symbol;
-	
+
 	private AttributeMetadata metadata;
-	
+
 	public Attribute(D definition) {
 		super(definition);
 	}

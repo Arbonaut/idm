@@ -21,7 +21,7 @@ public class ExpressionReferencePathTest extends AbstractExpressionTest {
 
 	@Test
 	public void testReferencePath() throws InvalidPathException {
-		ExpressionFactory ef = getValidationContext().getExpressionFactory();
+		ExpressionFactory ef = getRecordContext().getExpressionFactory();
 		
 		String expression = "$this  <= ../../total_height * 8";
 		CheckExpression expr = ef.createCheckExpression(expression);

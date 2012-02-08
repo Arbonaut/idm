@@ -15,9 +15,9 @@ import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
-import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author G. Miceli
@@ -57,7 +57,7 @@ public class DistanceCheck extends Check {
 		return this.sourcePointExpression;
 	}
 
-	public boolean execute(ValidationContext validationContext, CoordinateAttribute coordinateAttribute) {
+	public boolean execute(RecordContext validationContext, CoordinateAttribute coordinateAttribute) {
 		try {
 			boolean valid = true;
 			beforeExecute(coordinateAttribute);
@@ -87,13 +87,13 @@ public class DistanceCheck extends Check {
 		}
 	}
 
-	private double evaluateDistanceExpression(ValidationContext validationContext, Entity context, String expression) throws InvalidPathException {
+	private double evaluateDistanceExpression(RecordContext validationContext, Entity context, String expression) throws InvalidPathException {
 		DefaultValueExpression defaultValueExpression = validationContext.getExpressionFactory().createDefaultValueExpression(expression);
 		Double value = (Double) defaultValueExpression.evaluate(context);
 		return value;
 	}
 
-	private Coordinate getCoordinate(ValidationContext validationContext, String expression, Node<?> context, Coordinate defaultCoordinate) throws InvalidPathException {
+	private Coordinate getCoordinate(RecordContext validationContext, String expression, Node<?> context, Coordinate defaultCoordinate) throws InvalidPathException {
 		if (expression == null) {
 			return defaultCoordinate;
 		} else {

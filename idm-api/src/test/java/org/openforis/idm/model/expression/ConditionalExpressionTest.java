@@ -55,7 +55,7 @@ public class ConditionalExpressionTest extends AbstractExpressionTest {
 	}
 
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
-		ConditionalExpression expression = getValidationContext().getExpressionFactory().createConditionalExpression(expr);
+		ConditionalExpression expression = getRecordContext().getExpressionFactory().createConditionalExpression(expr);
 		boolean b = expression.evaluate(context);
 		return b;
 	}

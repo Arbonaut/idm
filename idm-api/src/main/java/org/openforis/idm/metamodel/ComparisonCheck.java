@@ -11,9 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
-import org.openforis.idm.validation.ValidationContext;
 
 /**
  * @author M. Togna
@@ -82,7 +82,7 @@ public class ComparisonCheck extends Check {
 		return expression;
 	}
 
-	public boolean execute(ValidationContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
+	public boolean execute(RecordContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
 		String expr = getExpression();
 		CheckExpression checkExpression = validationContext.getExpressionFactory().createCheckExpression(expr);
 		boolean b = checkExpression.evaluate(attribute);

@@ -54,13 +54,13 @@ public class ModelPathExpressionTest extends AbstractExpressionTest {
 
 	@SuppressWarnings("unused")
 	private Object evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
-		ModelPathExpression expression = getValidationContext().getExpressionFactory().createModelPathExpression(expr);
+		ModelPathExpression expression = getRecordContext().getExpressionFactory().createModelPathExpression(expr);
 		Object o = expression.evaluate(context);
 		return o;
 	}
 
 	private List<Node<?>> iterateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
-		ModelPathExpression expression = getValidationContext().getExpressionFactory().createModelPathExpression(expr);
+		ModelPathExpression expression = getRecordContext().getExpressionFactory().createModelPathExpression(expr);
 		List<Node<?>> l = expression.iterate(context);
 		return l;
 	}

@@ -40,16 +40,18 @@ public class DefaultValueExpressionTest extends AbstractExpressionTest {
 		Assert.assertEquals(55.2, object);
 	}
 
-	@Test(expected = MissingValueException.class)
+	@Test
 	public void testMissingValueExpressionWithOperation() throws InvalidPathException {
 		String expr = "plot[25]/tree[3]/dbh/parent()/dbh + 4";
-		evaluateExpression(expr);
+		Object object = evaluateExpression(expr);
+		Assert.assertNull(object);
 	}
 
-	@Test(expected = MissingValueException.class)
+	@Test
 	public void testMissingValueExpression2() throws InvalidPathException {
 		String expr = "plot[1]/tree[3]/dbh/parent()/dbh";
-		evaluateExpression(expr);
+		Object object = evaluateExpression(expr);
+		Assert.assertNull(object);
 	}
 
 	@Test(expected = InvalidPathException.class)

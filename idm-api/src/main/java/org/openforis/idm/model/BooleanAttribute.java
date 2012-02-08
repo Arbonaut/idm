@@ -11,5 +11,10 @@ public class BooleanAttribute extends Attribute<BooleanAttributeDefinition, Bool
 	public BooleanAttribute(BooleanAttributeDefinition definition) {
 		super(definition);
 	}
+
+	@Override
+	public Boolean createValue(String string) {
+		return Boolean.parseBoolean(string);
+	}
 	
 }

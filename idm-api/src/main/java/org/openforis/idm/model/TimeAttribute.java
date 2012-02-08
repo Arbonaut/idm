@@ -11,5 +11,10 @@ public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 	public TimeAttribute(TimeAttributeDefinition definition) {
 		super(definition);
 	}
+
+	@Override
+	public Time createValue(String string) {
+		return Time.parseTime(string);
+	}
 	
 }

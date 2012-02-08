@@ -11,4 +11,9 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, Taxon> {
 	public TaxonAttribute(TaxonAttributeDefinition definition) {
 		super(definition);
 	}
+
+	@Override
+	public Taxon createValue(String string) {
+		throw new UnsupportedOperationException();
+	}
 }

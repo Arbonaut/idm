@@ -6,7 +6,6 @@ package org.openforis.idm.model;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,9 @@ import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
+import org.openforis.idm.util.CollectionUtil;
+import org.openforis.idm.validation.RuleFailure;
+import org.openforis.idm.validation.ValidationResults;
 
 /**
  * @author G. Miceli
@@ -63,7 +65,12 @@ public class Entity extends Node<EntityDefinition> {
 		addInternal(entity, idx);
 		return entity;
 	}
-
+	
+	@Override
+	public ValidationResults validate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	// public <T extends Node<?>> T add(T o, int idx) {
 	// return addInternal(o, idx);
 	// }
@@ -363,7 +370,7 @@ public class Entity extends Node<EntityDefinition> {
 
 	public List<Node<? extends NodeDefinition>> getAll(String name) {
 		List<Node<? extends NodeDefinition>> children = childrenByName.get(name);
-		return children == null ? null : Collections.unmodifiableList(children);
+		return  CollectionUtil.unmodifiableList(children);
 	}
 
 	//

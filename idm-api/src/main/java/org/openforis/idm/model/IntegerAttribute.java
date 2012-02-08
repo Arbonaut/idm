@@ -15,4 +15,8 @@ public class IntegerAttribute extends NumberAttribute<Integer> {
 		}
 	}
 	
+	@Override
+	public Integer createValue(String string) {
+		return Integer.parseInt(string);
+	}
 }

@@ -2,6 +2,7 @@ package org.openforis.idm.model;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.StringTokenizer;
 
 /**
  * @author G. Miceli
@@ -9,6 +10,7 @@ import java.util.GregorianCalendar;
  */
 public final class Date {
 
+	private static final String DELIM = "-";
 	private final Integer day;
 	private final Integer month;
 	private final Integer year;
@@ -19,6 +21,18 @@ public final class Date {
 		this.day = day;		
 	}
 
+	public static Date parseDate(String string){
+		StringTokenizer st = new StringTokenizer(string, DELIM);
+		int tokens = st.countTokens();
+		if(tokens != 3){
+			throw new IllegalArgumentException("Invalid date " + string);
+		}
+		int year = Integer.parseInt(st.nextToken());
+		int month = Integer.parseInt(st.nextToken());
+		int day = Integer.parseInt(st.nextToken());
+		return new Date(year, month, day);
+	}
+	
 	public Integer getDay() {
 		return day;
 	}

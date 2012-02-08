@@ -4,8 +4,11 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
+import java.util.List;
 
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.model.expression.ExpressionFactory;
+import org.openforis.idm.validation.ValidationResults;
 
 
 /**
@@ -65,6 +68,8 @@ public abstract class Node<D extends NodeDefinition> {
 
 	protected abstract void write(StringWriter sw, int indent);
 
+	public abstract ValidationResults validate();
+	
 //	protected void notifyObservers() {
 //		if ( record != null ) {
 //			record.notifyObservers();
@@ -76,6 +81,11 @@ public abstract class Node<D extends NodeDefinition> {
 		StringWriter sw = new StringWriter();
 		write(sw,0);
 		return sw.toString();
+	}
+
+	protected ExpressionFactory getExpressionFactory() {
+		RecordContext context = getRecord().getContext();;
+		return context.getExpressionFactory();
 	}
 
 /*

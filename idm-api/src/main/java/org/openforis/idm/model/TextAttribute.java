@@ -11,5 +11,10 @@ public class TextAttribute extends Attribute<TextAttributeDefinition, String> {
 	public TextAttribute(TextAttributeDefinition definition) {
 		super(definition);
 	}
+
+	@Override
+	public String createValue(String string) {
+		return string;
+	}
 	
 }

@@ -10,8 +10,13 @@ public class IntegerRangeAttribute extends Attribute<RangeAttributeDefinition, I
 
 	public IntegerRangeAttribute(RangeAttributeDefinition definition) {
 		super(definition);
-		if ( !definition.isReal() ) {
+		if (!definition.isReal()) {
 			throw new IllegalArgumentException("Attempted to create IntegerRangeAttribute with real definition");
 		}
+	}
+
+	@Override
+	public IntegerRange createValue(String string) {
+		return IntegerRange.parseIntegerRange(string);
 	}
 }

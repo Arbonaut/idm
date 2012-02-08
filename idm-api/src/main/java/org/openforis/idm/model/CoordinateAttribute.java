@@ -11,4 +11,9 @@ public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition
 	public CoordinateAttribute(CoordinateAttributeDefinition definition) {
 		super(definition);
 	}
+
+	@Override
+	public Coordinate createValue(String string) {
+		return Coordinate.parseCoordinate(string);
+	}
 }

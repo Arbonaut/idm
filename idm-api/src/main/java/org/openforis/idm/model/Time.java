@@ -2,12 +2,14 @@ package org.openforis.idm.model;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.StringTokenizer;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
 public final class Time {
+	private static final String DELIM = ":";
 
 	private final Integer hour;
 	private final Integer minute;
@@ -69,7 +71,7 @@ public final class Time {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -77,5 +79,16 @@ public final class Time {
 		sb.append(", minute:").append(minute);
 		sb.append("}");
 		return sb.toString();
+	}
+
+	public static Time parseTime(String string) {
+		StringTokenizer st = new StringTokenizer(string, DELIM);
+		int tokens = st.countTokens();
+		if (tokens != 2) {
+			throw new IllegalArgumentException("Invalid time " + string);
+		}
+		int hour = Integer.parseInt(st.nextToken());
+		int minute = Integer.parseInt(st.nextToken());
+		return new Time(hour, minute);
 	}
 }

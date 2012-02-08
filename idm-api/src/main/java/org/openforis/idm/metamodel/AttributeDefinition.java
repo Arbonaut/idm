@@ -3,12 +3,13 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.openforis.idm.util.CollectionUtil;
 
 
 /**
@@ -32,10 +33,10 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	private List<AttributeDefault> attributeDefaults;
 
 	public List<Check> getChecks() {
-		return Collections.unmodifiableList(this.checks);
+		return CollectionUtil.unmodifiableList(this.checks);
 	}
 
 	public List<AttributeDefault> getAttributeDefaults() {
-		return Collections.unmodifiableList(this.attributeDefaults);
+		return CollectionUtil.unmodifiableList(this.attributeDefaults);
 	}
 }

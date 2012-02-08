@@ -1,4 +1,4 @@
-package org.openforis.idm.model;
+package org.openforis.idm.validation;
 
 /**
  * @author G. Miceli

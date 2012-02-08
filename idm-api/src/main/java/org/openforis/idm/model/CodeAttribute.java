@@ -11,4 +11,9 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 	public CodeAttribute(CodeAttributeDefinition definition) {
 		super(definition);
 	}
+
+	@Override
+	public Code createValue(String string) {
+		return new Code(string);
+	}
 }

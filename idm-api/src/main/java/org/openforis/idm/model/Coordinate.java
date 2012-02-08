@@ -14,7 +14,6 @@ public final class Coordinate {
 	
 	private Long x;
 	private Long y;
-	private Long z;
 	private String srsId;
 
 
@@ -44,14 +43,6 @@ public final class Coordinate {
 	public Coordinate(Long x, Long y, String srsId) {
 		this.x = x;
 		this.y = y;
-		this.z = null;
-		this.srsId = srsId;
-	}
-
-	public Coordinate(Long x, Long y, Long z, String srsId) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
 		this.srsId = srsId;
 	}
 
@@ -63,9 +54,6 @@ public final class Coordinate {
 		return y;
 	}
 
-	public Long getZ() {
-		return z;
-	}
 
 	public String getSrsId() {
 		return srsId;
@@ -78,7 +66,6 @@ public final class Coordinate {
 		result = prime * result + ((srsId == null) ? 0 : srsId.hashCode());
 		result = prime * result + ((x == null) ? 0 : x.hashCode());
 		result = prime * result + ((y == null) ? 0 : y.hashCode());
-		result = prime * result + ((z == null) ? 0 : z.hashCode());
 		return result;
 	}
 
@@ -106,11 +93,6 @@ public final class Coordinate {
 				return false;
 		} else if (!y.equals(other.y))
 			return false;
-		if (z == null) {
-			if (other.z != null)
-				return false;
-		} else if (!z.equals(other.z))
-			return false;
 		return true;
 	}
 
@@ -119,9 +101,6 @@ public final class Coordinate {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{x:").append(x);
 		sb.append(", y:").append(y);
-		if (z != null) {
-			sb.append(", z:").append(z);
-		}
 		sb.append(", srsId:").append(srsId);
 		sb.append("}");
 		return sb.toString();

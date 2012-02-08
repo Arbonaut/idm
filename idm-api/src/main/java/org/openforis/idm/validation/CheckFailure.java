@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.model;
+package org.openforis.idm.validation;
 
 import org.openforis.idm.metamodel.Check;
 
@@ -9,7 +9,7 @@ import org.openforis.idm.metamodel.Check;
  * @author M. Togna
  * @author G. Miceli
  */
-public class CheckFailure {
+public class CheckFailure implements RuleFailure {
 
 	private Check check;
 

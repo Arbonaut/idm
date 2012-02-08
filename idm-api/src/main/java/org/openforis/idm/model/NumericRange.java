@@ -8,7 +8,8 @@ public abstract class NumericRange<T extends Number> {
 
 	private final T from;
 	private final T to;
-
+	protected static final String DELIM = "-";
+	
 	NumericRange(T value) {
 		this.from = value;
 		this.to = value;

@@ -4,7 +4,6 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -15,6 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.CheckFlagAdapter;
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -49,6 +49,6 @@ public abstract class Check implements Serializable {
 	}
 
 	public List<LanguageSpecificText> getMessages() {
-		return Collections.unmodifiableList(this.messages);
+		return CollectionUtil.unmodifiableList(this.messages);
 	}
 }

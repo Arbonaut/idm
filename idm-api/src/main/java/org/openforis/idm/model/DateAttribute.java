@@ -11,5 +11,10 @@ public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 	public DateAttribute(DateAttributeDefinition definition) {
 		super(definition);
 	}
+
+	@Override
+	public Date createValue(String string) {
+		return Date.parseDate(string);
+	}
 	
 }

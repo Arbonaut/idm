@@ -14,4 +14,9 @@ public class RealRangeAttribute extends Attribute<RangeAttributeDefinition, Real
 			throw new IllegalArgumentException("Attempted to create RealRangeAttribute with integer definition");
 		}
 	}
+
+	@Override
+	public RealRange createValue(String string) {
+		return RealRange.parseRealRange(string);
+	}
 }

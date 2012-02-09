@@ -67,7 +67,10 @@ public class Entity extends Node<EntityDefinition> {
 		addInternal(entity, idx);
 		return entity;
 	}
-	
+
+	/**
+	 * Validates cardinality of all children
+	 */
 	@Override
 	public ValidationResults validate() {
 		ValidationResults validationResults = new ValidationResults();
@@ -94,6 +97,11 @@ public class Entity extends Node<EntityDefinition> {
 			List<Node<? extends NodeDefinition>> children = getAll(name);
 			if (children.size() < definition.getMinCount()) {
 				return new CardinalityError(definition, Reason.MIN_COUNT);
+			}
+		} else if (definition.getMaxCount() != null) {
+			List<Node<? extends NodeDefinition>> children = getAll(name);
+			if (children.size() > definition.getMaxCount()) {
+				return new CardinalityError(definition, Reason.MAX_COUNT);
 			}
 		}
 		return null;

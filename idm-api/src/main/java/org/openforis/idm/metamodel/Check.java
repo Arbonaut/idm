@@ -14,6 +14,9 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.CheckFlagAdapter;
+import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.RecordContext;
+import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -51,4 +54,14 @@ public abstract class Check implements Serializable {
 	public List<LanguageSpecificText> getMessages() {
 		return CollectionUtil.unmodifiableList(this.messages);
 	}
+	
+	/**
+	 * Executes the given check
+	 * 
+	 * @param recordContext
+	 * @param attribute
+	 * @return
+	 * @throws InvalidPathException
+	 */
+	public abstract boolean execute(RecordContext recordContext, Attribute<?, ?> attribute) throws InvalidPathException;
 }

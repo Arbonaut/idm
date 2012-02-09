@@ -9,8 +9,10 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
+import org.openforis.idm.metamodel.Check;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.validation.CheckFailure;
 import org.openforis.idm.validation.ValidationResults;
 
 /**
@@ -55,8 +57,25 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	
 	@Override
 	public ValidationResults validate() {
-		// TODO Auto-generated method stub
-		return null;
+		ValidationResults results = new ValidationResults();
+		
+		List<Check> checks = getDefinition().getChecks();
+		for (Check check : checks) {
+			try {
+				boolean valid = check.execute(getRecord().getContext(), this);
+				if(!valid){
+					CheckFailure failure = new CheckFailure(check);
+					if(check.getFlag().equals(Check.Flag.ERROR)){
+						results.addError(failure);
+					} else if(check.getFlag().equals(Check.Flag.WARN)){
+						results.addWarning(failure);
+					}
+				}
+			} catch (InvalidPathException e) {
+				throw new RuntimeException("Unable to execute check",e);
+			}
+		}
+		return results;
 	}
 	
 	public boolean isDefaultValue() {

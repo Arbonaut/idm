@@ -33,8 +33,8 @@ public class UniquenessCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(RecordContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
-		ModelPathExpression pathExpression = validationContext.getExpressionFactory().createModelPathExpression(getExpression());
+	public boolean execute(RecordContext recordContext, Attribute<?, ?> attribute) throws InvalidPathException {
+		ModelPathExpression pathExpression = recordContext.getExpressionFactory().createModelPathExpression(getExpression());
 		List<Node<?>> list = pathExpression.iterate(attribute);
 		if (list != null && list.size() > 0) {
 			boolean unique = true;

@@ -30,8 +30,8 @@ public class CustomCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(RecordContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
-		CheckExpression checkExpression = validationContext.getExpressionFactory().createCheckExpression(getExpression());
+	public boolean execute(RecordContext recordContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
+		CheckExpression checkExpression = recordContext.getExpressionFactory().createCheckExpression(getExpression());
 		boolean b = checkExpression.evaluate(attribute);
 		return b;
 	}

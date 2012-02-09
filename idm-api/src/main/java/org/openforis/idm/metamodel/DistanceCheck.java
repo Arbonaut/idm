@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.geotools.CoordinateOperations;
+import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;
 import org.openforis.idm.model.Entity;
@@ -57,25 +58,26 @@ public class DistanceCheck extends Check {
 		return this.sourcePointExpression;
 	}
 
-	public boolean execute(RecordContext validationContext, CoordinateAttribute coordinateAttribute) {
+	public boolean execute(RecordContext recordContext, Attribute<?, ?> attribute) throws InvalidPathException {
 		try {
 			boolean valid = true;
-			beforeExecute(coordinateAttribute);
+			CoordinateAttribute coordinateAttr = (CoordinateAttribute) attribute;
+			beforeExecute(coordinateAttr);
 
-			Entity parentEntity = coordinateAttribute.getParent();
-			Coordinate from = getCoordinate(validationContext, getSourcePointExpression(), parentEntity, coordinateAttribute.getValue());
-			Coordinate to = getCoordinate(validationContext, getDestinationPointExpression(), parentEntity, null);
+			Entity parentEntity = coordinateAttr.getParent();
+			Coordinate from = getCoordinate(recordContext, getSourcePointExpression(), parentEntity, coordinateAttr.getValue());
+			Coordinate to = getCoordinate(recordContext, getDestinationPointExpression(), parentEntity, null);
 
 			double distance = CoordinateOperations.orthodromicDistance(from, to);
 
 			if (getMaxDistanceExpression() != null) {
-				Double maxDistance = evaluateDistanceExpression(validationContext, parentEntity, getMaxDistanceExpression());
+				Double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, getMaxDistanceExpression());
 				if (distance > maxDistance) {
 					valid = false;
 				}
 			}
 			if (getMinDistanceExpression() != null) {
-				Double minDistance = evaluateDistanceExpression(validationContext, parentEntity, getMinDistanceExpression());
+				Double minDistance = evaluateDistanceExpression(recordContext, parentEntity, getMinDistanceExpression());
 				if (distance < minDistance) {
 					valid = false;
 				}
@@ -108,5 +110,6 @@ public class DistanceCheck extends Check {
 		List<SpatialReferenceSystem> list = survey.getSpatialReferenceSystems();
 		CoordinateOperations.parseSRS(list);
 	}
+
 
 }

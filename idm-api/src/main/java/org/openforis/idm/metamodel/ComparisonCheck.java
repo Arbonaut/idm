@@ -82,10 +82,10 @@ public class ComparisonCheck extends Check {
 		return expression;
 	}
 
-	public boolean execute(RecordContext validationContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
+	public boolean execute(RecordContext recordContext, Attribute<?, ?> attribute) throws InvalidPathException {
 		String expr = getExpression();
-		CheckExpression checkExpression = validationContext.getExpressionFactory().createCheckExpression(expr);
-		boolean b = checkExpression.evaluate(attribute);
+		CheckExpression check = recordContext.getExpressionFactory().createCheckExpression(expr);
+		boolean b = check.evaluate(attribute);
 		return b;
 	}
 

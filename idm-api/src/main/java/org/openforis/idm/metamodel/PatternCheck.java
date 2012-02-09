@@ -14,6 +14,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Code;
+import org.openforis.idm.model.RecordContext;
+import org.openforis.idm.model.expression.InvalidPathException;
 
 /**
  * @author G. Miceli
@@ -42,7 +44,7 @@ public class PatternCheck extends Check {
 		return pattern;
 	}
 
-	public boolean execute(Attribute<? extends AttributeDefinition, ?> attribute) {
+	public boolean execute(RecordContext recordContext, Attribute<?, ?> attribute) throws InvalidPathException {
 		Object value = attribute.getValue();
 		String string = null;
 		// textvalue

@@ -17,7 +17,7 @@ import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression", "requiredExpression",
+@XmlType(name="", propOrder = {"name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression","required", "requiredExpression",
 		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class CodeAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition  {
 

@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
+@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
 public class EntityDefinition extends NodeDefinition {
 
 	private static final long serialVersionUID = 1L;

@@ -47,6 +47,9 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	private String relevantExpression;
 
 	@XmlAttribute(name = "required")
+	private boolean required;
+	
+	@XmlAttribute(name = "requiredIf")
 	private String requiredExpression;
 
 	@XmlAttribute(name = "multiple")
@@ -142,6 +145,10 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return this.relevantExpression;
 	}
 
+	public boolean isRequired() {
+		return required;
+	}
+	
 	public String getRequiredExpression() {
 		return requiredExpression;
 	}

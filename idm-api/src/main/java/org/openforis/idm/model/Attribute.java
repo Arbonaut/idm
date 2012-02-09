@@ -31,7 +31,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	public Attribute(D definition) {
 		super(definition);
 	}
-
+	
 	public abstract V createValue(String string);
 	
 	public V getValue() {
@@ -46,9 +46,9 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		V defaultValue = null;
 		List<AttributeDefault> attributeDefaults = getDefinition().getAttributeDefaults();
 		for (AttributeDefault attributeDefault : attributeDefaults) {
-			V v = getDefaultValue(attributeDefault);
-			if(v!=null){
-				defaultValue = v;
+			V value = getDefaultValue(attributeDefault);
+			if (value != null) {
+				defaultValue = value;
 				break;
 			}
 		}
@@ -116,33 +116,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		return (this.warnings != null) && !this.warnings.isEmpty();
 	}
 */
-/*
-	protected void addError(CheckFailure checkFailure) {
-		if (this.errors == null) {
-			this.errors = new ArrayList<CheckFailure>();
-		}
-		this.errors.add(checkFailure);
-	}
 
-	protected void addWarning(CheckFailure checkFailure) {
-		if (this.warnings == null) {
-			this.warnings = new ArrayList<CheckFailure>();
-		}
-		this.warnings.add(checkFailure);
-	}
-*/
-	
-	@Override
-	protected void write(StringWriter sw, int indent) {
-		for (int i = 0; i < indent; i++) {
-			sw.append('\t');
-		}
-		sw.append(getName());
-		sw.append(": ");
-		sw.append(value == null ? "!!null" : value.toString());
-		sw.append("\n");
-	}
-	
 	@SuppressWarnings("unchecked")
 	private V getDefaultValue(AttributeDefault attributeDefault) {
 		String condition = attributeDefault.getCondition();
@@ -150,8 +124,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 			String constValue = attributeDefault.getValue();
 			if (StringUtils.isBlank(constValue)) {
 				String expression = attributeDefault.getExpression();
-				ExpressionFactory expressionFactory = getExpressionFactory();
-				DefaultValueExpression defaultValueExpression = expressionFactory.createDefaultValueExpression(expression);
+				DefaultValueExpression defaultValueExpression = getExpressionFactory().createDefaultValueExpression(expression);
 				try {
 					Object object = defaultValueExpression.evaluate(getParent());
 					return (V) object;
@@ -166,8 +139,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 
 	private boolean evaluate(String condition) {
-		ExpressionFactory expressionFactory = getExpressionFactory();
-		ConditionalExpression expression = expressionFactory.createConditionalExpression(condition);
+		ConditionalExpression expression = getExpressionFactory().createConditionalExpression(condition);
 		try {
 			boolean b = expression.evaluate(getParent());
 			return b;
@@ -175,4 +147,16 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 			throw new RuntimeException("Unable to evaluate expression " + condition, e);
 		}
 	}
+	
+	@Override
+	protected void write(StringWriter sw, int indent) {
+		for (int i = 0; i < indent; i++) {
+			sw.append('\t');
+		}
+		sw.append(getName());
+		sw.append(": ");
+		sw.append(value == null ? "!!null" : value.toString());
+		sw.append("\n");
+	}
+	
 }

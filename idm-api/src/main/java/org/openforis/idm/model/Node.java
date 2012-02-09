@@ -4,10 +4,13 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
-import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.expression.ExpressionFactory;
+import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.model.expression.RelevanceExpression;
+import org.openforis.idm.model.expression.RequiredExpression;
 import org.openforis.idm.validation.ValidationResults;
 
 
@@ -69,7 +72,37 @@ public abstract class Node<D extends NodeDefinition> {
 	protected abstract void write(StringWriter sw, int indent);
 
 	public abstract ValidationResults validate();
+
+	public boolean isRelevant() {
+		String expr = getDefinition().getRequiredExpression();
+		if (StringUtils.isNotBlank(expr)) {
+			try {
+				RelevanceExpression relevanceExpr = getExpressionFactory().createRelevanceExpression(expr);
+				return relevanceExpr.evaluate(getParent());
+			} catch (InvalidPathException e) {
+				throw new RuntimeException("Unable to evaluate expression: " + expr, e);
+			}
+		}
+		return Boolean.TRUE;
+	}
 	
+	public boolean isRequired() {
+		if (getDefinition().isRequired()) {
+			return Boolean.TRUE;
+		} else {
+			String expr = getDefinition().getRequiredExpression();
+			if (StringUtils.isNotBlank(expr)) {
+				try {
+					RequiredExpression requiredExpr = getExpressionFactory().createRequiredExpression(expr);
+					return requiredExpr.evaluate(getParent());
+				} catch (InvalidPathException e) {
+					throw new RuntimeException("Unable to evaluate expression: " + expr, e);
+				}
+			}
+			return Boolean.FALSE;
+		}
+	}
+
 //	protected void notifyObservers() {
 //		if ( record != null ) {
 //			record.notifyObservers();
@@ -84,32 +117,8 @@ public abstract class Node<D extends NodeDefinition> {
 	}
 
 	protected ExpressionFactory getExpressionFactory() {
-		RecordContext context = getRecord().getContext();;
+		RecordContext context = getRecord().getContext();
 		return context.getExpressionFactory();
 	}
 
-/*
-	protected Record getRecord() {
-		return this.record;
-	}
-
-	protected void setRecord(Record record) {
-		this.record = record;
-	}
-	public String getPath() {
-		return this.path;
-	}
-
-	void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public Long getId() {
-		return id;
-	}
-*/
 }

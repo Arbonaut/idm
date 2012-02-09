@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
+@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
 		"affirmativeOnly", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class BooleanAttributeDefinition extends AttributeDefinition {
 

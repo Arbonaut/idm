@@ -1214,7 +1214,14 @@
             </xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="required" type="expression" use="optional" default="false">
+        <xs:attribute name="required" type="xs:boolean" use="optional" default="false">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              TO-DO
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="requiredIf" type="expression" use="optional" default="false">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               TO-DO
@@ -1293,7 +1300,14 @@
             </xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="required" type="xs:string" use="optional" default="false">
+        <xs:attribute name="required" type="xs:boolean" use="optional" default="false">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              TO-DO
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="requiredIf" type="expression" use="optional" default="false">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               TO-DO

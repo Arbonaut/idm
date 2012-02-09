@@ -7,7 +7,8 @@ import org.openforis.idm.metamodel.NodeDefinition;
  * @author M. Togna
  */
 public final class CardinalityError implements RuleFailure {
-	enum Reason {
+	
+	public enum Reason {
 		MIN_COUNT, MAX_COUNT, REQUIRED
 	}
 

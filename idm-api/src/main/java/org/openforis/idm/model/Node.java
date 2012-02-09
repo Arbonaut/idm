@@ -7,6 +7,7 @@ import java.io.StringWriter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.model.expression.ConditionalExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.model.expression.RelevanceExpression;
@@ -108,6 +109,22 @@ public abstract class Node<D extends NodeDefinition> {
 //			record.notifyObservers();
 //		}
 //	}
+	protected boolean evaluate(String condition, Node<?> context) {
+		if (StringUtils.isNotBlank(condition)) {
+			ConditionalExpression expression = getExpressionFactory().createConditionalExpression(condition);
+			try {
+				return expression.evaluate(context);
+			} catch (InvalidPathException e) {
+				throw new RuntimeException("Unable to evaluate expression " + condition, e);
+			}
+		} else {
+			return Boolean.FALSE;
+		}
+	}
+
+	protected boolean evaluate(String condition) {
+		return evaluate(condition, getParent());
+	}
 	
 	@Override
 	public String toString() {

@@ -9,9 +9,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
-import org.openforis.idm.model.expression.ConditionalExpression;
 import org.openforis.idm.model.expression.DefaultValueExpression;
-import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.validation.ValidationResults;
 
@@ -138,16 +136,6 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		return null;
 	}
 
-	private boolean evaluate(String condition) {
-		ConditionalExpression expression = getExpressionFactory().createConditionalExpression(condition);
-		try {
-			boolean b = expression.evaluate(getParent());
-			return b;
-		} catch (InvalidPathException e) {
-			throw new RuntimeException("Unable to evaluate expression " + condition, e);
-		}
-	}
-	
 	@Override
 	protected void write(StringWriter sw, int indent) {
 		for (int i = 0; i < indent; i++) {

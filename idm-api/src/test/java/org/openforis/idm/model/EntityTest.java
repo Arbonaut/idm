@@ -4,15 +4,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
+import org.openforis.idm.validation.ValidationResults;
 
 /**
  * @author G. Miceli
+ * @author M. Togna
  */
 public class EntityTest {
 
@@ -70,6 +73,26 @@ public class EntityTest {
 	public void testAddUndefinedAttribute() {
 		Entity cluster = getRootEntity();
 		cluster.addValue("xxx", 2.0);
+	}
+	
+	@Test
+	public void testValidateRootEntity(){
+		Entity cluster = getRootEntity();
+		
+		ValidationResults results = cluster.validate();
+		int errors = results.getErrors().size();
+		Assert.assertEquals(5, errors);
+	}
+	
+	@Test
+	public void testValidatePlot(){
+		Entity cluster = getRootEntity();
+		Entity plot = cluster.addEntity("plot");
+		plot.addValue("share", 20.0);
+		
+		ValidationResults results = plot.validate();
+		int errors = results.getErrors().size();
+		Assert.assertEquals(16, errors);
 	}
 
 	private Entity getRootEntity() {

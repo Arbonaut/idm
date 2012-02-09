@@ -24,6 +24,8 @@ import org.openforis.idm.metamodel.NumberAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
 import org.openforis.idm.util.CollectionUtil;
+import org.openforis.idm.validation.CardinalityError;
+import org.openforis.idm.validation.CardinalityError.Reason;
 import org.openforis.idm.validation.RuleFailure;
 import org.openforis.idm.validation.ValidationResults;
 
@@ -68,9 +70,35 @@ public class Entity extends Node<EntityDefinition> {
 	
 	@Override
 	public ValidationResults validate() {
-		// TODO Auto-generated method stub
+		ValidationResults validationResults = new ValidationResults();
+		
+		List<NodeDefinition> childDefinitions = getDefinition().getChildDefinitions();
+		for (NodeDefinition childDef : childDefinitions) {
+			CardinalityError error = validate(childDef);
+			if (error != null) {
+				validationResults.addError(error);
+			}
+		}
+		
+		return validationResults;
+	}
+	
+	private CardinalityError validate(NodeDefinition definition) {
+		String name = definition.getName();
+		if (definition.isRequired() || evaluate(definition.getRequiredExpression(), this)) {
+			List<Node<? extends NodeDefinition>> children = getAll(name);
+			if (children.size() <= 0) {
+				return new CardinalityError(definition, Reason.REQUIRED);
+			}
+		} else if (definition.getMinCount() != null) {
+			List<Node<? extends NodeDefinition>> children = getAll(name);
+			if (children.size() < definition.getMinCount()) {
+				return new CardinalityError(definition, Reason.MIN_COUNT);
+			}
+		}
 		return null;
 	}
+
 	// public <T extends Node<?>> T add(T o, int idx) {
 	// return addInternal(o, idx);
 	// }

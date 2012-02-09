@@ -84,12 +84,12 @@ public abstract class Node<D extends NodeDefinition> {
 				throw new RuntimeException("Unable to evaluate expression: " + expr, e);
 			}
 		}
-		return Boolean.TRUE;
+		return true;
 	}
-	
+
 	public boolean isRequired() {
 		if (getDefinition().isRequired()) {
-			return Boolean.TRUE;
+			return true;
 		} else {
 			String expr = getDefinition().getRequiredExpression();
 			if (StringUtils.isNotBlank(expr)) {
@@ -100,7 +100,7 @@ public abstract class Node<D extends NodeDefinition> {
 					throw new RuntimeException("Unable to evaluate expression: " + expr, e);
 				}
 			}
-			return Boolean.FALSE;
+			return false;
 		}
 	}
 
@@ -118,7 +118,7 @@ public abstract class Node<D extends NodeDefinition> {
 				throw new RuntimeException("Unable to evaluate expression " + condition, e);
 			}
 		} else {
-			return Boolean.FALSE;
+			return false;
 		}
 	}
 

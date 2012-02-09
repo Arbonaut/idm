@@ -19,6 +19,7 @@ import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.validation.CheckResult;
 
 /**
  * @author G. Miceli
@@ -58,13 +59,15 @@ public class DistanceCheck extends Check {
 		return this.sourcePointExpression;
 	}
 
-	public boolean execute(RecordContext recordContext, Attribute<?, ?> attribute) throws InvalidPathException {
+	@Override
+	public CheckResult evaluate(Attribute<?, ?> node) {
 		try {
 			boolean valid = true;
-			CoordinateAttribute coordinateAttr = (CoordinateAttribute) attribute;
+			CoordinateAttribute coordinateAttr = (CoordinateAttribute) node;
 			beforeExecute(coordinateAttr);
 
 			Entity parentEntity = coordinateAttr.getParent();
+			RecordContext recordContext = node.getRecord().getContext();
 			Coordinate from = getCoordinate(recordContext, getSourcePointExpression(), parentEntity, coordinateAttr.getValue());
 			Coordinate to = getCoordinate(recordContext, getDestinationPointExpression(), parentEntity, null);
 
@@ -83,23 +86,23 @@ public class DistanceCheck extends Check {
 				}
 			}
 
-			return valid;
+			return new CheckResult(node, this, valid);
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to execute distance check", e);
 		}
 	}
 
-	private double evaluateDistanceExpression(RecordContext validationContext, Entity context, String expression) throws InvalidPathException {
-		DefaultValueExpression defaultValueExpression = validationContext.getExpressionFactory().createDefaultValueExpression(expression);
+	private double evaluateDistanceExpression(RecordContext recordContext, Entity context, String expression) throws InvalidPathException {
+		DefaultValueExpression defaultValueExpression = recordContext.getExpressionFactory().createDefaultValueExpression(expression);
 		Double value = (Double) defaultValueExpression.evaluate(context);
 		return value;
 	}
 
-	private Coordinate getCoordinate(RecordContext validationContext, String expression, Node<?> context, Coordinate defaultCoordinate) throws InvalidPathException {
+	private Coordinate getCoordinate(RecordContext recordContext, String expression, Node<?> context, Coordinate defaultCoordinate) throws InvalidPathException {
 		if (expression == null) {
 			return defaultCoordinate;
 		} else {
-			DefaultValueExpression valueExpression = validationContext.getExpressionFactory().createDefaultValueExpression(expression);
+			DefaultValueExpression valueExpression = recordContext.getExpressionFactory().createDefaultValueExpression(expression);
 			Coordinate coordinate = (Coordinate) valueExpression.evaluate(context);
 			return coordinate;
 		}
@@ -110,6 +113,5 @@ public class DistanceCheck extends Check {
 		List<SpatialReferenceSystem> list = survey.getSpatialReferenceSystems();
 		CoordinateOperations.parseSRS(list);
 	}
-
 
 }

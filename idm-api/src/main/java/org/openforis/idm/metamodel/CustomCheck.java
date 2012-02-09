@@ -12,6 +12,7 @@ import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.validation.CheckResult;
 
 /**
  * @author G. Miceli
@@ -30,9 +31,17 @@ public class CustomCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(RecordContext recordContext, Attribute<? extends AttributeDefinition, ?> attribute) throws InvalidPathException {
-		CheckExpression checkExpression = recordContext.getExpressionFactory().createCheckExpression(getExpression());
-		boolean b = checkExpression.evaluate(attribute);
-		return b;
+	@Override
+	public CheckResult evaluate(Attribute<?, ?> node) {
+		String expr = getExpression();
+		try {
+			RecordContext recordContext = node.getRecord().getContext();
+			CheckExpression checkExpression = recordContext.getExpressionFactory().createCheckExpression(expr);
+			boolean b = checkExpression.evaluate(node.getParent());
+			return new CheckResult(node, this, b);
+		} catch (InvalidPathException e) {
+			throw new RuntimeException("Unable evaluate expression " + expr, e);
+		}
 	}
+	
 }

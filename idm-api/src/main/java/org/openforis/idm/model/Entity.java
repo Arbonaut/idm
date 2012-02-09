@@ -24,9 +24,9 @@ import org.openforis.idm.metamodel.NumberAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
 import org.openforis.idm.util.CollectionUtil;
-import org.openforis.idm.validation.CardinalityError;
-import org.openforis.idm.validation.CardinalityError.Reason;
-import org.openforis.idm.validation.RuleFailure;
+import org.openforis.idm.validation.CardinalityRule;
+import org.openforis.idm.validation.CarinalityResult;
+import org.openforis.idm.validation.RuleResult;
 import org.openforis.idm.validation.ValidationResults;
 
 /**
@@ -75,38 +75,22 @@ public class Entity extends Node<EntityDefinition> {
 	public ValidationResults validate() {
 		ValidationResults validationResults = new ValidationResults();
 		
-		List<NodeDefinition> childDefinitions = getDefinition().getChildDefinitions();
-		for (NodeDefinition childDef : childDefinitions) {
-			CardinalityError error = validate(childDef);
-			if (error != null) {
-				validationResults.addError(error);
-			}
-		}
+		validateCardinality(validationResults);
 		
 		return validationResults;
 	}
-	
-	private CardinalityError validate(NodeDefinition definition) {
-		String name = definition.getName();
-		if (definition.isRequired() || evaluate(definition.getRequiredExpression(), this)) {
-			List<Node<? extends NodeDefinition>> children = getAll(name);
-			if (children.size() <= 0) {
-				return new CardinalityError(definition, Reason.REQUIRED);
-			}
-		} else if (definition.getMinCount() != null) {
-			List<Node<? extends NodeDefinition>> children = getAll(name);
-			if (children.size() < definition.getMinCount()) {
-				return new CardinalityError(definition, Reason.MIN_COUNT);
-			}
-		} else if (definition.getMaxCount() != null) {
-			List<Node<? extends NodeDefinition>> children = getAll(name);
-			if (children.size() > definition.getMaxCount()) {
-				return new CardinalityError(definition, Reason.MAX_COUNT);
+
+	private void validateCardinality(ValidationResults validationResults) {
+		List<NodeDefinition> childDefinitions = getDefinition().getChildDefinitions();
+		for (NodeDefinition childDef : childDefinitions) {
+			CardinalityRule rule = childDef.getCardinalityRule();
+			CarinalityResult result = rule.evaluate(this);
+			if(!result.isPassed()){
+				validationResults.addError(result);
 			}
 		}
-		return null;
 	}
-
+	
 	// public <T extends Node<?>> T add(T o, int idx) {
 	// return addInternal(o, idx);
 	// }
@@ -236,14 +220,22 @@ public class Entity extends Node<EntityDefinition> {
 		List<Node<? extends NodeDefinition>> list = childrenByName.get(name);
 		return list == null ? 0 : list.size();
 	}
+	
+	/**
+	 * Returns the number of children
+	 * @return
+	 */
+	public int size(){
+		return childrenByName.size();
+	}
 
-	public List<RuleFailure> getErrors(String name) {
+	public List<RuleResult> getErrors(String name) {
 		checkChildDefinition(name);
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<RuleFailure> getWarnings(String name) {
+	public List<RuleResult> getWarnings(String name) {
 		checkChildDefinition(name);
 		// TODO Auto-generated method stub
 		return null;

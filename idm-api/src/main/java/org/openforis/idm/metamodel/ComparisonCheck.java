@@ -14,6 +14,7 @@ import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.validation.CheckResult;
 
 /**
  * @author M. Togna
@@ -82,11 +83,17 @@ public class ComparisonCheck extends Check {
 		return expression;
 	}
 
-	public boolean execute(RecordContext recordContext, Attribute<?, ?> attribute) throws InvalidPathException {
+	@Override
+	public CheckResult evaluate(Attribute<?, ?> node) {
+		RecordContext recordContext = node.getRecord().getContext();
 		String expr = getExpression();
-		CheckExpression check = recordContext.getExpressionFactory().createCheckExpression(expr);
-		boolean b = check.evaluate(attribute);
-		return b;
+		try {
+			CheckExpression checkExpr = recordContext.getExpressionFactory().createCheckExpression(expr);
+			boolean b = checkExpr.evaluate(node.getParent());
+			return new CheckResult(node, this, b);
+		} catch (InvalidPathException e) {
+			throw new RuntimeException("Unable to evaluate expression " + expr, e);
+		}
 	}
 
 	private class ExpressionBuilder {

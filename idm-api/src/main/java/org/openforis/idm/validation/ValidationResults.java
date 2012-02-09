@@ -6,6 +6,8 @@ package org.openforis.idm.validation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openforis.idm.util.CollectionUtil;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -13,35 +15,35 @@ import java.util.List;
  */
 public class ValidationResults {
 
-	private List<RuleFailure> errors;
-	private List<RuleFailure> warnings;
+	private List<RuleResult> errors;
+	private List<RuleResult> warnings;
 
 	public ValidationResults() {
-		errors = new ArrayList<RuleFailure>();
-		warnings = new ArrayList<RuleFailure>();
+		errors = new ArrayList<RuleResult>();
+		warnings = new ArrayList<RuleResult>();
 	}
 
-	public List<RuleFailure> getErrors() {
-		return errors;
+	public List<RuleResult> getErrors() {
+		return CollectionUtil.unmodifiableList(errors);
 	}
 
-	public List<RuleFailure> getWarnings() {
-		return warnings;
+	public List<RuleResult> getWarnings() {
+		return CollectionUtil.unmodifiableList(warnings);
 	}
 
-	public List<RuleFailure> getFailures() {
-		List<RuleFailure> failures = new ArrayList<RuleFailure>();
+	public List<RuleResult> getFailures() {
+		List<RuleResult> failures = new ArrayList<RuleResult>();
 		failures.addAll(getErrors());
 		failures.addAll(getWarnings());
 		return failures;
 	}
 
-	public void addError(RuleFailure failure) {
-		getErrors().add(failure);
+	public void addError(RuleResult failure) {
+		errors.add(failure);
 	}
 
-	public void addWarning(RuleFailure failure) {
-		getWarnings().add(failure);
+	public void addWarning(RuleResult failure) {
+		warnings.add(failure);
 	}
 
 }

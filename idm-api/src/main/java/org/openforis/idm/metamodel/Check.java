@@ -15,9 +15,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.CheckFlagAdapter;
 import org.openforis.idm.model.Attribute;
-import org.openforis.idm.model.RecordContext;
-import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.util.CollectionUtil;
+import org.openforis.idm.validation.CheckResult;
+import org.openforis.idm.validation.Rule;
 
 /**
  * @author G. Miceli
@@ -25,7 +25,7 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-public abstract class Check implements Serializable {
+public abstract class Check implements Serializable, Rule<CheckResult, Attribute<?, ?>> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -54,14 +54,5 @@ public abstract class Check implements Serializable {
 	public List<LanguageSpecificText> getMessages() {
 		return CollectionUtil.unmodifiableList(this.messages);
 	}
-	
-	/**
-	 * Executes the given check
-	 * 
-	 * @param recordContext
-	 * @param attribute
-	 * @return
-	 * @throws InvalidPathException
-	 */
-	public abstract boolean execute(RecordContext recordContext, Attribute<?, ?> attribute) throws InvalidPathException;
+
 }

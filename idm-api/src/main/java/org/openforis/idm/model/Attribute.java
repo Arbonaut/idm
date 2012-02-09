@@ -12,7 +12,7 @@ import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.Check;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
-import org.openforis.idm.validation.CheckFailure;
+import org.openforis.idm.validation.CheckResult;
 import org.openforis.idm.validation.ValidationResults;
 
 /**
@@ -58,26 +58,26 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	@Override
 	public ValidationResults validate() {
 		ValidationResults results = new ValidationResults();
-		
-		List<Check> checks = getDefinition().getChecks();
-		for (Check check : checks) {
-			try {
-				boolean valid = check.execute(getRecord().getContext(), this);
-				if(!valid){
-					CheckFailure failure = new CheckFailure(check);
-					if(check.getFlag().equals(Check.Flag.ERROR)){
-						results.addError(failure);
-					} else if(check.getFlag().equals(Check.Flag.WARN)){
-						results.addWarning(failure);
-					}
-				}
-			} catch (InvalidPathException e) {
-				throw new RuntimeException("Unable to execute check",e);
-			}
+		if (getValue() != null) {
+			validateChecks(results);
 		}
 		return results;
 	}
-	
+
+	private void validateChecks(ValidationResults results) {
+		List<Check> checks = getDefinition().getChecks();
+		for (Check check : checks) {
+			CheckResult result = check.evaluate(this);
+			if (!result.isPassed()) {
+				if (result.isError()) {
+					results.addError(result);
+				} else if (result.isWarning()) {
+					results.addWarning(result);
+				}
+			}
+		}
+	}
+
 	public boolean isDefaultValue() {
 		return defaultValue;
 	}
@@ -112,14 +112,14 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 
 	/*
-	public List<CheckFailure> getErrors() {
-		List<CheckFailure> errors = this.errors != null ? this.errors : new ArrayList<CheckFailure>();
+	public List<CheckResult> getErrors() {
+		List<CheckResult> errors = this.errors != null ? this.errors : new ArrayList<CheckResult>();
 		return Collections.unmodifiableList(errors);
 	}
 
 	@Override
-	public List<CheckFailure> getWarnings() {
-		List<CheckFailure> warnings = this.warnings != null ? this.warnings : new ArrayList<CheckFailure>();
+	public List<CheckResult> getWarnings() {
+		List<CheckResult> warnings = this.warnings != null ? this.warnings : new ArrayList<CheckResult>();
 		return Collections.unmodifiableList(warnings);
 	}
 

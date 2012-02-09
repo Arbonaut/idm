@@ -18,6 +18,7 @@ import javax.xml.namespace.QName;
 
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
+import org.openforis.idm.validation.CardinalityRule;
 
 /**
  * @author G. Miceli
@@ -47,7 +48,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	private String relevantExpression;
 
 	@XmlAttribute(name = "required")
-	private boolean required;
+	private Boolean required;
 	
 	@XmlAttribute(name = "requiredIf")
 	private String requiredExpression;
@@ -72,6 +73,9 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 
 	@XmlAnyAttribute
 	private Map<QName,String> annotations;
+	
+	@XmlTransient
+	private CardinalityRule cardinalityRule;
 	
 	public String getAnnotation(QName qname) {
 		return annotations == null ? null : annotations.get(qname);
@@ -146,7 +150,12 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 
 	public boolean isRequired() {
-		return required;
+		if (required != null) {
+			return required;
+		} else if (minCount != null && minCount >= 1) {
+			return true;
+		}
+		return false;
 	}
 	
 	public String getRequiredExpression() {
@@ -164,7 +173,12 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 
 	public Integer getMinCount() {
-		return minCount;
+		if (minCount != null) {
+			return minCount;
+		} else if (required != null && required) {
+			return Integer.valueOf(1);
+		}
+		return null;
 	}
 
 	public Integer getMaxCount() {
@@ -212,6 +226,13 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	public List<LanguageSpecificText> getDescriptions() {
 		List<LanguageSpecificText> list = this.descriptions != null ? this.descriptions : new ArrayList<LanguageSpecificText>();
 		return Collections.unmodifiableList(list);
+	}
+	
+	public CardinalityRule getCardinalityRule() {
+		if(cardinalityRule == null){
+			cardinalityRule = new CardinalityRule(this);
+		}
+		return cardinalityRule;
 	}
 	
 	public String getPath() {

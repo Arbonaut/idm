@@ -15,6 +15,7 @@ import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.model.expression.ModelPathExpression;
+import org.openforis.idm.validation.CheckResult;
 
 /**
  * @author G. Miceli
@@ -33,23 +34,27 @@ public class UniquenessCheck extends Check {
 		return this.expression;
 	}
 
-	public boolean execute(RecordContext recordContext, Attribute<?, ?> attribute) throws InvalidPathException {
-		ModelPathExpression pathExpression = recordContext.getExpressionFactory().createModelPathExpression(getExpression());
-		List<Node<?>> list = pathExpression.iterate(attribute);
-		if (list != null && list.size() > 0) {
+	@Override
+	public CheckResult evaluate(Attribute<?, ?> node) {
+		try {
+			RecordContext recordContex = node.getRecord().getContext();
+			ModelPathExpression pathExpression = recordContex.getExpressionFactory().createModelPathExpression(getExpression());
+			List<Node<?>> list = pathExpression.iterate(node);
 			boolean unique = true;
-			for (Node<?> object : list) {
-				if (object instanceof Attribute) {
-					Object value = ((Attribute<?, ?>) object).getValue();
-					if (value.equals(attribute.getValue())) {
-						unique = false;
-						break;
+			if (list != null && list.size() > 0) {
+				for (Node<?> object : list) {
+					if (object instanceof Attribute) {
+						Object value = ((Attribute<?, ?>) object).getValue();
+						if (value.equals(node.getValue())) {
+							unique = false;
+							break;
+						}
 					}
 				}
 			}
-			return unique;
-		} else {
-			return true;
+			return new CheckResult(node, this, unique);
+		} catch (InvalidPathException e) {
+			throw new RuntimeException("Unable to evaluate expression " + getExpression(), e);
 		}
 	}
 

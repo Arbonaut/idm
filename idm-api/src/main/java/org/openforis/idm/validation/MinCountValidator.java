@@ -17,8 +17,8 @@ import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.model.expression.RequiredExpression;
 
 /**
- * @author G. Miceli
  * @author M. Togna
+ * @author G. Miceli
  */
 public class MinCountValidator implements Validator<Entity> {
 

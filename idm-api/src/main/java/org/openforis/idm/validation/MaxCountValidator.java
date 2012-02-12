@@ -10,8 +10,8 @@ import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 
 /**
- * @author G. Miceli
  * @author M. Togna
+ * @author G. Miceli
  */
 public class MaxCountValidator implements Validator<Entity> {
 

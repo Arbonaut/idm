@@ -18,7 +18,7 @@ import org.openforis.idm.model.expression.InvalidPathException;
 
 /**
  * @author M. Togna
- * 
+ * @author G. Miceli
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
@@ -27,12 +27,12 @@ public class ComparisonCheck extends Check {
 	private static final long serialVersionUID = 1L;
 
 	@XmlTransient
-	private enum OPERATION {
+	private enum Operation {
 		LT("<"), LTE("<="), GT(">"), GTE(">="), EQ("=");
 
 		private String xpathSymbol;
 
-		private OPERATION(final String xpathSymbol) {
+		private Operation(final String xpathSymbol) {
 			this.xpathSymbol = xpathSymbol;
 		}
 	}
@@ -74,10 +74,10 @@ public class ComparisonCheck extends Check {
 	public String getEqualsExpression() {
 		return this.equalsExpression;
 	}
-
+	
 	public String getExpression() {
 		if (expression == null) {
-			ExpressionBuilder expressionBuilder = this.new ExpressionBuilder(this);
+			ExpressionBuilder expressionBuilder = new ExpressionBuilder();
 			expression = expressionBuilder.getExpression();
 		}
 		return expression;
@@ -100,30 +100,30 @@ public class ComparisonCheck extends Check {
 		private StringBuilder expression;
 		private boolean firstOperation = true;
 
-		private ExpressionBuilder(ComparisonCheck comparisonCheck) {
+		private ExpressionBuilder() {
 			this.expression = new StringBuilder();
-			buildExpression(comparisonCheck);
+			buildExpression();
 		}
 
-		private void buildExpression(ComparisonCheck c) {
-			if (StringUtils.isNotBlank(c.getGreaterThanExpression())) {
-				addOperation(OPERATION.GT, c.getGreaterThanExpression());
+		private void buildExpression() {
+			if (StringUtils.isNotBlank(getGreaterThanExpression())) {
+				addOperation(Operation.GT, getGreaterThanExpression());
 			}
-			if (StringUtils.isNotBlank(c.getGreaterThanOrEqualsExpression())) {
-				addOperation(OPERATION.GTE, c.getGreaterThanOrEqualsExpression());
+			if (StringUtils.isNotBlank(getGreaterThanOrEqualsExpression())) {
+				addOperation(Operation.GTE, getGreaterThanOrEqualsExpression());
 			}
-			if (StringUtils.isNotBlank(c.getLessThanExpression())) {
-				addOperation(OPERATION.LT, c.getLessThanExpression());
+			if (StringUtils.isNotBlank(getLessThanExpression())) {
+				addOperation(Operation.LT, getLessThanExpression());
 			}
-			if (StringUtils.isNotBlank(c.getLessThanOrEqualsExpression())) {
-				addOperation(OPERATION.LTE, c.getLessThanOrEqualsExpression());
+			if (StringUtils.isNotBlank(getLessThanOrEqualsExpression())) {
+				addOperation(Operation.LTE, getLessThanOrEqualsExpression());
 			}
-			if (StringUtils.isNotBlank(c.getEqualsExpression())) {
-				addOperation(OPERATION.EQ, c.getEqualsExpression());
+			if (StringUtils.isNotBlank(getEqualsExpression())) {
+				addOperation(Operation.EQ, getEqualsExpression());
 			}
 		}
 
-		private void addOperation(OPERATION o, String value) {
+		private void addOperation(Operation o, String value) {
 			if (firstOperation) {
 				firstOperation = Boolean.FALSE;
 			} else {

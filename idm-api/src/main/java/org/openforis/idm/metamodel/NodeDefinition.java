@@ -18,7 +18,7 @@ import javax.xml.namespace.QName;
 
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
-import org.openforis.idm.validation.CardinalityRule;
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -74,16 +74,14 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	@XmlAnyAttribute
 	private Map<QName,String> annotations;
 	
-	@XmlTransient
-	private CardinalityRule cardinalityRule;
-	
 	public String getAnnotation(QName qname) {
 		return annotations == null ? null : annotations.get(qname);
 	}
 
 	public Set<QName> getAnnotationNames() {
-		return annotations == null ? null : Collections.unmodifiableSet(annotations.keySet());
+		return CollectionUtil.unmodifiableSet(annotations.keySet());
 	}
+
 //	protected void setAnnotationAttributes(Map<QName,String> attrMap) {
 //		this.annotations = new ArrayList<ModelAnnotation>(attrMap.size()); 
 //		for (Map.Entry<QName, String> entry : attrMap.entrySet()) {
@@ -150,12 +148,11 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 
 	public boolean isRequired() {
-		if (required != null) {
+		if (required == null) {
+			return minCount != null && minCount >= 1;
+		} else {
 			return required;
-		} else if (minCount != null && minCount >= 1) {
-			return true;
 		}
-		return false;
 	}
 	
 	public String getRequiredExpression() {
@@ -163,41 +160,37 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 
 	public boolean isMultiple() {
-		if ( maxCount != null && maxCount > 1 ) {
-			return true;
-		} else if ( multiple == null ) {
-			return false;
+		if ( multiple == null ) {
+			return (minCount != null && minCount > 1) || (maxCount != null && maxCount > 1); 
 		} else {
 			return multiple;
 		}
 	}
 
 	public Integer getMinCount() {
-		if (minCount != null) {
+		if (minCount == null) {
+			return required == Boolean.TRUE ? 1 : null;
+		} else {
 			return minCount;
-		} else if (required != null && required) {
-			return Integer.valueOf(1);
 		}
-		return null;
 	}
 
 	public Integer getMaxCount() {
 		if ( maxCount == null && !isMultiple() ) {
-			return Integer.valueOf(1);
+			return 1;
 		} else {
 			return maxCount;
 		}
 	}
 
 	public List<NodeLabel> getLabels() {
-		List<NodeLabel> list = this.labels != null ? this.labels : new ArrayList<NodeLabel>();
-		return Collections.unmodifiableList(list);
+		return CollectionUtil.unmodifiableList(labels);
 	}
 
 	public List<NodeLabel> getLabels(NodeLabel.Type type) {
 		List<NodeLabel> list = new ArrayList<NodeLabel>();
-		if (this.labels != null) {
-			for (NodeLabel label : this.labels) {
+		if (labels != null) {
+			for (NodeLabel label : labels) {
 				if (label.getType().equals(type)) {
 					list.add(label);
 				}
@@ -207,14 +200,13 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 
 	public List<Prompt> getPrompts() {
-		List<Prompt> list = this.prompts != null ? this.prompts : new ArrayList<Prompt>();
-		return Collections.unmodifiableList(list);
+		return CollectionUtil.unmodifiableList(prompts);
 	}
 
 	public List<Prompt> getPrompts(Prompt.Type type) {
 		List<Prompt> list = new ArrayList<Prompt>();
-		if (this.prompts != null) {
-			for (Prompt prompt : this.prompts) {
+		if (prompts != null) {
+			for (Prompt prompt : prompts) {
 				if (prompt.getType().equals(type)) {
 					list.add(prompt);
 				}
@@ -224,17 +216,9 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 	
 	public List<LanguageSpecificText> getDescriptions() {
-		List<LanguageSpecificText> list = this.descriptions != null ? this.descriptions : new ArrayList<LanguageSpecificText>();
-		return Collections.unmodifiableList(list);
+		return CollectionUtil.unmodifiableList(descriptions);
 	}
-	
-	public CardinalityRule getCardinalityRule() {
-		if(cardinalityRule == null){
-			cardinalityRule = new CardinalityRule(this);
-		}
-		return cardinalityRule;
-	}
-	
+
 	public String getPath() {
 		NodeDefinition defn = this;
 		StringBuilder sb = new StringBuilder(64);
@@ -262,6 +246,6 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + "("+getName()+")";
+		return name;
 	}
 }

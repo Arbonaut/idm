@@ -7,10 +7,10 @@ import org.openforis.idm.model.Node;
 
 /**
  * @author M. Togna
- *
+ * @author G. Miceli
  */
-public interface Rule<R extends RuleResult ,N extends Node<?>> {
+public interface Validator<N extends Node<?>> {
 
-	R evaluate(N node);
+	boolean validate(N node);
 	
 }

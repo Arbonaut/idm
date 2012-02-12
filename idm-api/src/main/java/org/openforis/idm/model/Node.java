@@ -4,8 +4,10 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.idm.geotools.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.expression.ConditionalExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
@@ -27,8 +29,6 @@ public abstract class Node<D extends NodeDefinition> {
 
 	private Record record;
 	private Entity parent;
-//	private String path;
-//	private String type;
 
 	public Node(D definition) {
 		if ( definition == null ) {
@@ -46,7 +46,7 @@ public abstract class Node<D extends NodeDefinition> {
 	}
 
 	public String getName() {
-		return this.getDefinition().getName();
+		return getDefinition().getName();
 	}
 
 	public Record getRecord() {
@@ -72,6 +72,8 @@ public abstract class Node<D extends NodeDefinition> {
 
 	protected abstract void write(StringWriter sw, int indent);
 
+	public abstract boolean isEmpty();
+
 	public abstract ValidationResults validate();
 
 	public boolean isRelevant() {
@@ -86,7 +88,7 @@ public abstract class Node<D extends NodeDefinition> {
 		}
 		return true;
 	}
-
+	
 	public boolean isRequired() {
 		if (getDefinition().isRequired()) {
 			return true;
@@ -97,25 +99,20 @@ public abstract class Node<D extends NodeDefinition> {
 					RequiredExpression requiredExpr = getExpressionFactory().createRequiredExpression(expr);
 					return requiredExpr.evaluate(getParent());
 				} catch (InvalidPathException e) {
-					throw new RuntimeException("Unable to evaluate expression: " + expr, e);
+					throw new IdmInterpretationError("Error evaluating required", e);
 				}
 			}
 			return false;
 		}
 	}
 
-//	protected void notifyObservers() {
-//		if ( record != null ) {
-//			record.notifyObservers();
-//		}
-//	}
 	protected boolean evaluate(String condition, Node<?> context) {
 		if (StringUtils.isNotBlank(condition)) {
 			ConditionalExpression expression = getExpressionFactory().createConditionalExpression(condition);
 			try {
 				return expression.evaluate(context);
 			} catch (InvalidPathException e) {
-				throw new RuntimeException("Unable to evaluate expression " + condition, e);
+				throw new IdmInterpretationError("Error evaluating conditional expression", e);
 			}
 		} else {
 			return false;
@@ -138,4 +135,37 @@ public abstract class Node<D extends NodeDefinition> {
 		return context.getExpressionFactory();
 	}
 
+	public String getPath() {
+		StringBuilder sb = new StringBuilder();
+		getPath(sb);
+		return sb.toString();
+	}
+	
+	void getPath(StringBuilder sb) {
+		if ( parent!=null ) {
+			parent.getPath(sb);
+		}
+		String name = getName();
+		int idx = getIndex();
+		sb.append("/");
+		sb.append(name);
+		sb.append("[");
+		sb.append(idx);
+		sb.append("]");
+	}
+
+	public int getIndex() {
+		if ( parent == null ) {
+			return 0;
+		} else {
+			String name = getName();
+			List<Node<?>> children = parent.getAll(name);
+			for (int i=0; i<children.size(); i++) {
+				if (children.get(i)==this) {
+					return i;
+				}
+			}
+			throw new IllegalStateException("Node parent relationship broken");
+		}
+	}
 }

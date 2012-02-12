@@ -3,8 +3,7 @@
      xmlns:ui="http://www.openforis.org/collect/3.0/ui"
      xmlns:mb="http://www.mycompany.com/mobile/1.0"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.openforis.org/idml/3.0 ../../../../idm-api/src/main/resources/idml3.xsd
-                         http://www.openforis.org/idml/3.0 https://raw.github.com/openforis/idm/reengineering/idm-api/src/main/resources/idml3.xsd">
+     xsi:schemaLocation="http://www.openforis.org/idml/3.0 https://raw.github.com/openforis/idm/reengineering/idm-api/src/main/resources/idml3.xsd">
     <name>archenland1</name>
     <project>Archenland NFI</project>
     <cycle>1</cycle>
@@ -3108,7 +3107,7 @@
                 <label>Crew no.</label>
                 <compare gte="1" flag="error"/>
             </number>
-            <text name="map_sheet" maxCount="3">
+            <text name="map_sheet" minCount="2" maxCount="3">
                 <label>Map sheet</label>
                 <label type="heading">Map sheet(s)</label>
             </text>
@@ -3139,7 +3138,7 @@
                 <precision unit="m" decimalDigits="0"/>
                 <compare gte="0" lte="20000" flag="error"/>
             </number>
-            <entity name="time_study" required="true" maxCount="2">
+            <entity name="time_study" minCount="1" maxCount="2">
                 <label>Time study</label>
                 <description>Date, start time and end time of visit to the cluster.</description>
                 <date name="date">

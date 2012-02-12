@@ -16,8 +16,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openforis.idm.metamodel.xml.internal.CheckFlagAdapter;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.util.CollectionUtil;
-import org.openforis.idm.validation.CheckResult;
-import org.openforis.idm.validation.Rule;
+import org.openforis.idm.validation.Validator;
 
 /**
  * @author G. Miceli
@@ -25,7 +24,7 @@ import org.openforis.idm.validation.Rule;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-public abstract class Check implements Serializable, Rule<CheckResult, Attribute<?, ?>> {
+public abstract class Check implements Serializable, Validator<Attribute<?,?>> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -54,5 +53,4 @@ public abstract class Check implements Serializable, Rule<CheckResult, Attribute
 	public List<LanguageSpecificText> getMessages() {
 		return CollectionUtil.unmodifiableList(this.messages);
 	}
-
 }

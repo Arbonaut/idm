@@ -8,11 +8,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.geotools.IdmInterpretationError;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
+import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidPathException;
-import org.openforis.idm.validation.CheckResult;
 
 /**
  * @author G. Miceli
@@ -32,15 +33,16 @@ public class CustomCheck extends Check {
 	}
 
 	@Override
-	public CheckResult evaluate(Attribute<?, ?> node) {
+	public boolean validate(Attribute<?, ?> node) {
 		String expr = getExpression();
 		try {
 			RecordContext recordContext = node.getRecord().getContext();
-			CheckExpression checkExpression = recordContext.getExpressionFactory().createCheckExpression(expr);
-			boolean b = checkExpression.evaluate(node.getParent());
-			return new CheckResult(node, this, b);
+			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
+			CheckExpression checkExpression = expressionFactory.createCheckExpression(expr);
+			boolean result = checkExpression.evaluate(node.getParent());
+			return result;
 		} catch (InvalidPathException e) {
-			throw new RuntimeException("Unable evaluate expression " + expr, e);
+			throw new IdmInterpretationError("Error evaluating custom check", e);
 		}
 	}
 	

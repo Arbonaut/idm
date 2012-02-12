@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.idm.geotools.IdmInterpretationError;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
-import org.openforis.idm.validation.CheckResult;
 
 /**
  * @author M. Togna
@@ -84,15 +84,14 @@ public class ComparisonCheck extends Check {
 	}
 
 	@Override
-	public CheckResult evaluate(Attribute<?, ?> node) {
+	public boolean validate(Attribute<?, ?> node) {
 		RecordContext recordContext = node.getRecord().getContext();
 		String expr = getExpression();
 		try {
 			CheckExpression checkExpr = recordContext.getExpressionFactory().createCheckExpression(expr);
-			boolean b = checkExpr.evaluate(node.getParent());
-			return new CheckResult(node, this, b);
+			return checkExpr.evaluate(node.getParent());
 		} catch (InvalidPathException e) {
-			throw new RuntimeException("Unable to evaluate expression " + expr, e);
+			throw new IdmInterpretationError("Error evaluating comparison check", e);
 		}
 	}
 

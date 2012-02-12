@@ -19,7 +19,6 @@ import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
-import org.openforis.idm.validation.CheckResult;
 
 /**
  * @author G. Miceli
@@ -60,7 +59,7 @@ public class DistanceCheck extends Check {
 	}
 
 	@Override
-	public CheckResult evaluate(Attribute<?, ?> node) {
+	public boolean validate(Attribute<?, ?> node) {
 		try {
 			boolean valid = true;
 			CoordinateAttribute coordinateAttr = (CoordinateAttribute) node;
@@ -86,7 +85,7 @@ public class DistanceCheck extends Check {
 				}
 			}
 
-			return new CheckResult(node, this, valid);
+			return valid;
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to execute distance check", e);
 		}

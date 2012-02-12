@@ -6,44 +6,60 @@ package org.openforis.idm.validation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openforis.idm.metamodel.Check;
+import org.openforis.idm.metamodel.Check.Flag;
+import org.openforis.idm.model.Node;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
+ * The results of validating a single node
+ * 
  * @author G. Miceli
  * @author M. Togna
  * 
  */
 public class ValidationResults {
 
-	private List<RuleResult> errors;
-	private List<RuleResult> warnings;
-
+	private List<ValidationResult> passed;
+	private List<ValidationResult> errors;
+	private List<ValidationResult> warnings;
+	
 	public ValidationResults() {
-		errors = new ArrayList<RuleResult>();
-		warnings = new ArrayList<RuleResult>();
+		passed = new ArrayList<ValidationResult>();
+		errors = new ArrayList<ValidationResult>();
+		warnings = new ArrayList<ValidationResult>();
 	}
 
-	public List<RuleResult> getErrors() {
+	public List<ValidationResult> getErrors() {
 		return CollectionUtil.unmodifiableList(errors);
 	}
 
-	public List<RuleResult> getWarnings() {
+	public List<ValidationResult> getWarnings() {
 		return CollectionUtil.unmodifiableList(warnings);
 	}
 
-	public List<RuleResult> getFailures() {
-		List<RuleResult> failures = new ArrayList<RuleResult>();
-		failures.addAll(getErrors());
-		failures.addAll(getWarnings());
-		return failures;
+	public List<ValidationResult> getFailed() {
+		List<ValidationResult> failed = new ArrayList<ValidationResult>(errors.size() + warnings.size());
+		failed.addAll(errors);
+		failed.addAll(warnings);
+		return failed;
+	}
+	
+	public void addResult(Node<?> node, Validator<?> validator, boolean result) {
+		ValidationResult r = new ValidationResult(node, validator, result);
+		if (result) {
+			passed.add(r);
+		} else if (validator instanceof Check) {
+			Flag flag = ((Check) validator).getFlag();
+			if ( flag == Flag.ERROR ) {
+				errors.add(r);
+			} else {
+				warnings.add(r);
+			}
+		} else {
+			errors.add(r);
+		}
 	}
 
-	public void addError(RuleResult failure) {
-		errors.add(failure);
-	}
-
-	public void addWarning(RuleResult failure) {
-		warnings.add(failure);
-	}
 
 }

@@ -6,6 +6,7 @@ package org.openforis.idm.model;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +25,8 @@ import org.openforis.idm.metamodel.NumberAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
 import org.openforis.idm.util.CollectionUtil;
-import org.openforis.idm.validation.CardinalityRule;
-import org.openforis.idm.validation.CarinalityResult;
-import org.openforis.idm.validation.RuleResult;
+import org.openforis.idm.validation.MaxCountValidator;
+import org.openforis.idm.validation.MinCountValidator;
 import org.openforis.idm.validation.ValidationResults;
 
 /**
@@ -69,28 +69,52 @@ public class Entity extends Node<EntityDefinition> {
 	}
 
 	/**
+	 * @return true if any descendant is a non-blank value
+	 */
+	@Override
+	public boolean isEmpty() {
+		Collection<List<Node<?>>> childLists = childrenByName.values();
+		for (List<Node<?>> list : childLists) {
+			for (Node<?> node : list) {
+				if (!node.isEmpty()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Validates cardinality of all children
 	 */
 	@Override
-	public ValidationResults validate() {
+	public ValidationResults validate() {	
 		ValidationResults validationResults = new ValidationResults();
 		
-		validateCardinality(validationResults);
-		
+		validateChildren(validationResults);
+
 		return validationResults;
 	}
 
-	private void validateCardinality(ValidationResults validationResults) {
+	private void validateChildren(ValidationResults validationResults) {
 		List<NodeDefinition> childDefinitions = getDefinition().getChildDefinitions();
 		for (NodeDefinition childDef : childDefinitions) {
-			CardinalityRule rule = childDef.getCardinalityRule();
-			CarinalityResult result = rule.evaluate(this);
-			if(!result.isPassed()){
-				validationResults.addError(result);
-			}
+			validateChildMinCount(validationResults, childDef);
+			validateChildMaxCount(validationResults, childDef);
 		}
 	}
+
+	private void validateChildMinCount(ValidationResults validationResults, NodeDefinition childDef) {
+		MinCountValidator validator = new MinCountValidator(childDef);
+		boolean result = validator.validate(this);
+		validationResults.addResult(this, validator, result);
+	}
 	
+	private void validateChildMaxCount(ValidationResults validationResults, NodeDefinition childDef) {
+		MaxCountValidator validator = new MaxCountValidator(childDef);
+		boolean result = validator.validate(this);
+		validationResults.addResult(this, validator, result);
+	}
 	// public <T extends Node<?>> T add(T o, int idx) {
 	// return addInternal(o, idx);
 	// }
@@ -227,38 +251,6 @@ public class Entity extends Node<EntityDefinition> {
 	 */
 	public int size(){
 		return childrenByName.size();
-	}
-
-	public List<RuleResult> getErrors(String name) {
-		checkChildDefinition(name);
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<RuleResult> getWarnings(String name) {
-		checkChildDefinition(name);
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean hasErrors(String name) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasWarnings(String name) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isRelevant(String name) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isRequired(String name) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public void move(String name, int oldIndex, int newIndex) {

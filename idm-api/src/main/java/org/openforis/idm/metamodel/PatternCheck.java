@@ -14,7 +14,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Code;
-import org.openforis.idm.validation.CheckResult;
 
 /**
  * @author G. Miceli
@@ -44,7 +43,7 @@ public class PatternCheck extends Check {
 	}
 
 	@Override
-	public CheckResult evaluate(Attribute<?, ?> node) {
+	public boolean validate(Attribute<?, ?> node) {
 		Object value = node.getValue();
 		String string = null;
 		if (value instanceof String) {
@@ -57,7 +56,7 @@ public class PatternCheck extends Check {
 
 		Matcher matcher = getPattern().matcher(string);
 		boolean matches = matcher.matches();
-		return new CheckResult(node, this, matches);
+		return matches;
 	}
 
 }

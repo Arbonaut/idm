@@ -12,6 +12,32 @@
 
 	<build>
 		<plugins>
+		
+		      <plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>cobertura-maven-plugin</artifactId>
+		        <version>2.5.1</version>
+		        <!-- 
+		        <configuration>
+		          <instrumentation>
+		            <ignores>
+		              <ignore>com.example.boringcode.*</ignore>
+		            </ignores>
+		            <excludes>
+		              <exclude>com/example/dullcode/**/*.class</exclude>
+		              <exclude>com/example/**/*Test.class</exclude>
+		            </excludes>
+		          </instrumentation>
+		        </configuration>
+		         -->
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>clean</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+		        </plugin>
 <!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

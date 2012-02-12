@@ -10,12 +10,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.geotools.IdmInterpretationError;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.model.expression.ModelPathExpression;
-import org.openforis.idm.validation.CheckResult;
 
 /**
  * @author G. Miceli
@@ -35,7 +35,7 @@ public class UniquenessCheck extends Check {
 	}
 
 	@Override
-	public CheckResult evaluate(Attribute<?, ?> node) {
+	public boolean validate(Attribute<?, ?> node) {
 		try {
 			RecordContext recordContex = node.getRecord().getContext();
 			ModelPathExpression pathExpression = recordContex.getExpressionFactory().createModelPathExpression(getExpression());
@@ -52,9 +52,9 @@ public class UniquenessCheck extends Check {
 					}
 				}
 			}
-			return new CheckResult(node, this, unique);
+			return unique;
 		} catch (InvalidPathException e) {
-			throw new RuntimeException("Unable to evaluate expression " + getExpression(), e);
+			throw new IdmInterpretationError("Error evaluating uniqueness check", e);
 		}
 	}
 

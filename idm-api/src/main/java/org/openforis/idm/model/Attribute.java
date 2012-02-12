@@ -7,12 +7,12 @@ import java.io.StringWriter;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.idm.geotools.IdmInterpretationError;
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.Check;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
-import org.openforis.idm.validation.CheckResult;
 import org.openforis.idm.validation.ValidationResults;
 
 /**
@@ -41,7 +41,25 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	public void setValue(V value) {
 		this.value = value;
 	}
+	
+	@Override
+	public ValidationResults validate() {
+		ValidationResults results = new ValidationResults();
+		if (getValue() != null) {
+			validateChecks(results);
+		}
+		return results;
+	}
 
+	private void validateChecks(ValidationResults results) {
+		D defn = getDefinition();
+		List<Check> checks = defn.getChecks();
+		for (Check check : checks) {
+			boolean result = check.validate(this);
+			results.addResult(this, check, result);
+		}
+	}
+	
 	public V getDefaultValue() {
 		V defaultValue = null;
 		List<AttributeDefault> attributeDefaults = getDefinition().getAttributeDefaults();
@@ -54,28 +72,14 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		}
 		return defaultValue;
 	}
-	
-	@Override
-	public ValidationResults validate() {
-		ValidationResults results = new ValidationResults();
-		if (getValue() != null) {
-			validateChecks(results);
-		}
-		return results;
-	}
 
-	private void validateChecks(ValidationResults results) {
-		List<Check> checks = getDefinition().getChecks();
-		for (Check check : checks) {
-			CheckResult result = check.evaluate(this);
-			if (!result.isPassed()) {
-				if (result.isError()) {
-					results.addError(result);
-				} else if (result.isWarning()) {
-					results.addWarning(result);
-				}
-			}
-		}
+	/**
+	 * @return true if value is not null
+	 */
+	// TODO override in subclasses to check for blank values
+	@Override
+	public boolean isEmpty() {
+		return value == null || value.toString().trim().length() == 0;
 	}
 
 	public boolean isDefaultValue() {
@@ -84,7 +88,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	
 	public void applyDefaultValue(){
 		this.value = getDefaultValue();
-		this.defaultValue = Boolean.TRUE;
+		this.defaultValue = true;
 	}
 	
 	public AttributeMetadata getMetadata() {
@@ -146,7 +150,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 					Object object = defaultValueExpression.evaluate(getParent());
 					return (V) object;
 				} catch (InvalidPathException e) {
-					throw new RuntimeException("Unable to evaluate expression " + condition, e);
+					throw new IdmInterpretationError("Error evaluating default value", e);
 				}
 			} else {
 				return createValue(constValue);

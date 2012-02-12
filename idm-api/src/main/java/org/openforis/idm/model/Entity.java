@@ -312,12 +312,12 @@ public class Entity extends Node<EntityDefinition> {
 			childrenByName.put(name, children);
 		}
 
-		// Check maxCount constraint
-		int cnt = children.size();
-		Integer max = defn.getMaxCount();
-		if (max != null && cnt >= max) {
-			throw new ArrayIndexOutOfBoundsException("At most " + max + " " + defn.getPath() + " allowed");
-		}
+//		 Check maxCount constraint
+//		int cnt = children.size();
+//		Integer max = defn.getMaxCount();
+//		if (max != null && cnt >= max) {
+//			throw new ArrayIndexOutOfBoundsException("At most " + max + " " + defn.getPath() + " allowed");
+//		}
 
 		// Add item
 		if (idx == null) {

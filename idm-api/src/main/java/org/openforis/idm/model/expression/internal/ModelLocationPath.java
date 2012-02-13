@@ -7,7 +7,6 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.LocationPath;
 import org.apache.commons.jxpath.ri.compiler.Step;
 import org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer;
-import org.openforis.idm.model.expression.MissingValueException;
 
 /**
  * @author M. Togna

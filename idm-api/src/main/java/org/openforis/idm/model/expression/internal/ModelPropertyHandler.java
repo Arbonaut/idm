@@ -13,7 +13,6 @@ import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.model.expression.MissingValueException;
 
 /**
  * @author M. Togna

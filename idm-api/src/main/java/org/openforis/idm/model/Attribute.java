@@ -6,12 +6,9 @@ package org.openforis.idm.model;
 import java.io.StringWriter;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.Check;
-import org.openforis.idm.metamodel.IdmInterpretationError;
-import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.validation.ValidationResults;
 
@@ -45,12 +42,24 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	@Override
 	public ValidationResults validate() {
 		ValidationResults results = new ValidationResults();
-		if (getValue() != null) {
-			validateChecks(results);
+		if ( !isEmpty() ) {
+			boolean valid = validateValue(results);
+			if ( valid ) {
+				validateChecks(results);
+			}
 		}
 		return results;
 	}
 
+	/**
+	 * 
+	 * @param results
+	 * @return true if other defined checks should be executed.  false to stop executing checks
+	 */
+	protected boolean validateValue(ValidationResults results) {
+		return true;
+	}
+	
 	private void validateChecks(ValidationResults results) {
 		D defn = getDefinition();
 		List<Check> checks = defn.getChecks();

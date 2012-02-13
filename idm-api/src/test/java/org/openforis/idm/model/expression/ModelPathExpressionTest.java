@@ -24,7 +24,7 @@ public class ModelPathExpressionTest extends AbstractExpressionTest {
 		Record record = getRecord();
 		Entity entity = record.getRootEntity();
 
-		String expr = "plot";
+		String expr = "plot^2";
 		List<Node<?>> list = iterateExpression(expr, entity);
 
 		Assert.assertEquals(3, list.size());

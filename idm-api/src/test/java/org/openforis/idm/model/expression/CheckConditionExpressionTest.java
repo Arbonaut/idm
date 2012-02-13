@@ -16,7 +16,7 @@ import org.openforis.idm.model.Record;
  * @author M. Togna
  * 
  */
-public class ConditionalExpressionTest extends AbstractExpressionTest {
+public class CheckConditionExpressionTest extends AbstractExpressionTest {
 
 	@Test
 	public void testTrue() throws InvalidPathException {
@@ -55,7 +55,7 @@ public class ConditionalExpressionTest extends AbstractExpressionTest {
 	}
 
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
-		ConditionalExpression expression = getRecordContext().getExpressionFactory().createConditionalExpression(expr);
+		CheckConditionExpression expression = getRecordContext().getExpressionFactory().createCheckConditionExpression(expr);
 		boolean b = expression.evaluate(context);
 		return b;
 	}

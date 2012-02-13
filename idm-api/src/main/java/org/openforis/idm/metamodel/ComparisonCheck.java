@@ -10,10 +10,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.geotools.IdmInterpretationError;
 import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.Record;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
+import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidPathException;
 
 /**
@@ -30,10 +31,10 @@ public class ComparisonCheck extends Check {
 	private enum Operation {
 		LT("<"), LTE("<="), GT(">"), GTE(">="), EQ("=");
 
-		private String xpathSymbol;
+		private String xpathOperator;
 
-		private Operation(final String xpathSymbol) {
-			this.xpathSymbol = xpathSymbol;
+		private Operation(final String xpathOperator) {
+			this.xpathOperator = xpathOperator;
 		}
 	}
 
@@ -75,21 +76,39 @@ public class ComparisonCheck extends Check {
 		return this.equalsExpression;
 	}
 	
-	public String getExpression() {
-		if (expression == null) {
-			ExpressionBuilder expressionBuilder = new ExpressionBuilder();
-			expression = expressionBuilder.getExpression();
+	private String buildExpression() {
+		ExpressionBuilder expressionBuilder = new ExpressionBuilder();
+
+		if (StringUtils.isNotBlank(greaterThanExpression)) {
+			expressionBuilder.addOperation(Operation.GT, greaterThanExpression);
 		}
-		return expression;
+		if (StringUtils.isNotBlank(greaterThanOrEqualsExpression)) {
+			expressionBuilder.addOperation(Operation.GTE, greaterThanOrEqualsExpression);
+		}
+		if (StringUtils.isNotBlank(lessThanExpression)) {
+			expressionBuilder.addOperation(Operation.LT, lessThanExpression);
+		}
+		if (StringUtils.isNotBlank(lessThanOrEqualsExpression)) {
+			expressionBuilder.addOperation(Operation.LTE, lessThanOrEqualsExpression);
+		}
+		if (StringUtils.isNotBlank(equalsExpression)) {
+			expressionBuilder.addOperation(Operation.EQ, equalsExpression);
+		}
+		
+		return expressionBuilder.getExpression();
 	}
 
 	@Override
 	public boolean validate(Attribute<?, ?> node) {
-		RecordContext recordContext = node.getRecord().getContext();
-		String expr = getExpression();
+		Record record = node.getRecord();
+		RecordContext recordContext = record.getContext();
+		if (expression == null) {
+			expression = buildExpression();
+		}
 		try {
-			CheckExpression checkExpr = recordContext.getExpressionFactory().createCheckExpression(expr);
-			return checkExpr.evaluate(node.getParent());
+			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
+			CheckExpression checkExpr = expressionFactory.createCheckExpression(expression);
+			return checkExpr.evaluate(node);
 		} catch (InvalidPathException e) {
 			throw new IdmInterpretationError("Error evaluating comparison check", e);
 		}
@@ -100,30 +119,11 @@ public class ComparisonCheck extends Check {
 		private StringBuilder expression;
 		private boolean firstOperation = true;
 
-		private ExpressionBuilder() {
+		ExpressionBuilder() {
 			this.expression = new StringBuilder();
-			buildExpression();
 		}
 
-		private void buildExpression() {
-			if (StringUtils.isNotBlank(getGreaterThanExpression())) {
-				addOperation(Operation.GT, getGreaterThanExpression());
-			}
-			if (StringUtils.isNotBlank(getGreaterThanOrEqualsExpression())) {
-				addOperation(Operation.GTE, getGreaterThanOrEqualsExpression());
-			}
-			if (StringUtils.isNotBlank(getLessThanExpression())) {
-				addOperation(Operation.LT, getLessThanExpression());
-			}
-			if (StringUtils.isNotBlank(getLessThanOrEqualsExpression())) {
-				addOperation(Operation.LTE, getLessThanOrEqualsExpression());
-			}
-			if (StringUtils.isNotBlank(getEqualsExpression())) {
-				addOperation(Operation.EQ, getEqualsExpression());
-			}
-		}
-
-		private void addOperation(Operation o, String value) {
+		void addOperation(Operation o, String value) {
 			if (firstOperation) {
 				firstOperation = Boolean.FALSE;
 			} else {
@@ -133,12 +133,12 @@ public class ComparisonCheck extends Check {
 			}
 			expression.append("$this");
 			expression.append(" ");
-			expression.append(o.xpathSymbol);
+			expression.append(o.xpathOperator);
 			expression.append(" ");
 			expression.append(value);
 		}
 
-		private String getExpression() {
+		String getExpression() {
 			return expression.toString();
 		}
 	}

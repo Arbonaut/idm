@@ -7,10 +7,10 @@ import java.io.StringWriter;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.geotools.IdmInterpretationError;
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.Check;
+import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.validation.ValidationResults;
@@ -60,17 +60,16 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		}
 	}
 	
-	public V getDefaultValue() {
-		V defaultValue = null;
-		List<AttributeDefault> attributeDefaults = getDefinition().getAttributeDefaults();
+	public V getDefaultValue() throws InvalidPathException {
+		D definition = getDefinition();
+		List<AttributeDefault> attributeDefaults = definition.getAttributeDefaults();
 		for (AttributeDefault attributeDefault : attributeDefaults) {
-			V value = getDefaultValue(attributeDefault);
+			V value = attributeDefault.evaluate(this);
 			if (value != null) {
-				defaultValue = value;
-				break;
+				return value;
 			}
 		}
-		return defaultValue;
+		return null;
 	}
 
 	/**
@@ -86,7 +85,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		return defaultValue;
 	}
 	
-	public void applyDefaultValue(){
+	public void applyDefaultValue() throws InvalidPathException {
 		this.value = getDefaultValue();
 		this.defaultValue = true;
 	}
@@ -137,27 +136,6 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		return (this.warnings != null) && !this.warnings.isEmpty();
 	}
 */
-
-	@SuppressWarnings("unchecked")
-	private V getDefaultValue(AttributeDefault attributeDefault) {
-		String condition = attributeDefault.getCondition();
-		if (StringUtils.isBlank(condition) || evaluate(condition)) {
-			String constValue = attributeDefault.getValue();
-			if (StringUtils.isBlank(constValue)) {
-				String expression = attributeDefault.getExpression();
-				DefaultValueExpression defaultValueExpression = getExpressionFactory().createDefaultValueExpression(expression);
-				try {
-					Object object = defaultValueExpression.evaluate(getParent());
-					return (V) object;
-				} catch (InvalidPathException e) {
-					throw new IdmInterpretationError("Error evaluating default value", e);
-				}
-			} else {
-				return createValue(constValue);
-			}
-		}
-		return null;
-	}
 
 	@Override
 	protected void write(StringWriter sw, int indent) {

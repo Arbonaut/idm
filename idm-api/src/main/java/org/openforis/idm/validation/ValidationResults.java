@@ -38,6 +38,10 @@ public class ValidationResults {
 		return CollectionUtil.unmodifiableList(warnings);
 	}
 
+	public List<ValidationResult> getPassed() {
+		return CollectionUtil.unmodifiableList(passed);
+	}
+
 	public List<ValidationResult> getFailed() {
 		List<ValidationResult> failed = new ArrayList<ValidationResult>(errors.size() + warnings.size());
 		failed.addAll(errors);

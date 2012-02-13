@@ -14,42 +14,37 @@ import org.openforis.idm.model.Record;
 
 /**
  * @author M. Togna
- * 
+ * @author G. Miceli
  */
 public class RelevanceExpressionTest extends AbstractExpressionTest {
+	
 	@Test
 	public void testTrue() throws InvalidPathException {
-		Record record = getRecord();
-		Entity cluster = record.getRootEntity();
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
 		plotDirection.setValue(345.45);
 
-		String expr = "$this >= 0 and $this <= 359";
-		boolean b = evaluateExpression(expr, plotDirection);
+		String expr = "plot_direction >= 0 and plot_direction <= 359";
+		boolean b = evaluateExpression(expr, region);
 		Assert.assertTrue(b);
 	}
 
 	@Test
 	public void testFalse() throws InvalidPathException {
-		Record record = getRecord();
-		Entity cluster = record.getRootEntity();
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
 		plotDirection.setValue(385.45);
 
-		String expr = "$this >= 0 and $this <= 359";
-		boolean b = evaluateExpression(expr, plotDirection);
+		String expr = "plot_direction >= 0 and plot_direction <= 359";
+		boolean b = evaluateExpression(expr, region);
 		Assert.assertFalse(b);
 	}
 
 	@Test
 	public void testDefaultWithMissingNode() throws InvalidPathException {
-		Record record = getRecord();
-		Entity cluster = record.getRootEntity();
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
 		plotDirection.setValue(345.45);
 
-		String expr = "../missing_attr >= 0 and $this <= 359";
-		boolean b = evaluateExpression(expr, plotDirection);
+		String expr = "../missing_attr >= 0 and plot_direction <= 359";
+		boolean b = evaluateExpression(expr, region);
 		Assert.assertTrue(b);
 	}
 

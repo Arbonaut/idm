@@ -3,14 +3,14 @@
  */
 package org.openforis.idm.model.expression;
 
-import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
  * @author M. Togna
- * 
+ * @author G. Miceli
  */
 public class DefaultValueExpression extends AbstractExpression {
 
@@ -18,12 +18,12 @@ public class DefaultValueExpression extends AbstractExpression {
 		super(expression, context);
 	}
 
-	public Object evaluate(Node<? extends NodeDefinition> context) throws InvalidPathException {
+	public Object evaluate(Node<?> node) throws InvalidPathException {
 		try {
-			return super.evaluateSingle(context);
+			Entity parent = node.getParent();
+			return evaluateSingle(parent, null);
 		} catch (MissingValueException e) {
 			return null;
 		}
 	}
-
 }

@@ -7,9 +7,8 @@ import java.io.StringWriter;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.geotools.IdmInterpretationError;
+import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
-import org.openforis.idm.model.expression.ConditionalExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.model.expression.RelevanceExpression;
@@ -32,7 +31,7 @@ public abstract class Node<D extends NodeDefinition> {
 
 	public Node(D definition) {
 		if ( definition == null ) {
-			throw new NullPointerException("Null definition");
+			throw new NullPointerException("definition required");
 		}
 		this.definition = definition;
 	}
@@ -81,7 +80,7 @@ public abstract class Node<D extends NodeDefinition> {
 		if (StringUtils.isNotBlank(expr)) {
 			try {
 				RelevanceExpression relevanceExpr = getExpressionFactory().createRelevanceExpression(expr);
-				return relevanceExpr.evaluate(getParent());
+				return relevanceExpr.evaluate(this);
 			} catch (InvalidPathException e) {
 				throw new RuntimeException("Unable to evaluate expression: " + expr, e);
 			}
@@ -90,14 +89,15 @@ public abstract class Node<D extends NodeDefinition> {
 	}
 	
 	public boolean isRequired() {
-		if (getDefinition().isRequired()) {
+		if (definition.isRequired()) {
 			return true;
 		} else {
-			String expr = getDefinition().getRequiredExpression();
+			String expr = definition.getRequiredExpression();
 			if (StringUtils.isNotBlank(expr)) {
 				try {
-					RequiredExpression requiredExpr = getExpressionFactory().createRequiredExpression(expr);
-					return requiredExpr.evaluate(getParent());
+					ExpressionFactory expressionFactory = getExpressionFactory();
+					RequiredExpression requiredExpr = expressionFactory.createRequiredExpression(expr);
+					return requiredExpr.evaluate(this);
 				} catch (InvalidPathException e) {
 					throw new IdmInterpretationError("Error evaluating required", e);
 				}
@@ -106,23 +106,6 @@ public abstract class Node<D extends NodeDefinition> {
 		}
 	}
 
-	protected boolean evaluate(String condition, Node<?> context) {
-		if (StringUtils.isNotBlank(condition)) {
-			ConditionalExpression expression = getExpressionFactory().createConditionalExpression(condition);
-			try {
-				return expression.evaluate(context);
-			} catch (InvalidPathException e) {
-				throw new IdmInterpretationError("Error evaluating conditional expression", e);
-			}
-		} else {
-			return false;
-		}
-	}
-
-	protected boolean evaluate(String condition) {
-		return evaluate(condition, getParent());
-	}
-	
 	@Override
 	public String toString() {
 		StringWriter sw = new StringWriter();

@@ -15,11 +15,12 @@ import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.ri.Parser;
 import org.apache.commons.jxpath.ri.compiler.Expression;
+import org.openforis.idm.model.Node;
 import org.openforis.idm.validation.ExternalLookupProvider;
 
 /**
  * @author M. Togna
- * 
+ * @author G. Miceli
  */
 @SuppressWarnings("rawtypes")
 public class ModelJXPathContext extends JXPathContextReferenceImpl {
@@ -32,13 +33,13 @@ public class ModelJXPathContext extends JXPathContextReferenceImpl {
 	private ExternalLookupProvider externalLookupProvider;
 	private Map<String, Object> compiled;
 
-	protected ModelJXPathContext(JXPathContext parentContext, Object contextBean) {
+	protected ModelJXPathContext(JXPathContext parentContext, Node<?> contextBean) {
 		super(parentContext, contextBean);
 		this.compiled = new HashMap<String, Object>();
 	}
 
-	public static ModelJXPathContext newContext(JXPathContext parentContext, Object contextBean) {
-		ModelJXPathContext jxPathContext = new ModelJXPathContext(parentContext, contextBean);
+	public static ModelJXPathContext newContext(JXPathContext parentContext, Node<?> contextNode) {
+		ModelJXPathContext jxPathContext = new ModelJXPathContext(parentContext, contextNode);
 		copyProperties(parentContext, jxPathContext);
 		return jxPathContext;
 	}

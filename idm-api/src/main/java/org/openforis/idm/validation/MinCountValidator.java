@@ -6,7 +6,7 @@ package org.openforis.idm.validation;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.geotools.IdmInterpretationError;
+import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;

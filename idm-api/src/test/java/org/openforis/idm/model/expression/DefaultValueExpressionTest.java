@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
+import org.openforis.idm.model.RecordContext;
 
 /**
  * @author M. Togna
@@ -16,12 +17,12 @@ public class DefaultValueExpressionTest extends AbstractExpressionTest {
 
 	private Object evaluateExpression(String expr) throws InvalidPathException {
 		Record record = getRecord();
-		Entity rootEntity = record.getRootEntity();
-		String name = rootEntity.getName();
-		Assert.assertEquals("cluster", name);
-
-		DefaultValueExpression expression = getRecordContext().getExpressionFactory().createDefaultValueExpression(expr);
-		Object object = expression.evaluate(rootEntity);
+		Entity cluster = record.getRootEntity();
+		Entity plot = (Entity) cluster.get("plot", 0);
+		RecordContext recordContext = getRecordContext();
+		ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
+		DefaultValueExpression expression = expressionFactory.createDefaultValueExpression(expr);
+		Object object = expression.evaluate(plot);
 		return object;
 	}
 

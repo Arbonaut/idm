@@ -57,14 +57,14 @@ public class ExpressionFactory {
 		return (CheckExpression) expr;
 	}
 
-	public ConditionalExpression createConditionalExpression(String expression) {
+	public CheckConditionExpression createCheckConditionExpression(String expression) {
 		AbstractExpression expr = cachedExpressions.get(expression);
 		if (expr == null) {
 			ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
-			expr = new ConditionalExpression(compiledExpression, jxPathContext);
+			expr = new CheckConditionExpression(compiledExpression, jxPathContext);
 			cachedExpressions.put(expression, expr);
 		}
-		return (ConditionalExpression) expr;
+		return (CheckConditionExpression) expr;
 	}
 
 	public DefaultValueExpression createDefaultValueExpression(String expression) {
@@ -75,6 +75,16 @@ public class ExpressionFactory {
 			cachedExpressions.put(expression, expr);
 		}
 		return (DefaultValueExpression) expr;
+	}
+	
+	public DefaultConditionExpression createDefaultConditionExpression(String expression) {
+		AbstractExpression expr = cachedExpressions.get(expression);
+		if (expr == null) {
+			ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
+			expr = new DefaultConditionExpression(compiledExpression, jxPathContext);
+			cachedExpressions.put(expression, expr);
+		}
+		return (DefaultConditionExpression) expr;
 	}
 
 	public ModelPathExpression createModelPathExpression(String expression) {

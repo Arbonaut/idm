@@ -36,20 +36,20 @@ public class EntityTest {
 		cluster.addValue("id", (Code) null);
 	}
 
-	@Test(expected = ArrayIndexOutOfBoundsException.class)
-	public void testAddTooManySingleAttributes() {
-		Entity cluster = getRootEntity();
-		cluster.addValue("id", new Code("123_456"));
-		cluster.addValue("id", new Code("789_012"));
-	}
+//	@Test(expected = ArrayIndexOutOfBoundsException.class)
+//	public void testAddTooManySingleAttributes() {
+//		Entity cluster = getRootEntity();
+//		cluster.addValue("id", new Code("123_456"));
+//		cluster.addValue("id", new Code("789_012"));
+//	}
 
-	@Test(expected = ArrayIndexOutOfBoundsException.class)
-	public void testAddTooManyMultipleEntities() {
-		Entity cluster = getRootEntity();
-		cluster.addEntity("time_study");
-		cluster.addEntity("time_study");
-		cluster.addEntity("time_study");
-	}
+//	@Test(expected = ArrayIndexOutOfBoundsException.class)
+//	public void testAddTooManyMultipleEntities() {
+//		Entity cluster = getRootEntity();
+//		cluster.addEntity("time_study");
+//		cluster.addEntity("time_study");
+//		cluster.addEntity("time_study");
+//	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddAttributeOnEntity() {

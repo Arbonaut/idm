@@ -10,10 +10,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.geotools.IdmInterpretationError;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Record;
 import org.openforis.idm.model.RecordContext;
+import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidPathException;
 import org.openforis.idm.model.expression.ModelPathExpression;
 
@@ -37,8 +38,10 @@ public class UniquenessCheck extends Check {
 	@Override
 	public boolean validate(Attribute<?, ?> node) {
 		try {
-			RecordContext recordContex = node.getRecord().getContext();
-			ModelPathExpression pathExpression = recordContex.getExpressionFactory().createModelPathExpression(getExpression());
+			Record record = node.getRecord();
+			RecordContext recordContext = record.getContext();
+			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
+			ModelPathExpression pathExpression = expressionFactory.createModelPathExpression(expression);
 			List<Node<?>> list = pathExpression.iterate(node);
 			boolean unique = true;
 			if (list != null && list.size() > 0) {

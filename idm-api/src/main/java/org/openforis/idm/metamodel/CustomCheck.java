@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.geotools.IdmInterpretationError;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
@@ -39,7 +38,7 @@ public class CustomCheck extends Check {
 			RecordContext recordContext = node.getRecord().getContext();
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			CheckExpression checkExpression = expressionFactory.createCheckExpression(expr);
-			boolean result = checkExpression.evaluate(node.getParent());
+			boolean result = checkExpression.evaluate(node);
 			return result;
 		} catch (InvalidPathException e) {
 			throw new IdmInterpretationError("Error evaluating custom check", e);

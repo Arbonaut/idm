@@ -5,6 +5,7 @@ package org.openforis.idm.model.expression.internal;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathContextFactory;
+import org.openforis.idm.model.Node;
 
 /**
  * @author M. Togna
@@ -13,8 +14,8 @@ import org.apache.commons.jxpath.JXPathContextFactory;
 public class ModelJXPathContextFactory extends JXPathContextFactory {
 
 	@Override
-	public JXPathContext newContext(JXPathContext parentContext, Object contextBean) {
-		return ModelJXPathContext.newContext(parentContext, contextBean);
+	public JXPathContext newContext(JXPathContext parentContext, Object contextNode) {
+		return ModelJXPathContext.newContext(parentContext, (Node<?>) contextNode);
 	}
 
 }

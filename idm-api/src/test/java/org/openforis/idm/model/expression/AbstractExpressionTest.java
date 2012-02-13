@@ -12,6 +12,7 @@ import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 import org.openforis.idm.model.Code;
+import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.Date;
 import org.openforis.idm.model.Entity;
@@ -27,15 +28,19 @@ import org.openforis.idm.model.Time;
 public abstract class AbstractExpressionTest {
 
 	private static final String TEST_IDM = "test.idm.xml";
-	private Survey survey;
-	private Record record;
-	private IdmlBindingContext bindingContext;
+	protected Survey survey;
+	protected Record record;
+	protected IdmlBindingContext bindingContext;
+	protected Entity cluster;
+	protected CodeAttribute region;
 
 	@Before
 	public void initTest() throws IOException, InvalidIdmlException {
 		bindingContext = new IdmlBindingContext();
 		survey = unmarshalSurvey();
 		record = createRecord();
+		cluster = record.getRootEntity();
+		region = (CodeAttribute) cluster.get("region", 0);
 	}
 
 	private Survey unmarshalSurvey() throws IOException, InvalidIdmlException {

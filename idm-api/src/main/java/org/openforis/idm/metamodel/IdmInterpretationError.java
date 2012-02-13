@@ -1,4 +1,4 @@
-package org.openforis.idm.geotools;
+package org.openforis.idm.metamodel;
 
 /**
  * @author G. Miceli

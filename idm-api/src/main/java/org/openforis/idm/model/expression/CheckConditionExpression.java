@@ -9,17 +9,19 @@ import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
+ * if="" expression on check in idm
+ * 
  * @author M. Togna
  * @author G. Miceli
  */
-public class RequiredExpression extends AbstractBooleanExpression {
+public class CheckConditionExpression extends AbstractBooleanExpression {
 
-	protected RequiredExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
+	CheckConditionExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
 		super(expression, context, false);
 	}
-	
+
 	public boolean evaluate(Node<?> node) throws InvalidPathException {
-//		Entity parent = node.getParent();
-		return super.evaluate(node, null);
+		Entity parent = node.getParent();
+		return evaluate(parent, node);
 	}
 }

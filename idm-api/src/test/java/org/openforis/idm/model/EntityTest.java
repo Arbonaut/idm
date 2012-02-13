@@ -81,7 +81,7 @@ public class EntityTest {
 		
 		ValidationResults results = cluster.validate();
 		int errors = results.getErrors().size();
-		Assert.assertEquals(6, errors);
+		Assert.assertEquals(5, errors);
 	}
 	
 	@Test

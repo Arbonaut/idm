@@ -3,9 +3,6 @@
  */
 package org.openforis.idm.model.expression;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathContext;
@@ -31,7 +28,6 @@ public class ExpressionFactory {
 
 	private ModelJXPathContext jxPathContext;
 	private ExternalLookupProvider externalLookupProvider;
-	private Map<String, AbstractExpression> cachedExpressions;
 
 	public ExpressionFactory() {
 		System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY, "org.openforis.idm.model.expression.internal.ModelJXPathContextFactory");
@@ -43,78 +39,48 @@ public class ExpressionFactory {
 		JXPathIntrospector.registerDynamicClass(Record.class, RecordPropertyHandler.class);
 
 		jxPathContext = (ModelJXPathContext) JXPathContext.newContext(null);
-
-		cachedExpressions = new HashMap<String, AbstractExpression>();
 	}
 
 	public CheckExpression createCheckExpression(String expression) {
-		AbstractExpression expr = cachedExpressions.get(expression);
-		if (expr == null) {
-			ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
-			expr = new CheckExpression(compiledExpression, jxPathContext);
-			cachedExpressions.put(expression, expr);
-		}
-		return (CheckExpression) expr;
+		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
+		CheckExpression expr = new CheckExpression(compiledExpression, jxPathContext);
+		return expr;
 	}
 
 	public CheckConditionExpression createCheckConditionExpression(String expression) {
-		AbstractExpression expr = cachedExpressions.get(expression);
-		if (expr == null) {
-			ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
-			expr = new CheckConditionExpression(compiledExpression, jxPathContext);
-			cachedExpressions.put(expression, expr);
-		}
-		return (CheckConditionExpression) expr;
+		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
+		CheckConditionExpression expr = new CheckConditionExpression(compiledExpression, jxPathContext);
+		return expr;
 	}
 
 	public DefaultValueExpression createDefaultValueExpression(String expression) {
-		AbstractExpression expr = cachedExpressions.get(expression);
-		if (expr == null) {
-			ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
-			expr = new DefaultValueExpression(compiledExpression, jxPathContext);
-			cachedExpressions.put(expression, expr);
-		}
-		return (DefaultValueExpression) expr;
+		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
+		DefaultValueExpression expr = new DefaultValueExpression(compiledExpression, jxPathContext);
+		return expr;
 	}
-	
+
 	public DefaultConditionExpression createDefaultConditionExpression(String expression) {
-		AbstractExpression expr = cachedExpressions.get(expression);
-		if (expr == null) {
-			ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
-			expr = new DefaultConditionExpression(compiledExpression, jxPathContext);
-			cachedExpressions.put(expression, expr);
-		}
-		return (DefaultConditionExpression) expr;
+		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
+		DefaultConditionExpression expr = new DefaultConditionExpression(compiledExpression, jxPathContext);
+		return expr;
 	}
 
 	public ModelPathExpression createModelPathExpression(String expression) {
-		AbstractExpression expr = cachedExpressions.get(expression);
-		if (expr == null) {
-			ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
-			expr = new ModelPathExpression(compiledExpression, jxPathContext);
-			cachedExpressions.put(expression, expr);
-		}
-		return (ModelPathExpression) expr;
+		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
+		ModelPathExpression expr = new ModelPathExpression(compiledExpression, jxPathContext);
+		return expr;
 	}
 
 	public RelevanceExpression createRelevanceExpression(String expression) {
-		AbstractExpression expr = cachedExpressions.get(expression);
-		if (expr == null) {
-			ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
-			expr = new RelevanceExpression(compiledExpression, jxPathContext);
-			cachedExpressions.put(expression, expr);
-		}
-		return (RelevanceExpression) expr;
+		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
+		RelevanceExpression expr = new RelevanceExpression(compiledExpression, jxPathContext);
+		return expr;
 	}
 
 	public RequiredExpression createRequiredExpression(String expression) {
-		AbstractExpression expr = cachedExpressions.get(expression);
-		if (expr == null) {
-			ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
-			expr = new RequiredExpression(compiledExpression, jxPathContext);
-			cachedExpressions.put(expression, expr);
-		}
-		return (RequiredExpression) expr;
+		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
+		RequiredExpression expr = new RequiredExpression(compiledExpression, jxPathContext);
+		return expr;
 	}
 
 	public ExternalLookupProvider getExternalLookupProvider() {

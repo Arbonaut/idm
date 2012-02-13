@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.junit.Test;
 import org.openforis.idm.metamodel.ComparisonCheck;
+import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.IntegerAttribute;
+import org.openforis.idm.model.Time;
+import org.openforis.idm.model.TimeAttribute;
 
 /**
  * @author G. Miceli
@@ -31,6 +34,34 @@ public class ComparisonCheckTest extends ValidatorTest {
 	public void testGtePassOnGt() {
 		IntegerAttribute crewNo = cluster.addValue("crew_no", 2);
 		ValidationResults results = crewNo.validate();
+		assertFalse(containsComparisonCheck(results.getErrors()));
+	}
+	
+	@Test
+	public void testTimeGtFailOnLt() {
+		Entity timeStudy = cluster.addEntity("time_study");
+		timeStudy.addValue("start_time", new Time(10, 00));
+		TimeAttribute endTime = timeStudy.addValue("end_time", new Time(8, 00));
+		ValidationResults results = endTime.validate();
+		assertTrue(containsComparisonCheck(results.getErrors()));
+	}
+	
+	@Test
+	public void testTimeGtFailOnEq() {
+		Entity timeStudy = cluster.addEntity("time_study");
+		timeStudy.addValue("start_time", new Time(10, 00));
+		TimeAttribute endTime = timeStudy.addValue("end_time", new Time(10, 00));
+		ValidationResults results = endTime.validate();
+		assertTrue(containsComparisonCheck(results.getErrors()));
+	}
+	
+	// TODO!
+//	@Test
+	public void testTimeGtPassOnGt() {
+		Entity timeStudy = cluster.addEntity("time_study");
+		timeStudy.addValue("start_time", new Time(10, 00));
+		TimeAttribute endTime = timeStudy.addValue("end_time", new Time(10, 01));
+		ValidationResults results = endTime.validate();
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 

@@ -18,7 +18,7 @@ public class RequiredExpression extends AbstractBooleanExpression {
 		super(expression, context, false);
 	}
 	
-	public boolean evaluate(Node<?> node) throws InvalidPathException {
+	public boolean evaluate(Node<?> node) throws InvalidExpressionException {
 //		Entity parent = node.getParent();
 		return super.evaluate(node, null);
 	}

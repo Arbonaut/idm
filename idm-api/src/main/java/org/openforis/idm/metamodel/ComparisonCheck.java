@@ -15,7 +15,7 @@ import org.openforis.idm.model.Record;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
-import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.model.expression.InvalidExpressionException;
 
 /**
  * @author M. Togna
@@ -109,7 +109,7 @@ public class ComparisonCheck extends Check {
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			CheckExpression checkExpr = expressionFactory.createCheckExpression(expression);
 			return checkExpr.evaluate(node);
-		} catch (InvalidPathException e) {
+		} catch (InvalidExpressionException e) {
 			throw new IdmInterpretationError("Error evaluating comparison check", e);
 		}
 	}

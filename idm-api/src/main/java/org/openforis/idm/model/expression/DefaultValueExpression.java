@@ -19,10 +19,10 @@ public class DefaultValueExpression extends AbstractExpression {
 		super(expression, context);
 	}
 
-	public Object evaluate(Node<?> node) throws InvalidPathException {
+	public Object evaluate(Node<?> node) throws InvalidExpressionException {
 		try {
 			Entity parent = node.getParent();
-			return evaluateSingle(parent, null);
+			return evaluateSingle(parent, node);
 		} catch (MissingValueException e) {
 			return null;
 		}

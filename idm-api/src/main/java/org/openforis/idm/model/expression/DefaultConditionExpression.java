@@ -20,7 +20,7 @@ public class DefaultConditionExpression extends AbstractBooleanExpression {
 		super(expression, context, false);
 	}
 
-	public boolean evaluate(Attribute<?,?> node) throws InvalidPathException {
+	public boolean evaluate(Attribute<?,?> node) throws InvalidExpressionException {
 		Entity parent = node.getParent();
 		return evaluate(parent, null);
 	}

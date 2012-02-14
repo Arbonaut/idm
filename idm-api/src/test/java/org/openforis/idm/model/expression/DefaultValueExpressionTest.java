@@ -15,7 +15,7 @@ import org.openforis.idm.model.RecordContext;
  */
 public class DefaultValueExpressionTest extends AbstractExpressionTest {
 
-	private Object evaluateExpression(String expr) throws InvalidPathException {
+	private Object evaluateExpression(String expr) throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity cluster = record.getRootEntity();
 		Entity plot = (Entity) cluster.get("plot", 0);
@@ -27,7 +27,7 @@ public class DefaultValueExpressionTest extends AbstractExpressionTest {
 	}
 
 	@Test
-	public void testAddExpression() throws InvalidPathException {
+	public void testAddExpression() throws InvalidExpressionException {
 		String expr = "plot[1]/tree[1]/dbh + 1";
 		Object object = evaluateExpression(expr);
 
@@ -35,34 +35,34 @@ public class DefaultValueExpressionTest extends AbstractExpressionTest {
 	}
 
 	@Test
-	public void testAddWithParentFuncExpression() throws InvalidPathException {
+	public void testAddWithParentFuncExpression() throws InvalidExpressionException {
 		String expr = "plot[1]/tree[1]/dbh/parent()/dbh + 1";
 		Object object = evaluateExpression(expr);
 		Assert.assertEquals(55.2, object);
 	}
 
 	@Test
-	public void testMissingValueExpressionWithOperation() throws InvalidPathException {
+	public void testMissingValueExpressionWithOperation() throws InvalidExpressionException {
 		String expr = "plot[25]/tree[3]/dbh/parent()/dbh + 4";
 		Object object = evaluateExpression(expr);
 		Assert.assertNull(object);
 	}
 
 	@Test
-	public void testMissingValueExpression2() throws InvalidPathException {
+	public void testMissingValueExpression2() throws InvalidExpressionException {
 		String expr = "plot[1]/tree[3]/dbh/parent()/dbh";
 		Object object = evaluateExpression(expr);
 		Assert.assertNull(object);
 	}
 
-	@Test(expected = InvalidPathException.class)
-	public void testInvalidPath() throws InvalidPathException {
+	@Test(expected = InvalidExpressionException.class)
+	public void testInvalidPath() throws InvalidExpressionException {
 		String expr = "plot[1]/asdf/tree[3]/dbh/parent()/dbh";
 		evaluateExpression(expr);
 	}
 
 	@Test
-	public void testConstant() throws InvalidPathException {
+	public void testConstant() throws InvalidExpressionException {
 		String expr = "543534";
 		Object object = evaluateExpression(expr);
 		Assert.assertEquals(Double.valueOf(expr), object);

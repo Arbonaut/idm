@@ -8,7 +8,7 @@ import org.junit.Test;
 public class ExpressionReferencePathTest extends AbstractExpressionTest {
 
 	// @SuppressWarnings("unused")
-	// private Object evaluateExpression(String expr) throws InvalidPathException {
+	// private Object evaluateExpression(String expr) throws InvalidExpressionException {
 	// Record record = getRecord();
 	// Entity rootEntity = record.getRootEntity();
 	// String name = rootEntity.getName();
@@ -20,7 +20,7 @@ public class ExpressionReferencePathTest extends AbstractExpressionTest {
 	// }
 
 	@Test
-	public void testReferencePath() throws InvalidPathException {
+	public void testReferencePath() throws InvalidExpressionException {
 		ExpressionFactory ef = getRecordContext().getExpressionFactory();
 
 		String expression = "$this  <= ../../total_height * 8";

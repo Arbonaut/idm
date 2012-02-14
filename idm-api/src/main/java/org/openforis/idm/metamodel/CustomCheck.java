@@ -12,7 +12,7 @@ import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
-import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.model.expression.InvalidExpressionException;
 
 /**
  * @author G. Miceli
@@ -40,7 +40,7 @@ public class CustomCheck extends Check {
 			CheckExpression checkExpression = expressionFactory.createCheckExpression(expr);
 			boolean result = checkExpression.evaluate(node);
 			return result;
-		} catch (InvalidPathException e) {
+		} catch (InvalidExpressionException e) {
 			throw new IdmInterpretationError("Error evaluating custom check", e);
 		}
 	}

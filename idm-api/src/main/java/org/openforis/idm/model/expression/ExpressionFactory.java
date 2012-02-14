@@ -8,6 +8,7 @@ import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathContextFactory;
 import org.apache.commons.jxpath.JXPathIntrospector;
+import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
 import org.openforis.idm.model.Node;
@@ -41,43 +42,43 @@ public class ExpressionFactory {
 		jxPathContext = (ModelJXPathContext) JXPathContext.newContext(null);
 	}
 
-	public CheckExpression createCheckExpression(String expression) {
+	public CheckExpression createCheckExpression(String expression) throws InvalidExpressionException {
 		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
 		CheckExpression expr = new CheckExpression(compiledExpression, jxPathContext);
 		return expr;
 	}
 
-	public CheckConditionExpression createCheckConditionExpression(String expression) {
+	public CheckConditionExpression createCheckConditionExpression(String expression) throws InvalidExpressionException {
 		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
 		CheckConditionExpression expr = new CheckConditionExpression(compiledExpression, jxPathContext);
 		return expr;
 	}
 
-	public DefaultValueExpression createDefaultValueExpression(String expression) {
+	public DefaultValueExpression createDefaultValueExpression(String expression) throws InvalidExpressionException {
 		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
 		DefaultValueExpression expr = new DefaultValueExpression(compiledExpression, jxPathContext);
 		return expr;
 	}
 
-	public DefaultConditionExpression createDefaultConditionExpression(String expression) {
+	public DefaultConditionExpression createDefaultConditionExpression(String expression) throws InvalidExpressionException {
 		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
 		DefaultConditionExpression expr = new DefaultConditionExpression(compiledExpression, jxPathContext);
 		return expr;
 	}
 
-	public ModelPathExpression createModelPathExpression(String expression) {
+	public ModelPathExpression createModelPathExpression(String expression) throws InvalidExpressionException {
 		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
 		ModelPathExpression expr = new ModelPathExpression(compiledExpression, jxPathContext);
 		return expr;
 	}
 
-	public RelevanceExpression createRelevanceExpression(String expression) {
+	public RelevanceExpression createRelevanceExpression(String expression) throws InvalidExpressionException {
 		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
 		RelevanceExpression expr = new RelevanceExpression(compiledExpression, jxPathContext);
 		return expr;
 	}
 
-	public RequiredExpression createRequiredExpression(String expression) {
+	public RequiredExpression createRequiredExpression(String expression) throws InvalidExpressionException {
 		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
 		RequiredExpression expr = new RequiredExpression(compiledExpression, jxPathContext);
 		return expr;
@@ -96,10 +97,14 @@ public class ExpressionFactory {
 		jxPathContext.setFunctions(functionLibrary);
 	}
 
-	private static ModelJXPathCompiledExpression compileExpression(String expression) {
-		String normalizedExpression = getNormalizedExpression(expression);
-		ModelJXPathCompiledExpression compiled = (ModelJXPathCompiledExpression) JXPathContext.compile(normalizedExpression);
-		return compiled;
+	private static ModelJXPathCompiledExpression compileExpression(String expression) throws InvalidExpressionException {
+		try {
+			String normalizedExpression = getNormalizedExpression(expression);
+			ModelJXPathCompiledExpression compiled = (ModelJXPathCompiledExpression) JXPathContext.compile(normalizedExpression);
+			return compiled;
+		} catch(JXPathInvalidSyntaxException e){
+			throw new InvalidExpressionException(e.getMessage());
+		}
 	}
 
 	protected static String getNormalizedExpression(String expression) {

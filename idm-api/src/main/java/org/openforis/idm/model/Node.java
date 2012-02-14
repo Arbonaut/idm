@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.expression.ExpressionFactory;
-import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.RelevanceExpression;
 import org.openforis.idm.model.expression.RequiredExpression;
 import org.openforis.idm.validation.ValidationResults;
@@ -81,8 +81,8 @@ public abstract class Node<D extends NodeDefinition> {
 			try {
 				RelevanceExpression relevanceExpr = getExpressionFactory().createRelevanceExpression(expr);
 				return relevanceExpr.evaluate(this);
-			} catch (InvalidPathException e) {
-				throw new RuntimeException("Unable to evaluate expression: " + expr, e);
+			} catch (InvalidExpressionException e) {
+				throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
 			}
 		}
 		return true;
@@ -98,7 +98,7 @@ public abstract class Node<D extends NodeDefinition> {
 					ExpressionFactory expressionFactory = getExpressionFactory();
 					RequiredExpression requiredExpr = expressionFactory.createRequiredExpression(expr);
 					return requiredExpr.evaluate(this);
-				} catch (InvalidPathException e) {
+				} catch (InvalidExpressionException e) {
 					throw new IdmInterpretationError("Error evaluating required", e);
 				}
 			}

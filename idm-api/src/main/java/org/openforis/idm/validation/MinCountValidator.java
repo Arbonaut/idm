@@ -13,7 +13,7 @@ import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
-import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.RequiredExpression;
 
 /**
@@ -61,10 +61,10 @@ public class MinCountValidator implements Validator<Entity> {
 			Record record = parent.getRecord();
 			RecordContext context = record.getContext();
 			ExpressionFactory expressionFactory = context.getExpressionFactory();
-			RequiredExpression expr = expressionFactory.createRequiredExpression(requiredExpression);
 			try {
+				RequiredExpression expr = expressionFactory.createRequiredExpression(requiredExpression);
 				return expr.evaluate(parent) ? 1 : 0;
-			} catch (InvalidPathException e) {
+			} catch (InvalidExpressionException e) {
 				throw new IdmInterpretationError("Error evaluating required expression", e);
 			}
 		} else {

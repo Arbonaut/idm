@@ -15,7 +15,7 @@ import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
-import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.ModelPathExpression;
 
 /**
@@ -56,7 +56,7 @@ public class UniquenessCheck extends Check {
 				}
 			}
 			return unique;
-		} catch (InvalidPathException e) {
+		} catch (InvalidExpressionException e) {
 			throw new IdmInterpretationError("Error evaluating uniqueness check", e);
 		}
 	}

@@ -9,7 +9,7 @@ import java.util.List;
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.Check;
-import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.validation.ValidationResults;
 
 /**
@@ -69,7 +69,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		}
 	}
 	
-	public V getDefaultValue() throws InvalidPathException {
+	public V getDefaultValue() throws InvalidExpressionException {
 		D definition = getDefinition();
 		List<AttributeDefault> attributeDefaults = definition.getAttributeDefaults();
 		for (AttributeDefault attributeDefault : attributeDefaults) {
@@ -94,7 +94,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		return defaultValue;
 	}
 	
-	public void applyDefaultValue() throws InvalidPathException {
+	public void applyDefaultValue() throws InvalidExpressionException {
 		this.value = getDefaultValue();
 		this.defaultValue = true;
 	}

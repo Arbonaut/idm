@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.ValidationEventCollector;
 
+import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlInit;
@@ -78,9 +79,9 @@ public class SurveyUnmarshaller {
 							targetMethod.setAccessible(true);
 							targetMethod.invoke(target);
 						} catch (InvocationTargetException e) {
-							throw new RuntimeException("Error initializing object after unmarshalling", e);
+							throw new IdmInterpretationError("Error initializing object after unmarshalling", e);
 						} catch (IllegalAccessException e) {
-							throw new RuntimeException("Error initializing object after unmarshalling", e);
+							throw new IdmInterpretationError("Error initializing object after unmarshalling", e);
 						} finally {
 							targetMethod.setAccessible(false);
 						}
@@ -99,7 +100,7 @@ public class SurveyUnmarshaller {
 				// Set parent into field with annotation
 				targetField.set(target, parent);
 			} catch (IllegalAccessException e) {
-				throw new RuntimeException("Error unmarshalling parent reference", e);
+				throw new IdmInterpretationError("Error unmarshalling parent reference", e);
 			} finally {
 				targetField.setAccessible(false);
 			}
@@ -119,7 +120,7 @@ public class SurveyUnmarshaller {
 			Object inheritedValue = sourceField.get(parent);
 			targetField.set(target, inheritedValue);
 		} catch (IllegalAccessException e) {
-			throw new RuntimeException("Error unmarshalling inherited reference", e);
+			throw new IdmInterpretationError("Error unmarshalling inherited reference", e);
 		} finally {
 			sourceField.setAccessible(false);
 			targetField.setAccessible(false);

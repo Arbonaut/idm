@@ -19,7 +19,7 @@ import org.openforis.idm.model.Record;
 public class CheckExpressionTest extends AbstractExpressionTest {
 
 	@Test
-	public void testTrue() throws InvalidPathException {
+	public void testTrue() throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity cluster = record.getRootEntity();
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
@@ -31,7 +31,7 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 	}
 
 	@Test
-	public void testFalse() throws InvalidPathException {
+	public void testFalse() throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity cluster = record.getRootEntity();
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
@@ -43,7 +43,7 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 	}
 
 	@Test
-	public void testDefaultWithMissingNode() throws InvalidPathException {
+	public void testDefaultWithMissingNode() throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity cluster = record.getRootEntity();
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
@@ -54,7 +54,7 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 		Assert.assertTrue(b);
 	}
 
-	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
+	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 		CheckExpression expression = getRecordContext().getExpressionFactory().createCheckExpression(expr);
 		boolean b = expression.evaluate(context);
 		return b;

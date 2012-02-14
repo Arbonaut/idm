@@ -15,28 +15,28 @@ import org.openforis.idm.model.TimeAttribute;
  * @author G. Miceli
  */
 public class ComparisonCheckTest extends ValidatorTest {
-	
+
 	@Test
 	public void testGteFailOnLt() {
 		IntegerAttribute crewNo = cluster.addValue("crew_no", 0);
 		ValidationResults results = crewNo.validate();
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
-	
+
 	@Test
 	public void testGtePassOnEq() {
 		IntegerAttribute crewNo = cluster.addValue("crew_no", 1);
 		ValidationResults results = crewNo.validate();
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
-	
+
 	@Test
 	public void testGtePassOnGt() {
 		IntegerAttribute crewNo = cluster.addValue("crew_no", 2);
 		ValidationResults results = crewNo.validate();
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
-	
+
 	@Test
 	public void testTimeGtFailOnLt() {
 		Entity timeStudy = cluster.addEntity("time_study");
@@ -45,7 +45,7 @@ public class ComparisonCheckTest extends ValidatorTest {
 		ValidationResults results = endTime.validate();
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
-	
+
 	@Test
 	public void testTimeGtFailOnEq() {
 		Entity timeStudy = cluster.addEntity("time_study");
@@ -54,9 +54,8 @@ public class ComparisonCheckTest extends ValidatorTest {
 		ValidationResults results = endTime.validate();
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
-	
-	// TODO!
-//	@Test
+
+	@Test
 	public void testTimeGtPassOnGt() {
 		Entity timeStudy = cluster.addEntity("time_study");
 		timeStudy.addValue("start_time", new Time(10, 00));
@@ -68,7 +67,7 @@ public class ComparisonCheckTest extends ValidatorTest {
 	private boolean containsComparisonCheck(List<ValidationResult> results) {
 		for (ValidationResult result : results) {
 			Validator<?> validator = result.getValidator();
-			if ( validator instanceof ComparisonCheck ) {
+			if (validator instanceof ComparisonCheck) {
 				return true;
 			}
 		}

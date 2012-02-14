@@ -18,7 +18,7 @@ import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.DefaultValueExpression;
-import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.model.expression.InvalidExpressionException;
 
 /**
  * @author G. Miceli
@@ -87,17 +87,17 @@ public class DistanceCheck extends Check {
 
 			return valid;
 		} catch (Exception e) {
-			throw new RuntimeException("Unable to execute distance check", e);
+			throw new IdmInterpretationError("Unable to execute distance check", e);
 		}
 	}
 
-	private double evaluateDistanceExpression(RecordContext recordContext, Entity context, String expression) throws InvalidPathException {
+	private double evaluateDistanceExpression(RecordContext recordContext, Entity context, String expression) throws InvalidExpressionException {
 		DefaultValueExpression defaultValueExpression = recordContext.getExpressionFactory().createDefaultValueExpression(expression);
 		Double value = (Double) defaultValueExpression.evaluate(context);
 		return value;
 	}
 
-	private Coordinate getCoordinate(RecordContext recordContext, String expression, Node<?> context, Coordinate defaultCoordinate) throws InvalidPathException {
+	private Coordinate getCoordinate(RecordContext recordContext, String expression, Node<?> context, Coordinate defaultCoordinate) throws InvalidExpressionException {
 		if (expression == null) {
 			return defaultCoordinate;
 		} else {

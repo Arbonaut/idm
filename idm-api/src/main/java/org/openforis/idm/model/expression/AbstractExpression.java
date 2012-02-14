@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 import org.apache.commons.jxpath.Variables;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
@@ -17,13 +18,13 @@ import org.openforis.idm.model.expression.internal.ModelNodePointer;
 
 /**
  * @author M. Togna
- * @author G. Miceli 
+ * @author G. Miceli
  */
 abstract class AbstractExpression {
 
 	private ModelJXPathContext jxPathContext;
 	private ModelJXPathCompiledExpression compiledExpression;
-	
+
 	protected AbstractExpression(ModelJXPathCompiledExpression compiledExpression, ModelJXPathContext jxPathContext) {
 		this.jxPathContext = jxPathContext;
 		this.compiledExpression = compiledExpression;
@@ -38,46 +39,53 @@ abstract class AbstractExpression {
 		return list;
 	}
 
-	protected Object evaluateSingle(Node<?> contextNode, Node<?> thisNode) throws InvalidPathException {
-		JXPathContext jxPathContext = createJXPathContext(contextNode, thisNode);
-		Object object = null;
+	protected Object evaluateSingle(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
 		try {
-			object = compiledExpression.getValue(jxPathContext);
+			JXPathContext jxPathContext = createJXPathContext(contextNode, thisNode);
+			Object object = compiledExpression.getValue(jxPathContext);
+			return object;
 		} catch (IllegalArgumentException e) {
-			throw new InvalidPathException("Invalid path " + this.compiledExpression.toString());
+			throw new InvalidExpressionException("Invalid path " + this.compiledExpression.toString());
+		} catch (JXPathInvalidSyntaxException e) {
+			throw new InvalidExpressionException(e.getMessage());
 		}
-		return object;
 	}
 
-	// protected Object evaluateSingle(Node<? extends NodeDefinition> context) throws InvalidPathException {
+	// protected Object evaluateSingle(Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 	// JXPathContext jxPathContext = createJXPathContext(context);
 	// String expr = getNormalizedExpression();
 	// Object object = null;
 	// try {
 	// object = jxPathContext.getValue(expr);
 	// } catch (IllegalArgumentException e) {
-	// throw new InvalidPathException("Invalid path " + this.expression);
+	// throw new InvalidExpressionException("Invalid path " + this.expression);
 	// }
 	// return object;
 	// }
 
-	protected List<Node<?>> evaluateMultiple(Node<?> contextNode, Node<?> thisNode) throws InvalidPathException {
-		List<Node<?>> list = new ArrayList<Node<?>>();
-		JXPathContext jxPathContext = createJXPathContext(contextNode, thisNode);
+	protected List<Node<?>> evaluateMultiple(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
+		try {
+			List<Node<?>> list = new ArrayList<Node<?>>();
+			JXPathContext jxPathContext = createJXPathContext(contextNode, thisNode);
 
-		Iterator<?> pointers = compiledExpression.iteratePointers(jxPathContext);
-		while (pointers.hasNext()) {
-			ModelNodePointer pointer = (ModelNodePointer) pointers.next();
-			Object ptrNode = pointer.getNode();
-			if (ptrNode != null && ptrNode instanceof Node) {
-				Node<?> n = (Node<?>) ptrNode;
-				list.add(n);
+			Iterator<?> pointers = compiledExpression.iteratePointers(jxPathContext);
+			while (pointers.hasNext()) {
+				ModelNodePointer pointer = (ModelNodePointer) pointers.next();
+				Object ptrNode = pointer.getNode();
+				if (ptrNode != null && ptrNode instanceof Node) {
+					Node<?> n = (Node<?>) ptrNode;
+					list.add(n);
+				}
 			}
+			return list;
+		} catch (IllegalArgumentException e) {
+			throw new InvalidExpressionException("Invalid path " + this.compiledExpression.toString());
+		} catch (JXPathInvalidSyntaxException e) {
+			throw new InvalidExpressionException(e.getMessage());
 		}
-		return list;
 	}
 
-	// protected List<Node<?>> evaluateMultiple(Node<? extends NodeDefinition> context) throws InvalidPathException {
+	// protected List<Node<?>> evaluateMultiple(Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 	// List<Node<?>> list = new ArrayList<Node<?>>();
 	// JXPathContext jxPathContext = createJXPathContext(context);
 	// String expr = getNormalizedExpression();
@@ -96,25 +104,25 @@ abstract class AbstractExpression {
 
 	// @SuppressWarnings("unused")
 	// @Deprecated
-	// private Iterator<?> evaluateInternal(Node<? extends NodeDefinition> context) throws InvalidPathException {
+	// private Iterator<?> evaluateInternal(Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 	// JXPathContext jxPathContext = createJXPathContext(context);
 	// String expr = getNormalizedExpression();
 	// try {
 	// Iterator<?> iterator = jxPathContext.iterate(expr);
 	// return iterator;
 	// } catch (IllegalArgumentException e) {
-	// throw new InvalidPathException("Invalid path " + this.expression);
+	// throw new InvalidExpressionException("Invalid path " + this.expression);
 	// }
 	// }
 
 	protected JXPathContext createJXPathContext(Node<?> contextNode, Node<?> thisNode) {
 		JXPathContext jxPathContext = ModelJXPathContext.newContext(this.jxPathContext, contextNode);
-//		if (context instanceof Attribute) {
-//			@SuppressWarnings("unchecked")
-//			Object value = ((Attribute<? extends AttributeDefinition, ?>) context).getValue();
-//			jxPathContext.getVariables().declareVariable("this", value);
-//		}
-		if ( thisNode != null ) {
+		// if (context instanceof Attribute) {
+		// @SuppressWarnings("unchecked")
+		// Object value = ((Attribute<? extends AttributeDefinition, ?>) context).getValue();
+		// jxPathContext.getVariables().declareVariable("this", value);
+		// }
+		if (thisNode != null) {
 			Variables variables = jxPathContext.getVariables();
 			variables.declareVariable("this", thisNode);
 		}

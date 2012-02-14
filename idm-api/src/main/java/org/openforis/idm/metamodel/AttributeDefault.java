@@ -18,7 +18,7 @@ import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.DefaultConditionExpression;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
-import org.openforis.idm.model.expression.InvalidPathException;
+import org.openforis.idm.model.expression.InvalidExpressionException;
 
 /**
  * @author G. Miceli
@@ -51,7 +51,7 @@ public class AttributeDefault implements Serializable {
 		return this.condition;
 	}
 	
-	public <V> V evaluate(Attribute<?,V> attrib) throws InvalidPathException {
+	public <V> V evaluate(Attribute<?,V> attrib) throws InvalidExpressionException {
 		Record record = attrib.getRecord();
 		RecordContext recordContext = record.getContext();
 		ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
@@ -66,14 +66,14 @@ public class AttributeDefault implements Serializable {
 		}
 	}
 
-	private boolean evaluateCondition(Attribute<?,?> attrib, ExpressionFactory expressionFactory) throws InvalidPathException {
+	private boolean evaluateCondition(Attribute<?,?> attrib, ExpressionFactory expressionFactory) throws InvalidExpressionException {
 		DefaultConditionExpression expr = expressionFactory.createDefaultConditionExpression(condition);
 		return expr.evaluate(attrib);
 	}
 
 	@SuppressWarnings("unchecked")
 	private <V> V evaluateExpression(Attribute<?, V> attrib,
-			ExpressionFactory expressionFactory) throws InvalidPathException {
+			ExpressionFactory expressionFactory) throws InvalidExpressionException {
 		DefaultValueExpression defaultValueExpression = expressionFactory.createDefaultValueExpression(expression);
 		Entity parent = attrib.getParent();
 		Object object = defaultValueExpression.evaluate(parent);

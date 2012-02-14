@@ -18,7 +18,7 @@ public class LookupFunctionTest extends AbstractExpressionTest {
 	public static Coordinate TEST_COORDINATE = Coordinate.parseCoordinate("SRID=32632;POINT(0 0)");
 
 	@Test
-	public void testLookupFunction() throws InvalidPathException {
+	public void testLookupFunction() throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity rootEntity = record.getRootEntity();
 		String expr = "idm:lookup('sampling_design', 'plot_centre', 'id', 1)";

@@ -7,10 +7,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.openforis.idm.metamodel.NodeDefinition;
-import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RealAttribute;
-import org.openforis.idm.model.Record;
 
 /**
  * @author M. Togna
@@ -19,7 +17,7 @@ import org.openforis.idm.model.Record;
 public class RelevanceExpressionTest extends AbstractExpressionTest {
 	
 	@Test
-	public void testTrue() throws InvalidPathException {
+	public void testTrue() throws InvalidExpressionException {
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
 		plotDirection.setValue(345.45);
 
@@ -29,7 +27,7 @@ public class RelevanceExpressionTest extends AbstractExpressionTest {
 	}
 
 	@Test
-	public void testFalse() throws InvalidPathException {
+	public void testFalse() throws InvalidExpressionException {
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
 		plotDirection.setValue(385.45);
 
@@ -39,7 +37,7 @@ public class RelevanceExpressionTest extends AbstractExpressionTest {
 	}
 
 	@Test
-	public void testDefaultWithMissingNode() throws InvalidPathException {
+	public void testDefaultWithMissingNode() throws InvalidExpressionException {
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
 		plotDirection.setValue(345.45);
 
@@ -48,7 +46,7 @@ public class RelevanceExpressionTest extends AbstractExpressionTest {
 		Assert.assertTrue(b);
 	}
 
-	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
+	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 		RelevanceExpression expression = getRecordContext().getExpressionFactory().createRelevanceExpression(expr);
 		boolean b = expression.evaluate(context);
 		return b;

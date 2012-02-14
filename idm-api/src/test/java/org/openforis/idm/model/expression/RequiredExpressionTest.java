@@ -18,7 +18,7 @@ import org.openforis.idm.model.Record;
 public class RequiredExpressionTest extends AbstractExpressionTest {
 
 	@Test
-	public void testTrue() throws InvalidPathException {
+	public void testTrue() throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity rootEntity = record.getRootEntity();
 		CodeAttribute region = (CodeAttribute) rootEntity.get("region", 0);
@@ -28,7 +28,7 @@ public class RequiredExpressionTest extends AbstractExpressionTest {
 	}
 
 	@Test
-	public void testFalse() throws InvalidPathException {
+	public void testFalse() throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity rootEntity = record.getRootEntity();
 		CodeAttribute region = (CodeAttribute) rootEntity.get("region", 0);
@@ -38,7 +38,7 @@ public class RequiredExpressionTest extends AbstractExpressionTest {
 	}
 
 	@Test
-	public void testSubPlotRequired() throws InvalidPathException {
+	public void testSubPlotRequired() throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity rootEntity = record.getRootEntity();
 		Entity plot = (Entity) rootEntity.get("plot", 0);
@@ -50,7 +50,7 @@ public class RequiredExpressionTest extends AbstractExpressionTest {
 	}
 
 	@Test
-	public void testSubPlotNotRequired() throws InvalidPathException {
+	public void testSubPlotNotRequired() throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity rootEntity = record.getRootEntity();
 		Entity plot = (Entity) rootEntity.get("plot", 2);
@@ -61,13 +61,13 @@ public class RequiredExpressionTest extends AbstractExpressionTest {
 	}
 
 	@SuppressWarnings("unused")
-	private boolean evaluateExpression(String expr) throws InvalidPathException {
+	private boolean evaluateExpression(String expr) throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity rootEntity = record.getRootEntity();
 		return evaluateExpression(expr, rootEntity);
 	}
 
-	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidPathException {
+	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 		RequiredExpression expression = getRecordContext().getExpressionFactory().createRequiredExpression(expr);
 		boolean b = expression.evaluate(context);
 		return b;

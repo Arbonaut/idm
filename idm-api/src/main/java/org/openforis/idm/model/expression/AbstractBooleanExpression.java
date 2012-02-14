@@ -21,7 +21,7 @@ abstract class AbstractBooleanExpression extends AbstractExpression {
 		this.defaultValue = defaultValue;
 	}
 
-	protected boolean evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidPathException {
+	protected boolean evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
 		try {
 			Object result = evaluateSingle(contextNode, thisNode);
 			return (Boolean) result;

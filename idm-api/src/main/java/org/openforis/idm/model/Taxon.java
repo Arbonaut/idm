@@ -12,6 +12,9 @@ public final class Taxon {
 	private final String languageCode;
 	private final String languageVariant;
 
+	private Integer taxonId;
+	private Integer taxonVernacularNameId;
+	
 	public Taxon(String code, String scientificName, String vernacularName, String languageCode, String languageVariant) {
 		super();
 		this.code = code;
@@ -21,6 +24,14 @@ public final class Taxon {
 		this.languageVariant = languageVariant;
 	}
 
+	public Integer getTaxonId() {
+		return taxonId;
+	}
+	
+	public Integer getTaxonVernacularNameId() {
+		return taxonVernacularNameId;
+	}
+	
 	public String getCode() {
 		return code;
 	}

@@ -14,6 +14,7 @@ import org.xml.sax.ContentHandler;
 /**
  * @author G. Miceli
  */
+@SuppressWarnings("deprecation")
 public class SurveyMarshaller {
 
 	private boolean indent;
@@ -31,7 +32,7 @@ public class SurveyMarshaller {
 	public void setIndent(boolean indent) {
 		this.indent = indent;
 	}
-
+	
 	public void marshal(Survey survey, OutputStream os) throws IOException {
 		try {
 		

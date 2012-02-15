@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.model.Record;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
@@ -36,21 +35,22 @@ public class UniquenessCheck extends Check {
 	}
 
 	@Override
-	public boolean validate(Attribute<?, ?> node) {
+	public boolean validate(Attribute<?, ?> attribute) {
 		try {
-			Record record = node.getRecord();
-			RecordContext recordContext = record.getContext();
+			RecordContext recordContext = attribute.getRecord().getContext();
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			ModelPathExpression pathExpression = expressionFactory.createModelPathExpression(expression);
-			List<Node<?>> list = pathExpression.iterate(node);
+			List<Node<?>> list = pathExpression.iterate(attribute.getParent(), attribute);
 			boolean unique = true;
 			if (list != null && list.size() > 0) {
-				for (Node<?> object : list) {
-					if (object instanceof Attribute) {
-						Object value = ((Attribute<?, ?>) object).getValue();
-						if (value.equals(node.getValue())) {
-							unique = false;
-							break;
+				for (Node<?> node : list) {
+					if (node != attribute) {
+						if (node instanceof Attribute) {
+							Object value = ((Attribute<?, ?>) node).getValue();
+							if (value.equals(attribute.getValue())) {
+								unique = false;
+								break;
+							}
 						}
 					}
 				}

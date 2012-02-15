@@ -75,7 +75,27 @@ public class ComparisonCheck extends Check {
 	public String getEqualsExpression() {
 		return this.equalsExpression;
 	}
-	
+			
+	public void setLessThanExpression(String lessThanExpression) {
+		this.lessThanExpression = lessThanExpression;
+	}
+
+	public void setLessThanOrEqualsExpression(String lessThanOrEqualsExpression) {
+		this.lessThanOrEqualsExpression = lessThanOrEqualsExpression;
+	}
+
+	public void setGreaterThanExpression(String greaterThanExpression) {
+		this.greaterThanExpression = greaterThanExpression;
+	}
+
+	public void setGreaterThanOrEqualsExpression(String greaterThanOrEqualsExpression) {
+		this.greaterThanOrEqualsExpression = greaterThanOrEqualsExpression;
+	}
+
+	public void setEqualsExpression(String equalsExpression) {
+		this.equalsExpression = equalsExpression;
+	}
+
 	private String buildExpression() {
 		ExpressionBuilder expressionBuilder = new ExpressionBuilder();
 
@@ -108,7 +128,7 @@ public class ComparisonCheck extends Check {
 		try {
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			CheckExpression checkExpr = expressionFactory.createCheckExpression(expression);
-			return checkExpr.evaluate(node);
+			return checkExpr.evaluate(node.getParent(), node);
 		} catch (InvalidExpressionException e) {
 			throw new IdmInterpretationError("Error evaluating comparison check", e);
 		}
@@ -131,7 +151,7 @@ public class ComparisonCheck extends Check {
 				expression.append("and");
 				expression.append(" ");
 			}
-			expression.append("$this");
+			expression.append("number($this)");
 			expression.append(" ");
 			expression.append(o.xpathOperator);
 			expression.append(" ");

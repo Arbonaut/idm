@@ -42,21 +42,36 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 		Assert.assertFalse(b);
 	}
 
+	//TODO check why it doesnt throw exception
 	@Test
-	public void testDefaultWithMissingNode() throws InvalidExpressionException {
+	public void testDefaultWithInvalidPath() throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity cluster = record.getRootEntity();
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
 		plotDirection.setValue(345.45);
 
-		String expr = "../missing_attr >= 0 and $this <= 359";
+		String expr = "parent()/missing_attr >= 0 and $this <= 359";
 		boolean b = evaluateExpression(expr, plotDirection);
 		Assert.assertTrue(b);
 	}
+	
+	@Test
+	public void test() throws InvalidExpressionException {
+		//plot_direction
+		Record record = getRecord();
+		Entity cluster = record.getRootEntity();
+		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
+		plotDirection.setValue(500D);
 
-	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
-		CheckExpression expression = getRecordContext().getExpressionFactory().createCheckExpression(expr);
-		boolean b = expression.evaluate(context);
+		String expr = "450 > plot_direction";
+		boolean b = evaluateExpression(expr, plotDirection);
+		System.err.println(b);
+		//Assert.assertFalse(b);
+	}
+
+	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> thisNode) throws InvalidExpressionException {
+		CheckExpression expression = getExpressionFactory().createCheckExpression(expr);
+		boolean b = expression.evaluate(thisNode.getParent(), thisNode);
 		return b;
 	}
 }

@@ -24,12 +24,12 @@ public class LookupFunctionTest extends AbstractExpressionTest {
 		String expr = "idm:lookup('sampling_design', 'plot_centre', 'id', 1)";
 
 		DefaultValueExpression expression = getRecordContext().getExpressionFactory().createDefaultValueExpression(expr);
-		Object object = expression.evaluate(rootEntity);
+		Object object = expression.evaluate(rootEntity, null);
 		Assert.assertEquals(TEST_COORDINATE, object);
 
 		expr = "idm:lookup('sampling_design', 'plot_centre', 'id')";
 		expression = getRecordContext().getExpressionFactory().createDefaultValueExpression(expr);
-		object = expression.evaluate(rootEntity);
+		object = expression.evaluate(rootEntity, null);
 		Assert.assertEquals(TEST_COORDINATE, object);
 	}
 

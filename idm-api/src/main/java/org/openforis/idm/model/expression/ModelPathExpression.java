@@ -19,8 +19,8 @@ public class ModelPathExpression extends AbstractExpression {
 		super(expression, context);
 	}
 
-	public Node<?> evaluate(Node<?> node) throws InvalidExpressionException {
-		List<Node<?>> list = iterate(node);
+	public Node<?> evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
+		List<Node<?>> list = iterate(contextNode, thisNode);
 		if (list != null && list.size() == 1) {
 			return list.get(0);
 		} else {
@@ -28,8 +28,9 @@ public class ModelPathExpression extends AbstractExpression {
 		}
 	}
 
-	public List<Node<?>> iterate(Node<?> node) throws InvalidExpressionException {
-		List<Node<?>> list = evaluateMultiple(node, node);
+	public List<Node<?>> iterate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
+		List<Node<?>> list = evaluateMultiple(contextNode, thisNode);
 		return list;
 	}
+	
 }

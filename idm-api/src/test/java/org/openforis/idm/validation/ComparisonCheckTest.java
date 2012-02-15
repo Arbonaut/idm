@@ -1,13 +1,18 @@
 package org.openforis.idm.validation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.openforis.idm.metamodel.ComparisonCheck;
+import org.openforis.idm.model.Code;
+import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.IntegerAttribute;
+import org.openforis.idm.model.TextAttribute;
 import org.openforis.idm.model.Time;
 import org.openforis.idm.model.TimeAttribute;
 
@@ -64,6 +69,16 @@ public class ComparisonCheckTest extends ValidatorTest {
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 
+	@Test
+	public void testCodeGtConstant() throws Exception{
+		ComparisonCheck check = new ComparisonCheck();
+		check.setGreaterThanExpression("-1");
+		
+		CodeAttribute region = cluster.addValue("region", new Code("001"));
+		boolean validate = check.validate(region);
+		Assert.assertTrue(validate);
+	}
+	
 	private boolean containsComparisonCheck(List<ValidationResult> results) {
 		for (ValidationResult result : results) {
 			Validator<?> validator = result.getValidator();

@@ -22,6 +22,14 @@ public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 	@Override
 	protected boolean validateValue(ValidationResults results) {
 		DateValidator validator = new DateValidator();
-		return validator.validate(this);
+		boolean result = validator.validate(this);
+		results.addResult(this, validator, result);
+		return result;
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		Date d = getValue();
+		return d == null || (d.getYear() == null && d.getMonth() == null || d.getDay() == null);
 	}
 }

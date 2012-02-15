@@ -1,6 +1,8 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.RangeAttributeDefinition;
+import org.openforis.idm.validation.IntegerRangeValidator;
+import org.openforis.idm.validation.ValidationResults;
 
 /**
  * @author G. Miceli
@@ -19,4 +21,19 @@ public class IntegerRangeAttribute extends Attribute<RangeAttributeDefinition, I
 	public IntegerRange createValue(String string) {
 		return IntegerRange.parseIntegerRange(string);
 	}
+
+	@Override
+	public boolean isEmpty() {
+		IntegerRange v = getValue();
+		return v == null || (v.getFrom() == null && v.getTo() == null);
+	}
+
+	@Override
+	protected boolean validateValue(ValidationResults results) {
+		IntegerRangeValidator validator = new IntegerRangeValidator();
+		boolean valid = validator.validate(this);
+		results.addResult(this, validator, valid);
+		return valid;
+	}
+
 }

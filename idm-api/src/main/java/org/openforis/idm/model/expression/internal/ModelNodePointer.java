@@ -10,6 +10,7 @@ import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointer;
 import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Date;
 import org.openforis.idm.model.DateAttribute;
 import org.openforis.idm.model.Time;
@@ -40,10 +41,12 @@ public class ModelNodePointer extends DynamicPointer {
 		} else if (node instanceof DateAttribute) {
 			Date date = ((DateAttribute) node).getValue();
 			return (date.getYear() * 10000) + (date.getMonth() * 100) + date.getDay();
+		} else if (node instanceof CodeAttribute) {
+			return ((CodeAttribute) node).getValue().getCode();
 		} else if (node instanceof Attribute) {
-			node = ((Attribute<?, ?>) node).getValue();
+			return ((Attribute<?, ?>) node).getValue();
 		}
-		return node;
+		return null;
 	}
 
 }

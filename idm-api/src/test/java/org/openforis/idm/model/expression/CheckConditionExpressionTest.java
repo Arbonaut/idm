@@ -6,9 +6,8 @@ package org.openforis.idm.model.expression;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Entity;
-import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RealAttribute;
 import org.openforis.idm.model.Record;
 
@@ -54,9 +53,9 @@ public class CheckConditionExpressionTest extends AbstractExpressionTest {
 		Assert.assertFalse(b);
 	}
 
-	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
+	private boolean evaluateExpression(String expr, Attribute<?,?> thisNode) throws InvalidExpressionException {
 		CheckConditionExpression expression = getRecordContext().getExpressionFactory().createCheckConditionExpression(expr);
-		boolean b = expression.evaluate(context);
+		boolean b = expression.evaluate(thisNode.getParent(), thisNode);
 		return b;
 	}
 }

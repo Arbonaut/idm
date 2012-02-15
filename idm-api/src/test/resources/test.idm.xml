@@ -3111,6 +3111,7 @@
             <text name="map_sheet" maxCount="3">
                 <label>Map sheet</label>
                 <label type="heading">Map sheet(s)</label>
+                <unique expr="map_sheet" flag="error" />
             </text>
             <code name="accessibility" list="accessibility" required="true">
                 <label>Accessibility</label>

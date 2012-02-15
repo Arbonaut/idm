@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.model.expression;
 
-import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
@@ -18,8 +17,7 @@ public class RequiredExpression extends AbstractBooleanExpression {
 		super(expression, context, false);
 	}
 	
-	public boolean evaluate(Node<?> node) throws InvalidExpressionException {
-//		Entity parent = node.getParent();
-		return super.evaluate(node, null);
+	public boolean evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
+		return super.evaluate(contextNode, thisNode);
 	}
 }

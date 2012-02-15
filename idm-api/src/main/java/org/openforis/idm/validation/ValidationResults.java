@@ -60,6 +60,8 @@ public class ValidationResults {
 			} else {
 				warnings.add(r);
 			}
+		}else if (validator instanceof CodeParentValidator){
+			warnings.add(r);
 		} else {
 			errors.add(r);
 		}

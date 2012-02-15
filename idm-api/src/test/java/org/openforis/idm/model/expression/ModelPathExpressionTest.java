@@ -22,10 +22,10 @@ public class ModelPathExpressionTest extends AbstractExpressionTest {
 	@Test
 	public void testIteratePath() throws InvalidExpressionException {
 		Record record = getRecord();
-		Entity entity = record.getRootEntity();
+		Entity cluster = record.getRootEntity();
 
 		String expr = "plot";
-		List<Node<?>> list = iterateExpression(expr, entity);
+		List<Node<?>> list = iterateExpression(expr, cluster);
 
 		Assert.assertEquals(3, list.size());
 	}
@@ -63,16 +63,16 @@ public class ModelPathExpressionTest extends AbstractExpressionTest {
 		Assert.assertEquals(2, list.size());
 	}
 
-	@SuppressWarnings("unused")
-	private Object evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
-		ModelPathExpression expression = getRecordContext().getExpressionFactory().createModelPathExpression(expr);
-		Object o = expression.evaluate(context);
-		return o;
-	}
+//	@SuppressWarnings("unused")
+//	private Object evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
+//		ModelPathExpression expression = getRecordContext().getExpressionFactory().createModelPathExpression(expr);
+//		Object o = expression.evaluate(context);
+//		return o;
+//	}
 
 	private List<Node<?>> iterateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 		ModelPathExpression expression = getRecordContext().getExpressionFactory().createModelPathExpression(expr);
-		List<Node<?>> l = expression.iterate(context);
+		List<Node<?>> l = expression.iterate(context, null);
 		return l;
 	}
 }

@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.model.expression;
 
-import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.expression.internal.MissingValueException;
 import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
@@ -19,10 +18,9 @@ public class DefaultValueExpression extends AbstractExpression {
 		super(expression, context);
 	}
 
-	public Object evaluate(Node<?> node) throws InvalidExpressionException {
+	public Object evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
 		try {
-			Entity parent = node.getParent();
-			return evaluateSingle(parent, node);
+			return evaluateSingle(contextNode, thisNode);
 		} catch (MissingValueException e) {
 			return null;
 		}

@@ -22,7 +22,7 @@ public class RelevanceExpressionTest extends AbstractExpressionTest {
 		plotDirection.setValue(345.45);
 
 		String expr = "plot_direction >= 0 and plot_direction <= 359";
-		boolean b = evaluateExpression(expr, region);
+		boolean b = evaluateExpression(expr, cluster);
 		Assert.assertTrue(b);
 	}
 
@@ -32,7 +32,7 @@ public class RelevanceExpressionTest extends AbstractExpressionTest {
 		plotDirection.setValue(385.45);
 
 		String expr = "plot_direction >= 0 and plot_direction <= 359";
-		boolean b = evaluateExpression(expr, region);
+		boolean b = evaluateExpression(expr, cluster);
 		Assert.assertFalse(b);
 	}
 
@@ -42,13 +42,13 @@ public class RelevanceExpressionTest extends AbstractExpressionTest {
 		plotDirection.setValue(345.45);
 
 		String expr = "../missing_attr >= 0 and plot_direction <= 359";
-		boolean b = evaluateExpression(expr, region);
+		boolean b = evaluateExpression(expr, cluster);
 		Assert.assertTrue(b);
 	}
 
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 		RelevanceExpression expression = getRecordContext().getExpressionFactory().createRelevanceExpression(expr);
-		boolean b = expression.evaluate(context);
+		boolean b = expression.evaluate(context, null);
 		return b;
 	}
 

@@ -84,7 +84,6 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	/**
 	 * @return true if value is not null
 	 */
-	// TODO override in subclasses to check for blank values
 	@Override
 	public boolean isEmpty() {
 		return value == null || value.toString().trim().length() == 0;

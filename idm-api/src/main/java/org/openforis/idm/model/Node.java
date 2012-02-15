@@ -80,7 +80,7 @@ public abstract class Node<D extends NodeDefinition> {
 		if (StringUtils.isNotBlank(expr)) {
 			try {
 				RelevanceExpression relevanceExpr = getExpressionFactory().createRelevanceExpression(expr);
-				return relevanceExpr.evaluate(this);
+				return relevanceExpr.evaluate(getParent(), this);
 			} catch (InvalidExpressionException e) {
 				throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
 			}
@@ -97,7 +97,7 @@ public abstract class Node<D extends NodeDefinition> {
 				try {
 					ExpressionFactory expressionFactory = getExpressionFactory();
 					RequiredExpression requiredExpr = expressionFactory.createRequiredExpression(expr);
-					return requiredExpr.evaluate(this);
+					return requiredExpr.evaluate(getParent(), this);
 				} catch (InvalidExpressionException e) {
 					throw new IdmInterpretationError("Error evaluating required", e);
 				}

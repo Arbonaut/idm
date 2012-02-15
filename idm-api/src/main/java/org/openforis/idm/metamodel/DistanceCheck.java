@@ -67,19 +67,19 @@ public class DistanceCheck extends Check {
 
 			Entity parentEntity = coordinateAttr.getParent();
 			RecordContext recordContext = node.getRecord().getContext();
-			Coordinate from = getCoordinate(recordContext, getSourcePointExpression(), parentEntity, coordinateAttr.getValue());
-			Coordinate to = getCoordinate(recordContext, getDestinationPointExpression(), parentEntity, null);
+			Coordinate from = getCoordinate(recordContext, getSourcePointExpression(), parentEntity, node, coordinateAttr.getValue());
+			Coordinate to = getCoordinate(recordContext, getDestinationPointExpression(), parentEntity, node, null);
 
 			double distance = CoordinateOperations.orthodromicDistance(from, to);
 
 			if (getMaxDistanceExpression() != null) {
-				Double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, getMaxDistanceExpression());
+				Double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, node, getMaxDistanceExpression());
 				if (distance > maxDistance) {
 					valid = false;
 				}
 			}
 			if (getMinDistanceExpression() != null) {
-				Double minDistance = evaluateDistanceExpression(recordContext, parentEntity, getMinDistanceExpression());
+				Double minDistance = evaluateDistanceExpression(recordContext, parentEntity, node, getMinDistanceExpression());
 				if (distance < minDistance) {
 					valid = false;
 				}
@@ -91,18 +91,18 @@ public class DistanceCheck extends Check {
 		}
 	}
 
-	private double evaluateDistanceExpression(RecordContext recordContext, Entity context, String expression) throws InvalidExpressionException {
+	private double evaluateDistanceExpression(RecordContext recordContext, Entity context, Attribute<?,?> thisNode, String expression) throws InvalidExpressionException {
 		DefaultValueExpression defaultValueExpression = recordContext.getExpressionFactory().createDefaultValueExpression(expression);
-		Double value = (Double) defaultValueExpression.evaluate(context);
+		Double value = (Double) defaultValueExpression.evaluate(context, thisNode);
 		return value;
 	}
 
-	private Coordinate getCoordinate(RecordContext recordContext, String expression, Node<?> context, Coordinate defaultCoordinate) throws InvalidExpressionException {
+	private Coordinate getCoordinate(RecordContext recordContext, String expression, Node<?> context, Attribute<?,?> thisNode, Coordinate defaultCoordinate) throws InvalidExpressionException {
 		if (expression == null) {
 			return defaultCoordinate;
 		} else {
 			DefaultValueExpression valueExpression = recordContext.getExpressionFactory().createDefaultValueExpression(expression);
-			Coordinate coordinate = (Coordinate) valueExpression.evaluate(context);
+			Coordinate coordinate = (Coordinate) valueExpression.evaluate(context, thisNode);
 			return coordinate;
 		}
 	}

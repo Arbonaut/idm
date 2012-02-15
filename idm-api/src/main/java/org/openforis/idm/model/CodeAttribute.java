@@ -8,6 +8,9 @@ import org.openforis.idm.metamodel.CodeListItem;
 import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.ModelPathExpression;
+import org.openforis.idm.validation.CodeParentValidator;
+import org.openforis.idm.validation.CodeValidator;
+import org.openforis.idm.validation.ValidationResults;
 
 /**
  * @author G. Miceli
@@ -30,20 +33,20 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 		return c == null || (StringUtils.isBlank(c.getCode()) && StringUtils.isBlank(c.getQualifier()));
 	}
 
-//	@Override
-//	protected boolean validateValue(ValidationResults results) {
-//		CodeParentValidator parentValidator = new CodeParentValidator();
-//		boolean validParent = parentValidator.validate(this);
-//		if (validParent) {
-//			CodeValidator codeValidator = new CodeValidator();
-//			boolean valid = codeValidator.validate(this);
-//			results.addResult(this, codeValidator, valid);
-//			return valid;
-//		} else {
-//			results.addResult(this, parentValidator, false);
-//			return false;
-//		}
-//	}
+	@Override
+	protected boolean validateValue(ValidationResults results) {
+		CodeParentValidator parentValidator = new CodeParentValidator();
+		boolean validParent = parentValidator.validate(this);
+		if (validParent) {
+			CodeValidator codeValidator = new CodeValidator();
+			boolean valid = codeValidator.validate(this);
+			results.addResult(this, codeValidator, valid);
+			return valid;
+		} else {
+			results.addResult(this, parentValidator, false);
+			return false;
+		}
+	}
 
 	public CodeListItem getCodeListItem() {
 		Code code = getValue();

@@ -63,7 +63,7 @@ public class MinCountValidator implements Validator<Entity> {
 			ExpressionFactory expressionFactory = context.getExpressionFactory();
 			try {
 				RequiredExpression expr = expressionFactory.createRequiredExpression(requiredExpression);
-				return expr.evaluate(parent) ? 1 : 0;
+				return expr.evaluate(parent, null) ? 1 : 0;
 			} catch (InvalidExpressionException e) {
 				throw new IdmInterpretationError("Error evaluating required expression", e);
 			}

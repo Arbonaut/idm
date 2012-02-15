@@ -59,6 +59,14 @@ public class RequiredExpressionTest extends AbstractExpressionTest {
 		boolean b = evaluateExpression(expr, plot);
 		Assert.assertFalse(b);
 	}
+	
+	@Test
+	public void test() throws InvalidExpressionException{
+		String expr = "number('e') > 10";
+		DefaultValueExpression expression = getExpressionFactory().createDefaultValueExpression(expr);
+		Object object = expression.evaluate(null, null);
+		System.out.println(object);
+	}
 
 	@SuppressWarnings("unused")
 	private boolean evaluateExpression(String expr) throws InvalidExpressionException {
@@ -69,7 +77,7 @@ public class RequiredExpressionTest extends AbstractExpressionTest {
 
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 		RequiredExpression expression = getRecordContext().getExpressionFactory().createRequiredExpression(expr);
-		boolean b = expression.evaluate(context);
+		boolean b = expression.evaluate(context, null);
 		return b;
 	}
 

@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Attribute;
-import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.DefaultConditionExpression;
@@ -68,15 +67,13 @@ public class AttributeDefault implements Serializable {
 
 	private boolean evaluateCondition(Attribute<?,?> attrib, ExpressionFactory expressionFactory) throws InvalidExpressionException {
 		DefaultConditionExpression expr = expressionFactory.createDefaultConditionExpression(condition);
-		return expr.evaluate(attrib);
+		return expr.evaluate(attrib.getParent(), attrib);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <V> V evaluateExpression(Attribute<?, V> attrib,
-			ExpressionFactory expressionFactory) throws InvalidExpressionException {
+	private <V> V evaluateExpression(Attribute<?, V> attrib, ExpressionFactory expressionFactory) throws InvalidExpressionException {
 		DefaultValueExpression defaultValueExpression = expressionFactory.createDefaultValueExpression(expression);
-		Entity parent = attrib.getParent();
-		Object object = defaultValueExpression.evaluate(parent);
+		Object object = defaultValueExpression.evaluate(attrib.getParent(), attrib);
 		return (V) object;
 	}
 }

@@ -278,7 +278,7 @@
                         </xs:documentation>
                       </xs:annotation>
                     </xs:element>
-                    <xs:element minOccurs="0" maxOccurs="1" name="date" type="xs:date">
+                    <xs:element minOccurs="1" maxOccurs="1" name="date" type="xs:date">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           Date from which data was collected using this version of the model.

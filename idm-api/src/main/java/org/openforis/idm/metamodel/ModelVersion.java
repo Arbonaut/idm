@@ -50,4 +50,23 @@ public class ModelVersion implements Serializable {
 	public String getDate() {
 		return date;
 	}
+
+	public boolean isApplicable(Versionable versionable) {
+		ModelVersion since = versionable.getSinceVersion();
+		ModelVersion deprecated = versionable.getDeprecatedVersion();
+		if (since == null && deprecated == null) {
+			return true;
+		} else {
+			int sinceResult = 1;
+			int deprecatedResult = -1;
+			if (since != null) {
+				sinceResult = date.compareTo(since.getDate());
+			}
+			if (deprecated != null) {
+				deprecatedResult = date.compareTo(deprecated.getDate());
+			}
+			return sinceResult >= 0 && deprecatedResult < 0;
+		}
+	}
+
 }

@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.geotools.CoordinateOperations;
+import org.openforis.idm.gis.CoordinateOperations;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;

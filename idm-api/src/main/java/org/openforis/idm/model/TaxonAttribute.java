@@ -7,24 +7,23 @@ import org.openforis.idm.validation.ValidationResults;
  * @author G. Miceli
  * @author M. Togna
  */
-public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, Taxon> {
+public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOccurence> {
 
 	public TaxonAttribute(TaxonAttributeDefinition definition) {
 		super(definition);
 	}
 
 	@Override
-	public Taxon createValue(String string) {
+	public TaxonOccurence createValue(String string) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
-		//TODO
-		// is null when pointer to taxon is null
-		throw new UnsupportedOperationException();
+		TaxonOccurence taxonOccurence = getValue();
+		return taxonOccurence.getTaxon() == null;
 	}
-	
+
 	@Override
 	protected boolean validateValue(ValidationResults results) {
 		// currently not required.

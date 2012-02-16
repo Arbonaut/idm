@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.gis;
+package org.openforis.idm.geospatial;
 
 import static org.geotools.referencing.CRS.parseWKT;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;

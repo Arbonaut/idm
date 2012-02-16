@@ -15,7 +15,7 @@ import org.openforis.idm.model.expression.internal.ModelJXPathContext;
  */
 public class ModelPathExpression extends AbstractExpression {
 
-	protected ModelPathExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
+	ModelPathExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
 		super(expression, context);
 	}
 

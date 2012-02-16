@@ -15,7 +15,7 @@ import org.openforis.idm.model.expression.internal.ModelJXPathContext;
  */
 public class DefaultConditionExpression extends AbstractBooleanExpression {
 
-	protected DefaultConditionExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
+	DefaultConditionExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
 		super(expression, context, false);
 	}
 

@@ -25,7 +25,7 @@ abstract class AbstractExpression {
 	private ModelJXPathContext jxPathContext;
 	private ModelJXPathCompiledExpression compiledExpression;
 
-	protected AbstractExpression(ModelJXPathCompiledExpression compiledExpression, ModelJXPathContext jxPathContext) {
+	AbstractExpression(ModelJXPathCompiledExpression compiledExpression, ModelJXPathContext jxPathContext) {
 		this.jxPathContext = jxPathContext;
 		this.compiledExpression = compiledExpression;
 	}

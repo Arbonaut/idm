@@ -16,7 +16,7 @@ abstract class AbstractBooleanExpression extends AbstractExpression {
 
 	private boolean defaultValue;
 	
-	public AbstractBooleanExpression(ModelJXPathCompiledExpression compiledExpression, ModelJXPathContext jxPathContext, boolean defaultValue) {
+	AbstractBooleanExpression(ModelJXPathCompiledExpression compiledExpression, ModelJXPathContext jxPathContext, boolean defaultValue) {
 		super(compiledExpression, jxPathContext);
 		this.defaultValue = defaultValue;
 	}

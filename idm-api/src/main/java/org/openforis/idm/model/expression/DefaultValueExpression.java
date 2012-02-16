@@ -14,7 +14,7 @@ import org.openforis.idm.model.expression.internal.ModelJXPathContext;
  */
 public class DefaultValueExpression extends AbstractExpression {
 
-	protected DefaultValueExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
+	DefaultValueExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
 		super(expression, context);
 	}
 

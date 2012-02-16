@@ -13,7 +13,7 @@ import org.openforis.idm.model.expression.internal.ModelJXPathContext;
  */
 public class RequiredExpression extends AbstractBooleanExpression {
 
-	protected RequiredExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
+	RequiredExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
 		super(expression, context, false);
 	}
 	

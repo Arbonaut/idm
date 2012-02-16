@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.TextAttribute;
 
@@ -16,7 +17,7 @@ import org.openforis.idm.model.TextAttribute;
  * @author M. Togna
  * 
  */
-public class PatternCheckTest extends ValidatorTest {
+public class PatternCheckTest extends AbstractTest {
 
 	@Test
 	public void testUpperCaseLetterPatternPass() {

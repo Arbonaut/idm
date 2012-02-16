@@ -15,7 +15,7 @@ import org.openforis.idm.model.RealAttribute;
  * @author G. Miceli
  */
 public class RelevanceExpressionTest extends AbstractExpressionTest {
-	
+
 	@Test
 	public void testTrue() throws InvalidExpressionException {
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
@@ -36,12 +36,12 @@ public class RelevanceExpressionTest extends AbstractExpressionTest {
 		Assert.assertFalse(b);
 	}
 
-	@Test
+	@Test(expected = InvalidExpressionException.class)
 	public void testDefaultWithMissingNode() throws InvalidExpressionException {
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
 		plotDirection.setValue(345.45);
 
-		String expr = "../missing_attr >= 0 and plot_direction <= 359";
+		String expr = "parent()/missing_attr >= 0 and plot_direction <= 359";
 		boolean b = evaluateExpression(expr, cluster);
 		Assert.assertTrue(b);
 	}

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.validation.MinCountValidator;
 import org.openforis.idm.metamodel.validation.ValidationResult;
@@ -18,7 +19,7 @@ import org.openforis.idm.model.Entity;
 /**
  * @author G. Miceli
  */
-public class MinCountValidatorTest extends ValidatorTest {
+public class MinCountValidatorTest extends AbstractTest {
 
 	@Test
 	public void testMissingOptionalSingleAttribute() {

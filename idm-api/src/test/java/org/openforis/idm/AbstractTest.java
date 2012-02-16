@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.validation;
+package org.openforis.idm;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +17,8 @@ import org.openforis.idm.model.TestRecordContext;
 /**
  * @author G. Miceli
  */
-public abstract class ValidatorTest {
-	
+public abstract class AbstractTest {
+
 	protected static Survey survey;
 	protected Entity cluster;
 	protected Entity household;
@@ -32,12 +32,11 @@ public abstract class ValidatorTest {
 		survey = su.unmarshal(is);
 	}
 
-
 	@Before
 	public void createCluster() {
 		Record record = new Record(new TestRecordContext(), survey, "2.0");
 		this.cluster = record.createRootEntity("cluster");
 		Record record2 = new Record(new TestRecordContext(), survey, "2.0");
-		this.household  = record2.createRootEntity("household");
+		this.household = record2.createRootEntity("household");
 	}
 }

@@ -25,6 +25,7 @@ import org.openforis.idm.model.Time;
  * @author M. Togna
  * 
  */
+@Deprecated
 public abstract class AbstractExpressionTest {
 
 	private static final String TEST_IDM = "test.idm.xml";

@@ -178,7 +178,6 @@ public class XmlBindingIntegrationTest {
 	//
 	// @Override
 	// public Object convert(Object object, Class toType) {
-	// // TODO Auto-generated method stub
 	// // if(object instanceof Number){
 	// //
 	// // }

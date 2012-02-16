@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.RealAttribute;
@@ -17,7 +18,7 @@ import org.openforis.idm.model.RealAttribute;
  * @author M. Togna
  * 
  */
-public class CustomCheckTest extends ValidatorTest {
+public class CustomCheckTest extends AbstractTest {
 
 	@Test
 	public void testPass() {

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Entity;
@@ -18,7 +19,7 @@ import org.openforis.idm.model.TimeAttribute;
 /**
  * @author G. Miceli
  */
-public class ComparisonCheckTest extends ValidatorTest {
+public class ComparisonCheckTest extends AbstractTest {
 
 	@Test
 	public void testGteFailOnLt() {

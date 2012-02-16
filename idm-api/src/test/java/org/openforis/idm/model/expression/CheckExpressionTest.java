@@ -6,24 +6,20 @@ package org.openforis.idm.model.expression;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.NodeDefinition;
-import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RealAttribute;
-import org.openforis.idm.model.Record;
 
 /**
  * @author M. Togna
  * 
  */
-public class CheckExpressionTest extends AbstractExpressionTest {
+public class CheckExpressionTest extends AbstractTest {
 
 	@Test
 	public void testTrue() throws InvalidExpressionException {
-		Record record = getRecord();
-		Entity cluster = record.getRootEntity();
-		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
-		plotDirection.setValue(345.45);
+		RealAttribute plotDirection = cluster.addValue("plot_direction", 345.45);
 
 		String expr = "$this >= 0 and $this <= 359";
 		boolean b = evaluateExpression(expr, plotDirection);
@@ -32,23 +28,16 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 
 	@Test
 	public void testFalse() throws InvalidExpressionException {
-		Record record = getRecord();
-		Entity cluster = record.getRootEntity();
-		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
-		plotDirection.setValue(385.45);
+		RealAttribute plotDirection = cluster.addValue("plot_direction", 385.45);
 
 		String expr = "$this >= 0 and $this <= 359";
 		boolean b = evaluateExpression(expr, plotDirection);
 		Assert.assertFalse(b);
 	}
 
-	//TODO check why it doesnt throw exception
-	@Test
+	@Test(expected = InvalidExpressionException.class)
 	public void testDefaultWithInvalidPath() throws InvalidExpressionException {
-		Record record = getRecord();
-		Entity cluster = record.getRootEntity();
-		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
-		plotDirection.setValue(345.45);
+		RealAttribute plotDirection = cluster.addValue("plot_direction", 345.45);
 
 		String expr = "parent()/missing_attr >= 0 and $this <= 359";
 		boolean b = evaluateExpression(expr, plotDirection);
@@ -56,7 +45,7 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 	}
 	
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> thisNode) throws InvalidExpressionException {
-		CheckExpression expression = getExpressionFactory().createCheckExpression(expr);
+		CheckExpression expression = cluster.getRecord().getContext().getExpressionFactory().createCheckExpression(expr);
 		boolean b = expression.evaluate(thisNode.getParent(), thisNode);
 		return b;
 	}

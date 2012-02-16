@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;
 
@@ -14,7 +15,7 @@ import org.openforis.idm.model.CoordinateAttribute;
  * @author M. Togna
  * 
  */
-public class DistanceCheckTest extends ValidatorTest {
+public class DistanceCheckTest extends AbstractTest {
 
 	@Test
 	public void testValidMaxDistance() {

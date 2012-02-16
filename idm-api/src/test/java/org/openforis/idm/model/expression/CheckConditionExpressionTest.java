@@ -41,14 +41,14 @@ public class CheckConditionExpressionTest extends AbstractExpressionTest {
 		Assert.assertFalse(b);
 	}
 
-	@Test
+	@Test(expected = InvalidExpressionException.class)
 	public void testDefaultWithMissingNode() throws InvalidExpressionException {
 		Record record = getRecord();
 		Entity cluster = record.getRootEntity();
 		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
 		plotDirection.setValue(345.45);
 
-		String expr = "../missing_attr >= 0 and $this <= 359";
+		String expr = "parent()/missing_attr >= 0 and $this <= 359";
 		boolean b = evaluateExpression(expr, plotDirection);
 		Assert.assertFalse(b);
 	}

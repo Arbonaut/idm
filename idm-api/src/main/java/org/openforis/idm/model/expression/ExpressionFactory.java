@@ -18,7 +18,7 @@ import org.openforis.idm.model.expression.internal.IDMFunctions;
 import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 import org.openforis.idm.model.expression.internal.ModelNodePointerFactory;
-import org.openforis.idm.model.expression.internal.ModelPropertyHandler;
+import org.openforis.idm.model.expression.internal.NodePropertyHandler;
 import org.openforis.idm.model.expression.internal.RecordPropertyHandler;
 
 /**
@@ -36,7 +36,7 @@ public class ExpressionFactory {
 		NodePointerFactory nodePointerFactory = new ModelNodePointerFactory();
 		JXPathContextReferenceImpl.addNodePointerFactory(nodePointerFactory);
 
-		JXPathIntrospector.registerDynamicClass(Node.class, ModelPropertyHandler.class);
+		JXPathIntrospector.registerDynamicClass(Node.class, NodePropertyHandler.class);
 		JXPathIntrospector.registerDynamicClass(Record.class, RecordPropertyHandler.class);
 
 		jxPathContext = (ModelJXPathContext) JXPathContext.newContext(null);

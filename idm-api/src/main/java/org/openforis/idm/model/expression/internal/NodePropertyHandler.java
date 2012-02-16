@@ -18,7 +18,7 @@ import org.openforis.idm.model.Node;
  * @author M. Togna
  * 
  */
-public class ModelPropertyHandler implements DynamicPropertyHandler {
+public class NodePropertyHandler implements DynamicPropertyHandler {
 
 	@Override
 	public Object getProperty(Object object, String propertyName) {

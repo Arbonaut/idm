@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.validation.MaxCountValidator;
 import org.openforis.idm.metamodel.validation.ValidationResult;
@@ -16,7 +17,7 @@ import org.openforis.idm.model.Entity;
 /**
  * @author G. Miceli
  */
-public class MaxCountValidatorTest extends ValidatorTest {
+public class MaxCountValidatorTest extends AbstractTest {
 	
 	@Test //(expected=ArrayIndexOutOfBoundsException.class)
 	public void testMultipleSingleAttribute() {

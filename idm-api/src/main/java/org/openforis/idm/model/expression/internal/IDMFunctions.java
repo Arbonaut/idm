@@ -1,7 +1,7 @@
 package org.openforis.idm.model.expression.internal;
 
 import org.apache.commons.jxpath.ExpressionContext;
-import org.openforis.idm.validation.ExternalLookupProvider;
+import org.openforis.idm.metamodel.validation.ExternalLookupProvider;
 
 public class IDMFunctions {
 

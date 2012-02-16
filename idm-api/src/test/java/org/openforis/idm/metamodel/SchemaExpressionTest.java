@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.openforis.idm.metamodel.expression.SchemaExpression;
 import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 

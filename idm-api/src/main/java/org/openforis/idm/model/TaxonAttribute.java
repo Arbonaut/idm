@@ -1,7 +1,7 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
-import org.openforis.idm.validation.ValidationResults;
+import org.openforis.idm.metamodel.validation.ValidationResults;
 
 /**
  * @author G. Miceli

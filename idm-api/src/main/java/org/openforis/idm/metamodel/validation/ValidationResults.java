@@ -1,13 +1,12 @@
 /**
  * 
  */
-package org.openforis.idm.validation;
+package org.openforis.idm.metamodel.validation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openforis.idm.metamodel.Check;
-import org.openforis.idm.metamodel.Check.Flag;
+import org.openforis.idm.metamodel.validation.Check.Flag;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.util.CollectionUtil;
 

@@ -11,6 +11,7 @@ import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
+import org.openforis.idm.metamodel.validation.ExternalLookupProvider;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.expression.internal.IDMFunctions;
@@ -19,7 +20,6 @@ import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 import org.openforis.idm.model.expression.internal.ModelNodePointerFactory;
 import org.openforis.idm.model.expression.internal.ModelPropertyHandler;
 import org.openforis.idm.model.expression.internal.RecordPropertyHandler;
-import org.openforis.idm.validation.ExternalLookupProvider;
 
 /**
  * @author M. Togna

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.metamodel;
+package org.openforis.idm.metamodel.validation;
 
 import java.util.List;
 
@@ -11,6 +11,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.geospatial.CoordinateOperations;
+import org.openforis.idm.metamodel.IdmInterpretationError;
+import org.openforis.idm.metamodel.SpatialReferenceSystem;
+import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;

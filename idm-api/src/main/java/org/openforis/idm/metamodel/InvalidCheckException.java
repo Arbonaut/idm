@@ -1,5 +1,7 @@
 package org.openforis.idm.metamodel;
 
+import org.openforis.idm.metamodel.validation.Check;
+
 /**
  * @author G. Miceli
  * @author M. Togna

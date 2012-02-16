@@ -1,4 +1,4 @@
-package org.openforis.idm.validation;
+package org.openforis.idm.metamodel.validation;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -6,11 +6,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.CodeListItem;
 import org.openforis.idm.metamodel.ModelVersion;
+import org.openforis.idm.metamodel.validation.CodeParentValidator;
+import org.openforis.idm.metamodel.validation.CodeValidator;
+import org.openforis.idm.metamodel.validation.ValidationResults;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.ModelPathExpression;
-import org.openforis.idm.validation.CodeParentValidator;
-import org.openforis.idm.validation.CodeValidator;
-import org.openforis.idm.validation.ValidationResults;
 
 /**
  * @author G. Miceli

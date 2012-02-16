@@ -9,6 +9,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.openforis.idm.metamodel.validation.Check;
+import org.openforis.idm.metamodel.validation.ComparisonCheck;
+import org.openforis.idm.metamodel.validation.CustomCheck;
+import org.openforis.idm.metamodel.validation.DistanceCheck;
+import org.openforis.idm.metamodel.validation.PatternCheck;
+import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.util.CollectionUtil;
 
 

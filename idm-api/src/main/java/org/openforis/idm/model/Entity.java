@@ -24,10 +24,10 @@ import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
+import org.openforis.idm.metamodel.validation.MaxCountValidator;
+import org.openforis.idm.metamodel.validation.MinCountValidator;
+import org.openforis.idm.metamodel.validation.ValidationResults;
 import org.openforis.idm.util.CollectionUtil;
-import org.openforis.idm.validation.MaxCountValidator;
-import org.openforis.idm.validation.MinCountValidator;
-import org.openforis.idm.validation.ValidationResults;
 
 /**
  * @author G. Miceli

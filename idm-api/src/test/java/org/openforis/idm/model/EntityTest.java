@@ -8,10 +8,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.validation.ValidationResults;
 import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
-import org.openforis.idm.validation.ValidationResults;
 
 /**
  * @author G. Miceli

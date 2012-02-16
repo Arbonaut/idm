@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.metamodel;
+package org.openforis.idm.metamodel.validation;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RecordContext;

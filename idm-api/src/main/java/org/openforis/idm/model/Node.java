@@ -9,11 +9,11 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.validation.ValidationResults;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.RelevanceExpression;
 import org.openforis.idm.model.expression.RequiredExpression;
-import org.openforis.idm.validation.ValidationResults;
 
 
 /**

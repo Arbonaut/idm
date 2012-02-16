@@ -1,4 +1,4 @@
-package org.openforis.idm.validation;
+package org.openforis.idm.metamodel.validation;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -7,6 +7,10 @@ import java.util.List;
 
 import org.junit.Test;
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.validation.MinCountValidator;
+import org.openforis.idm.metamodel.validation.ValidationResult;
+import org.openforis.idm.metamodel.validation.ValidationResults;
+import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.Date;
 import org.openforis.idm.model.Entity;

@@ -1,6 +1,6 @@
 package org.openforis.idm.metamodel.xml.internal;
 
-import org.openforis.idm.metamodel.Check.Flag;
+import org.openforis.idm.metamodel.validation.Check.Flag;
 
 /**
  * @author G. Miceli

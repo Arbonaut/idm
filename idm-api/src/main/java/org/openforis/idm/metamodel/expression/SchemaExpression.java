@@ -1,16 +1,20 @@
 /**
  * 
  */
-package org.openforis.idm.metamodel;
+package org.openforis.idm.metamodel.expression;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
+import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.Schema;
+import org.openforis.idm.metamodel.expression.internal.NodeDefinitionPropertyHandler;
+import org.openforis.idm.metamodel.expression.internal.SchemaPropertyHandler;
 
 /**
  * @author M. Togna
  * 
  */
-class SchemaExpression {
+public class SchemaExpression {
 
 	private static JXPathContext CONTEXT;
 
@@ -23,27 +27,31 @@ class SchemaExpression {
 
 	private String expression;
 
-	SchemaExpression(String expression) {
-		this.setExpression(expression);
+	public SchemaExpression(String expression) {
+		this.expression = expression;
 	}
 
-	Object evaluate(NodeDefinition context) {
+	public Object evaluate(NodeDefinition context) {
 		if (!(Schema.class.isAssignableFrom(context.getClass()) || NodeDefinition.class.isAssignableFrom(context.getClass()))) {
 			throw new IllegalArgumentException("Unable to evaluate expression with context class " + context.getClass().getName());
 		}
 		JXPathContext jxPathContext = JXPathContext.newContext(CONTEXT, context);
 
-		String expr = this.expression.replaceAll("\\bparent\\(\\)", "__parent");
+		String expr = getNormalizedExpression();
 		Object result = jxPathContext.getValue(expr);
 		return result;
 	}
 
-	String getExpression() {
-		return this.expression;
+	private String getNormalizedExpression() {
+		return expression.replaceAll("\\bparent\\(\\)", "__parent");
 	}
 
-	void setExpression(String expression) {
-		this.expression = expression;
-	}
+	// String getExpression() {
+	// return expression;
+	// }
+	//
+	// void setExpression(String expression) {
+	// this.expression = expression;
+	// }
 
 }

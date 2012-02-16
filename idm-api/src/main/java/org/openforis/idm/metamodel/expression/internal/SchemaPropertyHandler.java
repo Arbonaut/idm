@@ -1,11 +1,13 @@
 /**
  * 
  */
-package org.openforis.idm.metamodel;
+package org.openforis.idm.metamodel.expression.internal;
 
 import java.util.List;
 
 import org.apache.commons.jxpath.DynamicPropertyHandler;
+import org.openforis.idm.metamodel.EntityDefinition;
+import org.openforis.idm.metamodel.Schema;
 
 /**
  * @author M. Togna
@@ -13,22 +15,12 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  */
 public class SchemaPropertyHandler implements DynamicPropertyHandler {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.jxpath.DynamicPropertyHandler#getPropertyNames(java.lang.Object)
-	 */
 	@Override
 	public String[] getPropertyNames(Object object) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.jxpath.DynamicPropertyHandler#getProperty(java.lang.Object, java.lang.String)
-	 */
 	@Override
 	public Object getProperty(Object object, String propertyName) {
 		if (object instanceof Schema) {
@@ -44,11 +36,6 @@ public class SchemaPropertyHandler implements DynamicPropertyHandler {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.jxpath.DynamicPropertyHandler#setProperty(java.lang.Object, java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public void setProperty(Object object, String propertyName, Object value) {
 		// TODO Auto-generated method stub

@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
-import org.openforis.idm.metamodel.Check;
+import org.openforis.idm.metamodel.validation.Check;
+import org.openforis.idm.metamodel.validation.ValidationResults;
 import org.openforis.idm.model.expression.InvalidExpressionException;
-import org.openforis.idm.validation.ValidationResults;
 
 /**
  * @author M. Togna

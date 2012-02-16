@@ -1,8 +1,8 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.RangeAttributeDefinition;
-import org.openforis.idm.validation.IntegerRangeValidator;
-import org.openforis.idm.validation.ValidationResults;
+import org.openforis.idm.metamodel.validation.IntegerRangeValidator;
+import org.openforis.idm.metamodel.validation.ValidationResults;
 
 /**
  * @author G. Miceli

@@ -2,8 +2,8 @@ package org.openforis.idm.model;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
-import org.openforis.idm.validation.CoordinateValidator;
-import org.openforis.idm.validation.ValidationResults;
+import org.openforis.idm.metamodel.validation.CoordinateValidator;
+import org.openforis.idm.metamodel.validation.ValidationResults;
 
 /**
  * @author G. Miceli

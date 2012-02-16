@@ -1,8 +1,8 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.DateAttributeDefinition;
-import org.openforis.idm.validation.DateValidator;
-import org.openforis.idm.validation.ValidationResults;
+import org.openforis.idm.metamodel.validation.DateValidator;
+import org.openforis.idm.metamodel.validation.ValidationResults;
 
 /**
  * @author G. Miceli

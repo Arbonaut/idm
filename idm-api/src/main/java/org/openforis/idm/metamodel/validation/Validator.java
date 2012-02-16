@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.validation;
+package org.openforis.idm.metamodel.validation;
 
 import org.openforis.idm.model.Node;
 

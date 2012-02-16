@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.validation;
+package org.openforis.idm.metamodel.validation;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;

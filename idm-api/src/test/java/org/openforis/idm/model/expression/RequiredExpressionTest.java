@@ -60,14 +60,6 @@ public class RequiredExpressionTest extends AbstractExpressionTest {
 		Assert.assertFalse(b);
 	}
 	
-	@Test
-	public void test() throws InvalidExpressionException{
-		String expr = "number('e') > 10";
-		DefaultValueExpression expression = getExpressionFactory().createDefaultValueExpression(expr);
-		Object object = expression.evaluate(null, null);
-		System.out.println(object);
-	}
-
 	@SuppressWarnings("unused")
 	private boolean evaluateExpression(String expr) throws InvalidExpressionException {
 		Record record = getRecord();

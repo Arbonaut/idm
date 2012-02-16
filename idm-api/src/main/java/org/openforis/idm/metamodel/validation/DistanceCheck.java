@@ -46,19 +46,19 @@ public class DistanceCheck extends Check {
 	private String sourcePointExpression;
 
 	public String getDestinationPointExpression() {
-		return this.destinationPointExpression;
+		return destinationPointExpression;
 	}
 
 	public String getMinDistanceExpression() {
-		return this.minDistanceExpression;
+		return minDistanceExpression;
 	}
 
 	public String getMaxDistanceExpression() {
-		return this.maxDistanceExpression;
+		return maxDistanceExpression;
 	}
 
 	public String getSourcePointExpression() {
-		return this.sourcePointExpression;
+		return sourcePointExpression;
 	}
 
 	@Override
@@ -75,14 +75,14 @@ public class DistanceCheck extends Check {
 
 			double distance = CoordinateOperations.orthodromicDistance(from, to);
 
-			if (getMaxDistanceExpression() != null) {
-				Double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, node, getMaxDistanceExpression());
+			if (maxDistanceExpression != null) {
+				double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, node, maxDistanceExpression);
 				if (distance > maxDistance) {
 					valid = false;
 				}
 			}
-			if (getMinDistanceExpression() != null) {
-				Double minDistance = evaluateDistanceExpression(recordContext, parentEntity, node, getMinDistanceExpression());
+			if (minDistanceExpression != null) {
+				double minDistance = evaluateDistanceExpression(recordContext, parentEntity, node, minDistanceExpression);
 				if (distance < minDistance) {
 					valid = false;
 				}

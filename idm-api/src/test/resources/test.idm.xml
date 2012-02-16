@@ -3118,8 +3118,8 @@
             </code>
             <coordinate name="vehicle_location" required="true">
                 <label>Vehicle location</label>
-                <distance max="100000" to="lookup('sampling_design', 'plot_centre', id, 1)" flag="error"/>
-                <distance max="50000" to="lookup('sampling_design', 'plot_centre', id, 1)" flag="warn"/>
+                <distance max="100000" to="idm:lookup('sampling_design', 'plot_centre', 'id', 1)" flag="error"/>
+                <distance max="50000" to="idm:lookup('sampling_design', 'plot_centre', 'id', 1)" flag="warn"/>
             </coordinate>
             <text name="gps_model">
                 <label>GPS model</label>

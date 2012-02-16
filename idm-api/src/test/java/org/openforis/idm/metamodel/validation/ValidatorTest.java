@@ -17,9 +17,11 @@ import org.openforis.idm.model.TestRecordContext;
 /**
  * @author G. Miceli
  */
-public class ValidatorTest {
+public abstract class ValidatorTest {
+	
 	protected static Survey survey;
 	protected Entity cluster;
+	protected Entity household;
 
 	@BeforeClass
 	public static void setUp() throws IOException, InvalidIdmlException {
@@ -35,5 +37,7 @@ public class ValidatorTest {
 	public void createCluster() {
 		Record record = new Record(new TestRecordContext(), survey, "2.0");
 		this.cluster = record.createRootEntity("cluster");
+		Record record2 = new Record(new TestRecordContext(), survey, "2.0");
+		this.household  = record2.createRootEntity("household");
 	}
 }

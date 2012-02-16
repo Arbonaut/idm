@@ -55,20 +55,6 @@ public class CheckExpressionTest extends AbstractExpressionTest {
 		Assert.assertTrue(b);
 	}
 	
-	@Test
-	public void test() throws InvalidExpressionException {
-		//plot_direction
-		Record record = getRecord();
-		Entity cluster = record.getRootEntity();
-		RealAttribute plotDirection = (RealAttribute) cluster.get("plot_direction", 0);
-		plotDirection.setValue(500D);
-
-		String expr = "450 > plot_direction";
-		boolean b = evaluateExpression(expr, plotDirection);
-		System.err.println(b);
-		//Assert.assertFalse(b);
-	}
-
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> thisNode) throws InvalidExpressionException {
 		CheckExpression expression = getExpressionFactory().createCheckExpression(expr);
 		boolean b = expression.evaluate(thisNode.getParent(), thisNode);

@@ -51,7 +51,7 @@ public class ModelJXPathContext extends JXPathContextReferenceImpl {
 			}
 		}
 	}
-
+    
 	@Override
 	protected CompiledExpression compilePath(String xpath) {
 		Expression expr = compileExpression(xpath);

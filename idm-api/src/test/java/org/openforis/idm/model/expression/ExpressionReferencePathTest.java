@@ -4,24 +4,13 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 
-public class ExpressionReferencePathTest extends AbstractExpressionTest {
-
-	// @SuppressWarnings("unused")
-	// private Object evaluateExpression(String expr) throws InvalidExpressionException {
-	// Record record = getRecord();
-	// Entity rootEntity = record.getRootEntity();
-	// String name = rootEntity.getName();
-	// Assert.assertEquals("cluster", name);
-	//
-	// DefaultValueExpression expression = getValidationContext().getExpressionFactory().createDefaultValueExpression(expr);
-	// Object object = expression.evaluate(rootEntity);
-	// return object;
-	// }
+public class ExpressionReferencePathTest extends AbstractTest {
 
 	@Test
 	public void testReferencePath() throws InvalidExpressionException {
-		ExpressionFactory ef = getRecordContext().getExpressionFactory();
+		ExpressionFactory ef = cluster.getRecord().getContext().getExpressionFactory();
 
 		String expression = "$this  <= ../../total_height * 8";
 		CheckExpression expr = ef.createCheckExpression(expression);

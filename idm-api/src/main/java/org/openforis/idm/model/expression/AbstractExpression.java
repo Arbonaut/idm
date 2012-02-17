@@ -34,6 +34,10 @@ abstract class AbstractExpression {
 		this.compiledExpression = compiledExpression;
 	}
 
+	/**
+	 * Returns the list of reference paths of this expression
+	 * @return
+	 */
 	public List<String> getReferencePaths() {
 		List<String> list = new ArrayList<String>();
 		List<ModelLocationPath> paths = compiledExpression.getReferencePaths();
@@ -57,18 +61,14 @@ abstract class AbstractExpression {
 		}
 	}
 
-	// protected Object evaluateSingle(Node<? extends NodeDefinition> context) throws InvalidExpressionException {
-	// JXPathContext jxPathContext = createJXPathContext(context);
-	// String expr = getNormalizedExpression();
-	// Object object = null;
-	// try {
-	// object = jxPathContext.getValue(expr);
-	// } catch (IllegalArgumentException e) {
-	// throw new InvalidExpressionException("Invalid path " + this.expression);
-	// }
-	// return object;
-	// }
-
+	/**
+	 * Returns a list of Node that matches the expression 
+	 * 
+	 * @param contextNode
+	 * @param thisNode
+	 * @return
+	 * @throws InvalidExpressionException
+	 */
 	protected List<Node<?>> evaluateMultiple(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
 		try {
 			verifyPaths(contextNode);
@@ -93,37 +93,12 @@ abstract class AbstractExpression {
 		}
 	}
 
-	// protected List<Node<?>> evaluateMultiple(Node<? extends NodeDefinition> context) throws InvalidExpressionException {
-	// List<Node<?>> list = new ArrayList<Node<?>>();
-	// JXPathContext jxPathContext = createJXPathContext(context);
-	// String expr = getNormalizedExpression();
-	// Iterator<?> pointers = jxPathContext.iteratePointers(expr);
-	// while (pointers.hasNext()) {
-	// ModelNodePointer pointer = (ModelNodePointer) pointers.next();
-	// Object node = pointer.getNode();
-	// if (node != null && node instanceof Node) {
-	// @SuppressWarnings("unchecked")
-	// Node<NodeDefinition> n = (Node<NodeDefinition>) node;
-	// list.add(n);
-	// }
-	// }
-	// return list;
-	// }
-
-	// @SuppressWarnings("unused")
-	// @Deprecated
-	// private Iterator<?> evaluateInternal(Node<? extends NodeDefinition> context) throws InvalidExpressionException {
-	// JXPathContext jxPathContext = createJXPathContext(context);
-	// String expr = getNormalizedExpression();
-	// try {
-	// Iterator<?> iterator = jxPathContext.iterate(expr);
-	// return iterator;
-	// } catch (IllegalArgumentException e) {
-	// throw new InvalidExpressionException("Invalid path " + this.expression);
-	// }
-	// }
-
-	protected void verifyPaths(Node<?> contextNode) throws InvalidExpressionException {
+	/**
+	 * Verifies that the reference paths of this expression matches the definition of the contextNode 
+	 * @param contextNode
+	 * @throws InvalidExpressionException if the path is invalid
+	 */
+	private void verifyPaths(Node<?> contextNode) throws InvalidExpressionException {
 		List<String> paths = getReferencePaths();
 		for (String path : paths) {
 			verifyPath(contextNode, path);
@@ -157,13 +132,15 @@ abstract class AbstractExpression {
 		}
 	}
 
-	protected JXPathContext createJXPathContext(Node<?> contextNode, Node<?> thisNode) {
+	/**
+	 * Creates a new JXPath context in order to evaluate the expression
+	 * 
+	 * @param contextNode
+	 * @param thisNode
+	 * @return
+	 */
+	private JXPathContext createJXPathContext(Node<?> contextNode, Node<?> thisNode) {
 		JXPathContext jxPathContext = ModelJXPathContext.newContext(this.jxPathContext, contextNode);
-		// if (context instanceof Attribute) {
-		// @SuppressWarnings("unchecked")
-		// Object value = ((Attribute<? extends AttributeDefinition, ?>) context).getValue();
-		// jxPathContext.getVariables().declareVariable("this", value);
-		// }
 		if (thisNode != null) {
 			Variables variables = jxPathContext.getVariables();
 			variables.declareVariable("this", thisNode);

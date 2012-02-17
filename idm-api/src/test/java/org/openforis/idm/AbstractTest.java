@@ -16,6 +16,7 @@ import org.openforis.idm.model.TestRecordContext;
 
 /**
  * @author G. Miceli
+ * @author M. Togna
  */
 public abstract class AbstractTest {
 

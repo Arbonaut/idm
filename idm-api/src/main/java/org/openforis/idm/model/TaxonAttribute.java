@@ -7,21 +7,21 @@ import org.openforis.idm.metamodel.validation.ValidationResults;
  * @author G. Miceli
  * @author M. Togna
  */
-public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOccurence> {
+public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOccurrence> {
 
 	public TaxonAttribute(TaxonAttributeDefinition definition) {
 		super(definition);
 	}
 
 	@Override
-	public TaxonOccurence createValue(String string) {
+	public TaxonOccurrence createValue(String string) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		TaxonOccurence taxonOccurence = getValue();
-		return taxonOccurence.getTaxon() == null;
+		TaxonOccurrence taxonOccurrence = getValue();
+		return taxonOccurrence.getTaxon() == null;
 	}
 
 	@Override

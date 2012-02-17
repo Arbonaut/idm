@@ -7,17 +7,17 @@ import org.openforis.idm.model.species.TaxonVernacularName;
  * @author G. Miceli
  * @author M. Togna
  */
-public final class TaxonOccurence {
+public final class TaxonOccurrence {
 
 	private Taxon taxon;
 	private TaxonVernacularName vernacularName;
 
-	public TaxonOccurence(Taxon taxon) {
+	public TaxonOccurrence(Taxon taxon) {
 		super();
 		this.taxon = taxon;
 	}
 
-	public TaxonOccurence(Taxon taxon, TaxonVernacularName vernacularName) {
+	public TaxonOccurrence(Taxon taxon, TaxonVernacularName vernacularName) {
 		super();
 		this.taxon = taxon;
 		this.vernacularName = vernacularName;

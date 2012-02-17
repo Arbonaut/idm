@@ -10,6 +10,7 @@ import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointer;
 import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Date;
 import org.openforis.idm.model.DateAttribute;
@@ -35,18 +36,28 @@ public class ModelNodePointer extends DynamicPointer {
 	@Override
 	public Object getValue() {
 		Object node = super.getValue();
-		if (node instanceof TimeAttribute) {
-			Time time = ((TimeAttribute) node).getValue();
-			return time.getHour() * 100 + time.getMinute();
-		} else if (node instanceof DateAttribute) {
-			Date date = ((DateAttribute) node).getValue();
-			return (date.getYear() * 10000) + (date.getMonth() * 100) + date.getDay();
-		} else if (node instanceof CodeAttribute) {
-			return ((CodeAttribute) node).getValue().getCode();
-		} else if (node instanceof Attribute) {
-			return ((Attribute<?, ?>) node).getValue();
+		if (node instanceof Attribute) {
+			return getValue((Attribute<?, ?>) node);
+		} else {
+			return node;
 		}
-		return null;
+	}
+
+	private Object getValue(Attribute<?, ?> attribute) {
+		if (attribute.getValue() == null) {
+			return null;
+		} else if (attribute instanceof TimeAttribute) {
+			Time time = ((TimeAttribute) attribute).getValue();
+			return time.getHour() * 100 + time.getMinute();
+		} else if (attribute instanceof DateAttribute) {
+			Date date = ((DateAttribute) attribute).getValue();
+			return (date.getYear() * 10000) + (date.getMonth() * 100) + date.getDay();
+		} else if (attribute instanceof CodeAttribute) {
+			Code code = ((CodeAttribute) attribute).getValue();
+			return code.getCode();
+		} else {
+			return attribute.getValue();
+		}
 	}
 
 }

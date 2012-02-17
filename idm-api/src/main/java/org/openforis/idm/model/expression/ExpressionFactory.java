@@ -11,7 +11,7 @@ import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
-import org.openforis.idm.metamodel.validation.ExternalLookupProvider;
+import org.openforis.idm.metamodel.validation.LookupProvider;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.expression.internal.IDMFunctions;
@@ -28,7 +28,7 @@ import org.openforis.idm.model.expression.internal.RecordPropertyHandler;
 public class ExpressionFactory {
 
 	private ModelJXPathContext jxPathContext;
-	private ExternalLookupProvider externalLookupProvider;
+	private LookupProvider lookupProvider;
 
 	public ExpressionFactory() {
 		System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY, "org.openforis.idm.model.expression.internal.ModelJXPathContextFactory");
@@ -84,13 +84,13 @@ public class ExpressionFactory {
 		return expr;
 	}
 
-	public ExternalLookupProvider getExternalLookupProvider() {
-		return externalLookupProvider;
+	public LookupProvider getLookupProvider() {
+		return lookupProvider;
 	}
 
-	public void setExternalLookupProvider(ExternalLookupProvider externalLookupProvider) {
-		this.externalLookupProvider = externalLookupProvider;
-		jxPathContext.setExternalLookupProvider(externalLookupProvider);
+	public void setLookupProvider(LookupProvider lookupProvider) {
+		this.lookupProvider = lookupProvider;
+		jxPathContext.setLookupProvider(lookupProvider);
 
 		FunctionLibrary functionLibrary = new FunctionLibrary();
 		functionLibrary.addFunctions(new ClassFunctions(IDMFunctions.class, "idm"));

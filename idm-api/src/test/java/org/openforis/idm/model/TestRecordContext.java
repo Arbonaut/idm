@@ -1,6 +1,6 @@
 package org.openforis.idm.model;
 
-import org.openforis.idm.metamodel.validation.ExternalLookupProvider;
+import org.openforis.idm.metamodel.validation.LookupProvider;
 import org.openforis.idm.model.expression.ExpressionFactory;
 
 public class TestRecordContext implements RecordContext {
@@ -9,8 +9,8 @@ public class TestRecordContext implements RecordContext {
 
 	public TestRecordContext() {
 		expressionFactory = new ExpressionFactory();
-		ExternalLookupProvider externalLookupProvider = new TestExternalLookupProviderImpl();
-		expressionFactory.setExternalLookupProvider(externalLookupProvider);
+		LookupProvider lookupProvider = new TestLookupProviderImpl();
+		expressionFactory.setLookupProvider(lookupProvider);
 	}
 
 	@Override

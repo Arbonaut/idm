@@ -15,7 +15,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.ri.Parser;
 import org.apache.commons.jxpath.ri.compiler.Expression;
-import org.openforis.idm.metamodel.validation.ExternalLookupProvider;
+import org.openforis.idm.metamodel.validation.LookupProvider;
 import org.openforis.idm.model.Node;
 
 /**
@@ -30,7 +30,7 @@ public class ModelJXPathContext extends JXPathContextReferenceImpl {
 	// The frequency of the cache cleanup
 	private static final int CLEANUP_THRESHOLD = 500;
 
-	private ExternalLookupProvider externalLookupProvider;
+	private LookupProvider lookupProvider;
 	private Map<String, Object> compiled;
 
 	protected ModelJXPathContext(JXPathContext parentContext, Node<?> contextBean) {
@@ -47,7 +47,7 @@ public class ModelJXPathContext extends JXPathContextReferenceImpl {
 	private static void copyProperties(JXPathContext fromContext, ModelJXPathContext toContext) {
 		if (!(fromContext == null || toContext == null)) {
 			if (fromContext instanceof ModelJXPathContext) {
-				toContext.setExternalLookupProvider(((ModelJXPathContext) fromContext).getExternalLookupProvider());
+				toContext.setLookupProvider(((ModelJXPathContext) fromContext).getLookupProvider());
 			}
 		}
 	}
@@ -64,12 +64,12 @@ public class ModelJXPathContext extends JXPathContextReferenceImpl {
 		return COMPILER;
 	}
 
-	public ExternalLookupProvider getExternalLookupProvider() {
-		return externalLookupProvider;
+	public LookupProvider getLookupProvider() {
+		return lookupProvider;
 	}
 
-	public void setExternalLookupProvider(ExternalLookupProvider lookupProvider) {
-		this.externalLookupProvider = lookupProvider;
+	public void setLookupProvider(LookupProvider lookupProvider) {
+		this.lookupProvider = lookupProvider;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -22,6 +22,7 @@ import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.FileAttributeDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
 import org.openforis.idm.metamodel.validation.MaxCountValidator;
@@ -209,6 +210,14 @@ public class Entity extends Node<EntityDefinition> {
 
 	public TextAttribute addValue(String name, String value) {
 		return addValueInternal(name, value, null, TextAttribute.class, TextAttributeDefinition.class);
+	}
+
+	public TaxonAttribute addValue(String name, TaxonOccurrence value, int idx) {
+		return addValueInternal(name, value, idx, TaxonAttribute.class, TaxonAttributeDefinition.class);
+	}
+
+	public TaxonAttribute addValue(String name, TaxonOccurrence value) {
+		return addValueInternal(name, value, null, TaxonAttribute.class, TaxonAttributeDefinition.class);
 	}
 
 	public TimeAttribute addValue(String name, Time value, int idx) {

@@ -21,7 +21,7 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 	@Override
 	public boolean isEmpty() {
 		TaxonOccurrence taxonOccurrence = getValue();
-		return taxonOccurrence.getTaxon() == null;
+		return taxonOccurrence == null || taxonOccurrence.getTaxon() == null;
 	}
 
 	@Override

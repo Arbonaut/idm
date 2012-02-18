@@ -87,8 +87,15 @@ public final class Time {
 		if (tokens != 2) {
 			throw new IllegalArgumentException("Invalid time " + string);
 		}
-		int hour = Integer.parseInt(st.nextToken());
-		int minute = Integer.parseInt(st.nextToken());
-		return new Time(hour, minute);
+		String hour = st.nextToken();
+		String minute = st.nextToken();
+		return parseTime(hour, minute);
+	}
+	
+	public static Time parseTime(String hour, String minute) {
+		int h = Integer.parseInt(hour);
+		int m = Integer.parseInt(minute);
+		return new Time(h, m);
+		
 	}
 }

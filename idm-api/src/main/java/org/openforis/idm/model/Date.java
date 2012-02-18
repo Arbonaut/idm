@@ -21,16 +21,23 @@ public final class Date {
 		this.day = day;		
 	}
 
+	public static Date parseDate(String year, String month, String day) {
+		int y = Integer.parseInt(year);
+		int m = Integer.parseInt(month);
+		int d = Integer.parseInt(day);
+		return new Date(y, m, d);
+	}
+	
 	public static Date parseDate(String string){
 		StringTokenizer st = new StringTokenizer(string, DELIM);
 		int tokens = st.countTokens();
 		if(tokens != 3){
 			throw new IllegalArgumentException("Invalid date " + string);
 		}
-		int year = Integer.parseInt(st.nextToken());
-		int month = Integer.parseInt(st.nextToken());
-		int day = Integer.parseInt(st.nextToken());
-		return new Date(year, month, day);
+		String year = st.nextToken();
+		String month = st.nextToken();
+		String day = st.nextToken();
+		return parseDate(year, month, day);
 	}
 	
 	public Integer getDay() {

@@ -12,6 +12,18 @@ public final class TaxonOccurrence {
 	private String languageCode;
 	private String languageVariety;
 
+	public TaxonOccurrence() {
+		super();
+	}
+
+	public TaxonOccurrence(String code, String scientificName, String vernacularName, String languageCode, String languageVariety) {
+		this.code = code;
+		this.scientificName = scientificName;
+		this.vernacularName = vernacularName;
+		this.languageCode = languageCode;
+		this.languageVariety = languageVariety;
+	}
+
 	public String getCode() {
 		return code;
 	}

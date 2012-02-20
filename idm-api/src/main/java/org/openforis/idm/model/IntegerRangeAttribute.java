@@ -1,18 +1,16 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.RangeAttributeDefinition;
-import org.openforis.idm.metamodel.validation.IntegerRangeValidator;
-import org.openforis.idm.metamodel.validation.ValidationResults;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public class IntegerRangeAttribute extends Attribute<RangeAttributeDefinition, IntegerRange> {
+public class IntegerRangeAttribute extends NumericRangeAttribute<IntegerRange, Integer> {
 
 	public IntegerRangeAttribute(RangeAttributeDefinition definition) {
 		super(definition);
-		if (!definition.isReal()) {
+		if (!definition.isInteger()) {
 			throw new IllegalArgumentException("Attempted to create IntegerRangeAttribute with real definition");
 		}
 	}
@@ -23,17 +21,8 @@ public class IntegerRangeAttribute extends Attribute<RangeAttributeDefinition, I
 	}
 
 	@Override
-	public boolean isEmpty() {
-		IntegerRange v = getValue();
-		return v == null || (v.getFrom() == null && v.getTo() == null);
-	}
-
-	@Override
-	protected boolean validateValue(ValidationResults results) {
-		IntegerRangeValidator validator = new IntegerRangeValidator();
-		boolean valid = validator.validate(this);
-		results.addResult(this, validator, valid);
-		return valid;
+	protected IntegerRange createRange(Integer from, Integer to) {
+		return new IntegerRange(from, to);
 	}
 
 }

@@ -24,7 +24,7 @@ public class Precision {
 
 	@XmlTransient
 	@XmlParent
-	private NumericAttributeDefinition definition;
+	private AttributeDefinition definition;
 	
 	@XmlAttribute(name = "decimalDigits")
 	private Integer decimalDigits;
@@ -69,11 +69,11 @@ public class Precision {
 		return defaultPrecision == null ? false : defaultPrecision;
 	}
 
-	public NumericAttributeDefinition getDefinition() {
+	public AttributeDefinition getDefinition() {
 		return definition;
 	}
 
-	protected void setDefinition(NumericAttributeDefinition definition) {
+	protected void setDefinition(AttributeDefinition definition) {
 		this.definition = definition;
 	}
 }

@@ -12,18 +12,12 @@ import org.openforis.idm.metamodel.validation.ValidationResults;
 public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition, Coordinate> {
 
 	public CoordinateAttribute(CoordinateAttributeDefinition definition) {
-		super(definition);
+		super(definition, 3);
 	}
 
 	@Override
 	public Coordinate createValue(String string) {
 		return Coordinate.parseCoordinate(string);
-	}
-
-	@Override
-	public boolean isEmpty() {
-		Coordinate c = getValue();
-		return c == null || (c.getX() == null && c.getY() == null && StringUtils.isBlank(c.getSrsId()));
 	}
 
 	@Override

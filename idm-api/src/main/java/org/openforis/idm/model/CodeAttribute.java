@@ -19,20 +19,39 @@ import org.openforis.idm.model.expression.ModelPathExpression;
 public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 
 	public CodeAttribute(CodeAttributeDefinition definition) {
-		super(definition);
+		super(definition, 2);
 	}
 
 	@Override
 	public Code createValue(String string) {
 		return new Code(string);
 	}
-
-	@Override
-	public boolean isEmpty() {
-		Code c = getValue();
-		return c == null || (StringUtils.isBlank(c.getCode()) && StringUtils.isBlank(c.getQualifier()));
+	
+	@SuppressWarnings("unchecked")
+	public Field<String> getCodeField() {
+		return (Field<String>) getField(0);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Field<String> getQualifierField() {
+		return (Field<String>) getField(1);
 	}
 
+	@Override
+	public Code getValue() {
+		String code = getCodeField().getValue();
+		String qualifier = getQualifierField().getValue();
+		return new Code(code, qualifier);
+	}
+	
+	@Override
+	public void setValue(Code value) {
+		String code = value.getCode();
+		String qualifier = value.getQualifier();
+		getCodeField().setValue(code);
+		getQualifierField().setValue(qualifier);
+	}
+	
 	@Override
 	protected boolean validateValue(ValidationResults results) {
 		CodeParentValidator parentValidator = new CodeParentValidator();

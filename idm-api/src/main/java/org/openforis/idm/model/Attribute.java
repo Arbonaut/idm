@@ -22,26 +22,34 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
  */
 public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D> {
 
-	private V value;
-	private String remarks;
-	private Character symbol;
-
-	private AttributeMetadata metadata;
+	private Field<?>[] fields;
+	
 	private boolean defaultValue;
 	
-	public Attribute(D definition) {
+	@SuppressWarnings("rawtypes")
+	protected Attribute(D definition, int numFields) {
 		super(definition);
+		this.fields = new Field[numFields];
+		for (int i = 0; i < numFields; i++) {
+			fields[i] = new Field();
+		}
+	}
+	
+	public Field<?> getField(int idx) {
+		return fields[idx];
 	}
 	
 	public abstract V createValue(String string);
 	
-	public V getValue() {
-		return this.value;
-	}
+	/**
+	 * @return a non-null, immutable value
+	 */
+	public abstract V getValue();
 
-	public void setValue(V value) {
-		this.value = value;
-	}
+	/**
+	 * @param value a non-null, immutable value to set
+	 */
+	public abstract void setValue(V value);
 	
 	@Override
 	public ValidationResults validate() {
@@ -107,7 +115,12 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	 */
 	@Override
 	public boolean isEmpty() {
-		return value == null || value.toString().trim().length() == 0;
+		for (Field<?> field : fields) {
+			if ( !field.isEmpty() ) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean isDefaultValue() {
@@ -117,30 +130,6 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	public void applyDefaultValue() throws InvalidExpressionException {
 		this.value = getDefaultValue();
 		this.defaultValue = true;
-	}
-	
-	public AttributeMetadata getMetadata() {
-		return metadata;
-	}
-	
-	public void setMetadata(AttributeMetadata metadata) {
-		this.metadata = metadata;
-	}
-	
-	public String getRemarks() {
-		return remarks;
-	}
-
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
-
-	public Character getSymbol() {
-		return symbol;
-	}
-
-	public void setSymbol(Character symbol) {
-		this.symbol = symbol;
 	}
 
 	/*

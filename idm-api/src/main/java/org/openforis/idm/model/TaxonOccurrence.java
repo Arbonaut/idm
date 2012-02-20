@@ -1,51 +1,55 @@
 package org.openforis.idm.model;
 
-import org.openforis.idm.model.species.Taxon;
-import org.openforis.idm.model.species.TaxonVernacularName;
-
 /**
  * @author G. Miceli
  * @author M. Togna
  */
 public final class TaxonOccurrence {
 
-	private Taxon taxon;
-	private TaxonVernacularName vernacularName;
+	private String code;
+	private String scientificName;
+	private String vernacularName;
+	private String languageCode;
+	private String languageVariety;
 
-	public TaxonOccurrence(Taxon taxon) {
-		super();
-		this.taxon = taxon;
+	public String getCode() {
+		return code;
 	}
 
-	public TaxonOccurrence(Taxon taxon, TaxonVernacularName vernacularName) {
-		super();
-		this.taxon = taxon;
-		this.vernacularName = vernacularName;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public Taxon getTaxon() {
-		return taxon;
+	public String getScientificName() {
+		return scientificName;
 	}
 
-	public TaxonVernacularName getVernacularName() {
+	public void setScientificName(String scientificName) {
+		this.scientificName = scientificName;
+	}
+
+	public String getVernacularName() {
 		return vernacularName;
 	}
 
-	public void setTaxon(Taxon taxon) {
-		this.taxon = taxon;
-	}
-
-	public void setVernacularName(TaxonVernacularName vernacularName) {
+	public void setVernacularName(String vernacularName) {
 		this.vernacularName = vernacularName;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{code:").append(taxon.getCode());
-		sb.append(", scientificName:").append(taxon.getScientificName());
-		// TODO append other names
-		sb.append("}");
-		return sb.toString();
+	public String getLanguageCode() {
+		return languageCode;
 	}
+
+	public void setLanguageCode(String languageCode) {
+		this.languageCode = languageCode;
+	}
+
+	public String getLanguageVariety() {
+		return languageVariety;
+	}
+
+	public void setLanguageVariety(String languageVariety) {
+		this.languageVariety = languageVariety;
+	}
+
 }

@@ -15,7 +15,6 @@ public final class Time {
 	private final Integer minute;
 
 	public Time(Integer hour, Integer minute) {
-		super();
 		this.hour = hour;
 		this.minute = minute;
 	}

@@ -6,7 +6,7 @@ import org.openforis.idm.metamodel.BooleanAttributeDefinition;
  * @author G. Miceli
  * @author M. Togna
  */
-public class BooleanAttribute extends Attribute<BooleanAttributeDefinition, Boolean> {
+public class BooleanAttribute extends AtomicAttribute<BooleanAttributeDefinition, Boolean> {
 
 	public BooleanAttribute(BooleanAttributeDefinition definition) {
 		super(definition);

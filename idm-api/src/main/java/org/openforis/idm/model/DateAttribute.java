@@ -11,12 +11,45 @@ import org.openforis.idm.metamodel.validation.ValidationResults;
 public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 
 	public DateAttribute(DateAttributeDefinition definition) {
-		super(definition);
+		super(definition, 3);
 	}
 
 	@Override
 	public Date createValue(String string) {
 		return Date.parseDate(string);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Field<Integer> getYearField() {
+		return (Field<Integer>) getField(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Field<Integer> getMonthField() {
+		return (Field<Integer>) getField(1);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Field<Integer> getDayField() {
+		return (Field<Integer>) getField(2);
+	}
+
+	@Override
+	public Date getValue() {
+		Integer year = getYearField().getValue();
+		Integer month = getMonthField().getValue();
+		Integer day = getDayField().getValue();
+		return new Date(year, month, day);
+	}
+
+	@Override
+	public void setValue(Date date) {
+		Integer year = date.getYear();
+		Integer month = date.getMonth();
+		Integer day = date.getDay();
+		getYearField().setValue(year);
+		getMonthField().setValue(month);
+		getDayField().setValue(day);
 	}
 	
 	@Override
@@ -27,9 +60,4 @@ public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 		return result;
 	}
 	
-	@Override
-	public boolean isEmpty() {
-		Date d = getValue();
-		return d == null || (d.getYear() == null && d.getMonth() == null || d.getDay() == null);
-	}
 }

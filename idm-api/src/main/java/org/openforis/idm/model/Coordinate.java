@@ -27,21 +27,15 @@ public final class Coordinate {
 		Matcher matcher = PATTERN.matcher(string);
 		if (matcher.matches()) {
 			String srsId = matcher.group(1);
-			String x = matcher.group(2);
-			String y = matcher.group(3);
-			return parseCoordinate(x, y, srsId);
+			long x = Long.parseLong(matcher.group(2));
+			long y = Long.parseLong(matcher.group(3));
+			Coordinate coordinate = new Coordinate(x, y, srsId);
+			return coordinate;
 		} else {
 			throw new IllegalArgumentException("Unable to convert " + string + " to a valid coordinate");
 		}
 	}
 	
-	public static Coordinate parseCoordinate(String x, String y, String srsId) {
-		long xL = Long.parseLong(x);
-		long yL = Long.parseLong(y);
-		Coordinate coordinate = new Coordinate(xL, yL, srsId);
-		return coordinate;
-	}
-
 	public Coordinate(Long x, Long y, String srsId) {
 		this.x = x;
 		this.y = y;

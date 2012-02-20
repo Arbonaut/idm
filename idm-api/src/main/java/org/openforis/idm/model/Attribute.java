@@ -128,35 +128,14 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 	
 	public void applyDefaultValue() throws InvalidExpressionException {
-		this.value = getDefaultValue();
+		V value = getDefaultValue();
+		setValue(value);
 		this.defaultValue = true;
 	}
 
-	/*
-	public List<CheckResult> getErrors() {
-		List<CheckResult> errors = this.errors != null ? this.errors : new ArrayList<CheckResult>();
-		return Collections.unmodifiableList(errors);
-	}
-
-	@Override
-	public List<CheckResult> getWarnings() {
-		List<CheckResult> warnings = this.warnings != null ? this.warnings : new ArrayList<CheckResult>();
-		return Collections.unmodifiableList(warnings);
-	}
-
-	@Override
-	public boolean hasErrors() {
-		return (this.errors != null) && !this.errors.isEmpty();
-	}
-
-	@Override
-	public boolean hasWarnings() {
-		return (this.warnings != null) && !this.warnings.isEmpty();
-	}
-*/
-
 	@Override
 	protected void write(StringWriter sw, int indent) {
+		V value = getValue();
 		for (int i = 0; i < indent; i++) {
 			sw.append('\t');
 		}
@@ -165,5 +144,4 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		sw.append(value == null ? "!!null" : value.toString());
 		sw.append("\n");
 	}
-	
 }

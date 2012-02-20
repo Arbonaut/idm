@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.internal.NumericAttributeDefinitionTypeAdapter;
+import org.openforis.idm.metamodel.xml.internal.RangeAttributeDefinitionTypeAdapter;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -31,7 +31,7 @@ public class RangeAttributeDefinition extends AttributeDefinition {
 	}
 	
 	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(NumericAttributeDefinitionTypeAdapter.class)
+	@XmlJavaTypeAdapter(RangeAttributeDefinitionTypeAdapter.class)
 	private Type type;
 
 	@XmlElement(name = "precision", type = Precision.class)

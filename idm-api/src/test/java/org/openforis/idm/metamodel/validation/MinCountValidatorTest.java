@@ -86,7 +86,7 @@ public class MinCountValidatorTest extends AbstractTest {
 		assertTrue(containsMinCountError(errors, "time_study"));
 	}
 
-	@Test
+	@Test(expected=NullPointerException.class)
 	public void testEmptyRequiredMultipleEntity() {
 		Entity timeStudy = cluster.addEntity("time_study");
 		timeStudy.addValue("date", (Date) null);

@@ -22,6 +22,7 @@ import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.FileAttributeDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.RangeAttributeDefinition;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
@@ -196,6 +197,22 @@ public class Entity extends Node<EntityDefinition> {
 		return addValueInternal(name, value, null, IntegerAttribute.class, NumberAttributeDefinition.class);
 	}
 
+	public RealRangeAttribute addValue(String name, RealRange value, int idx) {
+		return addValueInternal(name, value, idx, RealRangeAttribute.class, RangeAttributeDefinition.class);
+	}
+
+	public RealRangeAttribute addValue(String name, RealRange value) {
+		return addValueInternal(name, value, null, RealRangeAttribute.class, RangeAttributeDefinition.class);
+	}
+
+	public IntegerRangeAttribute addValue(String name, IntegerRange value, int idx) {
+		return addValueInternal(name, value, idx, IntegerRangeAttribute.class, RangeAttributeDefinition.class);
+	}
+
+	public IntegerRangeAttribute addValue(String name, IntegerRange value) {
+		return addValueInternal(name, value, null, IntegerRangeAttribute.class, RangeAttributeDefinition.class);
+	}
+	
 	public DateAttribute addValue(String name, Date value, int idx) {
 		return addValueInternal(name, value, idx, DateAttribute.class, DateAttributeDefinition.class);
 	}

@@ -6,7 +6,7 @@ import org.openforis.idm.metamodel.TextAttributeDefinition;
  * @author G. Miceli
  * @author M. Togna
  */
-public class TextAttribute extends Attribute<TextAttributeDefinition, String> {
+public class TextAttribute extends AtomicAttribute<TextAttributeDefinition, String> {
 
 	public TextAttribute(TextAttributeDefinition definition) {
 		super(definition);

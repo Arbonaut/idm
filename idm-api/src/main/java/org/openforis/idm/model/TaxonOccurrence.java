@@ -16,6 +16,12 @@ public final class TaxonOccurrence {
 		super();
 	}
 
+	public TaxonOccurrence(String code, String scientificName) {
+		super();
+		this.code = code;
+		this.scientificName = scientificName;
+	}
+
 	public TaxonOccurrence(String code, String scientificName, String vernacularName, String languageCode, String languageVariety) {
 		this.code = code;
 		this.scientificName = scientificName;

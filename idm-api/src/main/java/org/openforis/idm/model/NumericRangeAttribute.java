@@ -8,8 +8,8 @@ import org.openforis.idm.metamodel.RangeAttributeDefinition;
  */
 public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends Number> extends Attribute<RangeAttributeDefinition, T> {
 
-	protected NumericRangeAttribute(RangeAttributeDefinition definition, Field<V> fromField, Field<V> toField) {
-		super(definition, fromField, toField);
+	protected NumericRangeAttribute(RangeAttributeDefinition definition, Class<V> fieldType) {
+		super(definition, fieldType, fieldType);
 	}
 
 	@SuppressWarnings("unchecked")

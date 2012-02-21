@@ -4,8 +4,8 @@ import org.openforis.idm.metamodel.AttributeDefinition;
 
 public abstract class AtomicAttribute<D extends AttributeDefinition, V>  extends Attribute<D,V> {
 
-	protected AtomicAttribute(D definition, Field<?> field) {
-		super(definition, field);
+	protected AtomicAttribute(D definition, Class<?> valueClass) {
+		super(definition, valueClass);
 	}
 
 	@Override

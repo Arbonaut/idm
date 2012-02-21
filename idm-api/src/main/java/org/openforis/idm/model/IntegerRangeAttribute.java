@@ -9,7 +9,7 @@ import org.openforis.idm.metamodel.RangeAttributeDefinition;
 public class IntegerRangeAttribute extends NumericRangeAttribute<IntegerRange, Integer> {
 
 	public IntegerRangeAttribute(RangeAttributeDefinition definition) {
-		super(definition, new IntegerField(), new IntegerField());
+		super(definition, Integer.class);
 		if (!definition.isInteger()) {
 			throw new IllegalArgumentException("Attempted to create IntegerRangeAttribute with real definition");
 		}

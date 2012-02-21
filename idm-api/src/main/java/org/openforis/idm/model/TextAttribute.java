@@ -9,7 +9,7 @@ import org.openforis.idm.metamodel.TextAttributeDefinition;
 public class TextAttribute extends AtomicAttribute<TextAttributeDefinition, String> {
 
 	public TextAttribute(TextAttributeDefinition definition) {
-		super(definition, new StringField());
+		super(definition, String.class);
 	}
 
 	@Override

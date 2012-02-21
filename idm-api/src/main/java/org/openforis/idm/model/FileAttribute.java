@@ -10,7 +10,7 @@ import org.openforis.idm.metamodel.FileAttributeDefinition;
 public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 
 	public FileAttribute(FileAttributeDefinition definition) {
-		super(definition, new StringField(), new LongField());
+		super(definition, String.class, Long.class);
 	}
 
 	@Override

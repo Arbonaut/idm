@@ -10,7 +10,7 @@ import org.openforis.idm.metamodel.validation.ValidationResults;
 public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOccurrence> {
 
 	public TaxonAttribute(TaxonAttributeDefinition definition) {
-		super(definition, new StringField(), new StringField(), new StringField(), new StringField(), new StringField());
+		super(definition, String.class, String.class, String.class, String.class, String.class);
 	}
 
 	@Override

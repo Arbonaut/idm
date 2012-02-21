@@ -3,14 +3,20 @@ package org.openforis.idm.model;
 /**
  * @author G. Miceli
  */
-public abstract class Field<T> {
+public final class Field<T> {
 	private T value;
 	private String remarks;
 	private Character symbol;
+	private Class<T> valueType;
 
-	public Field() {
+	private Field(Class<T> valueType) {
+		this.valueType = valueType;  
 	}
 
+	public static <C> Field<C> newInstance(Class<C> valueType) {
+		return new Field<C>(valueType);
+	}
+	
 	public T getValue() {
 		return value;
 	}
@@ -39,7 +45,24 @@ public abstract class Field<T> {
 		return value == null || value.toString().trim().isEmpty();
 	}
 
-	public abstract T parseValue(String s);
+	@SuppressWarnings("unchecked")
+	public T parseValue(String s) {
+		if ( s == null ) {
+			return null;
+		} else if ( valueType == Boolean.class ) {
+			return (T) Boolean.valueOf(s);
+		} else if ( valueType == Integer.class ) {
+			return (T) Integer.valueOf(s);
+		} else if ( valueType == Long.class ) {
+			return (T) Long.valueOf(s);
+		} else if ( valueType == Double.class ) {
+			return (T) Double.valueOf(s);
+		} else if ( valueType == String.class ) {
+			return (T) s;
+		} else {
+			throw new UnsupportedOperationException("Field<"+valueType.getName()+"> not supported");
+		}
+	}
 
 	public void setValueFromString(String s) {
 		this.value = parseValue(s);

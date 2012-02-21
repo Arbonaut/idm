@@ -26,9 +26,17 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	
 	private boolean defaultValue;
 	
-	protected Attribute(D definition, Field<?>... fields) {
+	protected Attribute(D definition, Class<?>... fieldTypes) {
 		super(definition);
-		this.fields = fields;
+		initFields(fieldTypes);
+	}
+
+	private void initFields(Class<?>... fieldTypes) {
+		this.fields = new Field[fieldTypes.length];
+		for (int i = 0; i < fields.length; i++) {
+			Class<?> t = fieldTypes[i];
+			this.fields[i] = Field.newInstance(t);
+		}
 	}
 	
 	public Field<?> getField(int idx) {

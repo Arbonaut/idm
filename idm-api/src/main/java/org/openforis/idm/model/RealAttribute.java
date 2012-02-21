@@ -9,7 +9,7 @@ import org.openforis.idm.metamodel.NumberAttributeDefinition;
 public class RealAttribute extends NumberAttribute<Double> {
 
 	public RealAttribute(NumberAttributeDefinition definition) {
-		super(definition, new DoubleField());
+		super(definition, Double.class);
 		if (!definition.isReal()) {
 			throw new IllegalArgumentException("Attempted to create RealAttribute with integer NumberDefinition");
 		}

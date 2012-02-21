@@ -20,7 +20,7 @@ public class ModelJXPathCompiledExpression extends JXPathCompiledExpression {
 		super(xpath, expression);
 	}
 
-	public List<ModelLocationPath> getReferencePaths() {
+	public List<ModelLocationPath> getReferencedPaths() {
 		Expression expression = getExpression();
 		List<ModelLocationPath> list = new ArrayList<ModelLocationPath>();
 		addReferencePath(expression, list);

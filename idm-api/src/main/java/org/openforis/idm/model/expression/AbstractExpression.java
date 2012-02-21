@@ -38,9 +38,9 @@ abstract class AbstractExpression {
 	 * Returns the list of reference paths of this expression
 	 * @return
 	 */
-	public List<String> getReferencePaths() {
+	public List<String> getReferencedPaths() {
 		List<String> list = new ArrayList<String>();
-		List<ModelLocationPath> paths = compiledExpression.getReferencePaths();
+		List<ModelLocationPath> paths = compiledExpression.getReferencedPaths();
 		for (ModelLocationPath path : paths) {
 			list.add(path.toString());
 		}
@@ -99,7 +99,7 @@ abstract class AbstractExpression {
 	 * @throws InvalidExpressionException if the path is invalid
 	 */
 	private void verifyPaths(Node<?> contextNode) throws InvalidExpressionException {
-		List<String> paths = getReferencePaths();
+		List<String> paths = getReferencedPaths();
 		for (String path : paths) {
 			verifyPath(contextNode, path);
 		}

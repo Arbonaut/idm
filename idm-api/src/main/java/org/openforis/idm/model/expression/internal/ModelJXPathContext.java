@@ -33,12 +33,12 @@ public class ModelJXPathContext extends JXPathContextReferenceImpl {
 	private LookupProvider lookupProvider;
 	private Map<String, Object> compiled;
 
-	protected ModelJXPathContext(JXPathContext parentContext, Node<?> contextBean) {
-		super(parentContext, contextBean);
+	protected ModelJXPathContext(JXPathContext parentContext, Object contextNode) {
+		super(parentContext, contextNode);
 		this.compiled = new HashMap<String, Object>();
 	}
 
-	public static ModelJXPathContext newContext(JXPathContext parentContext, Node<?> contextNode) {
+	public static ModelJXPathContext newContext(JXPathContext parentContext, Object contextNode) {
 		ModelJXPathContext jxPathContext = new ModelJXPathContext(parentContext, contextNode);
 		copyProperties(parentContext, jxPathContext);
 		return jxPathContext;

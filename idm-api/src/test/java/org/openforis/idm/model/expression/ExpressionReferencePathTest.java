@@ -15,7 +15,7 @@ public class ExpressionReferencePathTest extends AbstractTest {
 		String expression = "$this  <= ../../total_height * 8";
 		CheckExpression expr = ef.createCheckExpression(expression);
 		// boolean eval = expr.evaluate(dbh);
-		List<String> paths = expr.getReferencePaths();
+		List<String> paths = expr.getReferencedPaths();
 
 		Assert.assertEquals(1, paths.size());
 		String resultPath = paths.get(0);

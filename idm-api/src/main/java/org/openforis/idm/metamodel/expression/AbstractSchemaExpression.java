@@ -14,7 +14,7 @@ import org.openforis.idm.metamodel.expression.internal.SchemaPropertyHandler;
  * @author M. Togna
  * 
  */
-public class SchemaExpression {
+abstract class AbstractSchemaExpression {
 
 	private static JXPathContext CONTEXT;
 
@@ -27,7 +27,7 @@ public class SchemaExpression {
 
 	private String expression;
 
-	public SchemaExpression(String expression) {
+	AbstractSchemaExpression(String expression) {
 		this.expression = expression;
 	}
 
@@ -45,13 +45,5 @@ public class SchemaExpression {
 	private String getNormalizedExpression() {
 		return expression.replaceAll("\\bparent\\(\\)", "__parent");
 	}
-
-	// String getExpression() {
-	// return expression;
-	// }
-	//
-	// void setExpression(String expression) {
-	// this.expression = expression;
-	// }
 
 }

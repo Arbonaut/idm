@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
 
-import org.openforis.idm.metamodel.expression.SchemaExpression;
+import org.openforis.idm.metamodel.expression.SchemaPathExpression;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.model.Node;
@@ -110,7 +110,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 //		if ( path.startsWith("/") ) {
 //			return getSchema().getByPath(path);
 //		} else {
-		SchemaExpression expression = new SchemaExpression(path);
+		SchemaPathExpression expression = new SchemaPathExpression(path);
 		Object object = expression.evaluate(this);
 		if (object instanceof NodeDefinition) {
 			return (NodeDefinition) object;

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.openforis.idm.metamodel.expression.SchemaExpression;
+import org.openforis.idm.metamodel.expression.SchemaPathExpression;
 import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 
@@ -39,7 +39,7 @@ public class SchemaExpressionTest {
 	public void testExpression() {
 		EntityDefinition cluster = survey.getSchema().getRootEntityDefinitions().get(0);
 
-		SchemaExpression expression = new SchemaExpression("plot/tree");
+		SchemaPathExpression expression = new SchemaPathExpression("plot/tree");
 		Object obj = expression.evaluate(cluster);
 		assertEquals(EntityDefinition.class, obj.getClass());
 

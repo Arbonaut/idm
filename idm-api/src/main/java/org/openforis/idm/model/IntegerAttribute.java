@@ -9,7 +9,7 @@ import org.openforis.idm.metamodel.NumberAttributeDefinition;
 public class IntegerAttribute extends NumberAttribute<Integer> {
 
 	public IntegerAttribute(NumberAttributeDefinition definition) {
-		super(definition);
+		super(definition, new IntegerField());
 		if ( !definition.isInteger() ) {
 			throw new IllegalArgumentException("Attempted to create IntegerAttribute with real NumberDefinition");
 		}
@@ -17,6 +17,6 @@ public class IntegerAttribute extends NumberAttribute<Integer> {
 	
 	@Override
 	public Integer createValue(String string) {
-		return Integer.parseInt(string);
+		return Integer.valueOf(string);
 	}
 }

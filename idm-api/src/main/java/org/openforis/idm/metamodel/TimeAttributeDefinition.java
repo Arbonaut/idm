@@ -7,6 +7,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.model.Node;
+import org.openforis.idm.model.TimeAttribute;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -17,4 +20,9 @@ import javax.xml.bind.annotation.XmlType;
 public class TimeAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
+
+	@Override
+	public Node<?> createNode() {
+		return new TimeAttribute(this);
+	}
 }

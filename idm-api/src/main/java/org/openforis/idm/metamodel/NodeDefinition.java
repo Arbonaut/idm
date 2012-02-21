@@ -19,6 +19,7 @@ import javax.xml.namespace.QName;
 import org.openforis.idm.metamodel.expression.SchemaExpression;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
+import org.openforis.idm.model.Node;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -75,6 +76,8 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	@XmlAnyAttribute
 	private Map<QName,String> annotations;
 	
+	public abstract Node<?> createNode();
+	
 	public String getAnnotation(QName qname) {
 		return annotations == null ? null : annotations.get(qname);
 	}
@@ -82,30 +85,6 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	public Set<QName> getAnnotationNames() {
 		return CollectionUtil.unmodifiableSet(annotations.keySet());
 	}
-
-//	protected void setAnnotationAttributes(Map<QName,String> attrMap) {
-//		this.annotations = new ArrayList<ModelAnnotation>(attrMap.size()); 
-//		for (Map.Entry<QName, String> entry : attrMap.entrySet()) {
-//			String namespaceURI = entry.getKey().getNamespaceURI();
-//			String name = entry.getKey().getLocalPart();
-//			String value = entry.getValue();
-//			ModelAnnotation ann = new ModelAnnotation(namespaceURI, name, value);
-//			annotations.add(ann);
-//		}
-//	}
-//	
-//	protected Map<QName,String> getAnnotationAttributes() {
-//		if ( annotations == null ) {
-//			return null;
-//		}
-//		Map<QName,String> attrMap = new HashMap<QName, String>(annotations.size());
-//		for (ModelAnnotation ann : annotations) {
-//			QName qname = new QName(ann.getNamespace(), localPart)
-//		}
-//	}	
-	
-//	@XmlTransient
-//	private List<ModelAnnotation> annotations;
 	
 	public Integer getId() {
 		return id;

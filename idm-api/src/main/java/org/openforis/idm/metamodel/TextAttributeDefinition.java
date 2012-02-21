@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.TextAttributeDefinitionTypeAdapter;
+import org.openforis.idm.model.Node;
+import org.openforis.idm.model.TextAttribute;
 
 /**
  * @author G. Miceli
@@ -40,5 +42,10 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 	@Override
 	public boolean isKey() {
 		return this.key == null ? false : key;
+	}
+
+	@Override
+	public Node<?> createNode() {
+		return new TextAttribute(this);
 	}
 }

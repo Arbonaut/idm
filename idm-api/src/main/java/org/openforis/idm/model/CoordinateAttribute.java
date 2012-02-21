@@ -11,7 +11,7 @@ import org.openforis.idm.metamodel.validation.ValidationResults;
 public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition, Coordinate> {
 
 	public CoordinateAttribute(CoordinateAttributeDefinition definition) {
-		super(definition, 3);
+		super(definition, new LongField(), new LongField(), new StringField());
 	}
 
 	@Override

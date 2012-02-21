@@ -45,6 +45,10 @@ public class Entity extends Node<EntityDefinition> {
 		this.childrenByName = new HashMap<String, List<Node<? extends NodeDefinition>>>();
 	}
 
+	public void add(Node<?> node) {
+		addInternal(node, null);
+	}
+	
 	/**
 	 * @param name
 	 * @return the newly created Entity
@@ -251,7 +255,7 @@ public class Entity extends Node<EntityDefinition> {
 		checkChildDefinition(name);
 
 		List<Node<? extends NodeDefinition>> list = childrenByName.get(name);
-		if (list == null) {
+		if (list == null || index >= list.size()) {
 			return null;
 		} else {
 			return list.get(index);

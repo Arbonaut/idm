@@ -9,7 +9,7 @@ import org.openforis.idm.metamodel.RangeAttributeDefinition;
 public class RealRangeAttribute extends NumericRangeAttribute<RealRange, Double> {
 
 	public RealRangeAttribute(RangeAttributeDefinition definition) {
-		super(definition);
+		super(definition, new DoubleField(), new DoubleField());
 		if (!definition.isReal()) {
 			throw new IllegalArgumentException("Attempted to create RealRangeAttribute with integer definition");
 		}

@@ -11,7 +11,7 @@ import org.openforis.idm.metamodel.validation.ValidationResults;
 public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 
 	public TimeAttribute(TimeAttributeDefinition definition) {
-		super(definition, 2);
+		super(definition, new IntegerField(), new IntegerField());
 	}
 
 	@SuppressWarnings("unchecked")

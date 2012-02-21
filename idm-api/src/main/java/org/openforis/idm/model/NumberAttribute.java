@@ -8,8 +8,8 @@ import org.openforis.idm.metamodel.NumberAttributeDefinition;
  */
 public abstract class NumberAttribute<T extends Number> extends AtomicAttribute<NumberAttributeDefinition, T> {
 
-	protected NumberAttribute(NumberAttributeDefinition definition) {
-		super(definition);
+	protected NumberAttribute(NumberAttributeDefinition definition, Field<?> field) {
+		super(definition, field);
 	}
 	
 }

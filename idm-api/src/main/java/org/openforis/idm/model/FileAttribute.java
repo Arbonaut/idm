@@ -10,7 +10,7 @@ import org.openforis.idm.metamodel.FileAttributeDefinition;
 public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 
 	public FileAttribute(FileAttributeDefinition definition) {
-		super(definition, 0);
+		super(definition, new StringField(), new LongField());
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 	
 	@SuppressWarnings("unchecked")
 	public Field<Long> getSizeField() {
-		return (Field<Long>) getField(0);
+		return (Field<Long>) getField(1);
 	}
 	
 	@Override

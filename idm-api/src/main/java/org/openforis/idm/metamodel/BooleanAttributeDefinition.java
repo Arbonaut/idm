@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.model.BooleanAttribute;
+import org.openforis.idm.model.Node;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -28,5 +31,10 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	
 	protected void setAffirmativeOnly(boolean affirmativeOnly) {
 		this.affirmativeOnly = affirmativeOnly ? true : null;
+	}
+
+	@Override
+	public Node<?> createNode() {
+		return new BooleanAttribute(this);
 	}
 }

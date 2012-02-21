@@ -9,7 +9,7 @@ import org.openforis.idm.metamodel.BooleanAttributeDefinition;
 public class BooleanAttribute extends AtomicAttribute<BooleanAttributeDefinition, Boolean> {
 
 	public BooleanAttribute(BooleanAttributeDefinition definition) {
-		super(definition);
+		super(definition, new BooleanField());
 	}
 
 	@Override

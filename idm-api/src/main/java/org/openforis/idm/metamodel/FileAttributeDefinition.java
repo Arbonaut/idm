@@ -11,6 +11,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.model.FileAttribute;
+import org.openforis.idm.model.Node;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -34,5 +37,10 @@ public class FileAttributeDefinition extends AttributeDefinition {
 
 	public List<String> getExtensions() {
 		return Collections.unmodifiableList(this.extensions);
+	}
+
+	@Override
+	public Node<?> createNode() {
+		return new FileAttribute(this);
 	}
 }

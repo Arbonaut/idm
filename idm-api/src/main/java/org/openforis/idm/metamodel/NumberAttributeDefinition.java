@@ -13,6 +13,9 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.NumberAttributeDefinitionTypeAdapter;
+import org.openforis.idm.model.IntegerAttribute;
+import org.openforis.idm.model.Node;
+import org.openforis.idm.model.RealAttribute;
 import org.openforis.idm.util.CollectionUtil;
 
 
@@ -60,5 +63,17 @@ public class NumberAttributeDefinition extends AttributeDefinition implements Ke
 	@Override
 	public boolean isKey() {
 		return this.key == null ? false : key;
+	}
+
+	@Override
+	public Node<?> createNode() {
+		switch (type) {
+		case INTEGER:
+			return new IntegerAttribute(this);
+		case REAL:
+			return new RealAttribute(this);
+		default:
+			throw new UnsupportedOperationException("Unknown type");
+		}
 	}
 }

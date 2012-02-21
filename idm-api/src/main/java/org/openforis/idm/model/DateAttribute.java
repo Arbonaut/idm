@@ -11,7 +11,7 @@ import org.openforis.idm.metamodel.validation.ValidationResults;
 public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 
 	public DateAttribute(DateAttributeDefinition definition) {
-		super(definition, 3);
+		super(definition, new IntegerField(), new IntegerField(), new IntegerField());
 	}
 
 	@Override

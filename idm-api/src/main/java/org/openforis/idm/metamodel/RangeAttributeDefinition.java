@@ -13,6 +13,9 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.RangeAttributeDefinitionTypeAdapter;
+import org.openforis.idm.model.IntegerRangeAttribute;
+import org.openforis.idm.model.Node;
+import org.openforis.idm.model.RealRangeAttribute;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -51,5 +54,18 @@ public class RangeAttributeDefinition extends AttributeDefinition {
 	
 	public List<Precision> getPrecisionDefinitions() {
 		return CollectionUtil.unmodifiableList(precisionDefinitions);
+	}
+	
+
+	@Override
+	public Node<?> createNode() {
+		switch (type) {
+		case INTEGER:
+			return new IntegerRangeAttribute(this);
+		case REAL:
+			return new RealRangeAttribute(this);
+		default:
+			throw new UnsupportedOperationException("Unknown type");
+		}
 	}
 }

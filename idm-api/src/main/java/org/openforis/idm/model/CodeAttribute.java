@@ -19,7 +19,7 @@ import org.openforis.idm.model.expression.ModelPathExpression;
 public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 
 	public CodeAttribute(CodeAttributeDefinition definition) {
-		super(definition, 2);
+		super(definition, new StringField(), new StringField());
 	}
 
 	@Override

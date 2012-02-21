@@ -26,17 +26,17 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	
 	private boolean defaultValue;
 	
-	@SuppressWarnings("rawtypes")
-	protected Attribute(D definition, int numFields) {
+	protected Attribute(D definition, Field<?>... fields) {
 		super(definition);
-		this.fields = new Field[numFields];
-		for (int i = 0; i < numFields; i++) {
-			fields[i] = new Field();
-		}
+		this.fields = fields;
 	}
 	
 	public Field<?> getField(int idx) {
 		return fields[idx];
+	}
+
+	public int getFieldCount() {
+		return fields.length;
 	}
 	
 	public abstract V createValue(String string);

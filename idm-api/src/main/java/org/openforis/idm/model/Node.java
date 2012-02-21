@@ -23,6 +23,7 @@ import org.openforis.idm.model.expression.RequiredExpression;
 public abstract class Node<D extends NodeDefinition> {
 
 	private Integer id;
+	private Integer internalId;
 	
 	private D definition;
 
@@ -39,6 +40,14 @@ public abstract class Node<D extends NodeDefinition> {
 	public Integer getId() {
 		return id;
 	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getInternalId() {
+		return internalId;
+	}
 	
 	public D getDefinition() {
 		return this.definition;
@@ -54,7 +63,7 @@ public abstract class Node<D extends NodeDefinition> {
 	
 	protected void setRecord(Record record) {
 		this.record = record;
-		this.id = record.nextId();
+		this.internalId = record.nextId();
 		record.put(this);
 	}
 	

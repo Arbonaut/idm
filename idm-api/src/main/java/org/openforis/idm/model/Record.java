@@ -23,7 +23,7 @@ public class Record {
 	private Integer id;
 	private Survey survey;
 	private ModelVersion modelVersion;
-	private Map<Integer, Node<? extends NodeDefinition>> nodesById;
+	private Map<Integer, Node<? extends NodeDefinition>> nodesByInternalId;
 	private int nextId;
 	private Entity rootEntity;
 	private RecordContext context;
@@ -38,7 +38,7 @@ public class Record {
 		if ( modelVersion == null ) {
 			throw new IllegalArgumentException("Invalid version '"+version+'"');
 		}
-		this.nodesById = new HashMap<Integer, Node<? extends NodeDefinition>>();
+		this.nodesByInternalId = new HashMap<Integer, Node<? extends NodeDefinition>>();
 		this.nextId = 0;
 	}
 	
@@ -100,12 +100,12 @@ public class Record {
 //	public void setVersion(ModelVersion modelVersion) {
 //		this.modelVersion = modelVersion;
 //	}
-	public Node<? extends NodeDefinition> getNodeById(int id) {
-		return this.nodesById.get(id);
+	public Node<? extends NodeDefinition> getNodeByInternalId(int id) {
+		return this.nodesByInternalId.get(id);
 	}
 	
 	protected void put(Node<? extends NodeDefinition> node){
-		this.nodesById.put(node.getId(), node);
+		this.nodesByInternalId.put(node.getInternalId(), node);
 	}
 
 	protected int nextId() {

@@ -14,6 +14,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.Node;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -88,5 +91,10 @@ public class EntityDefinition extends NodeDefinition {
 				}
 			}
 		}		
+	}
+
+	@Override
+	public Node<?> createNode() {
+		return new Entity(this);
 	}
 }

@@ -11,6 +11,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
+import org.openforis.idm.model.CodeAttribute;
+import org.openforis.idm.model.Node;
 
 /**
  * @author G. Miceli
@@ -71,5 +73,10 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	
 	public String getParentExpression() {
 		return this.parentExpression;
+	}
+
+	@Override
+	public Node<?> createNode() {
+		return new CodeAttribute(this);
 	}
 }

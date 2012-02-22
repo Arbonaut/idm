@@ -50,6 +50,7 @@ public class AttributeDefault implements Serializable {
 		return this.condition;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <V> V evaluate(Attribute<? extends AttributeDefinition,V> attrib) throws InvalidExpressionException {
 		Record record = attrib.getRecord();
 		RecordContext recordContext = record.getContext();
@@ -59,8 +60,7 @@ public class AttributeDefault implements Serializable {
 				return evaluateExpression(attrib, expressionFactory);
 			} else {
 				AttributeDefinition definition = attrib.getDefinition();
-				return definition.createValue(value);
-				//return attrib.createValue(value);
+				return (V) definition.createValue(value);
 			}
 		} else {
 			return null;

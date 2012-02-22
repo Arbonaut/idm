@@ -8,10 +8,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openforis.idm.AbstractTest;
-import org.openforis.idm.metamodel.validation.UniquenessCheck;
-import org.openforis.idm.metamodel.validation.ValidationResult;
-import org.openforis.idm.metamodel.validation.ValidationResults;
-import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.TextAttribute;
 
 /**

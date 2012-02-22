@@ -16,7 +16,6 @@ import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.ri.Parser;
 import org.apache.commons.jxpath.ri.compiler.Expression;
 import org.openforis.idm.metamodel.validation.LookupProvider;
-import org.openforis.idm.model.Node;
 
 /**
  * @author M. Togna

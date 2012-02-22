@@ -16,11 +16,6 @@ public class IntegerRangeAttribute extends NumericRangeAttribute<IntegerRange, I
 	}
 
 	@Override
-	public IntegerRange createValue(String string) {
-		return IntegerRange.parseIntegerRange(string);
-	}
-
-	@Override
 	protected IntegerRange createRange(Integer from, Integer to) {
 		return new IntegerRange(from, to);
 	}

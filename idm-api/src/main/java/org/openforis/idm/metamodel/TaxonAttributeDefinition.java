@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TaxonAttribute;
+import org.openforis.idm.model.TaxonOccurrence;
 
 /**
  * @author G. Miceli
@@ -25,4 +26,11 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	public Node<?> createNode() {
 		return new TaxonAttribute(this);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public TaxonOccurrence createValue(String string) {
+		throw new UnsupportedOperationException();
+	}
+	
 }

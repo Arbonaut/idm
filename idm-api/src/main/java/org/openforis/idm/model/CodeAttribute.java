@@ -22,11 +22,6 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 		super(definition, String.class, String.class);
 	}
 
-	@Override
-	public Code createValue(String string) {
-		return new Code(string);
-	}
-	
 	@SuppressWarnings("unchecked")
 	public Field<String> getCodeField() {
 		return (Field<String>) getField(0);

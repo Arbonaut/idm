@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.model.File;
 import org.openforis.idm.model.FileAttribute;
 import org.openforis.idm.model.Node;
 
@@ -43,4 +44,11 @@ public class FileAttributeDefinition extends AttributeDefinition {
 	public Node<?> createNode() {
 		return new FileAttribute(this);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public File createValue(String string) {
+		throw new UnsupportedOperationException();
+	}
+	
 }

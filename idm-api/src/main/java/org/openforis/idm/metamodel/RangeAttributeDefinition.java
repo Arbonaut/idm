@@ -13,8 +13,11 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.RangeAttributeDefinitionTypeAdapter;
+import org.openforis.idm.model.IntegerRange;
 import org.openforis.idm.model.IntegerRangeAttribute;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.NumericRange;
+import org.openforis.idm.model.RealRange;
 import org.openforis.idm.model.RealRangeAttribute;
 import org.openforis.idm.util.CollectionUtil;
 
@@ -68,4 +71,16 @@ public class RangeAttributeDefinition extends AttributeDefinition {
 			throw new UnsupportedOperationException("Unknown type");
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public NumericRange<? extends Number> createValue(String string) {
+		if (isInteger()) {
+			return IntegerRange.parseIntegerRange(string);
+		} else if (isReal()) {
+			return RealRange.parseRealRange(string);
+		}
+		throw new RuntimeException("Invalid range type " + type);
+	}
+	
 }

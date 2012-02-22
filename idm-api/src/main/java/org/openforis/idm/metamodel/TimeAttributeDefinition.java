@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Time;
 import org.openforis.idm.model.TimeAttribute;
 
 /**
@@ -25,4 +26,11 @@ public class TimeAttributeDefinition extends AttributeDefinition {
 	public Node<?> createNode() {
 		return new TimeAttribute(this);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Time createValue(String string) {
+		return Time.parseTime(string);
+	}
+	
 }

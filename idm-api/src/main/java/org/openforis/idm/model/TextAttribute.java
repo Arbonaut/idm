@@ -11,10 +11,5 @@ public class TextAttribute extends AtomicAttribute<TextAttributeDefinition, Stri
 	public TextAttribute(TextAttributeDefinition definition) {
 		super(definition, String.class);
 	}
-
-	@Override
-	public String createValue(String string) {
-		return string;
-	}
 	
 }

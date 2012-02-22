@@ -16,11 +16,6 @@ public class RealRangeAttribute extends NumericRangeAttribute<RealRange, Double>
 	}
 
 	@Override
-	public RealRange createValue(String string) {
-		return RealRange.parseRealRange(string);
-	}
-
-	@Override
 	protected RealRange createRange(Double from, Double to) {
 		return new RealRange(from, to);
 	}

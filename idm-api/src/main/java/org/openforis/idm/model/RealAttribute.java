@@ -15,9 +15,4 @@ public class RealAttribute extends NumberAttribute<Double> {
 		}
 	}
 
-	@Override
-	public Double createValue(String string) {
-		return Double.parseDouble(string);
-	}
-
 }

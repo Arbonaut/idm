@@ -76,4 +76,15 @@ public class NumberAttributeDefinition extends AttributeDefinition implements Ke
 			throw new UnsupportedOperationException("Unknown type");
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Number createValue(String string) {
+		if(isInteger()){
+			return Integer.valueOf(string);
+		} else if(isReal()) {
+			return Double.parseDouble(string);
+		}
+		throw new RuntimeException("Invalid type " + type);
+	}
 }

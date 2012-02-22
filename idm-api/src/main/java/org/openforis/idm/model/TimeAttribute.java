@@ -40,11 +40,6 @@ public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 	}
 	
 	@Override
-	public Time createValue(String string) {
-		return Time.parseTime(string);
-	}
-
-	@Override
 	protected boolean validateValue(ValidationResults results) {
 		TimeValidator validator = new TimeValidator();
 		boolean valid = validator.validate(this);

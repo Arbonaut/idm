@@ -37,4 +37,11 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	public Node<?> createNode() {
 		return new BooleanAttribute(this);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Boolean createValue(String string) {
+		return Boolean.parseBoolean(string);
+	}
+	
 }

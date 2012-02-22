@@ -48,4 +48,11 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 	public Node<?> createNode() {
 		return new TextAttribute(this);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public String createValue(String string) {
+		return string;
+	}
+	
 }

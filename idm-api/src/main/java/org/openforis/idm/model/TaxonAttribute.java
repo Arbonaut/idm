@@ -14,11 +14,6 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 	}
 
 	@Override
-	public TaxonOccurrence createValue(String string) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	protected boolean validateValue(ValidationResults results) {
 		// currently not required.
 		// in the future check if all values are set

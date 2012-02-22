@@ -45,4 +45,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	public List<AttributeDefault> getAttributeDefaults() {
 		return CollectionUtil.unmodifiableList(this.attributeDefaults);
 	}
+
+	public abstract <V> V createValue(String string);
+	
 }

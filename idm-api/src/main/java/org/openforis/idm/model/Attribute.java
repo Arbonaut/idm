@@ -47,8 +47,6 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		return fields.length;
 	}
 	
-	public abstract V createValue(String string);
-	
 	/**
 	 * @return a non-null, immutable value
 	 */

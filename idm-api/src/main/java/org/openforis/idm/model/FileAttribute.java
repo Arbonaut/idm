@@ -12,11 +12,6 @@ public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 	public FileAttribute(FileAttributeDefinition definition) {
 		super(definition, String.class, Long.class);
 	}
-
-	@Override
-	public File createValue(String string) {
-		throw new UnsupportedOperationException();
-	}
 	
 	@SuppressWarnings("unchecked")
 	public Field<String> getFilenameField() {

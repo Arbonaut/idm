@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
+import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Node;
 
@@ -78,5 +79,11 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	@Override
 	public Node<?> createNode() {
 		return new CodeAttribute(this);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Code createValue(String string) {
+		return new Code(string);
 	}
 }

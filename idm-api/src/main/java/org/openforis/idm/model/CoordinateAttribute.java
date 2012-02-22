@@ -14,11 +14,6 @@ public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition
 		super(definition, Long.class, Long.class, String.class);
 	}
 
-	@Override
-	public Coordinate createValue(String string) {
-		return Coordinate.parseCoordinate(string);
-	}
-
 	@SuppressWarnings("unchecked")
 	public Field<Long> getXField() {
 		return (Field<Long>) getField(0);

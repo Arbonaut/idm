@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;
 import org.openforis.idm.model.Node;
 
@@ -25,4 +26,11 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 	public Node<?> createNode() {
 		return new CoordinateAttribute(this);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Coordinate createValue(String string) {
+		return Coordinate.parseCoordinate(string);
+	}
+	
 }

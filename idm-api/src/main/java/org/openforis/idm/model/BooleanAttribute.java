@@ -12,9 +12,4 @@ public class BooleanAttribute extends AtomicAttribute<BooleanAttributeDefinition
 		super(definition, Boolean.class);
 	}
 
-	@Override
-	public Boolean createValue(String string) {
-		return Boolean.parseBoolean(string);
-	}
-	
 }

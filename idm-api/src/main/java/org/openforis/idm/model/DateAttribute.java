@@ -14,11 +14,6 @@ public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 		super(definition, Integer.class, Integer.class, Integer.class);
 	}
 
-	@Override
-	public Date createValue(String string) {
-		return Date.parseDate(string);
-	}
-	
 	@SuppressWarnings("unchecked")
 	public Field<Integer> getYearField() {
 		return (Field<Integer>) getField(0);

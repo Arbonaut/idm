@@ -83,7 +83,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		List<Check> checks = defn.getChecks();
 		for (Check check : checks) {
 			if (evaluateCheckCondition(check.getCondition())) {
-				boolean result = check.validate(this);
+				boolean result = check.evaluate(this);
 				results.addResult(this, check, result);
 			}
 		}
@@ -132,11 +132,13 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	public boolean isDefaultValue() {
 		return defaultValue;
 	}
-	
+
 	public void applyDefaultValue() throws InvalidExpressionException {
 		V value = getDefaultValue();
-		setValue(value);
-		this.defaultValue = true;
+		if (value != null) {
+			setValue(value);
+			this.defaultValue = true;
+		}
 	}
 
 	@Override

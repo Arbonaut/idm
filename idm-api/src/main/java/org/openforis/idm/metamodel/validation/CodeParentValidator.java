@@ -15,10 +15,10 @@ import org.openforis.idm.model.CodeAttribute;
  *         <p/>
  *         Generates  a warning if parent is invalid or missing.
  */
-public class CodeParentValidator implements Validator<CodeAttribute> {
+public class CodeParentValidator implements ValidationRule<CodeAttribute> {
 
 	@Override
-	public boolean validate(CodeAttribute node) {
+	public boolean evaluate(CodeAttribute node) {
 		CodeAttributeDefinition definition = node.getDefinition();
 		if (StringUtils.isBlank(definition.getParentExpression())) {
 			return true;

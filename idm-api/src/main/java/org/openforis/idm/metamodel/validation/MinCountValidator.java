@@ -20,7 +20,7 @@ import org.openforis.idm.model.expression.RequiredExpression;
  * @author M. Togna
  * @author G. Miceli
  */
-public class MinCountValidator implements Validator<Entity> {
+public class MinCountValidator implements ValidationRule<Entity> {
 
 	private NodeDefinition nodeDefinition;
 
@@ -33,7 +33,7 @@ public class MinCountValidator implements Validator<Entity> {
 	}
 	
 	@Override
-	public boolean validate(Entity parent) {
+	public boolean evaluate(Entity parent) {
 		String name = nodeDefinition.getName();
 		int minCount = getEffectiveMinCount(parent);
 		if ( minCount == 0 ) {

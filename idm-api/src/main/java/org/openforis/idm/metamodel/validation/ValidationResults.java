@@ -48,7 +48,7 @@ public class ValidationResults {
 		return failed;
 	}
 	
-	public void addResult(Node<?> node, Validator<?> validator, boolean result) {
+	public void addResult(Node<?> node, ValidationRule<?> validator, boolean result) {
 		ValidationResult r = new ValidationResult(node, validator, result);
 		if (result) {
 			passed.add(r);

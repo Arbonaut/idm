@@ -1,7 +1,6 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
-import org.openforis.idm.metamodel.validation.ValidationResults;
 
 /**
  * @author G. Miceli
@@ -11,13 +10,6 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 
 	public TaxonAttribute(TaxonAttributeDefinition definition) {
 		super(definition, String.class, String.class, String.class, String.class, String.class);
-	}
-
-	@Override
-	protected boolean validateValue(ValidationResults results) {
-		// currently not required.
-		// in the future check if all values are set
-		return true;
 	}
 
 	@SuppressWarnings("unchecked")

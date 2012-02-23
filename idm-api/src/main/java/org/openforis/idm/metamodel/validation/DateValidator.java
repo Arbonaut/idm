@@ -10,10 +10,10 @@ import org.openforis.idm.model.DateAttribute;
  * @author M. Togna
  * @author S. Ricci
  */
-public class DateValidator implements Validator<DateAttribute> {
+public class DateValidator implements ValidationRule<DateAttribute> {
 
 	@Override
-	public boolean validate(DateAttribute attr) {
+	public boolean evaluate(DateAttribute attr) {
 		try {
 			Date date = attr.getValue();
 			Calendar cal = date.toCalendar();

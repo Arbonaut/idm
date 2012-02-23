@@ -1,8 +1,6 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
-import org.openforis.idm.metamodel.validation.TimeValidator;
-import org.openforis.idm.metamodel.validation.ValidationResults;
 
 /**
  * @author G. Miceli
@@ -37,14 +35,6 @@ public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 		Integer minute = time.getMinute();
 		getHourField().setValue(hour);
 		getMinuteField().setValue(minute);
-	}
-	
-	@Override
-	protected boolean validateValue(ValidationResults results) {
-		TimeValidator validator = new TimeValidator();
-		boolean valid = validator.validate(this);
-		results.addResult(this, validator, valid);
-		return valid;
 	}
 
 }

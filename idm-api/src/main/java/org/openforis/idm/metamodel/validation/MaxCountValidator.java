@@ -13,7 +13,7 @@ import org.openforis.idm.model.Node;
  * @author M. Togna
  * @author G. Miceli
  */
-public class MaxCountValidator implements Validator<Entity> {
+public class MaxCountValidator implements ValidationRule<Entity> {
 
 	private NodeDefinition nodeDefinition;
 	
@@ -26,7 +26,7 @@ public class MaxCountValidator implements Validator<Entity> {
 	}
 	
 	@Override
-	public boolean validate(Entity node) {
+	public boolean evaluate(Entity node) {
 		String name = nodeDefinition.getName();
 		Integer maxCount = nodeDefinition.getMaxCount();
 		if (maxCount == null) {

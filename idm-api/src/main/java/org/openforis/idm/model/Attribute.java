@@ -6,14 +6,8 @@ package org.openforis.idm.model;
 import java.io.StringWriter;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
-import org.openforis.idm.metamodel.IdmInterpretationError;
-import org.openforis.idm.metamodel.validation.Check;
-import org.openforis.idm.metamodel.validation.ValidationResults;
-import org.openforis.idm.model.expression.CheckConditionExpression;
-import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 
 /**
@@ -57,53 +51,6 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	 */
 	public abstract void setValue(V value);
 	
-	@Override
-	public ValidationResults validate() {
-		ValidationResults results = new ValidationResults();
-		if ( !isEmpty() ) {
-			boolean valid = validateValue(results);
-			if ( valid ) {
-				validateChecks(results);
-			}
-		}
-		return results;
-	}
-
-	/**
-	 * 
-	 * @param results
-	 * @return true if other defined checks should be executed.  false to stop executing checks
-	 */
-	protected boolean validateValue(ValidationResults results) {
-		return true;
-	}
-	
-	private void validateChecks(ValidationResults results) {
-		D defn = getDefinition();
-		List<Check> checks = defn.getChecks();
-		for (Check check : checks) {
-			if (evaluateCheckCondition(check.getCondition())) {
-				boolean result = check.evaluate(this);
-				results.addResult(this, check, result);
-			}
-		}
-	}
-	
-	private boolean evaluateCheckCondition(String condition) {
-		if (StringUtils.isBlank(condition)) {
-			return true;
-		} else {
-			try {
-				RecordContext recordContext = getRecord().getContext();
-				ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
-				CheckConditionExpression expression = expressionFactory.createCheckConditionExpression(condition);
-				return expression.evaluate(getParent(), this);
-			} catch (InvalidExpressionException e) {
-				throw new IdmInterpretationError("Unable to evaluate condition " + condition, e);
-			}
-		}
-	}
-
 	public V getDefaultValue() throws InvalidExpressionException {
 		D definition = getDefinition();
 		List<AttributeDefault> attributeDefaults = definition.getAttributeDefaults();

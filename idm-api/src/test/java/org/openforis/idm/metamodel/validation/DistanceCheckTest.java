@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;
 
@@ -15,14 +14,14 @@ import org.openforis.idm.model.CoordinateAttribute;
  * @author M. Togna
  * 
  */
-public class DistanceCheckTest extends AbstractTest {
+public class DistanceCheckTest extends ValidationTest {
 
 	@Test
 	public void testValidMaxDistance() {
 		String coordStr = "SRID=EPSG:21035;POINT(805750 9333820)";
 		Coordinate coord = Coordinate.parseCoordinate(coordStr);
 		CoordinateAttribute vehicleLocation = cluster.addValue("vehicle_location", coord);
-		ValidationResults results = vehicleLocation.validate();
+		ValidationResults results = validate(vehicleLocation);
 		Assert.assertFalse(containsDistanceCheck(results.getErrors()));
 	}
 
@@ -31,7 +30,7 @@ public class DistanceCheckTest extends AbstractTest {
 		String coordStr = "SRID=EPSG:21035;POINT(915750 9333820)";
 		Coordinate coord = Coordinate.parseCoordinate(coordStr);
 		CoordinateAttribute vehicleLocation = cluster.addValue("vehicle_location", coord);
-		ValidationResults results = vehicleLocation.validate();
+		ValidationResults results = validate(vehicleLocation);
 		Assert.assertTrue(containsDistanceCheck(results.getErrors()));
 	}
 
@@ -40,7 +39,7 @@ public class DistanceCheckTest extends AbstractTest {
 		String coordStr = "SRID=EPSG:21035;POINT(885750 9333820)";
 		Coordinate coord = Coordinate.parseCoordinate(coordStr);
 		CoordinateAttribute vehicleLocation = cluster.addValue("vehicle_location", coord);
-		ValidationResults results = vehicleLocation.validate();
+		ValidationResults results = validate(vehicleLocation);
 		Assert.assertFalse(containsDistanceCheck(results.getErrors()));
 		Assert.assertTrue(containsDistanceCheck(results.getWarnings()));
 	}

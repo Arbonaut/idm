@@ -14,10 +14,10 @@ import org.openforis.idm.model.CoordinateAttribute;
  * @author M. Togna
  * 
  */
-public class CoordinateValidator implements Validator<CoordinateAttribute> {
+public class CoordinateValidator implements ValidationRule<CoordinateAttribute> {
 
 	@Override
-	public boolean validate(CoordinateAttribute node) {
+	public boolean evaluate(CoordinateAttribute node) {
 		Coordinate coordinate = node.getValue();
 		CoordinateAttributeDefinition definition = node.getDefinition();
 		List<SpatialReferenceSystem> srs = definition.getSurvey().getSpatialReferenceSystems();

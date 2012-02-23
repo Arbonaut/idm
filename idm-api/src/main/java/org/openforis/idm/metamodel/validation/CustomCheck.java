@@ -33,7 +33,7 @@ public class CustomCheck extends Check {
 	}
 
 	@Override
-	public boolean validate(Attribute<?, ?> node) {
+	public boolean evaluate(Attribute<?, ?> node) {
 		String expr = getExpression();
 		try {
 			RecordContext recordContext = node.getRecord().getContext();

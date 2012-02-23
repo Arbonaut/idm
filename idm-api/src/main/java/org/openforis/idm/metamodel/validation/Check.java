@@ -24,7 +24,7 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-public abstract class Check implements Serializable, Validator<Attribute<?,?>> {
+public abstract class Check implements Serializable, ValidationRule<Attribute<?,?>> {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,8 +1,6 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.DateAttributeDefinition;
-import org.openforis.idm.metamodel.validation.DateValidator;
-import org.openforis.idm.metamodel.validation.ValidationResults;
 
 /**
  * @author G. Miceli
@@ -46,13 +44,5 @@ public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 		getMonthField().setValue(month);
 		getDayField().setValue(day);
 	}
-	
-	@Override
-	protected boolean validateValue(ValidationResults results) {
-		DateValidator validator = new DateValidator();
-		boolean result = validator.validate(this);
-		results.addResult(this, validator, result);
-		return result;
-	}
-	
+
 }

@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
-import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.RealAttribute;
@@ -18,7 +17,7 @@ import org.openforis.idm.model.RealAttribute;
  * @author M. Togna
  * 
  */
-public class CustomCheckTest extends AbstractTest {
+public class CustomCheckTest extends ValidationTest {
 
 	@Test
 	public void testPass() {
@@ -27,7 +26,7 @@ public class CustomCheckTest extends AbstractTest {
 		RealAttribute totalHeight = tree.addValue("total_height", 16.0);
 		tree.addValue("dbh", 2.0);
 
-		ValidationResults results = totalHeight.validate();
+		ValidationResults results = validate(totalHeight);
 		assertFalse(containsCustomCheck(results.getWarnings()));
 	}
 
@@ -39,7 +38,7 @@ public class CustomCheckTest extends AbstractTest {
 		RealAttribute totalHeight = tree.addValue("total_height", 16.0);
 		tree.addValue("dbh", 16.0);
 
-		ValidationResults results = totalHeight.validate();
+		ValidationResults results = validate(totalHeight);
 		assertFalse(containsCustomCheck(results.getWarnings()));
 	}
 
@@ -51,7 +50,7 @@ public class CustomCheckTest extends AbstractTest {
 		RealAttribute totalHeight = tree.addValue("total_height", 16.0);
 		tree.addValue("dbh", 16.0);
 
-		ValidationResults results = totalHeight.validate();
+		ValidationResults results = validate(totalHeight);
 		assertFalse(containsCustomCheck(results.getWarnings()));
 	}
 
@@ -62,7 +61,7 @@ public class CustomCheckTest extends AbstractTest {
 		RealAttribute totalHeight = tree.addValue("total_height", 2.0);
 		tree.addValue("dbh", 16.5);
 		tree.addValue("health", new Code("1"));
-		ValidationResults results = totalHeight.validate();
+		ValidationResults results = validate(totalHeight);
 		assertTrue(containsCustomCheck(results.getWarnings()));
 	}
 
@@ -73,7 +72,7 @@ public class CustomCheckTest extends AbstractTest {
 		RealAttribute totalHeight = tree.addValue("total_height", 2.0);
 		tree.addValue("dbh", 16.5);
 		tree.addValue("health", new Code("2"));
-		ValidationResults results = totalHeight.validate();
+		ValidationResults results = validate(totalHeight);
 		assertFalse(containsCustomCheck(results.getWarnings()));
 	}
 

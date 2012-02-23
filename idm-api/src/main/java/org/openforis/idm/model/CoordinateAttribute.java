@@ -1,8 +1,6 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
-import org.openforis.idm.metamodel.validation.CoordinateValidator;
-import org.openforis.idm.metamodel.validation.ValidationResults;
 
 /**
  * @author G. Miceli
@@ -47,12 +45,4 @@ public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition
 		getSrsIdField().setValue(srsId);
 	}
 	
-	@Override
-	protected boolean validateValue(ValidationResults results) {
-		CoordinateValidator validator = new CoordinateValidator();
-		boolean valid = validator.validate(this);
-		results.addResult(this, validator, valid);
-		return valid;
-	}
-
 }

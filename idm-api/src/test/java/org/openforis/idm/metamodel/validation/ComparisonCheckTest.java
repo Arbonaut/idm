@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
-import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Entity;
@@ -19,26 +18,26 @@ import org.openforis.idm.model.TimeAttribute;
 /**
  * @author G. Miceli
  */
-public class ComparisonCheckTest extends AbstractTest {
+public class ComparisonCheckTest extends ValidationTest {
 
 	@Test
 	public void testGteFailOnLt() {
 		IntegerAttribute crewNo = cluster.addValue("crew_no", 0);
-		ValidationResults results = crewNo.validate();
+		ValidationResults results = validate(crewNo);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testGtePassOnEq() {
 		IntegerAttribute crewNo = cluster.addValue("crew_no", 1);
-		ValidationResults results = crewNo.validate();
+		ValidationResults results = validate(crewNo);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testGtePassOnGt() {
 		IntegerAttribute crewNo = cluster.addValue("crew_no", 2);
-		ValidationResults results = crewNo.validate();
+		ValidationResults results = validate(crewNo);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 
@@ -47,7 +46,7 @@ public class ComparisonCheckTest extends AbstractTest {
 		Entity timeStudy = cluster.addEntity("time_study");
 		timeStudy.addValue("start_time", new Time(10, 00));
 		TimeAttribute endTime = timeStudy.addValue("end_time", new Time(8, 00));
-		ValidationResults results = endTime.validate();
+		ValidationResults results =  validate(endTime);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 
@@ -56,7 +55,7 @@ public class ComparisonCheckTest extends AbstractTest {
 		Entity timeStudy = cluster.addEntity("time_study");
 		timeStudy.addValue("start_time", new Time(10, 00));
 		TimeAttribute endTime = timeStudy.addValue("end_time", new Time(10, 00));
-		ValidationResults results = endTime.validate();
+		ValidationResults results = validate(endTime);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 
@@ -65,7 +64,7 @@ public class ComparisonCheckTest extends AbstractTest {
 		Entity timeStudy = cluster.addEntity("time_study");
 		timeStudy.addValue("start_time", new Time(10, 00));
 		TimeAttribute endTime = timeStudy.addValue("end_time", new Time(10, 01));
-		ValidationResults results = endTime.validate();
+		ValidationResults results = validate(endTime);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 
@@ -74,7 +73,7 @@ public class ComparisonCheckTest extends AbstractTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setGreaterThanExpression("-1");
 		CodeAttribute region = cluster.addValue("region", new Code("001"));
-		boolean validate = check.validate(region);
+		boolean validate = check.evaluate(region);
 		assertTrue(validate);
 	}
 
@@ -83,7 +82,7 @@ public class ComparisonCheckTest extends AbstractTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setLessThanExpression("-1");
 		CodeAttribute region = cluster.addValue("region", new Code("001"));
-		boolean validate = check.validate(region);
+		boolean validate = check.evaluate(region);
 		assertFalse(validate);
 	}
 
@@ -92,7 +91,7 @@ public class ComparisonCheckTest extends AbstractTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setGreaterThanExpression("-1");
 		TextAttribute mapSheet = cluster.addValue("map_sheet", "1");
-		boolean validate = check.validate(mapSheet);
+		boolean validate = check.evaluate(mapSheet);
 		assertTrue(validate);
 	}
 
@@ -101,41 +100,41 @@ public class ComparisonCheckTest extends AbstractTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setLessThanExpression("-1");
 		TextAttribute mapSheet = cluster.addValue("map_sheet", "1");
-		boolean validate = check.validate(mapSheet);
+		boolean validate = check.evaluate(mapSheet);
 		assertFalse(validate);
 	}
 	
 	@Test
 	public void testRealPassRange(){
 		RealAttribute plotDir = cluster.addValue("plot_direction", 256d);
-		ValidationResults results = plotDir.validate();
+		ValidationResults results =  validate(plotDir);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testRealPassRange2(){
 		RealAttribute plotDir = cluster.addValue("plot_direction", 0.0);
-		ValidationResults results = plotDir.validate();
+		ValidationResults results = validate(plotDir);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 	
 	@Test
 	public void testRealFailLt(){
 		RealAttribute plotDir = cluster.addValue("plot_direction", -52.345d);
-		ValidationResults results = plotDir.validate();
+		ValidationResults results =  validate(plotDir);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 	
 	@Test
 	public void testRealFailGt(){
 		RealAttribute plotDir = cluster.addValue("plot_direction", 552.345d);
-		ValidationResults results = plotDir.validate();
+		ValidationResults results =  validate(plotDir);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 	
 	private boolean containsComparisonCheck(List<ValidationResult> results) {
 		for (ValidationResult result : results) {
-			Validator<?> validator = result.getValidator();
+			ValidationRule<?> validator = result.getValidator();
 			if (validator instanceof ComparisonCheck) {
 				return true;
 			}

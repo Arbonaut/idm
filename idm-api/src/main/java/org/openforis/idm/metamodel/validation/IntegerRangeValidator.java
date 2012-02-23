@@ -10,10 +10,10 @@ import org.openforis.idm.model.IntegerRangeAttribute;
  * @author M. Togna
  * 
  */
-public class IntegerRangeValidator implements Validator<IntegerRangeAttribute> {
+public class IntegerRangeValidator implements ValidationRule<IntegerRangeAttribute> {
 
 	@Override
-	public boolean validate(IntegerRangeAttribute node) {
+	public boolean evaluate(IntegerRangeAttribute node) {
 		IntegerRange range = node.getValue();
 		Integer from = range.getFrom();
 		Integer to = range.getTo();

@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
-import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.TextAttribute;
 
@@ -17,13 +16,13 @@ import org.openforis.idm.model.TextAttribute;
  * @author M. Togna
  * 
  */
-public class PatternCheckTest extends AbstractTest {
+public class PatternCheckTest extends ValidationTest {
 
 	@Test
 	public void testUpperCaseLetterPatternPass() {
 		Entity plot = cluster.addEntity("plot");
 		TextAttribute subplot = plot.addValue("subplot", "D");
-		ValidationResults results = subplot.validate();
+		ValidationResults results = validate(subplot);
 		assertFalse(containsPatternCheck(results.getErrors()));
 	}
 
@@ -31,7 +30,7 @@ public class PatternCheckTest extends AbstractTest {
 	public void testUpperCaseLetterPatternFail() {
 		Entity plot = cluster.addEntity("plot");
 		TextAttribute subplot = plot.addValue("subplot", "d");
-		ValidationResults results = subplot.validate();
+		ValidationResults results = validate(subplot);
 		assertTrue(containsPatternCheck(results.getErrors()));
 	}
 
@@ -39,7 +38,7 @@ public class PatternCheckTest extends AbstractTest {
 	public void testUpperCaseLetterPatternFail2() {
 		Entity plot = cluster.addEntity("plot");
 		TextAttribute subplot = plot.addValue("subplot", "4");
-		ValidationResults results = subplot.validate();
+		ValidationResults results = validate(subplot);
 		assertTrue(containsPatternCheck(results.getErrors()));
 	}
 
@@ -47,42 +46,42 @@ public class PatternCheckTest extends AbstractTest {
 	@Test
 	public void testValidPattern() {
 		TextAttribute id = household.addValue("id", "X-1");
-		ValidationResults results = id.validate();
+		ValidationResults results = validate(id);
 		assertFalse(containsPatternCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testValidPattern2() {
 		TextAttribute id = household.addValue("id", "X-102357");
-		ValidationResults results = id.validate();
+		ValidationResults results = validate(id);
 		assertFalse(containsPatternCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testValidPattern3() {
 		TextAttribute id = household.addValue("id", "102357");
-		ValidationResults results = id.validate();
+		ValidationResults results = validate(id);
 		assertFalse(containsPatternCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testInvalidPattern() {
 		TextAttribute id = household.addValue("id", "x-102357");
-		ValidationResults results = id.validate();
+		ValidationResults results = validate(id);
 		assertTrue(containsPatternCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testInvalidPattern2() {
 		TextAttribute id = household.addValue("id", "X-1d02357");
-		ValidationResults results = id.validate();
+		ValidationResults results = validate(id);
 		assertTrue(containsPatternCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testInvalidPattern3() {
 		TextAttribute id = household.addValue("id", "X-");
-		ValidationResults results = id.validate();
+		ValidationResults results = validate(id);
 		assertTrue(containsPatternCheck(results.getErrors()));
 	}
 

@@ -6,20 +6,20 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
-import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Entity;
 
 /**
  * @author G. Miceli
  */
-public class MaxCountValidatorTest extends AbstractTest {
-	
-	@Test //(expected=ArrayIndexOutOfBoundsException.class)
+public class MaxCountValidatorTest extends ValidationTest {
+
+	@Test
+	// (expected=ArrayIndexOutOfBoundsException.class)
 	public void testMultipleSingleAttribute() {
 		cluster.addValue("crew_no", 1);
 		cluster.addValue("crew_no", 2);
-		ValidationResults results = cluster.validate();
+		ValidationResults results = validate(cluster);
 		List<ValidationResult> errors = results.getErrors();
 		assertTrue(containsMaxCountError(errors, "crew_no"));
 	}
@@ -28,7 +28,7 @@ public class MaxCountValidatorTest extends AbstractTest {
 	public void testMultipleAttributeLessThanMax() {
 		cluster.addValue("map_sheet", "A");
 		cluster.addValue("map_sheet", "B");
-		ValidationResults results = cluster.validate();
+		ValidationResults results = validate(cluster);
 		List<ValidationResult> errors = results.getErrors();
 		assertFalse(containsMaxCountError(errors, "map_sheet"));
 	}
@@ -38,28 +38,30 @@ public class MaxCountValidatorTest extends AbstractTest {
 		cluster.addValue("map_sheet", "A");
 		cluster.addValue("map_sheet", "B");
 		cluster.addValue("map_sheet", "C");
-		ValidationResults results = cluster.validate();
+		ValidationResults results = validate(cluster);
 		List<ValidationResult> errors = results.getErrors();
 		assertFalse(containsMaxCountError(errors, "map_sheet"));
 	}
 
-	@Test //(expected=ArrayIndexOutOfBoundsException.class)
+	@Test
+	// (expected=ArrayIndexOutOfBoundsException.class)
 	public void testMultipleAttributeMoreThanMax() {
 		cluster.addValue("map_sheet", "A");
 		cluster.addValue("map_sheet", "B");
 		cluster.addValue("map_sheet", "C");
 		cluster.addValue("map_sheet", "D");
-		ValidationResults results = cluster.validate();
+		ValidationResults results = validate(cluster);
 		List<ValidationResult> errors = results.getErrors();
 		assertTrue(containsMaxCountError(errors, "map_sheet"));
 	}
 
-	@Test //(expected=ArrayIndexOutOfBoundsException.class)
+	@Test
+	// (expected=ArrayIndexOutOfBoundsException.class)
 	public void testMultipleSingleEntity() {
 		Entity plot = cluster.addEntity("plot");
 		plot.addEntity("centre");
 		plot.addEntity("centre");
-		ValidationResults results = plot.validate();
+		ValidationResults results = validate(plot);
 		List<ValidationResult> errors = results.getErrors();
 		assertTrue(containsMaxCountError(errors, "centre"));
 	}
@@ -67,7 +69,7 @@ public class MaxCountValidatorTest extends AbstractTest {
 	@Test
 	public void testMultipleEntityLessThanMax() {
 		cluster.addEntity("time_study");
-		ValidationResults results = cluster.validate();
+		ValidationResults results = validate(cluster);
 		List<ValidationResult> errors = results.getErrors();
 		assertFalse(containsMaxCountError(errors, "time_study"));
 	}
@@ -76,28 +78,29 @@ public class MaxCountValidatorTest extends AbstractTest {
 	public void testMultipleEntityMax() {
 		cluster.addEntity("time_study");
 		cluster.addEntity("time_study");
-		ValidationResults results = cluster.validate();
+		ValidationResults results = validate(cluster);
 		List<ValidationResult> errors = results.getErrors();
 		assertFalse(containsMaxCountError(errors, "time_study"));
 	}
 
-	@Test //(expected=ArrayIndexOutOfBoundsException.class)
+	@Test
+	// (expected=ArrayIndexOutOfBoundsException.class)
 	public void testMultipleEntityMoreThanMax() {
 		cluster.addEntity("time_study");
 		cluster.addEntity("time_study");
 		cluster.addEntity("time_study");
-		ValidationResults results = cluster.validate();
+		ValidationResults results = validate(cluster);
 		List<ValidationResult> errors = results.getErrors();
 		assertTrue(containsMaxCountError(errors, "time_study"));
 	}
-	
+
 	protected boolean containsMaxCountError(List<ValidationResult> errors, String name) {
 		for (ValidationResult result : errors) {
-			Validator<?> validator = result.getValidator();
-			if ( validator instanceof MaxCountValidator ) {
+			ValidationRule<?> validator = result.getValidator();
+			if (validator instanceof MaxCountValidator) {
 				MaxCountValidator v = (MaxCountValidator) validator;
 				NodeDefinition nodeDefinition = v.getNodeDefinition();
-				if ( nodeDefinition.getName().equals(name) ) {
+				if (nodeDefinition.getName().equals(name)) {
 					return true;
 				}
 			}

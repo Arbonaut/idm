@@ -10,10 +10,10 @@ import org.openforis.idm.model.CodeAttribute;
  * @author M. Togna
  * 
  */
-public class CodeValidator implements Validator<CodeAttribute> {
+public class CodeValidator implements ValidationRule<CodeAttribute> {
 
 	@Override
-	public boolean validate(CodeAttribute node) {
+	public boolean evaluate(CodeAttribute node) {
 		CodeListItem item = node.getCodeListItem();
 		if (item == null) {
 			return false;

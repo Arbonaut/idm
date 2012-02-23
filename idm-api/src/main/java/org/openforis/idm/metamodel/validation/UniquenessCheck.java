@@ -36,7 +36,7 @@ public class UniquenessCheck extends Check {
 	}
 
 	@Override
-	public boolean validate(Attribute<?, ?> attribute) {
+	public boolean evaluate(Attribute<?, ?> attribute) {
 		try {
 			RecordContext recordContext = attribute.getRecord().getContext();
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();

@@ -10,10 +10,10 @@ import org.openforis.idm.model.RealRangeAttribute;
  * @author M. Togna
  * 
  */
-public class RealRangeValidator implements Validator<RealRangeAttribute> {
+public class RealRangeValidator implements ValidationRule<RealRangeAttribute> {
 
 	@Override
-	public boolean validate(RealRangeAttribute node) {
+	public boolean evaluate(RealRangeAttribute node) {
 		RealRange range = node.getValue();
 		Double from = range.getFrom();
 		Double to = range.getTo();

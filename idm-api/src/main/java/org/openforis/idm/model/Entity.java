@@ -26,9 +26,6 @@ import org.openforis.idm.metamodel.RangeAttributeDefinition;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
-import org.openforis.idm.metamodel.validation.MaxCountValidator;
-import org.openforis.idm.metamodel.validation.MinCountValidator;
-import org.openforis.idm.metamodel.validation.ValidationResults;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -90,37 +87,6 @@ public class Entity extends Node<EntityDefinition> {
 		return true;
 	}
 
-	/**
-	 * Validates cardinality of all children
-	 */
-	@Override
-	public ValidationResults validate() {	
-		ValidationResults validationResults = new ValidationResults();
-		
-		validateChildren(validationResults);
-
-		return validationResults;
-	}
-
-	private void validateChildren(ValidationResults validationResults) {
-		List<NodeDefinition> childDefinitions = getDefinition().getChildDefinitions();
-		for (NodeDefinition childDef : childDefinitions) {
-			validateChildMinCount(validationResults, childDef);
-			validateChildMaxCount(validationResults, childDef);
-		}
-	}
-
-	private void validateChildMinCount(ValidationResults validationResults, NodeDefinition childDef) {
-		MinCountValidator validator = new MinCountValidator(childDef);
-		boolean result = validator.validate(this);
-		validationResults.addResult(this, validator, result);
-	}
-	
-	private void validateChildMaxCount(ValidationResults validationResults, NodeDefinition childDef) {
-		MaxCountValidator validator = new MaxCountValidator(childDef);
-		boolean result = validator.validate(this);
-		validationResults.addResult(this, validator, result);
-	}
 	// public <T extends Node<?>> T add(T o, int idx) {
 	// return addInternal(o, idx);
 	// }

@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.validation.ValidationResults;
+import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
@@ -30,26 +31,26 @@ public class EntityTest {
 		survey = su.unmarshal(is);
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected = NullPointerException.class)
 	public void testAddNullCode() {
 		Entity cluster = getRootEntity();
 		cluster.addValue("id", (Code) null);
 	}
 
-//	@Test(expected = ArrayIndexOutOfBoundsException.class)
-//	public void testAddTooManySingleAttributes() {
-//		Entity cluster = getRootEntity();
-//		cluster.addValue("id", new Code("123_456"));
-//		cluster.addValue("id", new Code("789_012"));
-//	}
+	// @Test(expected = ArrayIndexOutOfBoundsException.class)
+	// public void testAddTooManySingleAttributes() {
+	// Entity cluster = getRootEntity();
+	// cluster.addValue("id", new Code("123_456"));
+	// cluster.addValue("id", new Code("789_012"));
+	// }
 
-//	@Test(expected = ArrayIndexOutOfBoundsException.class)
-//	public void testAddTooManyMultipleEntities() {
-//		Entity cluster = getRootEntity();
-//		cluster.addEntity("time_study");
-//		cluster.addEntity("time_study");
-//		cluster.addEntity("time_study");
-//	}
+	// @Test(expected = ArrayIndexOutOfBoundsException.class)
+	// public void testAddTooManyMultipleEntities() {
+	// Entity cluster = getRootEntity();
+	// cluster.addEntity("time_study");
+	// cluster.addEntity("time_study");
+	// cluster.addEntity("time_study");
+	// }
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddAttributeOnEntity() {
@@ -74,23 +75,23 @@ public class EntityTest {
 		Entity cluster = getRootEntity();
 		cluster.addValue("xxx", 2.0);
 	}
-	
+
 	@Test
-	public void testValidateRootEntity(){
+	public void testValidateRootEntity() {
 		Entity cluster = getRootEntity();
-		
-		ValidationResults results = cluster.validate();
+
+		ValidationResults results = new Validator().validate(cluster);
 		int errors = results.getErrors().size();
 		Assert.assertEquals(5, errors);
 	}
-	
+
 	@Test
-	public void testValidatePlot(){
+	public void testValidatePlot() {
 		Entity cluster = getRootEntity();
 		Entity plot = cluster.addEntity("plot");
 		plot.addValue("share", 20.0);
-		
-		ValidationResults results = plot.validate();
+
+		ValidationResults results = new Validator().validate(plot);
 		int errors = results.getErrors().size();
 		Assert.assertEquals(16, errors);
 	}

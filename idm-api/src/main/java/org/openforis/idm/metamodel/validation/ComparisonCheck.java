@@ -120,7 +120,7 @@ public class ComparisonCheck extends Check {
 	}
 
 	@Override
-	public boolean validate(Attribute<?, ?> node) {
+	public boolean evaluate(Attribute<?, ?> node) {
 		Record record = node.getRecord();
 		RecordContext recordContext = record.getContext();
 		if (expression == null) {

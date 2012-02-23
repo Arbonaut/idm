@@ -43,7 +43,7 @@ public class PatternCheck extends Check {
 	}
 
 	@Override
-	public boolean validate(Attribute<?, ?> node) {
+	public boolean evaluate(Attribute<?, ?> node) {
 		Object value = node.getValue();
 		String string = null;
 		if (value instanceof String) {

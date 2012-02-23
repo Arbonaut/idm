@@ -62,7 +62,7 @@ public class DistanceCheck extends Check {
 	}
 
 	@Override
-	public boolean validate(Attribute<?, ?> node) {
+	public boolean evaluate(Attribute<?, ?> node) {
 		try {
 			boolean valid = true;
 			CoordinateAttribute coordinateAttr = (CoordinateAttribute) node;

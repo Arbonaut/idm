@@ -25,7 +25,7 @@ import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
 @XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "configuration", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
 @XmlRootElement(name = "survey")
-public final class Survey implements Serializable{
+public class Survey implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 

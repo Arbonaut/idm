@@ -6,9 +6,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.ValidationEventCollector;
+import javax.xml.transform.stream.StreamSource;
 
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.Survey;
@@ -22,21 +24,25 @@ import org.openforis.idm.metamodel.xml.internal.XmlParent;
 public class SurveyUnmarshaller {
 
 	private Unmarshaller unmarshaller;
+	private Class<? extends Survey> surveyClass;
 
-	SurveyUnmarshaller(Unmarshaller unmarshaller) {
+	SurveyUnmarshaller(Unmarshaller unmarshaller, Class<? extends Survey> surveyClass) {
+		super();
 		this.unmarshaller = unmarshaller;
+		this.surveyClass = surveyClass;
 	}
 
 	public Survey unmarshal(InputStream is) throws IOException, InvalidIdmlException {
 		try {
-			Listener listener = new Listener();
+			Unmarshaller.Listener listener = getListener();
 			unmarshaller.setListener(listener);
 			ValidationEventCollector vec = new ValidationEventCollector();
-			unmarshaller.setEventHandler( vec );
+			unmarshaller.setEventHandler(vec);
 
-			Survey survey = (Survey) unmarshaller.unmarshal(is);
+			JAXBElement<? extends Survey> jaxbElement = unmarshaller.unmarshal(new StreamSource(is), surveyClass);
+			Survey survey = jaxbElement.getValue();
 
-			if ( vec.hasEvents() ) {
+			if (vec.hasEvents()) {
 				throw new InvalidIdmlException(vec.getEvents());
 			}
 			return survey;
@@ -45,21 +51,28 @@ public class SurveyUnmarshaller {
 		}
 	}
 
+	protected Unmarshaller getUnmarshaller() {
+		return unmarshaller;
+	}
+
+	protected Unmarshaller.Listener getListener() {
+		return new Listener();
+	}
 
 	private class Listener extends Unmarshaller.Listener {
 		@Override
 		public void beforeUnmarshal(Object target, Object parent) {
 			Class<?> targetClass = target.getClass();
-			while ( !Object.class.equals(targetClass) ) {
+			while (!Object.class.equals(targetClass)) {
 				Field[] targetFields = targetClass.getDeclaredFields();
 				for (Field targetField : targetFields) {
 					XmlParent xmlParentAnnotation = targetField.getAnnotation(XmlParent.class);
-					if ( xmlParentAnnotation != null ) {
+					if (xmlParentAnnotation != null) {
 						setParentReference(targetField, target, parent);
 					}
-					
+
 					XmlInherited xmlInheritedAnnotation = targetField.getAnnotation(XmlInherited.class);
-					if ( xmlInheritedAnnotation != null ) {
+					if (xmlInheritedAnnotation != null) {
 						setInheritedReference(xmlInheritedAnnotation.value()[0], targetField, target, parent);
 					}
 				}
@@ -70,11 +83,11 @@ public class SurveyUnmarshaller {
 		@Override
 		public void afterUnmarshal(Object target, Object parent) {
 			Class<?> targetClass = target.getClass();
-			while ( !Object.class.equals(targetClass) ) {
+			while (!Object.class.equals(targetClass)) {
 				Method[] targetMethods = targetClass.getDeclaredMethods();
 				for (Method targetMethod : targetMethods) {
 					XmlInit ann = targetMethod.getAnnotation(XmlInit.class);
-					if ( ann != null ) {
+					if (ann != null) {
 						try {
 							targetMethod.setAccessible(true);
 							targetMethod.invoke(target);
@@ -92,9 +105,8 @@ public class SurveyUnmarshaller {
 		}
 	}
 
-	
 	private static void setParentReference(Field targetField, Object target, Object parent) {
-		if ( targetField.getType().isAssignableFrom(parent.getClass()) ) {
+		if (targetField.getType().isAssignableFrom(parent.getClass())) {
 			targetField.setAccessible(true);
 			try {
 				// Set parent into field with annotation
@@ -106,16 +118,16 @@ public class SurveyUnmarshaller {
 			}
 		}
 	}
-	
+
 	private static void setInheritedReference(String parentFieldName, Field targetField, Object target, Object parent) {
 		Field sourceField = findField(parentFieldName, parent);
-		if ( sourceField == null ) {
+		if (sourceField == null) {
 			return;
 		}
 		try {
 			sourceField.setAccessible(true);
 			targetField.setAccessible(true);
-			
+
 			// Copy value from field in parent into field with annotation
 			Object inheritedValue = sourceField.get(parent);
 			targetField.set(target, inheritedValue);
@@ -126,13 +138,13 @@ public class SurveyUnmarshaller {
 			targetField.setAccessible(false);
 		}
 	}
-	
+
 	private static Field findField(String name, Object parent) {
 		Class<?> parentClass = parent.getClass();
-		while ( !Object.class.equals(parentClass) ) {
+		while (!Object.class.equals(parentClass)) {
 			try {
 				Field field = parentClass.getDeclaredField(name);
-				if ( field != null ) {
+				if (field != null) {
 					return field;
 				}
 			} catch (NoSuchFieldException e) {

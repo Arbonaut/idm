@@ -15,13 +15,19 @@ import org.openforis.idm.metamodel.xml.internal.DefaultConfigurationAdapter;
  */
 public class IdmlBindingContext {
 	private final JAXBContext surveyJaxbContext;
-	private static final ConfigurationXmlAdapter DEFAULT_CONFIG_ADAPTER;
-
+	protected static final ConfigurationXmlAdapter DEFAULT_CONFIG_ADAPTER;
+	private Class<? extends Survey> surveyClass;
+	
 	private ConfigurationAdapter<? extends Configuration> configurationAdapter;
 
 	public IdmlBindingContext() {
+		this(Survey.class);
+	}
+	
+	public IdmlBindingContext(Class<? extends Survey> surveyClass) {
 		try {
-			this.surveyJaxbContext = JAXBContext.newInstance(Survey.class);
+			this.surveyClass = surveyClass;
+			this.surveyJaxbContext = JAXBContext.newInstance(surveyClass);
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
 		}
@@ -61,7 +67,7 @@ public class IdmlBindingContext {
 			} else {
 				unmarshaller.setAdapter(new ConfigurationXmlAdapter(configurationAdapter));
 			}
-			return new SurveyUnmarshaller(unmarshaller);
+			return new SurveyUnmarshaller(unmarshaller, surveyClass);
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
 		}

@@ -70,4 +70,13 @@ public final class TaxonOccurrence {
 		this.languageVariety = languageVariety;
 	}
 
+	@Override
+	public String toString() {
+		return "{code: '" + code + "' , scientificName: '"
+				+ scientificName + "', vernacularName: '"  + vernacularName
+				+ "', languageCode: '" + languageCode + "', languageVariety: '"
+				+ languageVariety + "'}";
+	}
+
+
 }

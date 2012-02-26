@@ -45,15 +45,15 @@ public class NumberAttributeDefinition extends AttributeDefinition implements Ke
 	private List<Precision> precisionDefinitions;
 	
 	public Type getType() {
-		return this.type;
+		return type == null ? Type.REAL : type;
 	}
 
 	public boolean isInteger() {
-		return type == Type.INTEGER;
+		return getType() == Type.INTEGER;
 	}
 
 	public boolean isReal() {
-		return type == Type.REAL;
+		return getType() == Type.REAL;
 	}
 	
 	public List<Precision> getPrecisionDefinitions() {
@@ -67,7 +67,8 @@ public class NumberAttributeDefinition extends AttributeDefinition implements Ke
 
 	@Override
 	public Node<?> createNode() {
-		switch (type) {
+		Type effectiveType = getType();
+		switch (effectiveType) {
 		case INTEGER:
 			return new IntegerAttribute(this);
 		case REAL:

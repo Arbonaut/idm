@@ -1,5 +1,7 @@
 package org.openforis.idm.metamodel.xml;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -12,6 +14,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.ValidationEventCollector;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
@@ -26,12 +30,31 @@ public class SurveyUnmarshaller {
 	private Unmarshaller unmarshaller;
 	private Class<? extends Survey> surveyClass;
 
+	private final Log log = LogFactory.getLog(getClass());
+
 	SurveyUnmarshaller(Unmarshaller unmarshaller, Class<? extends Survey> surveyClass) {
 		super();
 		this.unmarshaller = unmarshaller;
 		this.surveyClass = surveyClass;
 	}
 
+	public Survey unmarshal(String filename) throws IOException, InvalidIdmlException {
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(filename);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			return unmarshal(bis);
+		} finally {
+			if ( fis != null ) {
+				try {
+					fis.close();
+				} catch ( IOException e ){
+					log.warn("Could not close file: "+e.getMessage());
+				}
+			}
+		}
+	}
+	
 	public Survey unmarshal(InputStream is) throws IOException, InvalidIdmlException {
 		try {
 			Unmarshaller.Listener listener = getListener();

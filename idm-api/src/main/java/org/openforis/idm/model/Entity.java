@@ -45,7 +45,7 @@ public class Entity extends Node<EntityDefinition> {
 	public void add(Node<?> node) {
 		addInternal(node, null);
 	}
-	
+
 	/**
 	 * @param name
 	 * @return the newly created Entity

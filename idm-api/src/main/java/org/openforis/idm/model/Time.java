@@ -83,7 +83,8 @@ public final class Time {
 	public static Time parseTime(String string) {
 		StringTokenizer st = new StringTokenizer(string, DELIM);
 		int tokens = st.countTokens();
-		if (tokens != 2) {
+		// Allow format HH:MM or HH:MM:SS.  Seconds are ignored.
+		if (tokens < 2 || tokens > 3) {
 			throw new IllegalArgumentException("Invalid time " + string);
 		}
 		int hour = Integer.parseInt(st.nextToken());

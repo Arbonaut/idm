@@ -11,5 +11,5 @@ public abstract class NumberAttribute<T extends Number> extends AtomicAttribute<
 	protected NumberAttribute(NumberAttributeDefinition definition, Class<T> valueType) {
 		super(definition, valueType);
 	}
-	
+
 }

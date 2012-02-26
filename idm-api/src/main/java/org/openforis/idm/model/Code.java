@@ -60,10 +60,10 @@ public class Code {
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{code:").append(code);
+		StringBuilder sb = new StringBuilder(); 
+		sb.append("{code: ").append(code);
 		if ( qualifier!=null ) {
-			sb.append(", qualifier:").append(qualifier);
+			sb.append(", qualifier: ").append(qualifier);
 		}
 		sb.append("}");
 		return sb.toString();

@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.xml.internal.CheckFlagAdapter;
-import org.openforis.idm.model.Attribute;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -24,7 +23,7 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-public abstract class Check implements Serializable, ValidationRule<Attribute<?,?>> {
+public abstract class Check implements Serializable, ValidationRule {
 
 	private static final long serialVersionUID = 1L;
 

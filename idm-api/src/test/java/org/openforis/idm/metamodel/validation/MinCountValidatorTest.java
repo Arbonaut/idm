@@ -101,7 +101,7 @@ public class MinCountValidatorTest extends ValidationTest {
 
 	private boolean containsMinCountError(List<ValidationResult> errors, String name) {
 		for (ValidationResult result : errors) {
-			ValidationRule<?> validator = result.getValidator();
+			ValidationRule validator = result.getValidator();
 			if (validator instanceof MinCountValidator) {
 				MinCountValidator v = (MinCountValidator) validator;
 				NodeDefinition nodeDefinition = v.getNodeDefinition();

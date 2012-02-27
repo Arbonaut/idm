@@ -28,14 +28,13 @@ public class NodeState {
 	private ValidationResults validationResults;
 
 	public NodeState(Node<? extends NodeDefinition> node) {
-		super();
 		this.node = node;
 	}
 
 	public void update(Validator validator) {
-		updateValidation(validator);
 		updateRelevance();
 		updateRequired();
+		updateValidation(validator);
 	}
 
 	private void updateRequired() {
@@ -70,11 +69,10 @@ public class NodeState {
 			}
 		}
 		relevant = true;
-
 	}
 
 	private void updateValidation(Validator validator) {
-		this.validationResults = validator.validate(node);
+		this.validationResults = validator.validate(this);
 	}
 
 	public Node<? extends NodeDefinition> getNode() {

@@ -22,6 +22,7 @@ import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidExpressionException;
+import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
@@ -62,27 +63,27 @@ public class DistanceCheck extends Check {
 	}
 
 	@Override
-	public boolean evaluate(Attribute<?, ?> node) {
+	public boolean evaluate(NodeState nodeState) {
 		try {
 			boolean valid = true;
-			CoordinateAttribute coordinateAttr = (CoordinateAttribute) node;
+			CoordinateAttribute coordinateAttr = (CoordinateAttribute) nodeState.getNode();
 			beforeExecute(coordinateAttr);
 
 			Entity parentEntity = coordinateAttr.getParent();
-			RecordContext recordContext = node.getRecord().getContext();
-			Coordinate from = getCoordinate(recordContext, getSourcePointExpression(), parentEntity, node, coordinateAttr.getValue());
-			Coordinate to = getCoordinate(recordContext, getDestinationPointExpression(), parentEntity, node, null);
+			RecordContext recordContext = coordinateAttr.getRecord().getContext();
+			Coordinate from = getCoordinate(recordContext, getSourcePointExpression(), parentEntity, coordinateAttr, coordinateAttr.getValue());
+			Coordinate to = getCoordinate(recordContext, getDestinationPointExpression(), parentEntity, coordinateAttr, null);
 
 			double distance = CoordinateOperations.orthodromicDistance(from, to);
 
 			if (maxDistanceExpression != null) {
-				double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, node, maxDistanceExpression);
+				double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, coordinateAttr, maxDistanceExpression);
 				if (distance > maxDistance) {
 					valid = false;
 				}
 			}
 			if (minDistanceExpression != null) {
-				double minDistance = evaluateDistanceExpression(recordContext, parentEntity, node, minDistanceExpression);
+				double minDistance = evaluateDistanceExpression(recordContext, parentEntity, coordinateAttr, minDistanceExpression);
 				if (distance < minDistance) {
 					valid = false;
 				}

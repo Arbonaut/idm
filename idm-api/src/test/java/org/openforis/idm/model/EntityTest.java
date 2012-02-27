@@ -13,6 +13,7 @@ import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
+import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
@@ -79,8 +80,8 @@ public class EntityTest {
 	@Test
 	public void testValidateRootEntity() {
 		Entity cluster = getRootEntity();
-
-		ValidationResults results = new Validator().validate(cluster);
+		NodeState nodeState = new NodeState(cluster);
+		ValidationResults results = new Validator().validate(nodeState);
 		int errors = results.getErrors().size();
 		Assert.assertEquals(5, errors);
 	}
@@ -90,8 +91,9 @@ public class EntityTest {
 		Entity cluster = getRootEntity();
 		Entity plot = cluster.addEntity("plot");
 		plot.addValue("share", 20.0);
-
-		ValidationResults results = new Validator().validate(plot);
+		
+		NodeState nodeState = new NodeState(plot);
+		ValidationResults results = new Validator().validate(nodeState);
 		int errors = results.getErrors().size();
 		Assert.assertEquals(16, errors);
 	}

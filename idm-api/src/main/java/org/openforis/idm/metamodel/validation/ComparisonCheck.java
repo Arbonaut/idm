@@ -17,6 +17,7 @@ import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
+import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author M. Togna
@@ -120,8 +121,9 @@ public class ComparisonCheck extends Check {
 	}
 
 	@Override
-	public boolean evaluate(Attribute<?, ?> node) {
-		Record record = node.getRecord();
+	public boolean evaluate(NodeState nodeState) {
+		Attribute<?,?> node = (Attribute<?, ?>) nodeState.getNode();
+		Record record = node .getRecord();
 		RecordContext recordContext = record.getContext();
 		if (expression == null) {
 			expression = buildExpression();

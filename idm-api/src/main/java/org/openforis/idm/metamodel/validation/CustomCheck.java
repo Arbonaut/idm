@@ -14,6 +14,7 @@ import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
+import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
@@ -33,7 +34,8 @@ public class CustomCheck extends Check {
 	}
 
 	@Override
-	public boolean evaluate(Attribute<?, ?> node) {
+	public boolean evaluate(NodeState nodeState) {
+		Attribute<?,?> node = (Attribute<?, ?>) nodeState.getNode();
 		String expr = getExpression();
 		try {
 			RecordContext recordContext = node.getRecord().getContext();

@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Code;
+import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
@@ -43,7 +44,8 @@ public class PatternCheck extends Check {
 	}
 
 	@Override
-	public boolean evaluate(Attribute<?, ?> node) {
+	public boolean evaluate(NodeState nodeState) {
+		Attribute<?,?> node = (Attribute<?, ?>) nodeState.getNode();
 		Object value = node.getValue();
 		String string = null;
 		if (value instanceof String) {

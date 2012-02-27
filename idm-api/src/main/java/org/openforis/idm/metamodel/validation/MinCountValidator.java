@@ -15,12 +15,13 @@ import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.RequiredExpression;
+import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author M. Togna
  * @author G. Miceli
  */
-public class MinCountValidator implements ValidationRule<Entity> {
+public class MinCountValidator implements ValidationRule {
 
 	private NodeDefinition nodeDefinition;
 
@@ -33,7 +34,8 @@ public class MinCountValidator implements ValidationRule<Entity> {
 	}
 	
 	@Override
-	public boolean evaluate(Entity parent) {
+	public boolean evaluate(NodeState nodeState) {
+		Entity parent = (Entity) nodeState.getNode();
 		String name = nodeDefinition.getName();
 		int minCount = getEffectiveMinCount(parent);
 		if ( minCount == 0 ) {

@@ -96,7 +96,7 @@ public class MaxCountValidatorTest extends ValidationTest {
 
 	protected boolean containsMaxCountError(List<ValidationResult> errors, String name) {
 		for (ValidationResult result : errors) {
-			ValidationRule<?> validator = result.getValidator();
+			ValidationRule validator = result.getValidator();
 			if (validator instanceof MaxCountValidator) {
 				MaxCountValidator v = (MaxCountValidator) validator;
 				NodeDefinition nodeDefinition = v.getNodeDefinition();

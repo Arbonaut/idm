@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.CodeListItem;
 import org.openforis.idm.model.CodeAttribute;
+import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author M. Togna
@@ -15,10 +16,11 @@ import org.openforis.idm.model.CodeAttribute;
  *         <p/>
  *         Generates  a warning if parent is invalid or missing.
  */
-public class CodeParentValidator implements ValidationRule<CodeAttribute> {
+public class CodeParentValidator implements ValidationRule {
 
 	@Override
-	public boolean evaluate(CodeAttribute node) {
+	public boolean evaluate(NodeState nodeState) {
+		CodeAttribute node = (CodeAttribute) nodeState.getNode();
 		CodeAttributeDefinition definition = node.getDefinition();
 		if (StringUtils.isBlank(definition.getParentExpression())) {
 			return true;

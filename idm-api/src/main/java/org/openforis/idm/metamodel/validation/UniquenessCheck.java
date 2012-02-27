@@ -17,6 +17,7 @@ import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.ModelPathExpression;
+import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
@@ -36,8 +37,9 @@ public class UniquenessCheck extends Check {
 	}
 
 	@Override
-	public boolean evaluate(Attribute<?, ?> attribute) {
+	public boolean evaluate(NodeState nodeState) {
 		try {
+			Attribute<?,?> attribute = (Attribute<?, ?>) nodeState.getNode();
 			RecordContext recordContext = attribute.getRecord().getContext();
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			ModelPathExpression pathExpression = expressionFactory.createModelPathExpression(expression);

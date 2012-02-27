@@ -37,7 +37,7 @@ public class NodeState {
 		updateValidation(validator);
 	}
 
-	private void updateRequired() {
+	public void updateRequired() {
 		NodeDefinition definition = node.getDefinition();
 		if (definition.isRequired()) {
 			required = true;
@@ -57,7 +57,7 @@ public class NodeState {
 
 	}
 
-	private void updateRelevance() {
+	public void updateRelevance() {
 		String expr = node.getDefinition().getRequiredExpression();
 		if (StringUtils.isNotBlank(expr)) {
 			try {
@@ -71,7 +71,7 @@ public class NodeState {
 		relevant = true;
 	}
 
-	private void updateValidation(Validator validator) {
+	public void updateValidation(Validator validator) {
 		this.validationResults = validator.validate(this);
 	}
 

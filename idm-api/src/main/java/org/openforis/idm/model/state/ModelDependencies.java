@@ -35,7 +35,7 @@ public class ModelDependencies {
 	private ExpressionFactory expressionFactory;
 
 	private Survey survey;
-	private StateDependencyMap relevantDependencies;
+	private StateDependencyMap relevanceDependencies;
 	private StateDependencyMap requiredDependencies;
 	private StateDependencyMap defaultValueDependencies;
 	private StateDependencyMap checkDependencies;
@@ -46,20 +46,46 @@ public class ModelDependencies {
 	}
 
 	public Set<Node<?>> getDependantNodes(Node<? extends NodeDefinition> node) {
-		Set<Node<?>> dependentNodes = new HashSet<Node<?>>();
 		NodeDefinition defn = node.getDefinition();
 		Set<String> paths = getDependantPaths(defn);
+		return getNodes(node, paths);
+	}
+
+	public Set<Node<?>> getRelevanceDependantNodes(Node<? extends NodeDefinition> node) {
+		NodeDefinition defn = node.getDefinition();
+		Set<String> paths = getRelevanceDependantPaths(defn);
+		return getNodes(node, paths);
+	}
+	
+	public Set<Node<?>> getRequiredDependantNodes(Node<? extends NodeDefinition> node) {
+		NodeDefinition defn = node.getDefinition();
+		Set<String> paths = getRequiredDependantPaths(defn);
+		return getNodes(node, paths);
+	}
+	
+	private Set<Node<?>> getNodes(Node<? extends NodeDefinition> context, Set<String> paths) {
+		Set<Node<?>> dependentNodes = new HashSet<Node<?>>();
 		for (String path : paths) {
-			Node<?> dependentNode = evaluateModelPathExpression(node, path);
+			Node<?> dependentNode = evaluateModelPathExpression(context, path);
 			dependentNodes.add(dependentNode);
 		}
 		return dependentNodes;
 	}
 
+	public Set<String> getRelevanceDependantPaths(NodeDefinition definition) {
+		String path = definition.getPath();
+		return relevanceDependencies.getDependantPaths(path);
+	}
+	
+	public Set<String> getRequiredDependantPaths(NodeDefinition definition) {
+		String path = definition.getPath();
+		return requiredDependencies.getDependantPaths(path);
+	}
+	
 	public Set<String> getDependantPaths(NodeDefinition definition) {
 		Set<String> set = new HashSet<String>();
 		String path = definition.getPath();
-		set.addAll(relevantDependencies.getDependantPaths(path));
+		set.addAll(relevanceDependencies.getDependantPaths(path));
 		set.addAll(requiredDependencies.getDependantPaths(path));
 		set.addAll(defaultValueDependencies.getDependantPaths(path));
 		set.addAll(checkDependencies.getDependantPaths(path));
@@ -80,7 +106,7 @@ public class ModelDependencies {
 	private void register(EntityDefinition entityDefinition) {
 		List<NodeDefinition> childDefinitions = entityDefinition.getChildDefinitions();
 		for (NodeDefinition nodeDefinition : childDefinitions) {
-			relevantDependencies.register(nodeDefinition, nodeDefinition.getRelevantExpression());
+			relevanceDependencies.register(nodeDefinition, nodeDefinition.getRelevantExpression());
 			requiredDependencies.register(nodeDefinition, nodeDefinition.getRequiredExpression());
 
 			if (nodeDefinition instanceof AttributeDefinition) {
@@ -134,7 +160,7 @@ public class ModelDependencies {
 	}
 
 	private void reset() {
-		relevantDependencies = new StateDependencyMap(expressionFactory);
+		relevanceDependencies = new StateDependencyMap(expressionFactory);
 		requiredDependencies = new StateDependencyMap(expressionFactory);
 		defaultValueDependencies = new StateDependencyMap(expressionFactory);
 		checkDependencies = new StateDependencyMap(expressionFactory);

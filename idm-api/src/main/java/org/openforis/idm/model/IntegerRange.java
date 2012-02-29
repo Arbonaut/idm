@@ -2,6 +2,8 @@ package org.openforis.idm.model;
 
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -17,14 +19,18 @@ public final class IntegerRange extends NumericRange<Integer> {
 	}
 
 	public static IntegerRange parseIntegerRange(String string) {
-		StringTokenizer st = new StringTokenizer(string, DELIM);
-		int from = Integer.parseInt(st.nextToken());
-
-		if (st.hasMoreTokens()) {
-			int to = Integer.parseInt(st.nextToken());
-			return new IntegerRange(from, to);
+		if ( StringUtils.isBlank(string) ) {
+			return null;
 		} else {
-			return new IntegerRange(from);
+			StringTokenizer st = new StringTokenizer(string, DELIM);
+			int from = Integer.parseInt(st.nextToken());
+	
+			if (st.hasMoreTokens()) {
+				int to = Integer.parseInt(st.nextToken());
+				return new IntegerRange(from, to);
+			} else {
+				return new IntegerRange(from);
+			}
 		}
 	}
 }

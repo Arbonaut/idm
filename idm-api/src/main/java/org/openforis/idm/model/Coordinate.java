@@ -3,6 +3,8 @@ package org.openforis.idm.model;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -12,8 +14,8 @@ public final class Coordinate {
 	private static final String STRING_FORMAT = "SRID=(.+);POINT\\((\\d+)\\s(\\d+)\\)";
 	private static final Pattern PATTERN = Pattern.compile(STRING_FORMAT);
 	
-	private Long x;
-	private Long y;
+	private Double x;
+	private Double y;
 	private String srsId;
 
 
@@ -24,29 +26,33 @@ public final class Coordinate {
 	 * @param string
 	 */
 	public static Coordinate parseCoordinate(String string) {
-		Matcher matcher = PATTERN.matcher(string);
-		if (matcher.matches()) {
-			String srsId = matcher.group(1);
-			long x = Long.parseLong(matcher.group(2));
-			long y = Long.parseLong(matcher.group(3));
-			Coordinate coordinate = new Coordinate(x, y, srsId);
-			return coordinate;
+		if ( StringUtils.isBlank(string) ) {
+			return null;
 		} else {
-			throw new IllegalArgumentException("Unable to convert " + string + " to a valid coordinate");
+			Matcher matcher = PATTERN.matcher(string);
+			if (matcher.matches()) {
+				String srsId = matcher.group(1);
+				double x = Double.parseDouble(matcher.group(2));
+				double y = Double.parseDouble(matcher.group(3));
+				Coordinate coordinate = new Coordinate(x, y, srsId);
+				return coordinate;
+			} else {
+				throw new IllegalArgumentException("Unable to convert " + string + " to a valid coordinate");
+			}
 		}
 	}
 	
-	public Coordinate(Long x, Long y, String srsId) {
+	public Coordinate(Double x, Double y, String srsId) {
 		this.x = x;
 		this.y = y;
 		this.srsId = srsId;
 	}
 
-	public Long getX() {
+	public Double getX() {
 		return x;
 	}
 
-	public Long getY() {
+	public Double getY() {
 		return y;
 	}
 

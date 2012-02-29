@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.xml.internal.RangeAttributeDefinitionTypeAdapter;
 import org.openforis.idm.model.IntegerRange;
 import org.openforis.idm.model.IntegerRangeAttribute;
@@ -76,7 +77,9 @@ public class RangeAttributeDefinition extends AttributeDefinition {
 	@SuppressWarnings("unchecked")
 	@Override
 	public NumericRange<? extends Number> createValue(String string) {
-		if (isInteger()) {
+		if ( StringUtils.isBlank(string) ) {
+			return null;
+		} else if (isInteger()) {
 			return IntegerRange.parseIntegerRange(string);
 		} else if (isReal()) {
 			return RealRange.parseRealRange(string);

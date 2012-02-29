@@ -38,10 +38,14 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 	
 	@Override
 	public void setValue(Code value) {
-		String code = value.getCode();
-		String qualifier = value.getQualifier();
-		getCodeField().setValue(code);
-		getQualifierField().setValue(qualifier);
+		if ( value == null ) {
+			clearValue();
+		} else {
+			String code = value == null ? null : value.getCode();
+			String qualifier = value == null ? null : value.getQualifier();
+			getCodeField().setValue(code);
+			getQualifierField().setValue(qualifier);
+		}
 	}
 	
 	public CodeListItem getCodeListItem() {

@@ -31,11 +31,14 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 
 	@Override
 	public void setValue(T value) {
-		V from = value.getFrom();
-		V to = value.getTo();
-
-		getFromField().setValue(from);
-		getToField().setValue(to);
+		if ( value == null ) {
+			clearValue();
+		} else {
+			V from = value.getFrom();
+			V to = value.getTo();
+			getFromField().setValue(from);
+			getToField().setValue(to);
+		}
 	}
 	
 	protected abstract T createRange(V from, V to);

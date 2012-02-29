@@ -32,10 +32,14 @@ public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 
 	@Override
 	public void setValue(File value) {
-		String filename = value.getFilename();
-		Long size = value.getSize();
-		getFilenameField().setValue(filename);
-		getSizeField().setValue(size);
+		if ( value == null ) {
+			clearValue();
+		} else {
+			String filename = value.getFilename();
+			Long size = value.getSize();
+			getFilenameField().setValue(filename);
+			getSizeField().setValue(size);
+		}
 	}
 	
 	@Override

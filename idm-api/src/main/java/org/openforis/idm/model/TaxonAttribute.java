@@ -49,16 +49,20 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 
 	@Override
 	public void setValue(TaxonOccurrence value) {
-		String code = value.getCode();
-		String scientificName = value.getScientificName();
-		String vernacularName = value.getVernacularName();
-		String languageCode = value.getLanguageCode();
-		String languageVariety = value.getLanguageVariety();
-
-		getCodeField().setValue(code);
-		getScientificName().setValue(scientificName);
-		getVernacularNameField().setValue(vernacularName);
-		getLanguageCodeField().setValue(languageCode);
-		getLanguageVarietyField().setValue(languageVariety);
+		if ( value == null ) {
+			clearValue();
+		} else {
+			String code = value.getCode();
+			String scientificName = value.getScientificName();
+			String vernacularName = value.getVernacularName();
+			String languageCode = value.getLanguageCode();
+			String languageVariety = value.getLanguageVariety();
+	
+			getCodeField().setValue(code);
+			getScientificName().setValue(scientificName);
+			getVernacularNameField().setValue(vernacularName);
+			getLanguageCodeField().setValue(languageCode);
+			getLanguageVarietyField().setValue(languageVariety);
+		}
 	}
 }

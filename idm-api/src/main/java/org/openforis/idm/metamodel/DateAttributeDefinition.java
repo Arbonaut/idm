@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Date;
 import org.openforis.idm.model.DateAttribute;
 import org.openforis.idm.model.Node;
@@ -30,7 +31,11 @@ public class DateAttributeDefinition extends AttributeDefinition {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Date createValue(String string) {
-		return Date.parseDate(string);
+		if ( StringUtils.isBlank(string) ) {
+			return null;
+		} else {
+			return Date.parseDate(string);
+		}
 	}
 	
 }

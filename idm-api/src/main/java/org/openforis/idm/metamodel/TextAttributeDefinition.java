@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.xml.internal.TextAttributeDefinitionTypeAdapter;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TextAttribute;
@@ -52,7 +53,11 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 	@SuppressWarnings("unchecked")
 	@Override
 	public String createValue(String string) {
-		return string;
+		if ( StringUtils.isBlank(string) ) {
+			return null;
+		} else {
+			return string;
+		}
 	}
 	
 }

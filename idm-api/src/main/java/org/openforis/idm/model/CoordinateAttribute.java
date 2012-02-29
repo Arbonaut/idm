@@ -9,17 +9,17 @@ import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
 public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition, Coordinate> {
 
 	public CoordinateAttribute(CoordinateAttributeDefinition definition) {
-		super(definition, Long.class, Long.class, String.class);
+		super(definition, Double.class, Double.class, String.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<Long> getXField() {
-		return (Field<Long>) getField(0);
+	public Field<Double> getXField() {
+		return (Field<Double>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<Long> getYField() {
-		return (Field<Long>) getField(1);
+	public Field<Double> getYField() {
+		return (Field<Double>) getField(1);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -29,20 +29,24 @@ public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition
 
 	@Override
 	public Coordinate getValue() {
-		Long x = getXField().getValue();
-		Long y = getYField().getValue();
+		Double x = getXField().getValue();
+		Double y = getYField().getValue();
 		String srsId = getSrsIdField().getValue();
 		return new Coordinate(x, y, srsId);
 	}
 
 	@Override
 	public void setValue(Coordinate coordinate) {
-		Long x = coordinate.getX();
-		Long y = coordinate.getY();
-		String srsId = coordinate.getSrsId();
-		getXField().setValue(x);
-		getYField().setValue(y);
-		getSrsIdField().setValue(srsId);
+		if ( coordinate == null ) {
+			clearValue();
+		} else {
+			Double x = coordinate.getX();
+			Double y = coordinate.getY();
+			String srsId = coordinate.getSrsId();
+			getXField().setValue(x);
+			getYField().setValue(y);
+			getSrsIdField().setValue(srsId);
+		}
 	}
 	
 }

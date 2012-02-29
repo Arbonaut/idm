@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -22,15 +24,19 @@ public final class Date {
 	}
 
 	public static Date parseDate(String string){
-		StringTokenizer st = new StringTokenizer(string, DELIM);
-		int tokens = st.countTokens();
-		if(tokens != 3){
-			throw new IllegalArgumentException("Invalid date " + string);
+		if ( StringUtils.isBlank(string) ) {
+			return null;
+		} else {
+			StringTokenizer st = new StringTokenizer(string, DELIM);
+			int tokens = st.countTokens();
+			if(tokens != 3){
+				throw new IllegalArgumentException("Invalid date " + string);
+			}
+			int year =  Integer.parseInt(st.nextToken());
+			int month =  Integer.parseInt(st.nextToken());
+			int day =  Integer.parseInt(st.nextToken());
+			return new Date(year, month, day);
 		}
-		int year =  Integer.parseInt(st.nextToken());
-		int month =  Integer.parseInt(st.nextToken());
-		int day =  Integer.parseInt(st.nextToken());
-		return new Date(year, month, day);
 	}
 	
 	public Integer getDay() {

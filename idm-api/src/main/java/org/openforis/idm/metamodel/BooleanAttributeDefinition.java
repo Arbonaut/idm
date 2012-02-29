@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.BooleanAttribute;
 import org.openforis.idm.model.Node;
 
@@ -41,7 +42,11 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean createValue(String string) {
-		return Boolean.parseBoolean(string);
+		if ( StringUtils.isBlank(string) ) {
+			return null;
+		} else {
+			return Boolean.parseBoolean(string);
+		}
 	}
 	
 }

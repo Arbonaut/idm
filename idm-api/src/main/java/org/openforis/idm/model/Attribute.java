@@ -42,6 +42,23 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 	
 	/**
+	 * Reset value and symbol
+	 */
+	public void clearValue() {
+		for (Field<?> field : fields) {
+			field.setValue(null);
+		}
+	}
+
+	/**
+	 * Reset all properties of all fields (remarks, value, symbol)
+	 */
+	public void clearFields() {
+		for (Field<?> field : fields) {
+			field.clear();
+		}
+	}
+	/**
 	 * @return a non-null, immutable value
 	 */
 	public abstract V getValue();

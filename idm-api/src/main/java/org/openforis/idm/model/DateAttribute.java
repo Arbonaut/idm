@@ -37,12 +37,16 @@ public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 
 	@Override
 	public void setValue(Date date) {
-		Integer year = date.getYear();
-		Integer month = date.getMonth();
-		Integer day = date.getDay();
-		getYearField().setValue(year);
-		getMonthField().setValue(month);
-		getDayField().setValue(day);
+		if ( date == null ) {
+			clearValue();
+		} else {
+			Integer year = date.getYear();
+			Integer month = date.getMonth();
+			Integer day = date.getDay();
+			getYearField().setValue(year);
+			getMonthField().setValue(month);
+			getDayField().setValue(day);
+		}
 	}
 
 }

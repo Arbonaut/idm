@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -81,15 +83,19 @@ public final class Time {
 	}
 
 	public static Time parseTime(String string) {
-		StringTokenizer st = new StringTokenizer(string, DELIM);
-		int tokens = st.countTokens();
-		// Allow format HH:MM or HH:MM:SS.  Seconds are ignored.
-		if (tokens < 2 || tokens > 3) {
-			throw new IllegalArgumentException("Invalid time " + string);
+		if ( StringUtils.isBlank(string) ) {
+			return null;
+		} else {
+			StringTokenizer st = new StringTokenizer(string, DELIM);
+			int tokens = st.countTokens();
+			// Allow format HH:MM or HH:MM:SS.  Seconds are ignored.
+			if (tokens < 2 || tokens > 3) {
+				throw new IllegalArgumentException("Invalid time " + string);
+			}
+			int hour = Integer.parseInt(st.nextToken());
+			int minute = Integer.parseInt(st.nextToken());
+			return new Time(hour, minute);
 		}
-		int hour = Integer.parseInt(st.nextToken());
-		int minute = Integer.parseInt(st.nextToken());
-		return new Time(hour, minute);
 	}
 	
 }

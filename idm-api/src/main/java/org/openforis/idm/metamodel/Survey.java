@@ -22,7 +22,7 @@ import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "configuration", "modelVersions",
+@XmlType(name = "", propOrder = { "projectNames", "cycle", "descriptions", "configuration", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
 @XmlRootElement(name = "survey")
 public class Survey implements Serializable{
@@ -30,11 +30,11 @@ public class Survey implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@XmlTransient
+	private String name;
+	
+	@XmlTransient
 	private Integer id;
 	
-	@XmlElement(name = "name")
-	private String name;
-
 	@XmlElement(name = "project", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> projectNames;
 
@@ -73,9 +73,13 @@ public class Survey implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
-		return this.name;
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<LanguageSpecificText> getProjectNames() {

@@ -4,7 +4,6 @@
      xmlns:mb="http://www.mycompany.com/mobile/1.0"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.openforis.org/idml/3.0 https://raw.github.com/openforis/idm/reengineering/idm-api/src/main/resources/idml3.xsd">
-    <name>archenland1</name>
     <project>Archenland NFI</project>
     <cycle>1</cycle>
     <description>
@@ -3485,7 +3484,7 @@
                         <default value="false"/>
                     </boolean>
                 </entity>
-                <entity name="hidead_wood" multiple="true" ui:tab="dead_wood" ui:showPosition="true" relevant="accessibility = 0 and vegetation_type &gt;= 101 and vegetation_type &lt;= 306">
+                <entity name="dead_wood" multiple="true" ui:tab="dead_wood" ui:showPosition="true" relevant="accessibility = 0 and vegetation_type &gt;= 101 and vegetation_type &lt;= 306">
                     <label>Dead Wood</label>
                     <taxon required="true" name="species" taxonomy="trees">
                         <label>Species</label>

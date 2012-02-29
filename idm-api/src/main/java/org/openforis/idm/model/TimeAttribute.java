@@ -31,10 +31,14 @@ public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 	
 	@Override
 	public void setValue(Time time) {
-		Integer hour = time.getHour();
-		Integer minute = time.getMinute();
-		getHourField().setValue(hour);
-		getMinuteField().setValue(minute);
+		if ( time == null ) {
+			clearValue();
+		} else {
+			Integer hour = time.getHour();
+			Integer minute = time.getMinute();
+			getHourField().setValue(hour);
+			getMinuteField().setValue(minute);
+		}
 	}
 
 }

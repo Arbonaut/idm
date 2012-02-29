@@ -1,5 +1,7 @@
 package org.openforis.idm.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author G. Miceli
  */
@@ -23,6 +25,7 @@ public final class Field<T> {
 
 	public void setValue(T value) {
 		this.value = value;
+		this.symbol = null;
 	}
 	
 	public String getRemarks() {
@@ -47,7 +50,7 @@ public final class Field<T> {
 
 	@SuppressWarnings("unchecked")
 	public T parseValue(String s) {
-		if ( s == null ) {
+		if ( StringUtils.isBlank(s) ) {
 			return null;
 		} else if ( valueType == Boolean.class ) {
 			return (T) Boolean.valueOf(s);
@@ -68,4 +71,12 @@ public final class Field<T> {
 		this.value = parseValue(s);
 	}
 
+	/**
+	 * Reset all properties (value, remarks and symbol)
+	 */
+	public void clear() {
+		this.value = null;
+		this.remarks = null;
+		this.symbol = null;
+	}
 }

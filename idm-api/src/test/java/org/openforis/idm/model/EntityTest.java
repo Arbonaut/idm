@@ -32,7 +32,7 @@ public class EntityTest {
 		survey = su.unmarshal(is);
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void testAddNullCode() {
 		Entity cluster = getRootEntity();
 		cluster.addValue("id", (Code) null);

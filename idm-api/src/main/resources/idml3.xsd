@@ -191,15 +191,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-
-        <xs:element name="name" type="internalName">
-          <xs:annotation>
-            <xs:documentation xml:lang="en">
-        	    Internal system code name for survey (e.g. archenlandnfi1).
-        	  </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-
+        
         <xs:element name="project" type="unformattedText" minOccurs="1" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">

@@ -105,7 +105,7 @@ public abstract class Node<D extends NodeDefinition> {
 		sb.append("/");
 		sb.append(name);
 		sb.append("[");
-		sb.append(idx);
+		sb.append(idx+1);
 		sb.append("]");
 	}
 

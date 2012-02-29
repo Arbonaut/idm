@@ -26,7 +26,7 @@ public abstract class Node<D extends NodeDefinition> {
 
 	public Node(D definition) {
 		if ( definition == null ) {
-			throw new NullPointerException("definition required");
+			throw new NullPointerException("Definition required");
 		}
 		this.definition = definition;
 	}
@@ -96,7 +96,8 @@ public abstract class Node<D extends NodeDefinition> {
 		return sb.toString();
 	}
 	
-	void getPath(StringBuilder sb) {
+	
+	protected void getPath(StringBuilder sb) {
 		if ( parent!=null ) {
 			parent.getPath(sb);
 		}
@@ -107,6 +108,12 @@ public abstract class Node<D extends NodeDefinition> {
 		sb.append("[");
 		sb.append(idx+1);
 		sb.append("]");
+	}
+	
+	protected RecordContext getRecordContext() {
+		Record record = getRecord();
+		RecordContext context = record.getContext();
+		return context;
 	}
 
 	public int getIndex() {

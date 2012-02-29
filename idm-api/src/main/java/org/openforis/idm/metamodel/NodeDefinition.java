@@ -20,6 +20,7 @@ import org.openforis.idm.metamodel.expression.SchemaPathExpression;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.NodePointer;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -78,6 +79,14 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	
 	public abstract Node<?> createNode();
 	
+	// TODO
+	@XmlTransient
+	private Set<NodePointer> relevantExpressionDependencies;
+
+	// TODO
+	@XmlTransient
+	private Set<NodePointer> requiredExpressionDependencies;
+
 	public String getAnnotation(QName qname) {
 		return annotations == null ? null : annotations.get(qname);
 	}
@@ -107,16 +116,12 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 	
 	public NodeDefinition getDefinitionByRelativePath(String path) {
-//		if ( path.startsWith("/") ) {
-//			return getSchema().getByPath(path);
-//		} else {
 		SchemaPathExpression expression = new SchemaPathExpression(path);
 		Object object = expression.evaluate(this);
 		if (object instanceof NodeDefinition) {
 			return (NodeDefinition) object;
 		}
 		return null;
-//		}
 	}
 
 	public String getName() {
@@ -127,6 +132,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return this.relevantExpression;
 	}
 
+	/*
 	public boolean isRequired() {
 		if (required == null) {
 			return minCount != null && minCount >= 1;
@@ -134,6 +140,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 			return required;
 		}
 	}
+	*/
 	
 	public String getRequiredExpression() {
 		return requiredExpression;

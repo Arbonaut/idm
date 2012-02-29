@@ -4,6 +4,7 @@
 package org.openforis.idm.metamodel;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
@@ -38,6 +39,9 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	@XmlElement(name = "default", type = AttributeDefault.class)
 	private List<AttributeDefault> attributeDefaults;
 
+	@XmlTransient
+	private Set<String> checkDependencyPaths;
+	
 	public List<Check> getChecks() {
 		return CollectionUtil.unmodifiableList(this.checks);
 	}

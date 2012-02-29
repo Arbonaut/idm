@@ -29,6 +29,12 @@ import org.openforis.idm.model.state.NodeState;
  */
 public class Validator {
 
+
+	public ValidationResults validate(Attribute<?, ?> attribute) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
 	public ValidationResults validate(NodeState nodeState) {
 		Node<?> node = nodeState.getNode();
 		if (node instanceof Entity) {

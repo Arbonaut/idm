@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
+import org.openforis.idm.metamodel.validation.ValidationResults;
+import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 
 /**
@@ -19,6 +21,8 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	private Field<?>[] fields;
 	
 	private boolean defaultValue;
+	
+	private transient ValidationResults validationResults;
 	
 	protected Attribute(D definition, Class<?>... fieldTypes) {
 		super(definition);
@@ -105,6 +109,23 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		}
 	}
 
+	/**
+	 * 
+	 * @return list of failed validation rules
+	 */
+	public ValidationResults validateValue() {
+		if ( validationResults == null ) {
+			RecordContext recordContext = getRecordContext();
+			Validator validator = recordContext.getValidator();
+			validationResults = validator.validate(this);
+		}
+		return validationResults;
+	}
+
+	protected void clearValidationResults() {
+		validationResults = null;
+	}
+	
 	@Override
 	protected void write(StringWriter sw, int indent) {
 		V value = getValue();

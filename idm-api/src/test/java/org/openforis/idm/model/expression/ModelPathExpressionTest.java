@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Code;
+import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 
@@ -57,6 +58,19 @@ public class ModelPathExpressionTest extends AbstractTest {
 		List<Node<?>> list = iterateExpression(expr, cluster);
 
 		Assert.assertEquals(3, list.size());
+	}
+
+
+	@Test
+	public void testParentFunction() throws InvalidExpressionException {
+		String entityName = "plot";
+		Entity plot = cluster.addEntity(entityName);
+		cluster.addValue("id", new Code("123_456"));
+
+		String expr = "parent()/id";
+		List<Node<?>> list = iterateExpression(expr, plot);
+
+		Assert.assertEquals(1, list.size());
 	}
 
 	@Test

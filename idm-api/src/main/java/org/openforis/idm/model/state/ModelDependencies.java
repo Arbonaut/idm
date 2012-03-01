@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.EntityDefinition;
@@ -22,6 +21,7 @@ import org.openforis.idm.metamodel.validation.CustomCheck;
 import org.openforis.idm.metamodel.validation.DistanceCheck;
 import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;

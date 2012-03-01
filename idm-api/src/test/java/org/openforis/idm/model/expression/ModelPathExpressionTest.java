@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Code;
-import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 

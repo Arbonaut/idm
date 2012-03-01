@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,48 +68,28 @@ public abstract class AttributeDefinition extends NodeDefinition {
 		Set<String> paths = new HashSet<String>();
 		for (Check check : getChecks()) {
 			
-			List<String> referencedPath = getReferencedPath(check.getCondition());
-			paths.addAll(referencedPath);
+			addReferencedPath(check.getCondition(), paths);
 			if (check instanceof ComparisonCheck) {
-				referencedPath = getReferencedPath(((ComparisonCheck) check).getEqualsExpression());
-				paths.addAll(referencedPath);
-				
-				referencedPath = getReferencedPath(((ComparisonCheck) check).getLessThanExpression());
-				paths.addAll(referencedPath);
-				
-				referencedPath = getReferencedPath(((ComparisonCheck) check).getLessThanOrEqualsExpression());
-				paths.addAll(referencedPath);
-				
-				referencedPath = getReferencedPath(((ComparisonCheck) check).getGreaterThanExpression());
-				paths.addAll(referencedPath);
-				
-				referencedPath = getReferencedPath(((ComparisonCheck) check).getGreaterThanOrEqualsExpression());
-				paths.addAll(referencedPath);
+				addReferencedPath(((ComparisonCheck) check).getEqualsExpression(),paths);
+				addReferencedPath(((ComparisonCheck) check).getLessThanExpression(),paths);
+				addReferencedPath(((ComparisonCheck) check).getLessThanOrEqualsExpression(),paths);
+				addReferencedPath(((ComparisonCheck) check).getGreaterThanExpression(),paths);
+				addReferencedPath(((ComparisonCheck) check).getGreaterThanOrEqualsExpression(),paths);
 			} else if (check instanceof CustomCheck) {
-				referencedPath = getReferencedPath(((CustomCheck) check).getExpression());
-				paths.addAll(referencedPath);
+				addReferencedPath(((CustomCheck) check).getExpression(),paths);
 			} else if (check instanceof DistanceCheck) {
-				referencedPath = getReferencedPath(((DistanceCheck) check).getDestinationPointExpression());
-				paths.addAll(referencedPath);
-				
-				referencedPath = getReferencedPath(((DistanceCheck) check).getMaxDistanceExpression());
-				paths.addAll(referencedPath);
-				
-				referencedPath = getReferencedPath(((DistanceCheck) check).getMinDistanceExpression());
-				paths.addAll(referencedPath);
-				
-				referencedPath = getReferencedPath(((DistanceCheck) check).getSourcePointExpression());
-				paths.addAll(referencedPath);
+				addReferencedPath(((DistanceCheck) check).getDestinationPointExpression(),paths);
+				addReferencedPath(((DistanceCheck) check).getMaxDistanceExpression(),paths);
+				addReferencedPath(((DistanceCheck) check).getMinDistanceExpression(),paths);
+				addReferencedPath(((DistanceCheck) check).getSourcePointExpression(),paths);
 			} else if (check instanceof UniquenessCheck) {
-				referencedPath = getReferencedPath(((UniquenessCheck) check).getExpression());
-				paths.addAll(referencedPath);
+				addReferencedPath(((UniquenessCheck) check).getExpression(),paths);
 			}
 		}
 		return paths;
 	}
 
-	public List<String> getReferencedPath(String expression) {
-		List<String> paths = new ArrayList<String>();
+	public void addReferencedPath(String expression, Set<String> set) {
 		if (StringUtils.isNotBlank(expression)) {
 			List<String> referencedPaths = getReferencedPaths(expression);
 			for (String path : referencedPaths) {
@@ -120,8 +99,10 @@ public abstract class AttributeDefinition extends NodeDefinition {
 					String sourcePath = getPath();
 					String destinationPath = dependantNodeDefn.getPath();
 					String relativePath = getRelativePath(sourcePath, destinationPath);
-
-					paths.add(relativePath);
+					
+					if (StringUtils.isNotBlank(relativePath)) {
+						set.add(relativePath);
+					}
 				} catch (Exception e) {
 					if (LOG.isErrorEnabled()) {
 						LOG.error("Unable to register dependency for node " + getPath() + " with expression " + path, e);
@@ -129,7 +110,6 @@ public abstract class AttributeDefinition extends NodeDefinition {
 				}
 			}
 		}
-		return paths;
 	}
 
 }

@@ -228,6 +228,17 @@ public class Entity extends Node<EntityDefinition> {
 		}
 	}
 
+	public Object getValue(String name, int index) {
+		Node<?> node = get(name, index);
+		if ( node instanceof Attribute ) {
+			return ((Attribute<?,?>) node).getValue();
+		} else if ( node == null ) {
+			return null;
+		} else {
+			throw new IllegalArgumentException("Child "+name+" not an attribute"); 
+		}
+	}
+
 	private void checkChildDefinition(String name) {
 		getChildDefinition(name);
 	}

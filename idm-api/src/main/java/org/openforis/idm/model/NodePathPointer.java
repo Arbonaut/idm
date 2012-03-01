@@ -4,27 +4,32 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * 
+ * @author G. Miceli
  * @author M. Togna
- * 
  */
-public class NodePointer {
-	private Entity entity;
-	private String childName;
+public class NodePathPointer {
 	private String entityPath;
-
-	public NodePointer(Entity entity, String childName) {
-		this.entity = entity;
+	private String childName;
+	
+	public NodePathPointer(String entityPath, String childName) {
+		this.entityPath = entityPath;
 		this.childName = childName;
-		this.entityPath = entity.getPath();
 	}
 
-	public Entity getEntity() {
-		return entity;
+	public String getEntityPath() {
+		return entityPath;
+	}
+
+	public void setEntityPath(String entityPath) {
+		this.entityPath = entityPath;
 	}
 
 	public String getChildName() {
 		return childName;
+	}
+
+	public void setChildName(String childName) {
+		this.childName = childName;
 	}
 
 	@Override
@@ -40,8 +45,8 @@ public class NodePointer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		NodePointer other = (NodePointer) obj;
-		return new EqualsBuilder().append(entityPath, other.entityPath).append(childName, other.childName).isEquals();
+		NodePathPointer other = (NodePathPointer) obj;
+		return new EqualsBuilder().append(childName, other.childName).append(entityPath, other.entityPath).isEquals();
 	}
 
 }

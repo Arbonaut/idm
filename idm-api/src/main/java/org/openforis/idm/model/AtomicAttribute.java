@@ -1,10 +1,10 @@
 package org.openforis.idm.model;
 
-import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.AttributeDefinition;
 
-public abstract class AtomicAttribute<D extends NodeDefinition, V>  extends Attribute<D,V> {
+public abstract class AtomicAttribute<D extends AttributeDefinition, V>  extends Attribute<D,V> {
 
-	protected AtomicAttribute(NodeDefinition definition, Class<?> valueClass) {
+	protected AtomicAttribute(D definition, Class<?> valueClass) {
 		super(definition, valueClass);
 	}
 
@@ -18,6 +18,7 @@ public abstract class AtomicAttribute<D extends NodeDefinition, V>  extends Attr
 	public void setValue(V value) {
 		Field<V> field = getField();
 		field.setValue(value);
+		onUpdateValue();
 	}
 
 	@SuppressWarnings("unchecked")

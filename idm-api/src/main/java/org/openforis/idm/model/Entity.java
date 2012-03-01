@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.BooleanAttributeDefinition;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
@@ -278,10 +279,10 @@ public class Entity extends Node<EntityDefinition> {
 		}
 	}
 
-	private <T extends Attribute<D, V>, D extends NodeDefinition, V> T addValueInternal(String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
+	private <T extends Attribute<D, V>, D extends AttributeDefinition, V> T addValueInternal(String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
 		T attr = createNode(name, type, definitionType);
-		attr.setValue(value);
 		addInternal(attr, idx);
+		attr.setValue(value);
 		return attr;
 	}
 
@@ -333,6 +334,8 @@ public class Entity extends Node<EntityDefinition> {
 
 		o.setParent(this);
 
+		o.clearDependencyStates();
+		
 		return o;
 	}
 
@@ -611,6 +614,14 @@ public class Entity extends Node<EntityDefinition> {
 	// return Collections.unmodifiableList(result);
 	// }
 	
+	public void clearRelevanceState(String childName) {
+		derivedStateCache.clearRelevance(childName);
+	}
+
+	public void clearRequiredState(String childName) {
+		derivedStateCache.clearRequiredState(childName);
+	}
+	
 	private static class DerivedStateCache {
 		/** Set of children dynamic required states */
 		private Map<String, Boolean> childRequiredStates;
@@ -646,5 +657,5 @@ public class Entity extends Node<EntityDefinition> {
 			childRelevance.remove(childName);
 		}
 	}
-	
+
 }

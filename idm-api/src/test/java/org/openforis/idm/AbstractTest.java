@@ -12,7 +12,7 @@ import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.TestRecordContext;
+import org.openforis.idm.model.TestSurveyContext;
 
 /**
  * @author G. Miceli
@@ -28,16 +28,16 @@ public abstract class AbstractTest {
 	public static void setUp() throws IOException, InvalidIdmlException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
-		IdmlBindingContext idmlBindingContext = new IdmlBindingContext();
+		IdmlBindingContext idmlBindingContext = new IdmlBindingContext(new TestSurveyContext());
 		SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
 		survey = su.unmarshal(is);
 	}
 
 	@Before
 	public void createCluster() {
-		Record record = new Record(new TestRecordContext(), survey, "2.0");
+		Record record = new Record(survey, "2.0");
 		this.cluster = record.createRootEntity("cluster");
-		Record record2 = new Record(new TestRecordContext(), survey, "2.0");
+		Record record2 = new Record(survey, "2.0");
 		this.household = record2.createRootEntity("household");
 	}
 }

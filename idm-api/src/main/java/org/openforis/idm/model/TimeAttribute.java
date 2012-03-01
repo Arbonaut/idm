@@ -39,6 +39,7 @@ public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 			getHourField().setValue(hour);
 			getMinuteField().setValue(minute);
 		}
+		onUpdateValue();
 	}
 
 }

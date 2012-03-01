@@ -117,8 +117,8 @@ public abstract class AttributeDefinition extends NodeDefinition {
 				try {
 					NodeDefinition dependantNodeDefn = getDependantNodeDefinition(path);
 
-					String sourcePath = dependantNodeDefn.getPath();
-					String destinationPath = getPath();
+					String sourcePath = getPath();
+					String destinationPath = dependantNodeDefn.getPath();
 					String relativePath = getRelativePath(sourcePath, destinationPath);
 
 					paths.add(relativePath);

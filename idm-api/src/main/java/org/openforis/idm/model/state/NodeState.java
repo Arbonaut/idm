@@ -20,6 +20,7 @@ import org.openforis.idm.model.expression.RequiredExpression;
  * @author M. Togna
  * 
  */
+@Deprecated
 public class NodeState {
 
 	private Node<? extends NodeDefinition> node;
@@ -39,9 +40,9 @@ public class NodeState {
 
 	public void updateRequired() {
 		NodeDefinition definition = node.getDefinition();
-		if (definition.isRequired()) {
-			required = true;
-		} else {
+	//	if (definition.isRequired()) {
+//			required = true;
+//		} else {
 			String expr = definition.getRequiredExpression();
 			if (StringUtils.isNotBlank(expr)) {
 				try {
@@ -53,7 +54,7 @@ public class NodeState {
 				}
 			}
 			required = true;
-		}
+//		}
 
 	}
 

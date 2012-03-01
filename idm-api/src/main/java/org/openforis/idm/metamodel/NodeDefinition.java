@@ -24,7 +24,7 @@ import org.openforis.idm.metamodel.expression.SchemaPathExpression;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.model.NodePointer;
+import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.ModelPathExpression;
@@ -90,19 +90,19 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	 * For each NodeDefiniton X with relevance attr defined:
 	 *    1. relative paths of parent of dependent node 
 	 *    2. name or child def of child node   
-	 *    (see {@link NodePointer}
+	 *    (see {@link NodePathPointer}
 	 */
 	@XmlTransient
-	private Set<NodePointer> relevantExpressionDependencies;
+	private Set<NodePathPointer> relevantExpressionDependencies;
 
 	/**
 	 * For each NodeDefiniton X with requiredExpression defined:
 	 *    1. relative paths of parent of dependent node 
 	 *    2. name or child def of child node   
-	 *    (see {@link NodePointer}
+	 *    (see {@link NodePathPointer}
 	 */
 	@XmlTransient
-	private Set<NodePointer> requiredExpressionDependencies;
+	private Set<NodePathPointer> requiredExpressionDependencies;
 
 	public String getAnnotation(QName qname) {
 		return annotations == null ? null : annotations.get(qname);
@@ -253,22 +253,22 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return name;
 	}
 	
-	public Set<NodePointer> getRelevantExpressionDependencies() {
+	public Set<NodePathPointer> getRelevantExpressionDependencies() {
 		if (relevantExpressionDependencies == null) {
 			relevantExpressionDependencies = getDependencies(getRelevantExpression());
 		}
 		return relevantExpressionDependencies;
 	}
 
-	public Set<NodePointer> getRequiredExpressionDependencies() {
+	public Set<NodePathPointer> getRequiredExpressionDependencies() {
 		if (requiredExpressionDependencies == null) {
 			requiredExpressionDependencies = getDependencies(getRequiredExpression());
 		}
 		return requiredExpressionDependencies;
 	}
 
-	public Set<NodePointer> getDependencies(String expression) {
-		Set<NodePointer> nodePointers = new HashSet<NodePointer>();
+	public Set<NodePathPointer> getDependencies(String expression) {
+		Set<NodePathPointer> nodePointers = new HashSet<NodePathPointer>();
 		if (StringUtils.isNotBlank(expression)) {
 			List<String> referencedPaths = getReferencedPaths(expression);
 			for (String path : referencedPaths) {
@@ -276,11 +276,11 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 					NodeDefinition dependantNodeDefn = getDependantNodeDefinition(path);
 					EntityDefinition parentDependantDefn = dependantNodeDefn.getParentDefinition();
 
-					String sourcePath = parentDependantDefn.getPath();
-					String destinationPath = getPath();
+					String sourcePath = getPath();
+					String destinationPath = parentDependantDefn.getPath();
 					String relativePath = getRelativePath(sourcePath, destinationPath);
 
-					NodePointer nodePointer = new NodePointer(relativePath, dependantNodeDefn.getName());
+					NodePathPointer nodePointer = new NodePathPointer(relativePath, dependantNodeDefn.getName());
 					nodePointers.add(nodePointer);
 				} catch (Exception e) {
 					if (LOG.isErrorEnabled()) {
@@ -317,6 +317,9 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		String[] dests = xpathDestination.split("\\/");
 		int i = 0;
 		for (; i < sources.length; i++) {
+			if(dests.length == i){
+				break;
+			}
 			String src = sources[i];
 			String dest = dests[i];
 			if (dest.equals(src)) {

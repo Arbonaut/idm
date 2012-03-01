@@ -64,5 +64,6 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 			getLanguageCodeField().setValue(languageCode);
 			getLanguageVarietyField().setValue(languageVariety);
 		}
+		onUpdateValue();
 	}
 }

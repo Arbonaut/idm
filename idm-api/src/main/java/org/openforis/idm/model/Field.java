@@ -10,13 +10,15 @@ public final class Field<T> {
 	private String remarks;
 	private Character symbol;
 	private Class<T> valueType;
-
-	private Field(Class<T> valueType) {
-		this.valueType = valueType;  
+	private Attribute<?,?> attribute;
+	
+	private Field(Class<T> valueType, Attribute<?,?> attribute) {
+		this.valueType = valueType;
+		this.attribute = attribute;
 	}
 
-	public static <C> Field<C> newInstance(Class<C> valueType) {
-		return new Field<C>(valueType);
+	public static <C> Field<C> newInstance(Class<C> valueType, Attribute<?,?> attribute) {
+		return new Field<C>(valueType, attribute);
 	}
 	
 	public T getValue() {
@@ -26,6 +28,7 @@ public final class Field<T> {
 	public void setValue(T value) {
 		this.value = value;
 		this.symbol = null;
+		attribute.onUpdateValue();
 	}
 	
 	public String getRemarks() {
@@ -69,6 +72,7 @@ public final class Field<T> {
 
 	public void setValueFromString(String s) {
 		this.value = parseValue(s);
+		attribute.onUpdateValue();
 	}
 
 	/**
@@ -78,5 +82,6 @@ public final class Field<T> {
 		this.value = null;
 		this.remarks = null;
 		this.symbol = null;
+		attribute.onUpdateValue();
 	}
 }

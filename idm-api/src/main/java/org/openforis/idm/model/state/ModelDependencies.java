@@ -70,7 +70,7 @@ public class ModelDependencies {
 	 * For each NodeDefiniton X with relevance attr defined:
 	 *    1. relative paths of parent of dependent node 
 	 *    2. name or child def of child node   
-	 *    (see {@link NodePointer}
+	 *    (see {@link NodePathPointer}
 	 */
 	private StateDependencyMap relevanceDependencies;
 	
@@ -78,7 +78,7 @@ public class ModelDependencies {
 	 * For each NodeDefiniton X with requiredExpression defined:
 	 *    1. relative paths of parent of dependent node 
 	 *    2. name or child def of child node   
-	 *    (see {@link NodePointer}
+	 *    (see {@link NodePathPointer}
 	 */
 	private StateDependencyMap requiredDependencies;
 	/**

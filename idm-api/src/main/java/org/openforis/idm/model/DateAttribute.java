@@ -47,6 +47,7 @@ public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 			getMonthField().setValue(month);
 			getDayField().setValue(day);
 		}
+		onUpdateValue();
 	}
 
 }

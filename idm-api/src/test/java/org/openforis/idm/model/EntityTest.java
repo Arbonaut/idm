@@ -27,7 +27,7 @@ public class EntityTest {
 	public static void setUp() throws IOException, InvalidIdmlException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
-		IdmlBindingContext idmlBindingContext = new IdmlBindingContext();
+		IdmlBindingContext idmlBindingContext = new IdmlBindingContext(new TestSurveyContext());
 		SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
 		survey = su.unmarshal(is);
 	}
@@ -99,7 +99,7 @@ public class EntityTest {
 	}
 
 	private Entity getRootEntity() {
-		Record record = new Record(new TestRecordContext(), survey, "2.0");
+		Record record = new Record(survey, "2.0");
 		Entity entity = record.createRootEntity("cluster");
 		return entity;
 	}

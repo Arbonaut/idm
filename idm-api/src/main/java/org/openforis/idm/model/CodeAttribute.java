@@ -47,6 +47,7 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 			getCodeField().setValue(code);
 			getQualifierField().setValue(qualifier);
 		}
+		onUpdateValue();
 	}
 	
 	public CodeListItem getCodeListItem() {

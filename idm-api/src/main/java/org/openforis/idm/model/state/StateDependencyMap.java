@@ -24,6 +24,7 @@ import org.openforis.idm.model.expression.ModelPathExpression;
  * @author M. Togna
  * 
  */
+@Deprecated
 public class StateDependencyMap {
 
 	private static final Log LOG = LogFactory.getLog(StateDependencyMap.class);

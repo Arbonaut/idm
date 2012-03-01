@@ -7,7 +7,8 @@ import java.io.StringWriter;
 import java.util.List;
 
 import org.openforis.idm.metamodel.AttributeDefault;
-import org.openforis.idm.metamodel.AttributeDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.validation.ValidationResults;
 import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.expression.InvalidExpressionException;
@@ -16,7 +17,7 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
  * @author M. Togna
  * @author G. Miceli
  */
-public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D> {
+public abstract class Attribute<D extends NodeDefinition, V> extends Node<D> {
 
 	private Field<?>[] fields;
 	
@@ -24,7 +25,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	
 	private transient ValidationResults validationResults;
 	
-	protected Attribute(D definition, Class<?>... fieldTypes) {
+	protected Attribute(NodeDefinition definition, Class<?>... fieldTypes) {
 		super(definition);
 		initFields(fieldTypes);
 	}
@@ -115,7 +116,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	 */
 	public ValidationResults validateValue() {
 		if ( validationResults == null ) {
-			RecordContext recordContext = getRecordContext();
+			SurveyContext recordContext = getRecordContext();
 			Validator validator = recordContext.getValidator();
 			validationResults = validator.validate(this);
 		}

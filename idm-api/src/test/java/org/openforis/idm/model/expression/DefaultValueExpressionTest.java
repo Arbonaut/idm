@@ -15,7 +15,7 @@ import org.openforis.idm.model.Node;
 public class DefaultValueExpressionTest extends AbstractTest {
 
 	private Object evaluateExpression(Node<?> context, Node<?> thisNode, String expr) throws InvalidExpressionException {
-		ExpressionFactory expressionFactory = context.getRecord().getContext().getExpressionFactory();
+		ExpressionFactory expressionFactory = context.getRecord().getSurveyContext().getExpressionFactory();
 		DefaultValueExpression expression = expressionFactory.createDefaultValueExpression(expr);
 		Object object = expression.evaluate(context, thisNode);
 		return object;

@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.CoordinateAttribute;
@@ -16,7 +17,6 @@ import org.openforis.idm.model.DateAttribute;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.TimeAttribute;
 import org.openforis.idm.model.expression.CheckConditionExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
@@ -164,7 +164,7 @@ public class Validator {
 		} else {
 			try {
 				Record record = attribute.getRecord();
-				RecordContext recordContext = record.getContext();
+				SurveyContext recordContext = record.getSurveyContext();
 				ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 				CheckConditionExpression expression = expressionFactory.createCheckConditionExpression(condition);
 				return expression.evaluate(attribute.getParent(), attribute);

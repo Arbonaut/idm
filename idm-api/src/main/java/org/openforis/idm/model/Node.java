@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.util.List;
 
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
 
 
@@ -86,7 +87,7 @@ public abstract class Node<D extends NodeDefinition> {
 	}
 
 	protected ExpressionFactory getExpressionFactory() {
-		RecordContext context = getRecord().getContext();
+		SurveyContext context = getRecord().getSurveyContext();
 		return context.getExpressionFactory();
 	}
 
@@ -110,9 +111,9 @@ public abstract class Node<D extends NodeDefinition> {
 		sb.append("]");
 	}
 	
-	protected RecordContext getRecordContext() {
+	protected SurveyContext getRecordContext() {
 		Record record = getRecord();
-		RecordContext context = record.getContext();
+		SurveyContext context = record.getSurveyContext();
 		return context;
 	}
 

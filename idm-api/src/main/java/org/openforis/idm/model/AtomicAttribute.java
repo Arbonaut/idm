@@ -1,10 +1,10 @@
 package org.openforis.idm.model;
 
-import org.openforis.idm.metamodel.AttributeDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
 
-public abstract class AtomicAttribute<D extends AttributeDefinition, V>  extends Attribute<D,V> {
+public abstract class AtomicAttribute<D extends NodeDefinition, V>  extends Attribute<D,V> {
 
-	protected AtomicAttribute(D definition, Class<?> valueClass) {
+	protected AtomicAttribute(NodeDefinition definition, Class<?> valueClass) {
 		super(definition, valueClass);
 	}
 

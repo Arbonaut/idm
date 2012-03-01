@@ -43,7 +43,7 @@ public class RelevanceExpressionTest extends AbstractTest {
 	}
 
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
-		RelevanceExpression expression = context.getRecord().getContext().getExpressionFactory().createRelevanceExpression(expr);
+		RelevanceExpression expression = context.getRecord().getSurveyContext().getExpressionFactory().createRelevanceExpression(expr);
 		boolean b = expression.evaluate(context, null);
 		return b;
 	}

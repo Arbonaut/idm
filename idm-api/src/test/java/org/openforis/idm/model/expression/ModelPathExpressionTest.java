@@ -70,7 +70,7 @@ public class ModelPathExpressionTest extends AbstractTest {
 	}
 
 	private List<Node<?>> iterateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
-		ModelPathExpression expression = context.getRecord().getContext().getExpressionFactory().createModelPathExpression(expr);
+		ModelPathExpression expression = context.getRecord().getSurveyContext().getExpressionFactory().createModelPathExpression(expr);
 		List<Node<?>> l = expression.iterate(context, null);
 		return l;
 	}

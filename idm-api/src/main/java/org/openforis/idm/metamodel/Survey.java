@@ -66,6 +66,9 @@ public class Survey implements Serializable{
 	@XmlElement(name = "schema", type = Schema.class)
 	private Schema schema;
 
+	@XmlTransient
+	private SurveyContext surveyContext;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -150,6 +153,14 @@ public class Survey implements Serializable{
 		} else {
 			return Collections.unmodifiableList(configuration.list);
 		}
+	}
+	
+	public SurveyContext getContext() {
+		return surveyContext;
+	}
+	
+	public void setSurveyContext(SurveyContext surveyContext) {
+		this.surveyContext = surveyContext;
 	}
 	
 	/**

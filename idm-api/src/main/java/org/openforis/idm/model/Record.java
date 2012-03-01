@@ -13,6 +13,7 @@ import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.SurveyContext;
 
 /**
  * @author G. Miceli
@@ -26,13 +27,8 @@ public class Record {
 	private Map<Integer, Node<? extends NodeDefinition>> nodesByInternalId;
 	private int nextId;
 	private Entity rootEntity;
-	private RecordContext context;
 	
-	public Record(RecordContext context, Survey survey, String version) {
-		if ( context == null ) {
-			throw new IllegalArgumentException("Invalid context '"+context+'"');
-		}
-		this.context = context;
+	public Record(Survey survey, String version) {
 		this.survey = survey;
 		this.modelVersion = survey.getVersion(version);
 		if ( modelVersion == null ) {
@@ -64,8 +60,8 @@ public class Record {
 		this.id = id;
 	}
 
-	public RecordContext getContext() {
-		return context;
+	public SurveyContext getSurveyContext() {
+		return survey.getContext();
 	}
 	
 	public Survey getSurvey() {

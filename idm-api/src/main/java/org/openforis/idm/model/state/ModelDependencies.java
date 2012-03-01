@@ -15,6 +15,7 @@ import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.validation.Check;
 import org.openforis.idm.metamodel.validation.ComparisonCheck;
 import org.openforis.idm.metamodel.validation.CustomCheck;
@@ -22,7 +23,6 @@ import org.openforis.idm.metamodel.validation.DistanceCheck;
 import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.ModelPathExpression;
@@ -55,6 +55,7 @@ Send client updated states:
  * @author M. Togna
  * @author G. Miceli
  */
+@Deprecated
 public class ModelDependencies {
 
 	private ExpressionFactory expressionFactory;
@@ -188,7 +189,7 @@ public class ModelDependencies {
 
 	private Node<?> evaluateModelPathExpression(Node<? extends NodeDefinition> node, String path) {
 		Record record = node.getRecord();
-		RecordContext recordContext = record.getContext();
+		SurveyContext recordContext = record.getSurveyContext();
 		ExpressionFactory exprFactory = recordContext.getExpressionFactory();
 		try {
 			ModelPathExpression pathExpression = exprFactory.createModelPathExpression(path);

@@ -11,9 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.IdmInterpretationError;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
@@ -124,7 +124,7 @@ public class ComparisonCheck extends Check {
 	public boolean evaluate(NodeState nodeState) {
 		Attribute<?,?> node = (Attribute<?, ?>) nodeState.getNode();
 		Record record = node .getRecord();
-		RecordContext recordContext = record.getContext();
+		SurveyContext recordContext = record.getSurveyContext();
 		if (expression == null) {
 			expression = buildExpression();
 		}

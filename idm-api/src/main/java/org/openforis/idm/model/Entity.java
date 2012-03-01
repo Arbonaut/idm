@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.BooleanAttributeDefinition;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
@@ -25,6 +24,7 @@ import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
 import org.openforis.idm.metamodel.RangeAttributeDefinition;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
@@ -278,7 +278,7 @@ public class Entity extends Node<EntityDefinition> {
 		}
 	}
 
-	private <T extends Attribute<D, V>, D extends AttributeDefinition, V> T addValueInternal(String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
+	private <T extends Attribute<D, V>, D extends NodeDefinition, V> T addValueInternal(String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
 		T attr = createNode(name, type, definitionType);
 		attr.setValue(value);
 		addInternal(attr, idx);
@@ -537,7 +537,7 @@ public class Entity extends Node<EntityDefinition> {
 		try {
 			NodeDefinition defn = getChildDefinition(childName);
 			Record record = getRecord();
-			RecordContext context = record.getContext();
+			SurveyContext context = record.getSurveyContext();
 			ExpressionFactory expressionFactory = context.getExpressionFactory();
 			String requiredExpression = defn.getRequiredExpression();
 			RequiredExpression expr = expressionFactory.createRequiredExpression(requiredExpression);
@@ -612,39 +612,39 @@ public class Entity extends Node<EntityDefinition> {
 	// }
 	
 	private static class DerivedStateCache {
-		/** Set of children dynamic required states  */
+		/** Set of children dynamic required states */
 		private Map<String, Boolean> childRequiredStates;
 		/** Set of children relevance states */
 		private Map<String, Boolean> childRelevance;
-		
-		
+
+		public DerivedStateCache() {
+			childRequiredStates = new HashMap<String, Boolean>();
+			childRelevance = new HashMap<String, Boolean>();
+		}
+
 		private Boolean getRequired(String childName) {
-			// TODO
-			throw new UnsupportedOperationException();
+			return childRequiredStates.get(childName);
 		}
-		
+
 		private Boolean getRelevance(String childName) {
-			// TODO
-			throw new UnsupportedOperationException();
+			return childRequiredStates.get(childName);
 		}
+
 		private void setRequired(String childName, boolean flag) {
-			// TODO
-			throw new UnsupportedOperationException();
+			childRequiredStates.put(childName, flag);
 		}
-		
+
 		private void clearRequiredState(String childName) {
-			// TODO
-			throw new UnsupportedOperationException();
+			childRequiredStates.remove(childName);
 		}
-		
+
 		private void setRelevance(String childName, boolean flag) {
-			// TODO
-			throw new UnsupportedOperationException();
+			childRelevance.put(childName, flag);
 		}
-		
+
 		private void clearRelevance(String childName) {
-			// TODO
-			throw new UnsupportedOperationException();
+			childRelevance.remove(childName);
 		}
 	}
+	
 }

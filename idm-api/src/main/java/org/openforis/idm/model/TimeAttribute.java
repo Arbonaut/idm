@@ -8,18 +8,23 @@ import org.openforis.idm.metamodel.TimeAttributeDefinition;
  */
 public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 
+	private static final long serialVersionUID = 1L;
+
+	public TimeAttribute() {
+	}
+	
 	public TimeAttribute(TimeAttributeDefinition definition) {
 		super(definition, Integer.class, Integer.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<Integer> getHourField() {
-		return (Field<Integer>) getField(0);
+	public AttributeField<Integer> getHourField() {
+		return (AttributeField<Integer>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<Integer> getMinuteField() {
-		return (Field<Integer>) getField(1);
+	public AttributeField<Integer> getMinuteField() {
+		return (AttributeField<Integer>) getField(1);
 	}
 	
 	@Override

@@ -8,6 +8,11 @@ import org.openforis.idm.metamodel.BooleanAttributeDefinition;
  */
 public class BooleanAttribute extends AtomicAttribute<BooleanAttributeDefinition, Boolean> {
 
+	private static final long serialVersionUID = 1L;
+
+	public BooleanAttribute() {
+	}
+	
 	public BooleanAttribute(BooleanAttributeDefinition definition) {
 		super(definition, Boolean.class);
 	}

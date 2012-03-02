@@ -4,24 +4,29 @@ import org.openforis.idm.metamodel.AttributeDefinition;
 
 public abstract class AtomicAttribute<D extends AttributeDefinition, V>  extends Attribute<D,V> {
 
+	private static final long serialVersionUID = 1L;
+
+	AtomicAttribute() {
+	}
+	
 	protected AtomicAttribute(D definition, Class<?> valueClass) {
 		super(definition, valueClass);
 	}
 
 	@Override
 	public V getValue() {
-		Field<V> field = getField();
+		AttributeField<V> field = getField();
 		return field.getValue();
 	}
 
 	@Override
 	public void setValue(V value) {
-		Field<V> field = getField();
+		AttributeField<V> field = getField();
 		field.setValue(value);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<V> getField() {
-		return (Field<V>) getField(0);
+	public AttributeField<V> getField() {
+		return (AttributeField<V>) getField(0);
 	}
 }

@@ -16,9 +16,14 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
  */
 public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D> {
 
-	private Field<?>[] fields;
+	private static final long serialVersionUID = 1L;
+
+	private AttributeField<?>[] attributeFields;
 	
 	private boolean defaultValue;
+	
+	Attribute() {
+	}
 	
 	protected Attribute(D definition, Class<?>... fieldTypes) {
 		super(definition);
@@ -26,35 +31,35 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 
 	private void initFields(Class<?>... fieldTypes) {
-		this.fields = new Field[fieldTypes.length];
-		for (int i = 0; i < fields.length; i++) {
+		this.attributeFields = new AttributeField[fieldTypes.length];
+		for (int i = 0; i < attributeFields.length; i++) {
 			Class<?> t = fieldTypes[i];
-			this.fields[i] = Field.newInstance(t);
+			this.attributeFields[i] = AttributeField.newInstance(t);
 		}
 	}
 	
-	public Field<?> getField(int idx) {
-		return fields[idx];
+	public AttributeField<?> getField(int idx) {
+		return attributeFields[idx];
 	}
 
 	public int getFieldCount() {
-		return fields.length;
+		return attributeFields.length;
 	}
 	
 	/**
 	 * Reset value and symbol
 	 */
 	public void clearValue() {
-		for (Field<?> field : fields) {
+		for (AttributeField<?> field : attributeFields) {
 			field.setValue(null);
 		}
 	}
 
 	/**
-	 * Reset all properties of all fields (remarks, value, symbol)
+	 * Reset all properties of all attributeFields (remarks, value, symbol)
 	 */
 	public void clearFields() {
-		for (Field<?> field : fields) {
+		for (AttributeField<?> field : attributeFields) {
 			field.clear();
 		}
 	}
@@ -85,7 +90,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	 */
 	@Override
 	public boolean isEmpty() {
-		for (Field<?> field : fields) {
+		for (AttributeField<?> field : attributeFields) {
 			if ( !field.isEmpty() ) {
 				return false;
 			}

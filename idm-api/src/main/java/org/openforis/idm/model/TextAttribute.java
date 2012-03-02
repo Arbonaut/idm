@@ -8,6 +8,8 @@ import org.openforis.idm.metamodel.TextAttributeDefinition;
  */
 public class TextAttribute extends AtomicAttribute<TextAttributeDefinition, String> {
 
+	private static final long serialVersionUID = 1L;
+
 	public TextAttribute(TextAttributeDefinition definition) {
 		super(definition, String.class);
 	}

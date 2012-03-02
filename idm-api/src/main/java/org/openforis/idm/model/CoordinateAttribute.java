@@ -8,23 +8,28 @@ import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
  */
 public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition, Coordinate> {
 
+	private static final long serialVersionUID = 1L;
+
+	public CoordinateAttribute() {
+	}
+	
 	public CoordinateAttribute(CoordinateAttributeDefinition definition) {
 		super(definition, Double.class, Double.class, String.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<Double> getXField() {
-		return (Field<Double>) getField(0);
+	public AttributeField<Double> getXField() {
+		return (AttributeField<Double>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<Double> getYField() {
-		return (Field<Double>) getField(1);
+	public AttributeField<Double> getYField() {
+		return (AttributeField<Double>) getField(1);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Field<String> getSrsIdField() {
-		return (Field<String>) getField(2);
+	public AttributeField<String> getSrsIdField() {
+		return (AttributeField<String>) getField(2);
 	}
 
 	@Override

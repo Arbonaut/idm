@@ -15,18 +15,23 @@ import org.openforis.idm.model.expression.ModelPathExpression;
  */
 public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 
+	private static final long serialVersionUID = 1L;
+
+	public CodeAttribute() {
+	}
+	
 	public CodeAttribute(CodeAttributeDefinition definition) {
 		super(definition, String.class, String.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<String> getCodeField() {
-		return (Field<String>) getField(0);
+	public AttributeField<String> getCodeField() {
+		return (AttributeField<String>) getField(0);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Field<String> getQualifierField() {
-		return (Field<String>) getField(1);
+	public AttributeField<String> getQualifierField() {
+		return (AttributeField<String>) getField(1);
 	}
 
 	@Override

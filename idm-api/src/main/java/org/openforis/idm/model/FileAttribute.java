@@ -9,18 +9,23 @@ import org.openforis.idm.metamodel.FileAttributeDefinition;
  */
 public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 
+	private static final long serialVersionUID = 1L;
+
+	public FileAttribute() {
+	}
+	
 	public FileAttribute(FileAttributeDefinition definition) {
 		super(definition, String.class, Long.class);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Field<String> getFilenameField() {
-		return (Field<String>) getField(0);
+	public AttributeField<String> getFilenameField() {
+		return (AttributeField<String>) getField(0);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Field<Long> getSizeField() {
-		return (Field<Long>) getField(1);
+	public AttributeField<Long> getSizeField() {
+		return (AttributeField<Long>) getField(1);
 	}
 	
 	@Override

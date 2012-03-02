@@ -4,6 +4,7 @@
 package org.openforis.idm.model;
 
 
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,28 +19,41 @@ import org.openforis.idm.metamodel.Survey;
  * @author G. Miceli
  * @author M. Togna
  */
-public class Record {
+public class Record implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
+	private transient Map<Integer, Node<? extends NodeDefinition>> nodesByInternalId;
+	private transient RecordContext context;
+	private transient Survey survey;
+	
 	private Integer id;
-	private Survey survey;
 	private ModelVersion modelVersion;
-	private Map<Integer, Node<? extends NodeDefinition>> nodesByInternalId;
 	private int nextId;
 	private Entity rootEntity;
-	private RecordContext context;
+
+	protected Record() {
+	}
 	
 	public Record(RecordContext context, Survey survey, String version) {
-		if ( context == null ) {
-			throw new IllegalArgumentException("Invalid context '"+context+'"');
-		}
-		this.context = context;
-		this.survey = survey;
+		init(context, survey);
 		this.modelVersion = survey.getVersion(version);
 		if ( modelVersion == null ) {
 			throw new IllegalArgumentException("Invalid version '"+version+'"');
 		}
-		this.nodesByInternalId = new HashMap<Integer, Node<? extends NodeDefinition>>();
 		this.nextId = 0;
+	}
+
+	public void init(RecordContext context, Survey survey) {
+		if ( context == null ) {
+			throw new IllegalArgumentException("Context required");
+		}
+		if ( survey == null ) {
+			throw new IllegalArgumentException("Survey required");
+		}
+		this.context = context;
+		this.survey = survey;
+		this.nodesByInternalId = new HashMap<Integer, Node<? extends NodeDefinition>>();
 	}
 	
 	public Entity createRootEntity(String name) {
@@ -110,5 +124,16 @@ public class Record {
 
 	protected int nextId() {
 		return nextId++;
+	}
+
+	protected void afterDeserialize(RecordContext recordContext, Survey survey) {
+		init(recordContext, survey);
+		rootEntity.traverse(new NodeVisitor() {
+			@Override
+			public void visit(Node<? extends NodeDefinition> node, int idx) {
+				node.afterDeserialize();
+				put(node);
+			}
+		});
 	}
 }

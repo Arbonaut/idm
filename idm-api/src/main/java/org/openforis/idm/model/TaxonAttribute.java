@@ -8,33 +8,38 @@ import org.openforis.idm.metamodel.TaxonAttributeDefinition;
  */
 public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOccurrence> {
 
+	private static final long serialVersionUID = 1L;
+
+	public  TaxonAttribute() {
+	}
+	
 	public TaxonAttribute(TaxonAttributeDefinition definition) {
 		super(definition, String.class, String.class, String.class, String.class, String.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<String> getCodeField() {
-		return (Field<String>) getField(0);
+	public AttributeField<String> getCodeField() {
+		return (AttributeField<String>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<String> getScientificName() {
-		return (Field<String>) getField(1);
+	public AttributeField<String> getScientificName() {
+		return (AttributeField<String>) getField(1);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<String> getVernacularNameField() {
-		return (Field<String>) getField(2);
+	public AttributeField<String> getVernacularNameField() {
+		return (AttributeField<String>) getField(2);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<String> getLanguageCodeField() {
-		return (Field<String>) getField(3);
+	public AttributeField<String> getLanguageCodeField() {
+		return (AttributeField<String>) getField(3);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<String> getLanguageVarietyField() {
-		return (Field<String>) getField(4);
+	public AttributeField<String> getLanguageVarietyField() {
+		return (AttributeField<String>) getField(4);
 	}
 
 	@Override

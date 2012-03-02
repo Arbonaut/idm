@@ -8,6 +8,11 @@ import org.openforis.idm.metamodel.NumberAttributeDefinition;
  */
 public class IntegerAttribute extends NumberAttribute<Integer> {
 
+	private static final long serialVersionUID = 1L;
+
+	public IntegerAttribute() {
+	}
+	
 	public IntegerAttribute(NumberAttributeDefinition definition) {
 		super(definition, Integer.class);
 		if ( !definition.isInteger() ) {

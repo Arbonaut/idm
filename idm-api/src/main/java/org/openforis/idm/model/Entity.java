@@ -35,8 +35,14 @@ import org.openforis.idm.util.CollectionUtil;
  */
 public class Entity extends Node<EntityDefinition> {
 
-	private Map<String, List<Node<? extends NodeDefinition>>> childrenByName;
+	private static final long serialVersionUID = 1L;
+	
+	HashMap<String, List<Node<? extends NodeDefinition>>> childrenByName;
 
+	Entity() {
+		this.childrenByName = new HashMap<String, List<Node<? extends NodeDefinition>>>();
+	}
+	
 	public Entity(EntityDefinition definition) {
 		super(definition);
 		this.childrenByName = new HashMap<String, List<Node<? extends NodeDefinition>>>();
@@ -45,7 +51,7 @@ public class Entity extends Node<EntityDefinition> {
 	public void add(Node<?> node) {
 		addInternal(node, null);
 	}
-
+	
 	/**
 	 * @param name
 	 * @return the newly created Entity
@@ -463,14 +469,19 @@ public class Entity extends Node<EntityDefinition> {
 			for (int i = 0; i < nodes.size(); i++) {
 				Node<? extends NodeDefinition> node = nodes.get(i);
 
+				if ( node == null ) {
+					throw new IllegalStateException("Null node in entity children list");
+				}
 				visitor.visit(node, i);
 
 				// For entities, add existing child nodes to the stack
 				if (node instanceof Entity) {
 					Entity entity = (Entity) node;
-					List<NodeDefinition> childDefns = entity.getDefinition().getChildDefinitions();
+					EntityDefinition defn = entity.getDefinition();
+					List<NodeDefinition> childDefns = defn.getChildDefinitions();
 					for (NodeDefinition childDefn : childDefns) {
-						List<Node<? extends NodeDefinition>> children = entity.getAll(childDefn.getName());
+						String childName = childDefn.getName();
+						List<Node<? extends NodeDefinition>> children = entity.getAll(childName);
 						if (children != null) {
 							stack.push(children);
 						}

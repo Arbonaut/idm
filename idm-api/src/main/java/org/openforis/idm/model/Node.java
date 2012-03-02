@@ -3,10 +3,13 @@
  */
 package org.openforis.idm.model;
 
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.List;
 
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.Schema;
+import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.model.expression.ExpressionFactory;
 
 
@@ -14,21 +17,46 @@ import org.openforis.idm.model.expression.ExpressionFactory;
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class Node<D extends NodeDefinition> {
+public abstract class Node<D extends NodeDefinition> implements Serializable {
 
-	private Integer id;
-	private Integer internalId;
+	private static final long serialVersionUID = 1L;
 	
-	private D definition;
+	transient D definition;
+	transient Record record;
+	@Deprecated
+	transient Integer id;
+	transient Integer internalId;
+	transient Entity parent;
+	
+	Integer definitionId;
 
-	private Record record;
-	private Entity parent;
-
+	protected Node() {
+	}
+	
 	public Node(D definition) {
 		if ( definition == null ) {
-			throw new NullPointerException("definition required");
+			throw new NullPointerException("Definition required");
 		}
 		this.definition = definition;
+		this.definitionId = definition.getId();
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void afterDeserialize() {
+		Survey survey = record.getSurvey();
+		Schema schema = survey.getSchema();
+		if ( definitionId == null ) {
+			throw new IllegalStateException("Definition id not set before saving; cannot deserialize");
+		}
+		NodeDefinition defn = schema.getById(definitionId);
+		if ( defn == null ) {
+			throw new IllegalStateException("Definition "+definitionId+" referenced by node "+id+" is not defined in this survey");
+		}
+		try {
+			this.definition = (D) defn;
+		} catch ( ClassCastException e ) {
+			throw new IllegalStateException("Definition "+definitionId+" referenced by node "+id+" is of wrong type "+defn.getClass().getSimpleName());			
+		}
 	}
 	
 	public Integer getId() {

@@ -8,6 +8,11 @@ import org.openforis.idm.metamodel.RangeAttributeDefinition;
  */
 public class RealRangeAttribute extends NumericRangeAttribute<RealRange, Double> {
 
+	private static final long serialVersionUID = 1L;
+
+	public RealRangeAttribute() {
+	}
+	
 	public RealRangeAttribute(RangeAttributeDefinition definition) {
 		super(definition, Double.class);
 		if (!definition.isReal()) {

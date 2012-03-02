@@ -8,18 +8,23 @@ import org.openforis.idm.metamodel.RangeAttributeDefinition;
  */
 public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends Number> extends Attribute<RangeAttributeDefinition, T> {
 
+	private static final long serialVersionUID = 1L;
+
+	public NumericRangeAttribute() {
+	}
+	
 	protected NumericRangeAttribute(RangeAttributeDefinition definition, Class<V> fieldType) {
 		super(definition, fieldType, fieldType);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<V> getFromField() {
-		return (Field<V>) getField(0);
+	public AttributeField<V> getFromField() {
+		return (AttributeField<V>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<V> getToField() {
-		return (Field<V>) getField(1);
+	public AttributeField<V> getToField() {
+		return (AttributeField<V>) getField(1);
 	}
 
 	@Override

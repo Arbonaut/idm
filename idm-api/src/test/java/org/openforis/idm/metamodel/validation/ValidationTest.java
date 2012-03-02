@@ -5,8 +5,7 @@ package org.openforis.idm.metamodel.validation;
 
 import org.junit.BeforeClass;
 import org.openforis.idm.AbstractTest;
-import org.openforis.idm.model.Node;
-import org.openforis.idm.model.state.NodeState;
+import org.openforis.idm.model.Attribute;
 
 /**
  * @author M. Togna
@@ -21,9 +20,11 @@ public abstract class ValidationTest  extends AbstractTest{
 		validator = new Validator();
 	}
 	
-	protected ValidationResults validate(Node<?> node){
-		NodeState nodeState = new NodeState(node);
-		return validator.validate(nodeState);
+	protected ValidationResults validate(Attribute<?, ?> attribute){
+//		NodeState nodeState = new NodeState(node);
+//		return validator.validate(nodeState);
+		ValidationResults validationResults = attribute.validateValue();
+		return validationResults;
 	}
 	
 }

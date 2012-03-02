@@ -3,14 +3,14 @@
  */
 package org.openforis.idm.metamodel.validation;
 
-import org.openforis.idm.model.state.NodeState;
+import org.openforis.idm.model.Node;
 
 /**
  * @author M. Togna
  * @author G. Miceli
  */
-public interface ValidationRule {
+public interface ValidationRule<N extends Node<?>> {
 
-	boolean evaluate(NodeState nodeState);
+	boolean evaluate(N node);
 	
 }

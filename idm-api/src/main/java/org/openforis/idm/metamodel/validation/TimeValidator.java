@@ -5,18 +5,16 @@ package org.openforis.idm.metamodel.validation;
 
 import org.openforis.idm.model.Time;
 import org.openforis.idm.model.TimeAttribute;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author M. Togna
  * 
  */
-public class TimeValidator implements ValidationRule {
+public class TimeValidator implements ValidationRule<TimeAttribute> {
 
 	@Override
-	public boolean evaluate(NodeState nodeState) {
+	public boolean evaluate(TimeAttribute timeAttribute) {
 		try {
-			TimeAttribute timeAttribute = (TimeAttribute) nodeState.getNode();
 			Time time = timeAttribute.getValue();
 			Integer hour = time.getHour();
 			Integer minute = time.getMinute();

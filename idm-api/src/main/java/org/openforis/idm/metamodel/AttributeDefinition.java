@@ -39,7 +39,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 			@XmlElement(name = "check", type = CustomCheck.class), 
 			@XmlElement(name = "unique", type = UniquenessCheck.class) 
 			})
-	private List<Check> checks;
+	private List<Check<?>> checks;
 
 	@XmlElement(name = "default", type = AttributeDefault.class)
 	private List<AttributeDefault> attributeDefaults;
@@ -47,7 +47,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	@XmlTransient
 	private Set<String> checkDependencyPaths;
 
-	public List<Check> getChecks() {
+	public List<Check<?>> getChecks() {
 		return CollectionUtil.unmodifiableList(this.checks);
 	}
 
@@ -66,7 +66,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 
 	private Set<String> createCheckDependencyPaths() {
 		Set<String> paths = new HashSet<String>();
-		for (Check check : getChecks()) {
+		for (Check<?> check : getChecks()) {
 			
 			addReferencedPath(check.getCondition(), paths);
 			if (check instanceof ComparisonCheck) {

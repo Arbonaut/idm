@@ -22,7 +22,6 @@ import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidExpressionException;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
@@ -30,7 +29,7 @@ import org.openforis.idm.model.state.NodeState;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class DistanceCheck extends Check {
+public class DistanceCheck extends Check<CoordinateAttribute> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -63,10 +62,9 @@ public class DistanceCheck extends Check {
 	}
 
 	@Override
-	public boolean evaluate(NodeState nodeState) {
+	public boolean evaluate(CoordinateAttribute coordinateAttr) {
 		try {
 			boolean valid = true;
-			CoordinateAttribute coordinateAttr = (CoordinateAttribute) nodeState.getNode();
 			beforeExecute(coordinateAttr);
 
 			Entity parentEntity = coordinateAttr.getParent();

@@ -15,13 +15,12 @@ import org.openforis.idm.model.Record;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.RequiredExpression;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author M. Togna
  * @author G. Miceli
  */
-public class MinCountValidator implements ValidationRule {
+public class MinCountValidator implements ValidationRule<Entity> {
 
 	private NodeDefinition nodeDefinition;
 
@@ -32,21 +31,21 @@ public class MinCountValidator implements ValidationRule {
 	public NodeDefinition getNodeDefinition() {
 		return nodeDefinition;
 	}
-	
+
 	@Override
-	public boolean evaluate(NodeState nodeState) {
-		Entity parent = (Entity) nodeState.getNode();
+	public boolean evaluate(Entity entity) {
 		String name = nodeDefinition.getName();
-		int minCount = getEffectiveMinCount(parent);
-		if ( minCount == 0 ) {
+		int minCount = getEffectiveMinCount(entity);
+		if (minCount == 0) {
 			return true;
 		} else {
 			int nonEmptyCount = 0;
-			List<Node<?>> childNodes = parent.getAll(name);
-			for ( Node<?> child : childNodes ) {
-				if ( !child.isEmpty() ) {
-					nonEmptyCount++;;
-					if ( nonEmptyCount >= minCount ) {
+			List<Node<?>> childNodes = entity.getAll(name);
+			for (Node<?> child : childNodes) {
+				if (!child.isEmpty()) {
+					nonEmptyCount++;
+					;
+					if (nonEmptyCount >= minCount) {
 						return true;
 					}
 				}
@@ -59,7 +58,7 @@ public class MinCountValidator implements ValidationRule {
 		Integer minCount = nodeDefinition.getMinCount();
 		String requiredExpression = nodeDefinition.getRequiredExpression();
 		// requiredExpression is only considered if minCount and required are not set
-		if ( minCount==null && StringUtils.isNotBlank(requiredExpression) ) {
+		if (minCount == null && StringUtils.isNotBlank(requiredExpression)) {
 			Record record = parent.getRecord();
 			SurveyContext context = record.getSurveyContext();
 			ExpressionFactory expressionFactory = context.getExpressionFactory();
@@ -73,7 +72,7 @@ public class MinCountValidator implements ValidationRule {
 			return minCount == null ? 0 : minCount;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

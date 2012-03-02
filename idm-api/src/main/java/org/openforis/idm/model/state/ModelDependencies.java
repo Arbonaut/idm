@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.IdmInterpretationError;
@@ -163,10 +162,10 @@ public class ModelDependencies {
 	}
 
 	private void register(AttributeDefinition attributeDefinition) {
-		List<AttributeDefault> attributeDefaults = attributeDefinition.getAttributeDefaults();
+//		List<AttributeDefault> attributeDefaults = attributeDefinition.getAttributeDefaults();
 
-		List<Check> checks = attributeDefinition.getChecks();
-		for (Check check : checks) {
+		List<Check<?>> checks = attributeDefinition.getChecks();
+		for (Check<?> check : checks) {
 			checkDependencies.register(attributeDefinition, check.getCondition());
 			if (check instanceof ComparisonCheck) {
 				checkDependencies.register(attributeDefinition, ((ComparisonCheck) check).getEqualsExpression());

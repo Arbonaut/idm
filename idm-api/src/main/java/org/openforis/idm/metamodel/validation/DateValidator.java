@@ -4,22 +4,20 @@ import java.util.Calendar;
 
 import org.openforis.idm.model.Date;
 import org.openforis.idm.model.DateAttribute;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  * @author S. Ricci
  */
-public class DateValidator implements ValidationRule {
+public class DateValidator implements ValidationRule<DateAttribute> {
 
 	@Override
-	public boolean evaluate(NodeState nodeState) {
+	public boolean evaluate(DateAttribute attribute) {
 		try {
-			DateAttribute attr = (DateAttribute) nodeState.getNode();
-			Date date = attr .getValue();
+			Date date = attribute.getValue();
 			Calendar cal = date.toCalendar();
-			if(cal == null) {
+			if (cal == null) {
 				return false;
 			}
 			return true;

@@ -54,12 +54,12 @@ public class ValidationResults {
 		passed.addAll(other.passed);
 	}
 	
-	public void addResult(Node<?> node, ValidationRule validator, boolean result) {
+	public void addResult(Node<?> node, ValidationRule<?> validator, boolean result) {
 		ValidationResult r = new ValidationResult(node, validator, result);
 		if (result) {
 			passed.add(r);
 		} else if (validator instanceof Check) {
-			Flag flag = ((Check) validator).getFlag();
+			Flag flag = ((Check<?>) validator).getFlag();
 			if ( flag == Flag.ERROR ) {
 				errors.add(r);
 			} else {

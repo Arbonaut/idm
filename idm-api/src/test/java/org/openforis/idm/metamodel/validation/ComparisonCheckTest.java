@@ -14,7 +14,6 @@ import org.openforis.idm.model.RealAttribute;
 import org.openforis.idm.model.TextAttribute;
 import org.openforis.idm.model.Time;
 import org.openforis.idm.model.TimeAttribute;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
@@ -74,8 +73,7 @@ public class ComparisonCheckTest extends ValidationTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setGreaterThanExpression("-1");
 		CodeAttribute region = cluster.addValue("region", new Code("001"));
-		NodeState nodeState = new NodeState(region);
-		boolean validate = check.evaluate(nodeState);
+		boolean validate = check.evaluate(region);
 		assertTrue(validate);
 	}
 
@@ -84,8 +82,7 @@ public class ComparisonCheckTest extends ValidationTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setLessThanExpression("-1");
 		CodeAttribute region = cluster.addValue("region", new Code("001"));
-		NodeState nodeState = new NodeState(region);
-		boolean validate = check.evaluate(nodeState);
+		boolean validate = check.evaluate(region);
 		assertFalse(validate);
 	}
 
@@ -94,8 +91,7 @@ public class ComparisonCheckTest extends ValidationTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setGreaterThanExpression("-1");
 		TextAttribute mapSheet = cluster.addValue("map_sheet", "1");
-		NodeState nodeState = new NodeState(mapSheet);
-		boolean validate = check.evaluate(nodeState);
+		boolean validate = check.evaluate(mapSheet);
 		assertTrue(validate);
 	}
 
@@ -104,8 +100,7 @@ public class ComparisonCheckTest extends ValidationTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setLessThanExpression("-1");
 		TextAttribute mapSheet = cluster.addValue("map_sheet", "1");
-		NodeState nodeState = new NodeState(mapSheet);
-		boolean validate = check.evaluate(nodeState);
+		boolean validate = check.evaluate(mapSheet);
 		assertFalse(validate);
 	}
 	
@@ -139,7 +134,7 @@ public class ComparisonCheckTest extends ValidationTest {
 	
 	private boolean containsComparisonCheck(List<ValidationResult> results) {
 		for (ValidationResult result : results) {
-			ValidationRule validator = result.getValidator();
+			ValidationRule<?> validator = result.getValidator();
 			if (validator instanceof ComparisonCheck) {
 				return true;
 			}

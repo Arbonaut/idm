@@ -8,13 +8,12 @@ import java.util.List;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author M. Togna
  * @author G. Miceli
  */
-public class MaxCountValidator implements ValidationRule {
+public class MaxCountValidator implements ValidationRule<Entity> {
 
 	private NodeDefinition nodeDefinition;
 	
@@ -27,8 +26,7 @@ public class MaxCountValidator implements ValidationRule {
 	}
 	
 	@Override
-	public boolean evaluate(NodeState nodeState) {
-		Entity entity = (Entity) nodeState.getNode();
+	public boolean evaluate(Entity entity) {
 		String name = nodeDefinition.getName();
 		Integer maxCount = nodeDefinition.getMaxCount();
 		if (maxCount == null) {

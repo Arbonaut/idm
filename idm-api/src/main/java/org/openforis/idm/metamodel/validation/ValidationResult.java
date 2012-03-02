@@ -9,10 +9,10 @@ import org.openforis.idm.model.Node;
 public final class ValidationResult {
 
 	private Node<?> node;
-	private ValidationRule validator;
+	private ValidationRule<?> validator;
 	private boolean valid;
 	
-	public ValidationResult(Node<?> node, ValidationRule validator, boolean valid) {
+	public ValidationResult(Node<?> node, ValidationRule<?> validator, boolean valid) {
 		this.node = node;
 		this.validator = validator;
 		this.valid = valid;
@@ -22,7 +22,7 @@ public final class ValidationResult {
 		return node;
 	}
 
-	public ValidationRule getValidator() {
+	public ValidationRule<?> getValidator() {
 		return validator;
 	}
 

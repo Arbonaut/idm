@@ -14,7 +14,6 @@ import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
@@ -22,7 +21,7 @@ import org.openforis.idm.model.state.NodeState;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class CustomCheck extends Check {
+public class CustomCheck extends Check<Attribute<?,?>> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,8 +33,7 @@ public class CustomCheck extends Check {
 	}
 
 	@Override
-	public boolean evaluate(NodeState nodeState) {
-		Attribute<?,?> node = (Attribute<?, ?>) nodeState.getNode();
+	public boolean evaluate(Attribute<?,?> node) {
 		String expr = getExpression();
 		try {
 			SurveyContext recordContext = node.getRecord().getSurveyContext();

@@ -73,7 +73,7 @@ public class NodeState {
 	}
 
 	public void updateValidation(Validator validator) {
-		this.validationResults = validator.validate(this);
+		//this.validationResults = validator.validate(this.getNode());
 	}
 
 	public Node<? extends NodeDefinition> getNode() {

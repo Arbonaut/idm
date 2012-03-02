@@ -17,7 +17,6 @@ import org.openforis.idm.model.Node;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.ModelPathExpression;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
@@ -25,7 +24,7 @@ import org.openforis.idm.model.state.NodeState;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class UniquenessCheck extends Check {
+public class UniquenessCheck extends Check<Attribute<?, ?>> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,9 +36,8 @@ public class UniquenessCheck extends Check {
 	}
 
 	@Override
-	public boolean evaluate(NodeState nodeState) {
+	public boolean evaluate(Attribute<?, ?> attribute) {
 		try {
-			Attribute<?,?> attribute = (Attribute<?, ?>) nodeState.getNode();
 			SurveyContext recordContext = attribute.getRecord().getSurveyContext();
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			ModelPathExpression pathExpression = expressionFactory.createModelPathExpression(expression);

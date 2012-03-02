@@ -7,20 +7,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.CodeListItem;
 import org.openforis.idm.model.CodeAttribute;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author M. Togna
  * 
  *         Checks if code is valid in context of parent (if parent scope in IDM, not list scope!)
  *         <p/>
- *         Generates  a warning if parent is invalid or missing.
+ *         Generates a warning if parent is invalid or missing.
  */
-public class CodeParentValidator implements ValidationRule {
+public class CodeParentValidator implements ValidationRule<CodeAttribute> {
 
 	@Override
-	public boolean evaluate(NodeState nodeState) {
-		CodeAttribute node = (CodeAttribute) nodeState.getNode();
+	public boolean evaluate(CodeAttribute node) {
 		CodeAttributeDefinition definition = node.getDefinition();
 		if (StringUtils.isBlank(definition.getParentExpression())) {
 			return true;

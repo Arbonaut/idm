@@ -14,7 +14,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Code;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author G. Miceli
@@ -22,7 +21,7 @@ import org.openforis.idm.model.state.NodeState;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class PatternCheck extends Check {
+public class PatternCheck extends Check<Attribute<?,?>> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,8 +43,7 @@ public class PatternCheck extends Check {
 	}
 
 	@Override
-	public boolean evaluate(NodeState nodeState) {
-		Attribute<?,?> node = (Attribute<?, ?>) nodeState.getNode();
+	public boolean evaluate(Attribute<?,?> node) {
 		Object value = node.getValue();
 		String string = null;
 		if (value instanceof String) {

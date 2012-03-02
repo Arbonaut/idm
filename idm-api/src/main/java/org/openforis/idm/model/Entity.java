@@ -598,7 +598,7 @@ public class Entity extends Node<EntityDefinition> {
 	}
 	
 	public boolean validateMaxCount(String childName) {
-		EntityDefinition defn = getDefinition();
+		NodeDefinition defn = getChildDefinition(childName);
 		Integer maxCount = defn.getMaxCount();
 		if (maxCount == null) {
 			return true;

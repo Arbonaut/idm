@@ -60,7 +60,7 @@ public class UniquenessCheckTest extends ValidationTest {
 
 	private boolean containsUniquenessError(List<ValidationResult> results, String name) {
 		for (ValidationResult result : results) {
-			ValidationRule validator = result.getValidator();
+			ValidationRule<?> validator = result.getValidator();
 			if (validator instanceof UniquenessCheck) {
 				return true;
 			}

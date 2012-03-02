@@ -8,20 +8,16 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.IdmInterpretationError;
-import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.CoordinateAttribute;
 import org.openforis.idm.model.DateAttribute;
-import org.openforis.idm.model.Entity;
-import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.TimeAttribute;
 import org.openforis.idm.model.expression.CheckConditionExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author M. Togna
@@ -29,20 +25,26 @@ import org.openforis.idm.model.state.NodeState;
  */
 public class Validator {
 
-
 	public ValidationResults validate(Attribute<?, ?> attribute) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		ValidationResults results = new ValidationResults();
+		if (!attribute.isEmpty()) {
+			boolean valid = validateAttributeValue(attribute, results);
+			if (valid) {
+				validateAttributeChecks(attribute, results);
+			}
+		}
+		return results;
 	}
 
-	public ValidationResults validate(NodeState nodeState) {
-		Node<?> node = nodeState.getNode();
-		if (node instanceof Entity) {
-			return validateEntity(nodeState);
-		} else {
-			return validateAttribute(nodeState);
-		}
-	}
+	// @Deprecated
+	// public ValidationResults validate(NodeState nodeState) {
+	// Node<?> node = nodeState.getNode();
+	// if (node instanceof Entity) {
+	// return validateEntity(nodeState);
+	// } else {
+	// return validateAttribute(nodeState);
+	// }
+	// }
 
 	// public ValidationResults validate(Node<?> node) {
 	// if (node instanceof Entity) {
@@ -52,104 +54,104 @@ public class Validator {
 	// }
 	// }
 
-	/**
-	 * Validates cardinality of all entity children
-	 * 
-	 * @param nodeState
-	 */
-	protected ValidationResults validateEntity(NodeState nodeState) {
-		ValidationResults validationResults = new ValidationResults();
-		Entity entity = (Entity) nodeState.getNode();
-		List<NodeDefinition> childDefinitions = entity.getDefinition().getChildDefinitions();
-		for (NodeDefinition childDef : childDefinitions) {
-			validateChildMinCount(nodeState, childDef, validationResults);
-			validateChildMaxCount(nodeState, childDef, validationResults);
-		}
-		return validationResults;
-	}
+	// /**
+	// * Validates cardinality of all entity children
+	// *
+	// * @param nodeState
+	// */
+	// @Deprecated
+	// protected ValidationResults validateEntity(NodeState nodeState) {
+	// ValidationResults validationResults = new ValidationResults();
+	// Entity entity = (Entity) nodeState.getNode();
+	// List<NodeDefinition> childDefinitions = entity.getDefinition().getChildDefinitions();
+	// for (NodeDefinition childDef : childDefinitions) {
+	// validateChildMinCount(nodeState, childDef, validationResults);
+	// validateChildMaxCount(nodeState, childDef, validationResults);
+	// }
+	// return validationResults;
+	// }
 
-	protected ValidationResults validateAttribute(NodeState nodeState) {
+	@Deprecated
+	protected ValidationResults validateAttribute(Attribute<?, ?> attribute) {
 		ValidationResults results = new ValidationResults();
-		Attribute<?, ?> attribute = (Attribute<?, ?>) nodeState.getNode();
 		if (!attribute.isEmpty()) {
-			boolean valid = validateAttributeValue(nodeState, results);
+			boolean valid = validateAttributeValue(attribute, results);
 			if (valid) {
-				validateAttributeChecks(nodeState, results);
+				validateAttributeChecks(attribute, results);
 			}
 		}
 		return results;
 	}
 
-	private void validateChildMinCount(NodeState nodeState, NodeDefinition childDef, ValidationResults validationResults) {
-		MinCountValidator validator = new MinCountValidator(childDef);
-		boolean result = validator.evaluate(nodeState);
-		validationResults.addResult(nodeState.getNode(), validator, result);
-	}
+//	@Deprecated
+//	private void validateChildMinCount(NodeState nodeState, NodeDefinition childDef, ValidationResults validationResults) {
+//		MinCountValidator validator = new MinCountValidator(childDef);
+//		boolean result = validator.evaluate(nodeState);
+//		validationResults.addResult(nodeState.getNode(), validator, result);
+//	}
+//
+//	@Deprecated
+//	private void validateChildMaxCount(NodeState nodeState, NodeDefinition childDef, ValidationResults validationResults) {
+//		MaxCountValidator validator = new MaxCountValidator(childDef);
+//		boolean result = validator.evaluate(nodeState);
+//		validationResults.addResult(nodeState.getNode(), validator, result);
+//	}
 
-	private void validateChildMaxCount(NodeState nodeState, NodeDefinition childDef, ValidationResults validationResults) {
-		MaxCountValidator validator = new MaxCountValidator(childDef);
-		boolean result = validator.evaluate(nodeState);
-		validationResults.addResult(nodeState.getNode(), validator, result);
-	}
-
-	private void validateAttributeChecks(NodeState nodeState, ValidationResults results) {
-		@SuppressWarnings("unchecked")
-		Attribute<? extends AttributeDefinition, ?> attribute = (Attribute<? extends AttributeDefinition, ?>) nodeState.getNode();
+	@SuppressWarnings("rawtypes")
+	private void validateAttributeChecks(Attribute<?, ?> attribute, ValidationResults results) {
+		
+		// Attribute<? extends AttributeDefinition, ?> attribute = (Attribute<? extends AttributeDefinition, ?>) nodeState.getNode();
 		AttributeDefinition defn = attribute.getDefinition();
-		List<Check> checks = defn.getChecks();
+		List<Check<?>> checks = defn.getChecks();
 		for (Check check : checks) {
 			if (evaluateCheckCondition(attribute, check.getCondition())) {
-				boolean result = check.evaluate(nodeState);
+				@SuppressWarnings("unchecked")
+				boolean result = check.evaluate(attribute);
 				results.addResult(attribute, check, result);
 			}
 		}
 	}
 
-	private boolean validateAttributeValue(NodeState nodeState, ValidationResults results) {
-		Attribute<?, ?> attribute = (Attribute<?, ?>) nodeState.getNode();
+	private boolean validateAttributeValue(Attribute<?, ?> attribute, ValidationResults results) {
 		if (attribute instanceof CodeAttribute) {
-			return validateCodeAttributeValue(nodeState, results);
+			return validateCodeAttributeValue((CodeAttribute) attribute, results);
 		} else if (attribute instanceof CoordinateAttribute) {
-			return validateCoordinateAttributeValue(nodeState, results);
+			return validateCoordinateAttributeValue((CoordinateAttribute) attribute, results);
 		} else if (attribute instanceof DateAttribute) {
-			return validateDateAttributeValue(nodeState, results);
+			return validateDateAttributeValue((DateAttribute) attribute, results);
 		} else if (attribute instanceof TimeAttribute) {
-			return validateTimeAttributeValue(nodeState, results);
+			return validateTimeAttributeValue((TimeAttribute) attribute, results);
 		}
 		return true;
 	}
 
-	private boolean validateTimeAttributeValue(NodeState nodeState, ValidationResults results) {
-		TimeAttribute attribute = (TimeAttribute) nodeState.getNode();
+	private boolean validateTimeAttributeValue(TimeAttribute timeAttribute, ValidationResults results) {
 		TimeValidator validator = new TimeValidator();
-		boolean valid = validator.evaluate(nodeState);
-		results.addResult(attribute, validator, valid);
+		boolean valid = validator.evaluate(timeAttribute);
+		results.addResult(timeAttribute, validator, valid);
 		return valid;
 	}
 
-	private boolean validateDateAttributeValue(NodeState nodeState, ValidationResults results) {
-		DateAttribute attribute = (DateAttribute) nodeState.getNode();
+	private boolean validateDateAttributeValue(DateAttribute attribute, ValidationResults results) {
 		DateValidator validator = new DateValidator();
-		boolean result = validator.evaluate(nodeState);
+		boolean result = validator.evaluate(attribute);
 		results.addResult(attribute, validator, result);
 		return result;
 	}
 
-	private boolean validateCoordinateAttributeValue(NodeState nodeState, ValidationResults results) {
-		CoordinateAttribute attribute = (CoordinateAttribute) nodeState.getNode();
+	private boolean validateCoordinateAttributeValue(CoordinateAttribute attribute, ValidationResults results) {
 		CoordinateValidator validator = new CoordinateValidator();
-		boolean valid = validator.evaluate(nodeState);
+		boolean valid = validator.evaluate(attribute);
 		results.addResult(attribute, validator, valid);
 		return valid;
 	}
 
-	private boolean validateCodeAttributeValue(NodeState nodeState, ValidationResults results) {
-		CodeAttribute attribute = (CodeAttribute) nodeState.getNode();
+	private boolean validateCodeAttributeValue(CodeAttribute attribute, ValidationResults results) {
 		CodeParentValidator parentValidator = new CodeParentValidator();
-		boolean validParent = parentValidator.evaluate(nodeState);
+		boolean validParent = parentValidator.evaluate(attribute);
 		if (validParent) {
 			CodeValidator codeValidator = new CodeValidator();
-			boolean valid = codeValidator.evaluate(nodeState);
+			boolean valid = codeValidator.evaluate(attribute);
 			results.addResult(attribute, codeValidator, valid);
 			return valid;
 		} else {

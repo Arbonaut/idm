@@ -9,21 +9,19 @@ import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
 import org.openforis.idm.metamodel.SpatialReferenceSystem;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;
-import org.openforis.idm.model.state.NodeState;
 
 /**
  * @author M. Togna
  * 
  */
-public class CoordinateValidator implements ValidationRule {
+public class CoordinateValidator implements ValidationRule<CoordinateAttribute> {
 
 	@Override
-	public boolean evaluate(NodeState nodeState) {
-		CoordinateAttribute node = (CoordinateAttribute) nodeState.getNode();
-		Coordinate coordinate = node .getValue();
+	public boolean evaluate(CoordinateAttribute node) {
+		Coordinate coordinate = node.getValue();
 		CoordinateAttributeDefinition definition = node.getDefinition();
 		List<SpatialReferenceSystem> srs = definition.getSurvey().getSpatialReferenceSystems();
-		
+
 		return coordinate.getX() != null && coordinate.getY() != null && isSrsIdValid(srs, coordinate.getSrsId());
 	}
 

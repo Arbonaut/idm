@@ -4,11 +4,14 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.openforis.idm.metamodel.AttributeDefault;
 import org.openforis.idm.metamodel.AttributeDefinition;
-import org.openforis.idm.model.expression.InvalidExpressionException;
+import org.openforis.idm.metamodel.SurveyContext;
+import org.openforis.idm.metamodel.validation.ValidationResults;
+import org.openforis.idm.metamodel.validation.Validator;
+import org.openforis.idm.model.expression.internal.MissingValueException;
 
 /**
  * @author M. Togna
@@ -18,7 +21,9 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 
 	private Field<?>[] fields;
 	
-	private boolean defaultValue;
+//	private boolean defaultValue;
+	
+	private transient ValidationResults validationResults;
 	
 	protected Attribute(D definition, Class<?>... fieldTypes) {
 		super(definition);
@@ -29,7 +34,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		this.fields = new Field[fieldTypes.length];
 		for (int i = 0; i < fields.length; i++) {
 			Class<?> t = fieldTypes[i];
-			this.fields[i] = Field.newInstance(t);
+			this.fields[i] = Field.newInstance(t, this);
 		}
 	}
 	
@@ -48,6 +53,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		for (Field<?> field : fields) {
 			field.setValue(null);
 		}
+		onUpdateValue();
 	}
 
 	/**
@@ -57,6 +63,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		for (Field<?> field : fields) {
 			field.clear();
 		}
+		onUpdateValue();
 	}
 	/**
 	 * @return a non-null, immutable value
@@ -68,17 +75,21 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	 */
 	public abstract void setValue(V value);
 	
-	public V getDefaultValue() throws InvalidExpressionException {
-		D definition = getDefinition();
-		List<AttributeDefault> attributeDefaults = definition.getAttributeDefaults();
-		for (AttributeDefault attributeDefault : attributeDefaults) {
-			V value = attributeDefault.evaluate(this);
-			if (value != null) {
-				return value;
-			}
-		}
-		return null;
+	protected void onUpdateValue(){
+		clearDependencyStates();
 	}
+	
+//	public V getDefaultValue() throws InvalidExpressionException {
+//		D definition = getDefinition();
+//		List<AttributeDefault> attributeDefaults = definition.getAttributeDefaults();
+//		for (AttributeDefault attributeDefault : attributeDefaults) {
+//			V value = attributeDefault.evaluate(this);
+//			if (value != null) {
+//				return value;
+//			}
+//		}
+//		return null;
+//	}
 
 	/**
 	 * @return true if value is not null
@@ -93,18 +104,60 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		return true;
 	}
 
-	public boolean isDefaultValue() {
-		return defaultValue;
-	}
+//	public boolean isDefaultValue() {
+//		return defaultValue;
+//	}
 
-	public void applyDefaultValue() throws InvalidExpressionException {
-		V value = getDefaultValue();
-		if (value != null) {
-			setValue(value);
-			this.defaultValue = true;
+//	public void applyDefaultValue() throws InvalidExpressionException {
+//		V value = getDefaultValue();
+//		if (value != null) {
+//			setValue(value);
+//			this.defaultValue = true;
+//		}
+//	}
+
+	@Override
+	public void clearDependencyStates() {
+		super.clearDependencyStates();
+		clearValidationResults();
+		Set<Attribute<?, ?>> checkDep = getCheckDependencies();
+		for (Attribute<?, ?> attribute : checkDep) {
+			attribute.clearValidationResults();
 		}
 	}
+	
+	private Set<Attribute<?, ?>> getCheckDependencies() {
+		Set<Attribute<?, ?>> attributes = new HashSet<Attribute<?, ?>>();
+		Set<String> paths = getDefinition().getCheckDependencyPaths();
+		for (String path : paths) {
+			try {
+				Attribute<?, ?> attribute = (Attribute<?, ?>) evaluateModelPathExpression(this, path);
+				attributes.add(attribute);
+			} catch (MissingValueException e) {
+				continue;
+			}
+		}
+		return attributes;
+	}
 
+	/**
+	 * 
+	 * @return list of failed validation rules
+	 */
+	public ValidationResults validateValue() {
+		if ( validationResults == null ) {
+			SurveyContext recordContext = getRecordContext();
+			Validator validator = recordContext.getValidator();
+			validationResults = validator.validate(this);
+		}
+		return validationResults;
+	}
+
+	protected void clearValidationResults() {
+		validationResults = null;
+	}
+	
+	
 	@Override
 	protected void write(StringWriter sw, int indent) {
 		V value = getValue();

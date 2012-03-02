@@ -14,12 +14,12 @@ import org.openforis.idm.geospatial.CoordinateOperations;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.SpatialReferenceSystem;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.state.NodeState;
@@ -70,7 +70,7 @@ public class DistanceCheck extends Check {
 			beforeExecute(coordinateAttr);
 
 			Entity parentEntity = coordinateAttr.getParent();
-			RecordContext recordContext = coordinateAttr.getRecord().getContext();
+			SurveyContext recordContext = coordinateAttr.getRecord().getSurveyContext();
 			Coordinate from = getCoordinate(recordContext, getSourcePointExpression(), parentEntity, coordinateAttr, coordinateAttr.getValue());
 			Coordinate to = getCoordinate(recordContext, getDestinationPointExpression(), parentEntity, coordinateAttr, null);
 
@@ -95,13 +95,13 @@ public class DistanceCheck extends Check {
 		}
 	}
 
-	private double evaluateDistanceExpression(RecordContext recordContext, Entity context, Attribute<?,?> thisNode, String expression) throws InvalidExpressionException {
+	private double evaluateDistanceExpression(SurveyContext recordContext, Entity context, Attribute<?,?> thisNode, String expression) throws InvalidExpressionException {
 		DefaultValueExpression defaultValueExpression = recordContext.getExpressionFactory().createDefaultValueExpression(expression);
 		Double value = (Double) defaultValueExpression.evaluate(context, thisNode);
 		return value;
 	}
 
-	private Coordinate getCoordinate(RecordContext recordContext, String expression, Node<?> context, Attribute<?,?> thisNode, Coordinate defaultCoordinate) throws InvalidExpressionException {
+	private Coordinate getCoordinate(SurveyContext recordContext, String expression, Node<?> context, Attribute<?,?> thisNode, Coordinate defaultCoordinate) throws InvalidExpressionException {
 		if (expression == null) {
 			return defaultCoordinate;
 		} else {

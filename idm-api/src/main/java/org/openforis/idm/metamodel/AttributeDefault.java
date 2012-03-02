@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.DefaultConditionExpression;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
@@ -53,7 +52,7 @@ public class AttributeDefault implements Serializable {
 	@SuppressWarnings("unchecked")
 	public <V> V evaluate(Attribute<? extends AttributeDefinition,V> attrib) throws InvalidExpressionException {
 		Record record = attrib.getRecord();
-		RecordContext recordContext = record.getContext();
+		SurveyContext recordContext = record.getSurveyContext();
 		ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 		if ( StringUtils.isBlank(condition) || evaluateCondition(attrib, expressionFactory) ) {
 			if (StringUtils.isBlank(value)) {

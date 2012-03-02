@@ -39,6 +39,7 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 			getFromField().setValue(from);
 			getToField().setValue(to);
 		}
+		onUpdateValue();
 	}
 	
 	protected abstract T createRange(V from, V to);

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.CodeListItem;
 import org.openforis.idm.metamodel.ModelVersion;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.ModelPathExpression;
 
@@ -46,6 +47,7 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 			getCodeField().setValue(code);
 			getQualifierField().setValue(qualifier);
 		}
+		onUpdateValue();
 	}
 	
 	public CodeListItem getCodeListItem() {
@@ -77,7 +79,7 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 	public CodeAttribute getCodeParent() {
 		try {
 			String parentExpr = getDefinition().getParentExpression();
-			RecordContext recordContext = getRecord().getContext();
+			SurveyContext recordContext = getRecord().getSurveyContext();
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			ModelPathExpression expression = expressionFactory.createModelPathExpression(parentExpr);
 			Node<?> parentNode = expression.evaluate(getParent(), this);

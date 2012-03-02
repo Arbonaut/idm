@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.RecordContext;
 
 /**
  * @author M. Togna
@@ -74,7 +74,7 @@ public class NodeStateManager {
 		String surveyName = survey.getName();
 		ModelDependencies modelDependencies = modelDependenciesMap.get(surveyName);
 		if (modelDependencies == null) {
-			RecordContext recordContext = record.getContext();
+			SurveyContext recordContext = record.getSurveyContext();
 			modelDependencies = new ModelDependencies(recordContext.getExpressionFactory());
 			modelDependencies.register(survey);
 			modelDependenciesMap.put(surveyName, modelDependencies);

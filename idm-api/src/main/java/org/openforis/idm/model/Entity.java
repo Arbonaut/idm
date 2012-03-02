@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.BooleanAttributeDefinition;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
@@ -20,12 +21,18 @@ import org.openforis.idm.metamodel.DateAttributeDefinition;
 import org.openforis.idm.metamodel.DetachedNodeDefinitionException;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.FileAttributeDefinition;
+import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
 import org.openforis.idm.metamodel.RangeAttributeDefinition;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
+import org.openforis.idm.model.expression.ExpressionFactory;
+import org.openforis.idm.model.expression.InvalidExpressionException;
+import org.openforis.idm.model.expression.RelevanceExpression;
+import org.openforis.idm.model.expression.RequiredExpression;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -37,9 +44,12 @@ public class Entity extends Node<EntityDefinition> {
 
 	private Map<String, List<Node<? extends NodeDefinition>>> childrenByName;
 
+	private DerivedStateCache derivedStateCache;
+	
 	public Entity(EntityDefinition definition) {
 		super(definition);
 		this.childrenByName = new HashMap<String, List<Node<? extends NodeDefinition>>>();
+		this.derivedStateCache = new Entity.DerivedStateCache();
 	}
 
 	public void add(Node<?> node) {
@@ -282,8 +292,8 @@ public class Entity extends Node<EntityDefinition> {
 
 	private <T extends Attribute<D, V>, D extends AttributeDefinition, V> T addValueInternal(String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
 		T attr = createNode(name, type, definitionType);
-		attr.setValue(value);
 		addInternal(attr, idx);
+		attr.setValue(value);
 		return attr;
 	}
 
@@ -335,6 +345,8 @@ public class Entity extends Node<EntityDefinition> {
 
 		o.setParent(this);
 
+		o.clearDependencyStates();
+		
 		return o;
 	}
 
@@ -490,6 +502,111 @@ public class Entity extends Node<EntityDefinition> {
 		}
 	}
 
+	public boolean isRelevant(String childName) {
+		Boolean relevant = derivedStateCache.getRelevance(childName);
+		if ( relevant == null ) {
+			relevant = evaluateRelevance(childName);
+			derivedStateCache.setRelevance(childName, relevant);
+		}
+		return relevant;
+	}
+
+	private boolean evaluateRelevance(String childName) {
+		NodeDefinition defn = getChildDefinition(childName);
+		String expr = defn.getRequiredExpression();
+		if (StringUtils.isBlank(expr)) {
+			return true;
+		} else {
+			try {
+				ExpressionFactory expressionFactory = getExpressionFactory();
+				RelevanceExpression relevanceExpr = expressionFactory.createRelevanceExpression(expr);
+				return relevanceExpr.evaluate(this, null);
+			} catch (InvalidExpressionException e) {
+				throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
+			}
+		}
+	}
+
+	public boolean isRequired(String childName) {
+		NodeDefinition defn = getChildDefinition(childName);
+		Integer minCount = defn.getMinCount();
+		if ( minCount == null ) {
+			String requiredExpression = defn.getRequiredExpression();
+			if ( StringUtils.isBlank(requiredExpression) ) {
+				return false;
+			} else {
+				Boolean required = derivedStateCache.getRequired(childName);
+				if ( required == null ) {
+					required = evaluateRequiredExpression(childName);
+					derivedStateCache.setRequired(childName, required);
+				}
+				return required;
+			}
+		} else {
+			return minCount > 0;
+		}
+	}
+
+	private boolean evaluateRequiredExpression(String childName) {
+		try {
+			NodeDefinition defn = getChildDefinition(childName);
+			Record record = getRecord();
+			SurveyContext context = record.getSurveyContext();
+			ExpressionFactory expressionFactory = context.getExpressionFactory();
+			String requiredExpression = defn.getRequiredExpression();
+			RequiredExpression expr = expressionFactory.createRequiredExpression(requiredExpression);
+			return expr.evaluate(this, null);
+		} catch (InvalidExpressionException e) {
+			throw new IdmInterpretationError("Error evaluating required expression", e);
+		}
+	}
+
+	/**
+	 * 
+	 * @param childName
+	 * @return minimum number of non-empty child nodes, based on minCount, required and 
+	 * requiredExpression properties
+	 */
+	public int getEffectiveMinCount(String childName) {
+		NodeDefinition defn = getChildDefinition(childName);
+		Integer minCount = defn.getMinCount();
+		// requiredExpression is only considered if minCount and required are not set
+		if ( minCount==null ) {
+			return isRequired(childName) ? 1 : 0;
+		} else {
+			return minCount;
+		}
+	}
+
+	public boolean validateMinCount(String childName) {
+		int minCount = getEffectiveMinCount(childName);
+		if ( minCount == 0 ) {
+			return true;
+		} else {
+			int nonEmptyCount = 0;
+			List<Node<?>> childNodes = getAll(childName);
+			for ( Node<?> child : childNodes ) {
+				if ( !child.isEmpty() ) {
+					nonEmptyCount++;;
+					if ( nonEmptyCount >= minCount ) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+	}
+	
+	public boolean validateMaxCount(String childName) {
+		EntityDefinition defn = getDefinition();
+		Integer maxCount = defn.getMaxCount();
+		if (maxCount == null) {
+			return true;
+		} else {
+			int count = getCount(childName);
+			return count <= maxCount;
+		}
+	}
 	// /**
 	// *
 	// * @return Unmodifiable list of child instances, sorted by their schema order.
@@ -507,4 +624,49 @@ public class Entity extends Node<EntityDefinition> {
 	// }
 	// return Collections.unmodifiableList(result);
 	// }
+	
+	public void clearRelevanceState(String childName) {
+		derivedStateCache.clearRelevance(childName);
+	}
+
+	public void clearRequiredState(String childName) {
+		derivedStateCache.clearRequiredState(childName);
+	}
+	
+	private static class DerivedStateCache {
+		/** Set of children dynamic required states */
+		private Map<String, Boolean> childRequiredStates;
+		/** Set of children relevance states */
+		private Map<String, Boolean> childRelevance;
+
+		public DerivedStateCache() {
+			childRequiredStates = new HashMap<String, Boolean>();
+			childRelevance = new HashMap<String, Boolean>();
+		}
+
+		private Boolean getRequired(String childName) {
+			return childRequiredStates.get(childName);
+		}
+
+		private Boolean getRelevance(String childName) {
+			return childRequiredStates.get(childName);
+		}
+
+		private void setRequired(String childName, boolean flag) {
+			childRequiredStates.put(childName, flag);
+		}
+
+		private void clearRequiredState(String childName) {
+			childRequiredStates.remove(childName);
+		}
+
+		private void setRelevance(String childName, boolean flag) {
+			childRelevance.put(childName, flag);
+		}
+
+		private void clearRelevance(String childName) {
+			childRelevance.remove(childName);
+		}
+	}
+
 }

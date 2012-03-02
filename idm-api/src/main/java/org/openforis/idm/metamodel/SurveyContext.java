@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openforis.idm.model;
+package org.openforis.idm.metamodel;
 
 import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.expression.ExpressionFactory;
@@ -10,7 +10,7 @@ import org.openforis.idm.model.expression.ExpressionFactory;
  * @author M. Togna
  * 
  */
-public interface RecordContext {
+public interface SurveyContext {
 
 	ExpressionFactory getExpressionFactory();
 

@@ -18,6 +18,7 @@ public abstract class AtomicAttribute<D extends AttributeDefinition, V>  extends
 	public void setValue(V value) {
 		Field<V> field = getField();
 		field.setValue(value);
+		onUpdateValue();
 	}
 
 	@SuppressWarnings("unchecked")

@@ -11,9 +11,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.IdmInterpretationError;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.ModelPathExpression;
@@ -40,7 +40,7 @@ public class UniquenessCheck extends Check {
 	public boolean evaluate(NodeState nodeState) {
 		try {
 			Attribute<?,?> attribute = (Attribute<?, ?>) nodeState.getNode();
-			RecordContext recordContext = attribute.getRecord().getContext();
+			SurveyContext recordContext = attribute.getRecord().getSurveyContext();
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			ModelPathExpression pathExpression = expressionFactory.createModelPathExpression(expression);
 			List<Node<?>> list = pathExpression.iterate(attribute.getParent(), attribute);

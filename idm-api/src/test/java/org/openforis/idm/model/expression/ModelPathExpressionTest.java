@@ -59,6 +59,19 @@ public class ModelPathExpressionTest extends AbstractTest {
 		Assert.assertEquals(3, list.size());
 	}
 
+
+	@Test
+	public void testParentFunction() throws InvalidExpressionException {
+		String entityName = "plot";
+		Entity plot = cluster.addEntity(entityName);
+		cluster.addValue("id", new Code("123_456"));
+
+		String expr = "parent()/id";
+		List<Node<?>> list = iterateExpression(expr, plot);
+
+		Assert.assertEquals(1, list.size());
+	}
+
 	@Test
 	public void testIteratePath3() throws InvalidExpressionException {
 		String entityName = "time_study";
@@ -70,7 +83,7 @@ public class ModelPathExpressionTest extends AbstractTest {
 	}
 
 	private List<Node<?>> iterateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
-		ModelPathExpression expression = context.getRecord().getContext().getExpressionFactory().createModelPathExpression(expr);
+		ModelPathExpression expression = context.getRecord().getSurveyContext().getExpressionFactory().createModelPathExpression(expr);
 		List<Node<?>> l = expression.iterate(context, null);
 		return l;
 	}

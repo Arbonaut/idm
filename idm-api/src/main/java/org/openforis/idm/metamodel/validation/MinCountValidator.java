@@ -8,10 +8,10 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.RequiredExpression;
@@ -61,7 +61,7 @@ public class MinCountValidator implements ValidationRule {
 		// requiredExpression is only considered if minCount and required are not set
 		if ( minCount==null && StringUtils.isNotBlank(requiredExpression) ) {
 			Record record = parent.getRecord();
-			RecordContext context = record.getContext();
+			SurveyContext context = record.getSurveyContext();
 			ExpressionFactory expressionFactory = context.getExpressionFactory();
 			try {
 				RequiredExpression expr = expressionFactory.createRequiredExpression(requiredExpression);

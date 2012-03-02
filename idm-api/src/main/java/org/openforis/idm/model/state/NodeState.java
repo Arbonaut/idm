@@ -6,11 +6,11 @@ package org.openforis.idm.model.state;
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.validation.ValidationResults;
 import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.RelevanceExpression;
@@ -20,6 +20,7 @@ import org.openforis.idm.model.expression.RequiredExpression;
  * @author M. Togna
  * 
  */
+@Deprecated
 public class NodeState {
 
 	private Node<? extends NodeDefinition> node;
@@ -39,9 +40,9 @@ public class NodeState {
 
 	public void updateRequired() {
 		NodeDefinition definition = node.getDefinition();
-		if (definition.isRequired()) {
-			required = true;
-		} else {
+	//	if (definition.isRequired()) {
+//			required = true;
+//		} else {
 			String expr = definition.getRequiredExpression();
 			if (StringUtils.isNotBlank(expr)) {
 				try {
@@ -53,7 +54,7 @@ public class NodeState {
 				}
 			}
 			required = true;
-		}
+//		}
 
 	}
 
@@ -101,7 +102,7 @@ public class NodeState {
 
 	private ExpressionFactory getExpressionFactory() {
 		Record record = node.getRecord();
-		RecordContext recordContext = record.getContext();
+		SurveyContext recordContext = record.getSurveyContext();
 		ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 		return expressionFactory;
 	}

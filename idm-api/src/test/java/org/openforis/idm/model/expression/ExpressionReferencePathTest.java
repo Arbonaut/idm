@@ -10,7 +10,7 @@ public class ExpressionReferencePathTest extends AbstractTest {
 
 	@Test
 	public void testReferencePath() throws InvalidExpressionException {
-		ExpressionFactory ef = cluster.getRecord().getContext().getExpressionFactory();
+		ExpressionFactory ef = cluster.getRecord().getSurveyContext().getExpressionFactory();
 
 		String expression = "$this  <= ../../total_height * 8";
 		CheckExpression expr = ef.createCheckExpression(expression);

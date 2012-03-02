@@ -18,6 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlInit;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
@@ -29,13 +30,14 @@ public class SurveyUnmarshaller {
 
 	private Unmarshaller unmarshaller;
 	private Class<? extends Survey> surveyClass;
-
+	private SurveyContext surveyContext;
+	
 	private final Log log = LogFactory.getLog(getClass());
 
-	SurveyUnmarshaller(Unmarshaller unmarshaller, Class<? extends Survey> surveyClass) {
-		super();
+	SurveyUnmarshaller(Unmarshaller unmarshaller, Class<? extends Survey> surveyClass, SurveyContext surveyContext) {
 		this.unmarshaller = unmarshaller;
 		this.surveyClass = surveyClass;
+		this.surveyContext = surveyContext;
 	}
 
 	public Survey unmarshal(String filename) throws IOException, InvalidIdmlException {
@@ -64,7 +66,8 @@ public class SurveyUnmarshaller {
 
 			JAXBElement<? extends Survey> jaxbElement = unmarshaller.unmarshal(new StreamSource(is), surveyClass);
 			Survey survey = jaxbElement.getValue();
-
+			survey.setSurveyContext(surveyContext);
+			
 			if (vec.hasEvents()) {
 				throw new InvalidIdmlException(vec.getEvents());
 			}

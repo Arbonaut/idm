@@ -47,6 +47,7 @@ public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition
 			getYField().setValue(y);
 			getSrsIdField().setValue(srsId);
 		}
+		onUpdateValue();
 	}
 	
 }

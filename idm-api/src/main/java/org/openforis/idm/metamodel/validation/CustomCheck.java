@@ -9,8 +9,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.IdmInterpretationError;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.Attribute;
-import org.openforis.idm.model.RecordContext;
 import org.openforis.idm.model.expression.CheckExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
@@ -38,7 +38,7 @@ public class CustomCheck extends Check {
 		Attribute<?,?> node = (Attribute<?, ?>) nodeState.getNode();
 		String expr = getExpression();
 		try {
-			RecordContext recordContext = node.getRecord().getContext();
+			SurveyContext recordContext = node.getRecord().getSurveyContext();
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			CheckExpression checkExpression = expressionFactory.createCheckExpression(expr);
 			boolean result = checkExpression.evaluate(node.getParent(), node);

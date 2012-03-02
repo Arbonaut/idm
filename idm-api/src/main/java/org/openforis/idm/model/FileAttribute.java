@@ -40,6 +40,7 @@ public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 			getFilenameField().setValue(filename);
 			getSizeField().setValue(size);
 		}
+		onUpdateValue();
 	}
 	
 	@Override

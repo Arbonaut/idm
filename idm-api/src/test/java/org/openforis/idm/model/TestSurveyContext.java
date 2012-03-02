@@ -1,14 +1,15 @@
 package org.openforis.idm.model;
 
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.validation.LookupProvider;
 import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.expression.ExpressionFactory;
 
-public class TestRecordContext implements RecordContext {
+public class TestSurveyContext implements SurveyContext {
 
 	private ExpressionFactory expressionFactory;
 
-	public TestRecordContext() {
+	public TestSurveyContext() {
 		expressionFactory = new ExpressionFactory();
 		LookupProvider lookupProvider = new TestLookupProviderImpl();
 		expressionFactory.setLookupProvider(lookupProvider);

@@ -37,15 +37,15 @@ public class Entity extends Node<EntityDefinition> {
 
 	private static final long serialVersionUID = 1L;
 	
-	HashMap<String, List<Node<? extends NodeDefinition>>> childrenByName;
-
+	Map<String, ArrayList<Node<? extends NodeDefinition>>> childrenByName;
+	
 	Entity() {
-		this.childrenByName = new HashMap<String, List<Node<? extends NodeDefinition>>>();
+		this.childrenByName = new HashMap<String, ArrayList<Node<? extends NodeDefinition>>>();
 	}
 	
 	public Entity(EntityDefinition definition) {
 		super(definition);
-		this.childrenByName = new HashMap<String, List<Node<? extends NodeDefinition>>>();
+		this.childrenByName = new HashMap<String, ArrayList<Node<? extends NodeDefinition>>>();
 	}
 
 	public void add(Node<?> node) {
@@ -82,7 +82,7 @@ public class Entity extends Node<EntityDefinition> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		Collection<List<Node<?>>> childLists = childrenByName.values();
+		Collection<ArrayList<Node<?>>> childLists = childrenByName.values();
 		for (List<Node<?>> list : childLists) {
 			for (Node<?> node : list) {
 				if (!node.isEmpty()) {
@@ -319,7 +319,7 @@ public class Entity extends Node<EntityDefinition> {
 		}
 
 		// Get or create list containing children
-		List<Node<? extends NodeDefinition>> children = childrenByName.get(name);
+		ArrayList<Node<? extends NodeDefinition>> children = childrenByName.get(name);
 		if (children == null) {
 			children = new ArrayList<Node<? extends NodeDefinition>>();
 			childrenByName.put(name, children);

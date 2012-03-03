@@ -4,6 +4,7 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -86,6 +87,16 @@ public abstract class Node<D extends NodeDefinition> {
 
 //	public abstract ValidationResults validate();
 
+	public List<Entity> getAncestors() {
+		List<Entity> ancestors = new ArrayList<Entity>();
+		Entity parent = getParent();
+		while (parent != null) {
+			ancestors.add(parent);
+			parent = parent.getParent();
+		}
+		return ancestors;
+	}
+	
 	@Override
 	public String toString() {
 		StringWriter sw = new StringWriter();

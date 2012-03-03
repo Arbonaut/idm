@@ -126,7 +126,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		}
 	}
 	
-	private Set<Attribute<?, ?>> getCheckDependencies() {
+	public Set<Attribute<?, ?>> getCheckDependencies() {
 		Set<Attribute<?, ?>> attributes = new HashSet<Attribute<?, ?>>();
 		Set<String> paths = getDefinition().getCheckDependencyPaths();
 		for (String path : paths) {
@@ -153,7 +153,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		return validationResults;
 	}
 
-	protected void clearValidationResults() {
+	public void clearValidationResults() {
 		validationResults = null;
 	}
 	

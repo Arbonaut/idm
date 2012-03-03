@@ -10,9 +10,6 @@ public abstract class NumberAttribute<T extends Number> extends AtomicAttribute<
 
 	private static final long serialVersionUID = 1L;
 
-	public NumberAttribute() {
-	}
-	
 	protected NumberAttribute(NumberAttributeDefinition definition, Class<T> valueType) {
 		super(definition, valueType);
 	}

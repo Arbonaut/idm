@@ -10,9 +10,6 @@ public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition
 
 	private static final long serialVersionUID = 1L;
 
-	CoordinateAttribute() {
-	}
-	
 	public CoordinateAttribute(CoordinateAttributeDefinition definition) {
 		super(definition, Double.class, Double.class, String.class);
 	}

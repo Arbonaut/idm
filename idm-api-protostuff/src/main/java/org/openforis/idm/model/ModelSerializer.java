@@ -1,5 +1,7 @@
 package org.openforis.idm.model;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,26 +22,76 @@ import com.dyuproject.protostuff.runtime.RuntimeSchema;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ModelSerializer {
 
-	private static com.dyuproject.protostuff.Schema<Entity> SCHEMA;
+	private static EntitySchema ENTITY_SCHEMA;
 
 	static {
+		/* Important: Schemas must be registered in depth-first post-order!!! */
 		RuntimeSchema.register(AttributeField.class, new AttributeFieldSchema());
-		SCHEMA = RuntimeSchema.getSchema(Entity.class);
+		register(new AttributeSchema(BooleanAttribute.class));
+		register(new AttributeSchema(CodeAttribute.class));
+		register(new AttributeSchema(CoordinateAttribute.class));
+		register(new AttributeSchema(DateAttribute.class));
+		register(new AttributeSchema(FileAttribute.class));
+		register(new AttributeSchema(IntegerAttribute.class));
+		register(new AttributeSchema(IntegerRangeAttribute.class));
+		register(new AttributeSchema(RealAttribute.class));
+		register(new AttributeSchema(RealRangeAttribute.class));
+		register(new AttributeSchema(TaxonAttribute.class));
+		register(new AttributeSchema(TextAttribute.class));
+		register(new AttributeSchema(TimeAttribute.class));
+		ENTITY_SCHEMA = new EntitySchema();
+		RuntimeSchema.register(Entity.class, ENTITY_SCHEMA);
 	}
-	
+
+	private static void register(AttributeSchema schema) {
+		RuntimeSchema.register(schema.typeClass(), schema);
+	}
+
 	private LinkedBuffer buffer;
 	
 	public ModelSerializer(int bufferSize) {
 		this.buffer = LinkedBuffer.allocate(bufferSize);
 	}
 	
-	public int writeTo(OutputStream output, Entity entity) throws IOException {
-		return ProtostuffIOUtil.writeTo(output, entity, SCHEMA, buffer);		
+	public byte[] toByteArray(Entity entity) {
+		return ProtostuffIOUtil.toByteArray(entity, ENTITY_SCHEMA, buffer);
+	}
+	
+	public void writeTo(OutputStream output, Entity entity) throws IOException {
+//		XmlIOUtil.writeTo(output, entity, ENTITY_SCHEMA);		
+		ProtostuffIOUtil.writeTo(output, entity, ENTITY_SCHEMA, buffer);
+	}
+	
+	public void writeTo(String filename, Entity entity) throws IOException {
+		OutputStream out = new FileOutputStream(filename);
+		try {
+			writeTo(out, entity);
+		} finally {
+			out.flush();
+			out.close();
+		}
+	}
+	
+	public void mergeFrom(byte[] data, Entity entity) throws IOException {
+		ProtostuffIOUtil.mergeFrom(data, entity, ENTITY_SCHEMA);
 	}
 	
 	public void mergeFrom(InputStream input, Entity entity) throws IOException {
-		ProtostuffIOUtil.mergeFrom(input, entity, SCHEMA);
-		afterMerge(entity);
+		long start = System.currentTimeMillis();
+//		XmlIOUtil.mergeFrom(input, entity, ENTITY_SCHEMA);
+		ProtostuffIOUtil.mergeFrom(input, entity, ENTITY_SCHEMA);
+		long dur = System.currentTimeMillis() - start;
+		System.out.println(dur);
+//		afterMerge(entity);
+	}
+
+	public void mergeFrom(String filename, Entity entity) throws IOException {
+		InputStream in = new FileInputStream(filename);
+		try {
+			mergeFrom(in, entity);
+		} finally {
+			in.close();
+		}
 	}
 
 	protected void afterMerge(Entity entity) {

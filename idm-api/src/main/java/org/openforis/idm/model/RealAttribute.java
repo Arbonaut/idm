@@ -10,9 +10,6 @@ public class RealAttribute extends NumberAttribute<Double> {
 
 	private static final long serialVersionUID = 1L;
 
-	RealAttribute() {
-	}
-	
 	public RealAttribute(NumberAttributeDefinition definition) {
 		super(definition, Double.class);
 		if (!definition.isReal()) {

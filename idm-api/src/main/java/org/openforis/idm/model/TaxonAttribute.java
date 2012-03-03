@@ -10,9 +10,6 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 
 	private static final long serialVersionUID = 1L;
 
-	TaxonAttribute() {
-	}
-	
 	public TaxonAttribute(TaxonAttributeDefinition definition) {
 		super(definition, String.class, String.class, String.class, String.class, String.class);
 	}

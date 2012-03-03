@@ -10,9 +10,6 @@ public class BooleanAttribute extends AtomicAttribute<BooleanAttributeDefinition
 
 	private static final long serialVersionUID = 1L;
 
-	BooleanAttribute() {
-	}
-	
 	public BooleanAttribute(BooleanAttributeDefinition definition) {
 		super(definition, Boolean.class);
 	}

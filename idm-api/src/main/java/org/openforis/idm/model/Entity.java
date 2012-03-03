@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -314,8 +315,10 @@ public class Entity extends Node<EntityDefinition> {
 
 		// Get child's definition and check schema object definition is the same
 		NodeDefinition childDefn = getDefinition().getChildDefinition(name);
-		if (defn != childDefn) {
-			throw new IllegalArgumentException("Cannot add object; definitions do not match");
+		if ( childDefn == null ) {
+			throw new IllegalArgumentException("'"+name+"' not allowed in '"+getName()+"'");			
+		} else if (defn != childDefn) {
+			throw new IllegalArgumentException("'"+name+"' in '"+getName()+"' wrong type");
 		}
 
 		// Get or create list containing children
@@ -501,21 +504,22 @@ public class Entity extends Node<EntityDefinition> {
 		}
 	}
 
-	// /**
-	// *
-	// * @return Unmodifiable list of child instances, sorted by their schema order.
-	// */
-	// public List<Node<? extends NodeDefinition>> getChildren() {
-	// List<Node<? extends NodeDefinition>> result = new ArrayList<Node<? extends NodeDefinition>>();
-	// List<NodeDefinition> definitions = getDefinition().getChildDefinitions();
-	// for (NodeDefinition defn : definitions) {
-	// List<Node<? extends NodeDefinition>> children = childrenByName.get(defn.getName());
-	// if ( children != null ) {
-	// for (Node<? extends NodeDefinition> child : children) {
-	// result.add(child);
-	// }
-	// }
-	// }
-	// return Collections.unmodifiableList(result);
-	// }
+	/**
+	 * 
+	 * @return Unmodifiable list of child instances, sorted by their schema
+	 *         order.
+	 */
+	public List<Node<? extends NodeDefinition>> getChildren() {
+		List<Node<? extends NodeDefinition>> result = new ArrayList<Node<? extends NodeDefinition>>();
+		List<NodeDefinition> definitions = getDefinition().getChildDefinitions();
+		for (NodeDefinition defn : definitions) {
+			List<Node<? extends NodeDefinition>> children = childrenByName.get(defn.getName());
+			if (children != null) {
+				for (Node<? extends NodeDefinition> child : children) {
+					result.add(child);
+				}
+			}
+		}
+		return Collections.unmodifiableList(result);
+	}
 }

@@ -2,6 +2,7 @@ package org.openforis.idm.model;
 
 import com.dyuproject.protostuff.runtime.MappedSchema;
 import com.dyuproject.protostuff.runtime.RuntimeFieldFactory;
+import com.dyuproject.protostuff.runtime.RuntimeReflectionFieldFactory;
 
 /**
  * @author G. Miceli
@@ -33,6 +34,10 @@ public abstract class MappedSchemaSupport<T> extends MappedSchema<T> {
 			if ( fieldFactory == null ) {
 				fieldFactory = (RuntimeFieldFactory<T>) RuntimeFieldFactory.getFieldFactory(typeClass);
 			}
+			return create(fieldFactory, number, name);
+		}
+		
+		private MappedSchema.Field<T> create(RuntimeFieldFactory<?> fieldFactory, int number, String name) {
 			java.lang.reflect.Field javaField = findField(typeClass, name);
 			if ( javaField == null ) { 
 				throw new RuntimeException("Unknown field '"+name+"'.  Code possibly out of sync with proto schema classes");
@@ -55,6 +60,11 @@ public abstract class MappedSchemaSupport<T> extends MappedSchema<T> {
 
 		public void set(Field<T> field) {
 			fieldArray[field.number-1] = field;
+		}
+
+		public void set(RuntimeFieldFactory<?> factory, int number, String name) {
+			MappedSchema.Field<T> protoField = create(factory, number, name);
+			fieldArray[number-1] = protoField;
 		}
 	}
 }

@@ -10,9 +10,6 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 
 	private static final long serialVersionUID = 1L;
 
-	public NumericRangeAttribute() {
-	}
-	
 	protected NumericRangeAttribute(RangeAttributeDefinition definition, Class<V> fieldType) {
 		super(definition, fieldType, fieldType);
 	}

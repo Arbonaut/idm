@@ -10,9 +10,6 @@ public class IntegerAttribute extends NumberAttribute<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	IntegerAttribute() {
-	}
-	
 	public IntegerAttribute(NumberAttributeDefinition definition) {
 		super(definition, Integer.class);
 		if ( !definition.isInteger() ) {

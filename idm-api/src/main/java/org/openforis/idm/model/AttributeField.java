@@ -18,9 +18,6 @@ public final class AttributeField<T> implements Serializable {
 	String remarks;
 	Character symbol;
 
-	AttributeField() {
-	}
-	
 	private AttributeField(Class<T> valueType) {
 		this.valueType = valueType;  
 	}

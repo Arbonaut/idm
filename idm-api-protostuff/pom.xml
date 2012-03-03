@@ -29,5 +29,15 @@
 			<artifactId>protostuff-runtime</artifactId>
 			<version>1.0.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.dyuproject.protostuff</groupId>
+			<artifactId>protostuff-xml</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

@@ -6,9 +6,6 @@ public abstract class AtomicAttribute<D extends AttributeDefinition, V>  extends
 
 	private static final long serialVersionUID = 1L;
 
-	AtomicAttribute() {
-	}
-	
 	protected AtomicAttribute(D definition, Class<?> valueClass) {
 		super(definition, valueClass);
 	}

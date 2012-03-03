@@ -8,6 +8,8 @@ import java.io.StringWriter;
 import java.util.List;
 
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.Schema;
+import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.model.expression.ExpressionFactory;
 
 
@@ -129,5 +131,13 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 			}
 			throw new IllegalStateException("Node parent relationship broken");
 		}
+	}
+	
+	public Survey getSurvey() {
+		return record == null ? null : record.getSurvey();
+	}
+	
+	public Schema getSchema() {
+		return getSurvey() == null ? null : getSurvey().getSchema();
 	}
 }

@@ -11,9 +11,6 @@ public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 
 	private static final long serialVersionUID = 1L;
 
-	FileAttribute() {
-	}
-	
 	public FileAttribute(FileAttributeDefinition definition) {
 		super(definition, String.class, Long.class);
 	}

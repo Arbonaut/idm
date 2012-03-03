@@ -10,9 +10,6 @@ public class IntegerRangeAttribute extends NumericRangeAttribute<IntegerRange, I
 
 	private static final long serialVersionUID = 1L;
 
-	IntegerRangeAttribute() {
-	}
-	
 	public IntegerRangeAttribute(RangeAttributeDefinition definition) {
 		super(definition, Integer.class);
 		if (!definition.isInteger()) {

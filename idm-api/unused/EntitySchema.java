@@ -20,10 +20,10 @@ public class EntitySchema extends NodeSchema<Entity> {
 	static {
 		/* WARNING: deleting or reordering FIELD_TYPES or fields will break protostuff deserialization! */
 		FIELDS = new Fields<Entity>(Entity.class, 2);
-//		FIELDS.set(new ChildrenByNameField(1, "childrenByName"));
-//		FIELDS.set(new DefinitionIdField<Entity>(2, "definitionId"));
-		FIELDS.set(1, "childrenByName");
-		FIELDS.set(2, "definitionId");
+		FIELDS.set(new ChildrenByNameField(1, "childrenByName"));
+		FIELDS.set(new DefinitionIdField<Entity>(2, "definitionId"));
+//		FIELDS.set(1, "childrenByName");
+//		FIELDS.set(2, "definitionId");
 	}
 	
 	public EntitySchema() {

@@ -8,6 +8,8 @@ import java.io.StringWriter;
 import java.util.List;
 
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.Schema;
+import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.model.expression.ExpressionFactory;
 
 
@@ -36,6 +38,24 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 		}
 		this.definition = definition;
 		this.definitionId = definition.getId();
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void afterDeserialize() {
+		Survey survey = record.getSurvey();
+		Schema schema = survey.getSchema();
+		if ( definitionId == null ) {
+			throw new IllegalStateException("Definition id not set before saving; cannot deserialize");
+		}
+		NodeDefinition defn = schema.getById(definitionId);
+		if ( defn == null ) {
+			throw new IllegalStateException("Definition "+definitionId+" referenced by node "+id+" is not defined in this survey");
+		}
+		try {
+			this.definition = (D) defn;
+		} catch ( ClassCastException e ) {
+			throw new IllegalStateException("Definition "+definitionId+" referenced by node "+id+" is of wrong type "+defn.getClass().getSimpleName());			
+		}
 	}
 	
 	public Integer getId() {

@@ -10,7 +10,7 @@ public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition
 
 	private static final long serialVersionUID = 1L;
 
-	public CoordinateAttribute() {
+	CoordinateAttribute() {
 	}
 	
 	public CoordinateAttribute(CoordinateAttributeDefinition definition) {

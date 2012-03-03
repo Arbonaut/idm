@@ -11,7 +11,7 @@ public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 
 	private static final long serialVersionUID = 1L;
 
-	public FileAttribute() {
+	FileAttribute() {
 	}
 	
 	public FileAttribute(FileAttributeDefinition definition) {

@@ -10,7 +10,7 @@ public class RealAttribute extends NumberAttribute<Double> {
 
 	private static final long serialVersionUID = 1L;
 
-	public RealAttribute() {
+	RealAttribute() {
 	}
 	
 	public RealAttribute(NumberAttributeDefinition definition) {

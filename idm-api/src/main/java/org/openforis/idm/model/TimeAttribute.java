@@ -10,7 +10,7 @@ public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 
 	private static final long serialVersionUID = 1L;
 
-	public TimeAttribute() {
+	TimeAttribute() {
 	}
 	
 	public TimeAttribute(TimeAttributeDefinition definition) {

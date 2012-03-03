@@ -10,7 +10,7 @@ public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 
 	private static final long serialVersionUID = 1L;
 
-	public DateAttribute() {
+	DateAttribute() {
 	}
 	
 	public DateAttribute(DateAttributeDefinition definition) {

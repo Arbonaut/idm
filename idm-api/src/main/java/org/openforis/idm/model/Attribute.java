@@ -4,6 +4,7 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openforis.idm.metamodel.AttributeDefault;
@@ -18,11 +19,12 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 
 	private static final long serialVersionUID = 1L;
 
-	private AttributeField<?>[] attributeFields;
+	ArrayList<AttributeField<?>> attributeFields;
 	
 	private boolean defaultValue;
 	
 	Attribute() {
+		this.attributeFields = new ArrayList<AttributeField<?>>();
 	}
 	
 	protected Attribute(D definition, Class<?>... fieldTypes) {
@@ -31,19 +33,18 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 
 	private void initFields(Class<?>... fieldTypes) {
-		this.attributeFields = new AttributeField[fieldTypes.length];
-		for (int i = 0; i < attributeFields.length; i++) {
-			Class<?> t = fieldTypes[i];
-			this.attributeFields[i] = AttributeField.newInstance(t);
+		this.attributeFields = new ArrayList<AttributeField<?>>(fieldTypes.length);
+		for (Class<?> type : fieldTypes) {
+			this.attributeFields.add(AttributeField.newInstance(type));
 		}
 	}
 	
 	public AttributeField<?> getField(int idx) {
-		return attributeFields[idx];
+		return attributeFields.get(idx);
 	}
 
 	public int getFieldCount() {
-		return attributeFields.length;
+		return attributeFields.size();
 	}
 	
 	/**

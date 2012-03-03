@@ -17,7 +17,7 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 
 	private static final long serialVersionUID = 1L;
 
-	public CodeAttribute() {
+	CodeAttribute() {
 	}
 	
 	public CodeAttribute(CodeAttributeDefinition definition) {

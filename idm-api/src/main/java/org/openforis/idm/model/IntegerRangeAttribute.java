@@ -10,7 +10,7 @@ public class IntegerRangeAttribute extends NumericRangeAttribute<IntegerRange, I
 
 	private static final long serialVersionUID = 1L;
 
-	public IntegerRangeAttribute() {
+	IntegerRangeAttribute() {
 	}
 	
 	public IntegerRangeAttribute(RangeAttributeDefinition definition) {

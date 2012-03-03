@@ -10,7 +10,7 @@ public class IntegerAttribute extends NumberAttribute<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	public IntegerAttribute() {
+	IntegerAttribute() {
 	}
 	
 	public IntegerAttribute(NumberAttributeDefinition definition) {

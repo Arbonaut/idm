@@ -118,11 +118,22 @@ public class Record implements Serializable {
 		return this.nodesByInternalId.get(id);
 	}
 	
-	void put(Node<? extends NodeDefinition> node){
+	protected void put(Node<? extends NodeDefinition> node){
 		this.nodesByInternalId.put(node.getInternalId(), node);
 	}
 
-	int nextId() {
+	protected int nextId() {
 		return nextId++;
+	}
+
+	protected void afterDeserialize(RecordContext recordContext, Survey survey) {
+		init(recordContext, survey);
+		rootEntity.traverse(new NodeVisitor() {
+			@Override
+			public void visit(Node<? extends NodeDefinition> node, int idx) {
+				node.afterDeserialize();
+				put(node);
+			}
+		});
 	}
 }

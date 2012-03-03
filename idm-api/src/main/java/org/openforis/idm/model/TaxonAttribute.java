@@ -10,7 +10,7 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 
 	private static final long serialVersionUID = 1L;
 
-	public  TaxonAttribute() {
+	TaxonAttribute() {
 	}
 	
 	public TaxonAttribute(TaxonAttributeDefinition definition) {

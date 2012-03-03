@@ -10,7 +10,7 @@ public class RealRangeAttribute extends NumericRangeAttribute<RealRange, Double>
 
 	private static final long serialVersionUID = 1L;
 
-	public RealRangeAttribute() {
+	RealRangeAttribute() {
 	}
 	
 	public RealRangeAttribute(RangeAttributeDefinition definition) {

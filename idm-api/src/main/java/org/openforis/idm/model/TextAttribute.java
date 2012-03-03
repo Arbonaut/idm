@@ -10,6 +10,9 @@ public class TextAttribute extends AtomicAttribute<TextAttributeDefinition, Stri
 
 	private static final long serialVersionUID = 1L;
 
+	TextAttribute() {
+	}
+	
 	public TextAttribute(TextAttributeDefinition definition) {
 		super(definition, String.class);
 	}

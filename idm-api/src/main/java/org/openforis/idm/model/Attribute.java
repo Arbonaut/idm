@@ -17,11 +17,12 @@ import org.openforis.idm.model.expression.internal.MissingValueException;
  * @author M. Togna
  * @author G. Miceli
  */
+@SuppressWarnings("rawtypes")
 public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D> {
 
-	private Field<?>[] fields;
-	
-//	private boolean defaultValue;
+	private static final long serialVersionUID = 1L;
+
+	private Field[] fields;
 	
 	private transient ValidationResults validationResults;
 	
@@ -57,7 +58,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 
 	/**
-	 * Reset all properties of all fields (remarks, value, symbol)
+	 * Reset all properties of all attributeFields (remarks, value, symbol)
 	 */
 	public void clearFields() {
 		for (Field<?> field : fields) {

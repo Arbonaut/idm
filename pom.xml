@@ -7,6 +7,7 @@
 
 	<modules>
 		<module>idm-api</module>
+		<module>idm-api-protostuff</module>
 	</modules>
 
 	<properties>

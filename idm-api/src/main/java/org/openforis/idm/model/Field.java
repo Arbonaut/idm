@@ -1,16 +1,24 @@
 package org.openforis.idm.model;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author G. Miceli
+ * @author M. Togna
  */
-public final class Field<T> {
-	private T value;
-	private String remarks;
-	private Character symbol;
-	private Class<T> valueType;
-	private Attribute<?,?> attribute;
+public final class Field<T> implements Serializable {
+	
+	private static final long serialVersionUID = 1;
+	
+	/* WARNING: deleting or reordering fields will break protostuff deserialization! */
+	
+	Class<T> valueType;
+	T value;
+	String remarks;
+	Character symbol;
+	Attribute<?,?> attribute;
 	
 	private Field(Class<T> valueType, Attribute<?,?> attribute) {
 		this.valueType = valueType;
@@ -66,7 +74,7 @@ public final class Field<T> {
 		} else if ( valueType == String.class ) {
 			return (T) s;
 		} else {
-			throw new UnsupportedOperationException("Field<"+valueType.getName()+"> not supported");
+			throw new UnsupportedOperationException("AttributeField<"+valueType.getName()+"> not supported");
 		}
 	}
 

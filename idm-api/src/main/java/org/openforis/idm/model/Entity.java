@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,20 +43,22 @@ import org.openforis.idm.util.CollectionUtil;
  */
 public class Entity extends Node<EntityDefinition> {
 
-	private Map<String, List<Node<? extends NodeDefinition>>> childrenByName;
+	private static final long serialVersionUID = 1L;
+	
+	Map<String, ArrayList<Node<? extends NodeDefinition>>> childrenByName;
 
 	private DerivedStateCache derivedStateCache;
 	
 	public Entity(EntityDefinition definition) {
 		super(definition);
-		this.childrenByName = new HashMap<String, List<Node<? extends NodeDefinition>>>();
+		this.childrenByName = new HashMap<String, ArrayList<Node<? extends NodeDefinition>>>();
 		this.derivedStateCache = new Entity.DerivedStateCache();
 	}
 
 	public void add(Node<?> node) {
 		addInternal(node, null);
 	}
-
+	
 	/**
 	 * @param name
 	 * @return the newly created Entity
@@ -86,7 +89,7 @@ public class Entity extends Node<EntityDefinition> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		Collection<List<Node<?>>> childLists = childrenByName.values();
+		Collection<ArrayList<Node<?>>> childLists = childrenByName.values();
 		for (List<Node<?>> list : childLists) {
 			for (Node<?> node : list) {
 				if (!node.isEmpty()) {
@@ -225,8 +228,6 @@ public class Entity extends Node<EntityDefinition> {
 		return addValueInternal(name, value, null, TimeAttribute.class, TimeAttributeDefinition.class);
 	}
 
-	// TODO other addXXX and setXXX methods
-
 	public Node<? extends NodeDefinition> get(String name, int index) {
 		checkChildDefinition(name);
 
@@ -318,12 +319,14 @@ public class Entity extends Node<EntityDefinition> {
 
 		// Get child's definition and check schema object definition is the same
 		NodeDefinition childDefn = getDefinition().getChildDefinition(name);
-		if (defn != childDefn) {
-			throw new IllegalArgumentException("Cannot add object; definitions do not match");
+		if ( childDefn == null ) {
+			throw new IllegalArgumentException("'"+name+"' not allowed in '"+getName()+"'");			
+		} else if (defn != childDefn) {
+			throw new IllegalArgumentException("'"+name+"' in '"+getName()+"' wrong type");
 		}
 
 		// Get or create list containing children
-		List<Node<? extends NodeDefinition>> children = childrenByName.get(name);
+		ArrayList<Node<? extends NodeDefinition>> children = childrenByName.get(name);
 		if (children == null) {
 			children = new ArrayList<Node<? extends NodeDefinition>>();
 			childrenByName.put(name, children);
@@ -350,7 +353,6 @@ public class Entity extends Node<EntityDefinition> {
 		return o;
 	}
 
-	// TODO Naming: Node vs Node?
 	private <T extends Node<D>, D extends NodeDefinition> T createNode(String name, Class<T> type, Class<D> definitionType) {
 		try {
 			NodeDefinition definition = getChildDefinition(name, definitionType);
@@ -475,14 +477,19 @@ public class Entity extends Node<EntityDefinition> {
 			for (int i = 0; i < nodes.size(); i++) {
 				Node<? extends NodeDefinition> node = nodes.get(i);
 
+				if ( node == null ) {
+					throw new IllegalStateException("Null node in entity children list");
+				}
 				visitor.visit(node, i);
 
 				// For entities, add existing child nodes to the stack
 				if (node instanceof Entity) {
 					Entity entity = (Entity) node;
-					List<NodeDefinition> childDefns = entity.getDefinition().getChildDefinitions();
+					EntityDefinition defn = entity.getDefinition();
+					List<NodeDefinition> childDefns = defn.getChildDefinitions();
 					for (NodeDefinition childDefn : childDefns) {
-						List<Node<? extends NodeDefinition>> children = entity.getAll(childDefn.getName());
+						String childName = childDefn.getName();
+						List<Node<? extends NodeDefinition>> children = entity.getAll(childName);
 						if (children != null) {
 							stack.push(children);
 						}
@@ -669,4 +676,22 @@ public class Entity extends Node<EntityDefinition> {
 		}
 	}
 
+	/**
+	 * 
+	 * @return Unmodifiable list of child instances, sorted by their schema
+	 *         order.
+	 */
+	public List<Node<? extends NodeDefinition>> getChildren() {
+		List<Node<? extends NodeDefinition>> result = new ArrayList<Node<? extends NodeDefinition>>();
+		List<NodeDefinition> definitions = getDefinition().getChildDefinitions();
+		for (NodeDefinition defn : definitions) {
+			List<Node<? extends NodeDefinition>> children = childrenByName.get(defn.getName());
+			if (children != null) {
+				for (Node<? extends NodeDefinition> child : children) {
+					result.add(child);
+				}
+			}
+		}
+		return Collections.unmodifiableList(result);
+	}
 }

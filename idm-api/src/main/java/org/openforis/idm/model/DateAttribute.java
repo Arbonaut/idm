@@ -8,6 +8,8 @@ import org.openforis.idm.metamodel.DateAttributeDefinition;
  */
 public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 
+	private static final long serialVersionUID = 1L;
+
 	public DateAttribute(DateAttributeDefinition definition) {
 		super(definition, Integer.class, Integer.class, Integer.class);
 	}

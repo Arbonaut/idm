@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.model;
 
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +14,8 @@ import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.SurveyContext;
+import org.openforis.idm.metamodel.Schema;
+import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.ModelPathExpression;
@@ -23,21 +26,27 @@ import org.openforis.idm.model.expression.internal.MissingValueException;
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class Node<D extends NodeDefinition> {
+public abstract class Node<D extends NodeDefinition> implements Serializable {
 
-	private Integer id;
-	private Integer internalId;
+	private static final long serialVersionUID = 1L;
 	
-	private D definition;
+	transient D definition;
+	transient Record record;
+	transient Integer id;
+	transient Integer internalId;
+	transient Entity parent;
+	
+	Integer definitionId;
 
-	private Record record;
-	private Entity parent;
-
+	protected Node() {
+	}
+	
 	public Node(D definition) {
 		if ( definition == null ) {
 			throw new NullPointerException("Definition required");
 		}
 		this.definition = definition;
+		this.definitionId = definition.getId();
 	}
 	
 	public Integer getId() {
@@ -241,4 +250,11 @@ public abstract class Node<D extends NodeDefinition> {
 
 	}
 	
+	public Survey getSurvey() {
+		return record == null ? null : record.getSurvey();
+	}
+	
+	public Schema getSchema() {
+		return getSurvey() == null ? null : getSurvey().getSchema();
+	}
 }

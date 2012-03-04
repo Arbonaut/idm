@@ -41,43 +41,6 @@
 			</plugin>
 		</plugins>
 	</reporting>
-	
-	<build>
-		<plugins>
-<!-- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
- 			<plugin>
-	            <groupId>org.jvnet.jaxb2.maven2</groupId>
-	            <artifactId>maven-jaxb2-plugin</artifactId>
-	            <executions>
-	                <execution>
-	                    <goals>
-	                        <goal>generate-sources</goal>
-	                    </goals>
-	                </execution>
-	            </executions>
-	            <configuration>
-	                <args>
-	                    <arg>-Xcollection-setter-injector</arg>
-	                </args>
-	                <plugins>
-	                    <plugin>
-	                        <groupId>net.java.dev.vcc.thirdparty</groupId>
-	                        <artifactId>collection-setter-injector</artifactId>
-	                        <version>0.5.0-1</version>
-	                    </plugin>
-	                </plugins>
-	                <schemaDirectory>src/schemas</schemaDirectory>
-	                <generateDirectory>src/main/java</generateDirectory>
-	                <extension>true</extension>
-	            </configuration>
-	        </plugin>
- -->
-		</plugins>
-	</build>
 
 	<dependencies>
 		<dependency>
@@ -135,7 +98,7 @@
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-epsg-wkt</artifactId>
 		</dependency>
-		
+			
 		<dependency>
 			  <groupId>org.mockito</groupId>
 			  <artifactId>mockito-all</artifactId>  

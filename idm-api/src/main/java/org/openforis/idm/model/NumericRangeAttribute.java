@@ -8,6 +8,8 @@ import org.openforis.idm.metamodel.RangeAttributeDefinition;
  */
 public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends Number> extends Attribute<RangeAttributeDefinition, T> {
 
+	private static final long serialVersionUID = 1L;
+
 	protected NumericRangeAttribute(RangeAttributeDefinition definition, Class<V> fieldType) {
 		super(definition, fieldType, fieldType);
 	}

@@ -8,6 +8,8 @@ import org.openforis.idm.metamodel.TaxonAttributeDefinition;
  */
 public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOccurrence> {
 
+	private static final long serialVersionUID = 1L;
+
 	public TaxonAttribute(TaxonAttributeDefinition definition) {
 		super(definition, String.class, String.class, String.class, String.class, String.class);
 	}

@@ -91,7 +91,7 @@ public class Schema  implements Serializable {
 		return Collections.unmodifiableSet(definitionsByPath.keySet());
 	}
 
-	public Collection<NodeDefinition> getDefinitions() {
+	public Collection<NodeDefinition> getAllDefinitions() {
 		return Collections.unmodifiableCollection(definitionsByPath.values());
 	}
 	

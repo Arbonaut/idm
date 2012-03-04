@@ -4,6 +4,7 @@
 package org.openforis.idm.model;
 
 
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,22 +20,29 @@ import org.openforis.idm.metamodel.SurveyContext;
  * @author G. Miceli
  * @author M. Togna
  */
-public class Record {
+public class Record implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
+	private transient Map<Integer, Node<? extends NodeDefinition>> nodesByInternalId;
+	private transient Survey survey;
+	
 	private Integer id;
-	private Survey survey;
 	private ModelVersion modelVersion;
-	private Map<Integer, Node<? extends NodeDefinition>> nodesByInternalId;
 	private int nextId;
 	private Entity rootEntity;
 	
 	public Record(Survey survey, String version) {
+		if ( survey == null ) {
+			throw new IllegalArgumentException("Survey required");
+		}
+		this.survey = survey;
+		this.nodesByInternalId = new HashMap<Integer, Node<? extends NodeDefinition>>();
 		this.survey = survey;
 		this.modelVersion = survey.getVersion(version);
 		if ( modelVersion == null ) {
 			throw new IllegalArgumentException("Invalid version '"+version+'"');
 		}
-		this.nodesByInternalId = new HashMap<Integer, Node<? extends NodeDefinition>>();
 		this.nextId = 0;
 	}
 	
@@ -52,6 +60,21 @@ public class Record {
 		return rootEntity;
 	}
 	
+
+	public Entity createRootEntity(int id) {
+		if ( rootEntity != null ) {
+			throw new IllegalStateException("Record already has an associated root entity");
+		}
+		Schema schema = survey.getSchema();
+		NodeDefinition def = schema.getById(id);
+		if ( def == null || !(def instanceof EntityDefinition) || def.getParentDefinition() != null) {
+			throw new IllegalArgumentException("Invalid root entity id");			
+		}
+		rootEntity = new Entity((EntityDefinition) def);
+		rootEntity.setRecord(this);
+		return rootEntity;
+	}
+
 	public Integer getId() {
 		return this.id;
 	}
@@ -72,15 +95,6 @@ public class Record {
 		return this.rootEntity;
 	}
 
-	// TODO Need path?
-//	
-//	public void setRootEntity(Entity rootEntity) {
-//		Entity entityImpl = (Entity) rootEntity;
-//		this.rootEntity = entityImpl;
-//		entityImpl.setRecord(this);
-//		entityImpl.setPath("/" + rootEntity.getDefinition().getName());
-//	}
-
 	public ModelVersion getVersion() {
 		return this.modelVersion;
 	}
@@ -92,19 +106,16 @@ public class Record {
 		rootEntity.write(sw, 0);
 		return sw.toString();
 	}
-//	
-//	public void setVersion(ModelVersion modelVersion) {
-//		this.modelVersion = modelVersion;
-//	}
+
 	public Node<? extends NodeDefinition> getNodeByInternalId(int id) {
 		return this.nodesByInternalId.get(id);
 	}
 	
-	protected void put(Node<? extends NodeDefinition> node){
+	void put(Node<? extends NodeDefinition> node){
 		this.nodesByInternalId.put(node.getInternalId(), node);
 	}
 
-	protected int nextId() {
+	int nextId() {
 		return nextId++;
 	}
 }

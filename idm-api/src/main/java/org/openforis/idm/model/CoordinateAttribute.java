@@ -8,6 +8,8 @@ import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
  */
 public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition, Coordinate> {
 
+	private static final long serialVersionUID = 1L;
+
 	public CoordinateAttribute(CoordinateAttributeDefinition definition) {
 		super(definition, Double.class, Double.class, String.class);
 	}

@@ -4,6 +4,8 @@ import org.openforis.idm.metamodel.AttributeDefinition;
 
 public abstract class AtomicAttribute<D extends AttributeDefinition, V>  extends Attribute<D,V> {
 
+	private static final long serialVersionUID = 1L;
+
 	protected AtomicAttribute(D definition, Class<?> valueClass) {
 		super(definition, valueClass);
 	}

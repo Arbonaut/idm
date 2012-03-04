@@ -70,6 +70,21 @@ public class Record implements Serializable {
 		return rootEntity;
 	}
 	
+
+	public Entity createRootEntity(int id) {
+		if ( rootEntity != null ) {
+			throw new IllegalStateException("Record already has an associated root entity");
+		}
+		Schema schema = survey.getSchema();
+		NodeDefinition def = schema.getById(id);
+		if ( def == null || !(def instanceof EntityDefinition) || def.getParentDefinition() != null) {
+			throw new IllegalArgumentException("Invalid root entity id");			
+		}
+		rootEntity = new Entity((EntityDefinition) def);
+		rootEntity.setRecord(this);
+		return rootEntity;
+	}
+
 	public Integer getId() {
 		return this.id;
 	}

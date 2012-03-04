@@ -15,18 +15,18 @@ public class CoordinateAttribute extends Attribute<CoordinateAttributeDefinition
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<Double> getXField() {
-		return (AttributeField<Double>) getField(0);
+	public Field<Double> getXField() {
+		return (Field<Double>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<Double> getYField() {
-		return (AttributeField<Double>) getField(1);
+	public Field<Double> getYField() {
+		return (Field<Double>) getField(1);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public AttributeField<String> getSrsIdField() {
-		return (AttributeField<String>) getField(2);
+	public Field<String> getSrsIdField() {
+		return (Field<String>) getField(2);
 	}
 
 	@Override

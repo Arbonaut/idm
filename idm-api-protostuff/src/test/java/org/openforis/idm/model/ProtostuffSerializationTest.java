@@ -44,7 +44,7 @@ public class ProtostuffSerializationTest  {
 		// Compare
 		String r = record1.toString();
 		String r1 = record1.toString();
-		System.out.println(r1);
+//		System.out.println(r1);cf
 		Assert.assertEquals(r, r1);
 	}
 

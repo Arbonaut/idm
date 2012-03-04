@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @author G. Miceli
  */
-public final class AttributeField<T> implements Serializable {
+public final class Field<T> implements Serializable {
 	
 	private static final long serialVersionUID = 1;
 	
@@ -18,12 +18,12 @@ public final class AttributeField<T> implements Serializable {
 	String remarks;
 	Character symbol;
 
-	private AttributeField(Class<T> valueType) {
+	private Field(Class<T> valueType) {
 		this.valueType = valueType;  
 	}
 
-	public static <C> AttributeField<C> newInstance(Class<C> valueType) {
-		return new AttributeField<C>(valueType);
+	public static <C> Field<C> newInstance(Class<C> valueType) {
+		return new Field<C>(valueType);
 	}
 	
 	public T getValue() {

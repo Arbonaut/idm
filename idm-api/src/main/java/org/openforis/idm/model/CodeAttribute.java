@@ -22,13 +22,13 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<String> getCodeField() {
-		return (AttributeField<String>) getField(0);
+	public Field<String> getCodeField() {
+		return (Field<String>) getField(0);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public AttributeField<String> getQualifierField() {
-		return (AttributeField<String>) getField(1);
+	public Field<String> getQualifierField() {
+		return (Field<String>) getField(1);
 	}
 
 	@Override

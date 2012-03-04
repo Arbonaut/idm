@@ -15,13 +15,13 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<V> getFromField() {
-		return (AttributeField<V>) getField(0);
+	public Field<V> getFromField() {
+		return (Field<V>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<V> getToField() {
-		return (AttributeField<V>) getField(1);
+	public Field<V> getToField() {
+		return (Field<V>) getField(1);
 	}
 
 	@Override

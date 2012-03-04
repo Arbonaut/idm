@@ -18,7 +18,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 
 	private static final long serialVersionUID = 1L;
 
-	private AttributeField[] attributeFields;
+	private Field[] attributeFields;
 	
 	private boolean defaultValue;
 	
@@ -28,14 +28,14 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 
 	private void initFields(Class<?>... fieldTypes) {
-		this.attributeFields = new AttributeField[fieldTypes.length];
+		this.attributeFields = new Field[fieldTypes.length];
 		for (int i = 0; i < attributeFields.length; i++) {
 			Class<?> t = fieldTypes[i];
-			this.attributeFields[i] = AttributeField.newInstance(t);
+			this.attributeFields[i] = Field.newInstance(t);
 		}
 	}
 	
-	public AttributeField<?> getField(int idx) {
+	public Field<?> getField(int idx) {
 		return attributeFields[idx];
 	}
 
@@ -47,7 +47,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	 * Reset value and symbol
 	 */
 	public void clearValue() {
-		for (AttributeField<?> field : attributeFields) {
+		for (Field<?> field : attributeFields) {
 			field.setValue(null);
 		}
 	}
@@ -56,7 +56,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	 * Reset all properties of all attributeFields (remarks, value, symbol)
 	 */
 	public void clearFields() {
-		for (AttributeField<?> field : attributeFields) {
+		for (Field<?> field : attributeFields) {
 			field.clear();
 		}
 	}
@@ -87,7 +87,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	 */
 	@Override
 	public boolean isEmpty() {
-		for (AttributeField<?> field : attributeFields) {
+		for (Field<?> field : attributeFields) {
 			if ( !field.isEmpty() ) {
 				return false;
 			}

@@ -10,7 +10,6 @@ import com.dyuproject.protostuff.runtime.RuntimeSchema;
 /**
  * @author G. Miceli
  */
-@SuppressWarnings("rawtypes")
 public abstract class SchemaSupport<T> implements Schema<T> {
 
 	private Class<T> typeClass;
@@ -66,6 +65,7 @@ public abstract class SchemaSupport<T> implements Schema<T> {
 		}
 	}
 	
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	protected Schema getSchema(Class cls) {
 		return RuntimeSchema.getSchema(cls);		
 	}

@@ -4,13 +4,14 @@ import java.io.IOException;
 
 import com.dyuproject.protostuff.Input;
 import com.dyuproject.protostuff.Output;
+import com.dyuproject.protostuff.ProtostuffException;
 
 /**
  * @author G. Miceli
  */
 public class AttributeSchema<T extends Attribute<?,?>> extends SchemaSupport<T> {
 
-	private static AttributeFieldSchema ATTRIBUTE_FIELD_SCHEMA = new AttributeFieldSchema();
+	private static FieldSchema ATTRIBUTE_FIELD_SCHEMA = new FieldSchema();
 
 	public AttributeSchema(Class<T> typeClass) {
 		super(typeClass, "fields");
@@ -40,7 +41,7 @@ public class AttributeSchema<T extends Attribute<?,?>> extends SchemaSupport<T> 
 	public void writeTo(Output output, T attr) throws IOException {
 		int cnt = attr.getFieldCount();
 		for (int i = 0; i < cnt; i++) {
-			AttributeField<?> fld = attr.getField(i);
+			Field<?> fld = attr.getField(i);
 			output.writeObject(1, fld, ATTRIBUTE_FIELD_SCHEMA, true);
 		}
 	}
@@ -53,12 +54,12 @@ public class AttributeSchema<T extends Attribute<?,?>> extends SchemaSupport<T> 
         {
         	if ( number == 0 ) {
         		break;
-        	} else if ( i >= cnt || number != 1 ) {
-        		System.out.println(number+"\t"+i);
-        		
-//        		throw new ProtostuffException("Attribute fields were incorrectly serialized");
+        	} else if ( i >= cnt ) {
+            	throw new ProtostuffException("Too many attribute fields");
+        	} else if ( number != 1 ) {
+            	throw new ProtostuffException("Unexpected field number");
         	} else {
-    			AttributeField<?> fld = attr.getField(i);
+    			Field<?> fld = attr.getField(i);
     			input.mergeObject(fld, ATTRIBUTE_FIELD_SCHEMA);
             }
         }

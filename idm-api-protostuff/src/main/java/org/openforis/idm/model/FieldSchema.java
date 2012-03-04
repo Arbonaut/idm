@@ -4,16 +4,16 @@ import java.io.IOException;
 
 import com.dyuproject.protostuff.Input;
 import com.dyuproject.protostuff.Output;
-import com.dyuproject.protostuff.ProtobufException;
+import com.dyuproject.protostuff.ProtostuffException;
 
 /**
  * @author G. Miceli
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class AttributeFieldSchema extends SchemaSupport<AttributeField> {
+public class FieldSchema extends SchemaSupport<Field> {
 
-	public AttributeFieldSchema() {
-		super(AttributeField.class, "value", "symbol", "remarks");
+	public FieldSchema() {
+		super(Field.class, "value", "symbol", "remarks");
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class AttributeFieldSchema extends SchemaSupport<AttributeField> {
 	}
 
 	@Override
-	public void writeTo(Output out, AttributeField fld) throws IOException {
+	public void writeTo(Output out, Field fld) throws IOException {
 		if ( fld.value != null ) { 
 			if ( fld.valueType == Boolean.class ) {
 				out.writeInt32(1, (Boolean) fld.value ? -1 : 0, false);
@@ -35,7 +35,7 @@ public class AttributeFieldSchema extends SchemaSupport<AttributeField> {
 			} else if ( fld.valueType == String.class ) {
 				out.writeString(1, (String) fld.value, false);
 			} else {
-				throw new UnsupportedOperationException("Cannot serialize AttributeField<"+fld.valueType.getClass().getSimpleName()+">");
+				throw new UnsupportedOperationException("Cannot serialize "+Field.class.getSimpleName()+"<"+fld.valueType.getClass().getSimpleName()+">");
 			}
 		}
 		if ( fld.symbol != null ) {
@@ -47,7 +47,7 @@ public class AttributeFieldSchema extends SchemaSupport<AttributeField> {
 	}
 
 	@Override
-	public void mergeFrom(Input in, AttributeField fld) throws IOException {
+	public void mergeFrom(Input in, Field fld) throws IOException {
         for(int number = in.readFieldNumber(this);;
         		number = in.readFieldNumber(this))
         {
@@ -66,7 +66,7 @@ public class AttributeFieldSchema extends SchemaSupport<AttributeField> {
 				} else if ( fld.valueType == String.class ) {
 					fld.value = in.readString();
 				} else {
-					throw new UnsupportedOperationException("Cannot deserialize AttributeField<"+fld.valueType.getClass().getSimpleName()+">");
+					throw new UnsupportedOperationException("Cannot deserialize type "+Field.class.getSimpleName()+"<"+fld.valueType.getClass().getSimpleName()+">");
 				}
 				break;
 			case 2:
@@ -76,7 +76,7 @@ public class AttributeFieldSchema extends SchemaSupport<AttributeField> {
 				fld.remarks = in.readString();
 				break;
 			default:
-				throw new ProtobufException("AttributeField inccorectly serialized");
+            	throw new ProtostuffException("Unexpected field number");
 			}
         }
 	}

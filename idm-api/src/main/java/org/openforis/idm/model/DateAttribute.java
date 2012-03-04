@@ -15,18 +15,18 @@ public class DateAttribute extends Attribute<DateAttributeDefinition, Date> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<Integer> getYearField() {
-		return (AttributeField<Integer>) getField(0);
+	public Field<Integer> getYearField() {
+		return (Field<Integer>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<Integer> getMonthField() {
-		return (AttributeField<Integer>) getField(1);
+	public Field<Integer> getMonthField() {
+		return (Field<Integer>) getField(1);
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<Integer> getDayField() {
-		return (AttributeField<Integer>) getField(2);
+	public Field<Integer> getDayField() {
+		return (Field<Integer>) getField(2);
 	}
 
 	@Override

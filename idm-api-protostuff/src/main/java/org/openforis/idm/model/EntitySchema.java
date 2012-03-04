@@ -36,7 +36,6 @@ public class EntitySchema extends SchemaSupport<Entity> {
 
 	@Override
 	public void mergeFrom(Input input, Entity entity) throws IOException {
-		
         for(int number = input.readFieldNumber(this);; number = input.readFieldNumber(this))
         {
         	if ( number == 0 ) {
@@ -57,7 +56,7 @@ public class EntitySchema extends SchemaSupport<Entity> {
         		readAndCheckFieldNumber(input, 2);
         		input.mergeObject(node, getSchema(node.getClass()));
             } else {
-            	throw new ProtostuffException("Attribute fields were incorrectly serialized");
+            	throw new ProtostuffException("Unexpected field number");
             }
         }
 	}

@@ -16,13 +16,13 @@ public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public AttributeField<String> getFilenameField() {
-		return (AttributeField<String>) getField(0);
+	public Field<String> getFilenameField() {
+		return (Field<String>) getField(0);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public AttributeField<Long> getSizeField() {
-		return (AttributeField<Long>) getField(1);
+	public Field<Long> getSizeField() {
+		return (Field<Long>) getField(1);
 	}
 	
 	@Override

@@ -26,7 +26,7 @@ public class ModelSerializer {
 
 	static {
 		/* Important: Schemas must be registered in depth-first post-order!!! */
-		RuntimeSchema.register(AttributeField.class, new AttributeFieldSchema());
+		RuntimeSchema.register(Field.class, new FieldSchema());
 		register(new AttributeSchema(BooleanAttribute.class));
 		register(new AttributeSchema(CodeAttribute.class));
 		register(new AttributeSchema(CoordinateAttribute.class));

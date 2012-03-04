@@ -12,18 +12,18 @@ public abstract class AtomicAttribute<D extends AttributeDefinition, V>  extends
 
 	@Override
 	public V getValue() {
-		AttributeField<V> field = getField();
+		Field<V> field = getField();
 		return field.getValue();
 	}
 
 	@Override
 	public void setValue(V value) {
-		AttributeField<V> field = getField();
+		Field<V> field = getField();
 		field.setValue(value);
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<V> getField() {
-		return (AttributeField<V>) getField(0);
+	public Field<V> getField() {
+		return (Field<V>) getField(0);
 	}
 }

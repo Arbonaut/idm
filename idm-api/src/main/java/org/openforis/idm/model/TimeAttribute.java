@@ -15,13 +15,13 @@ public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<Integer> getHourField() {
-		return (AttributeField<Integer>) getField(0);
+	public Field<Integer> getHourField() {
+		return (Field<Integer>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public AttributeField<Integer> getMinuteField() {
-		return (AttributeField<Integer>) getField(1);
+	public Field<Integer> getMinuteField() {
+		return (Field<Integer>) getField(1);
 	}
 	
 	@Override

@@ -257,4 +257,13 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 	public Schema getSchema() {
 		return getSurvey() == null ? null : getSurvey().getSchema();
 	}
+
+	public boolean isDetached(){
+		return parent == null;
+	}
+	
+	protected void detach() {
+		parent = null;
+		record = null;
+	}
 }

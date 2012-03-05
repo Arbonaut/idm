@@ -72,6 +72,22 @@ public class ExpressionFactory {
 		return expr;
 	}
 
+	public AbsoluteModelPathExpression createAbsoluteModelPathExpression(String expression) throws InvalidExpressionException {
+		if ( !expression.startsWith("/") ) {
+			throw new InvalidExpressionException("Absolute paths must start with '/'");
+		}
+		int pos = expression.indexOf('/', 1);
+		if ( pos < 0 ) {
+			String root = expression.substring(1);
+			return new AbsoluteModelPathExpression(root);
+		} else {
+			String root = expression.substring(1, pos);
+			expression = expression.substring(pos+1);
+			ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
+			return new AbsoluteModelPathExpression(root, compiledExpression, jxPathContext);		
+		}
+	}
+
 	public RelevanceExpression createRelevanceExpression(String expression) throws InvalidExpressionException {
 		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
 		RelevanceExpression expr = new RelevanceExpression(compiledExpression, jxPathContext);

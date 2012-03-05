@@ -23,6 +23,7 @@ public abstract class AbstractTest {
 	protected static Survey survey;
 	protected Entity cluster;
 	protected Entity household;
+	protected Record record;
 
 	@BeforeClass
 	public static void setUp() throws IOException, InvalidIdmlException {
@@ -35,7 +36,7 @@ public abstract class AbstractTest {
 
 	@Before
 	public void createCluster() {
-		Record record = new Record(survey, "2.0");
+		this.record = new Record(survey, "2.0");
 		this.cluster = record.createRootEntity("cluster");
 		Record record2 = new Record(survey, "2.0");
 		this.household = record2.createRootEntity("household");

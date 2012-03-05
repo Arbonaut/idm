@@ -97,4 +97,27 @@ public class EntityDefinition extends NodeDefinition {
 	public Node<?> createNode() {
 		return new Entity(this);
 	}
+	
+	/**
+	 *  
+	 * @return true if entities with only keys of type internal code (not lookup)
+	 */
+	public boolean isEnumerable() {
+		List<AttributeDefinition> keyDefs = getKeyAttributeDefinitions();
+		if ( keyDefs.isEmpty() ) {
+			return false;
+		} else {
+			for (AttributeDefinition keyDef : keyDefs) {
+				if ( keyDef instanceof CodeAttributeDefinition ) {
+					CodeList list = ((CodeAttributeDefinition) keyDef).getList();
+					if ( list.getLookupTable() != null ) {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
 }

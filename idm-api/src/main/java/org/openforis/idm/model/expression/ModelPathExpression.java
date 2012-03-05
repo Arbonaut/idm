@@ -32,5 +32,4 @@ public class ModelPathExpression extends AbstractExpression {
 		List<Node<?>> list = evaluateMultiple(contextNode, thisNode);
 		return list;
 	}
-	
 }

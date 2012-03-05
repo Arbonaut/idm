@@ -24,7 +24,11 @@ abstract class AbstractBooleanExpression extends AbstractExpression {
 	protected boolean evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
 		try {
 			Object result = evaluateSingle(contextNode, thisNode);
-			return (Boolean) result;
+			if(result == null){
+				return false;
+			} else {
+				return (Boolean) result;
+			}
 		} catch (MissingValueException e) {
 			return defaultValue;
 		}

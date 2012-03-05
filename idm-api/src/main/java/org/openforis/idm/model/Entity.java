@@ -533,6 +533,9 @@ public class Entity extends Node<EntityDefinition> {
 				return relevanceExpr.evaluate(this, null);
 			} catch (InvalidExpressionException e) {
 				throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
+			} catch(Exception e){
+				System.out.println(expr);
+				throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
 			}
 		}
 	}

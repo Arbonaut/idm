@@ -3,11 +3,8 @@
  */
 package org.openforis.idm.metamodel.validation;
 
-import java.util.List;
-
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Entity;
-import org.openforis.idm.model.Node;
 
 /**
  * @author M. Togna
@@ -26,14 +23,18 @@ public class MaxCountValidator implements ValidationRule<Entity> {
 	}
 	
 	@Override
-	public boolean evaluate(Entity entity) {
-		String name = nodeDefinition.getName();
+	public ValidationResultFlag evaluate(Entity entity) {
 		Integer maxCount = nodeDefinition.getMaxCount();
 		if (maxCount == null) {
-			return true;
+			return ValidationResultFlag.OK;
 		} else {
-			List<Node<?>> children = entity.getAll(name);
-			return children.size() <= maxCount;
+			String childName = nodeDefinition.getName();
+			int count = entity.getCount(childName);
+			if ( count <= maxCount ) {
+				return ValidationResultFlag.OK;
+			} else {
+				return ValidationResultFlag.ERROR;
+			}
 		}
 	}
 }

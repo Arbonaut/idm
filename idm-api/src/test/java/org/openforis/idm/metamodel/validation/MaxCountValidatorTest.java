@@ -18,8 +18,8 @@ public class MaxCountValidatorTest extends ValidationTest {
 		cluster.addValue("crew_no", 1);
 		cluster.addValue("crew_no", 2);
 		//ValidationResults results = validate(cluster);
-		boolean result = cluster.validateMaxCount("crew_no");
-		assertFalse(result);
+		ValidationResultFlag result = cluster.validateMaxCount("crew_no");
+		assertFalse(result.isOk());
 //		List<ValidationResult> errors = results.getErrors();
 //		assertTrue(containsMaxCountError(errors, "crew_no"));
 	}
@@ -28,8 +28,8 @@ public class MaxCountValidatorTest extends ValidationTest {
 	public void testMultipleAttributeLessThanMax() {
 		cluster.addValue("map_sheet", "A");
 		cluster.addValue("map_sheet", "B");
-		boolean result = cluster.validateMaxCount("map_sheet");
-		assertTrue(result);
+		ValidationResultFlag result = cluster.validateMaxCount("map_sheet");
+		assertTrue(result.isOk());
 	}
 
 	@Test
@@ -37,8 +37,8 @@ public class MaxCountValidatorTest extends ValidationTest {
 		cluster.addValue("map_sheet", "A");
 		cluster.addValue("map_sheet", "B");
 		cluster.addValue("map_sheet", "C");
-		boolean result = cluster.validateMaxCount("map_sheet");
-		assertTrue(result);
+		ValidationResultFlag result = cluster.validateMaxCount("map_sheet");
+		assertTrue(result.isOk());
 	}
 
 	@Test
@@ -48,8 +48,8 @@ public class MaxCountValidatorTest extends ValidationTest {
 		cluster.addValue("map_sheet", "B");
 		cluster.addValue("map_sheet", "C");
 		cluster.addValue("map_sheet", "D");
-		boolean result = cluster.validateMaxCount("map_sheet");
-		assertFalse(result);
+		ValidationResultFlag result = cluster.validateMaxCount("map_sheet");
+		assertFalse(result.isOk());
 	}
 
 	@Test
@@ -58,23 +58,23 @@ public class MaxCountValidatorTest extends ValidationTest {
 		Entity plot = cluster.addEntity("plot");
 		plot.addEntity("centre");
 		plot.addEntity("centre");
-		boolean result = plot.validateMaxCount("centre");
-		assertFalse(result);
+		ValidationResultFlag result = plot.validateMaxCount("centre");
+		assertFalse(result.isOk());
 	}
 
 	@Test
 	public void testMultipleEntityLessThanMax() {
 		cluster.addEntity("time_study");
-		boolean result = cluster.validateMaxCount("time_study");
-		assertTrue(result);
+		ValidationResultFlag result = cluster.validateMaxCount("time_study");
+		assertTrue(result.isOk());
 	}
 
 	@Test
 	public void testMultipleEntityMax() {
 		cluster.addEntity("time_study");
 		cluster.addEntity("time_study");
-		boolean result = cluster.validateMaxCount("time_study");
-		assertTrue(result);
+		ValidationResultFlag result = cluster.validateMaxCount("time_study");
+		assertTrue(result.isOk());
 	}
 
 	@Test
@@ -83,8 +83,8 @@ public class MaxCountValidatorTest extends ValidationTest {
 		cluster.addEntity("time_study");
 		cluster.addEntity("time_study");
 		cluster.addEntity("time_study");
-		boolean result = cluster.validateMaxCount("time_study");
-		assertFalse(result);
+		ValidationResultFlag result = cluster.validateMaxCount("time_study");
+		assertFalse(result.isOk());
 	}
 
 //	protected boolean containsMaxCountError(List<ValidationResult> errors, String name) {

@@ -36,7 +36,7 @@ public class UniquenessCheck extends Check<Attribute<?, ?>> {
 	}
 
 	@Override
-	public boolean evaluate(Attribute<?, ?> attribute) {
+	public ValidationResultFlag evaluate(Attribute<?, ?> attribute) {
 		try {
 			SurveyContext recordContext = attribute.getRecord().getSurveyContext();
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
@@ -56,7 +56,7 @@ public class UniquenessCheck extends Check<Attribute<?, ?>> {
 					}
 				}
 			}
-			return unique;
+			return ValidationResultFlag.valueOf(unique, this.getFlag());
 		} catch (InvalidExpressionException e) {
 			throw new IdmInterpretationError("Error evaluating uniqueness check", e);
 		}

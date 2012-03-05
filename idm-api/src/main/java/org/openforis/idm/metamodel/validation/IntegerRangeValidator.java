@@ -14,11 +14,12 @@ import org.openforis.idm.model.IntegerRangeAttribute;
 public class IntegerRangeValidator implements ValidationRule<IntegerRangeAttribute> {
 
 	@Override
-	public boolean evaluate(IntegerRangeAttribute node) {
+	public ValidationResultFlag evaluate(IntegerRangeAttribute node) {
 		IntegerRange range = node.getValue();
 		Integer from = range.getFrom();
 		Integer to = range.getTo();
-		return to >= from;
+		boolean valid = to >= from;
+		return ValidationResultFlag.valueOf(valid);
 	}
 
 }

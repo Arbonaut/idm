@@ -33,14 +33,14 @@ public class CustomCheck extends Check<Attribute<?,?>> {
 	}
 
 	@Override
-	public boolean evaluate(Attribute<?,?> node) {
+	public ValidationResultFlag evaluate(Attribute<?,?> node) {
 		String expr = getExpression();
 		try {
 			SurveyContext recordContext = node.getRecord().getSurveyContext();
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			CheckExpression checkExpression = expressionFactory.createCheckExpression(expr);
-			boolean result = checkExpression.evaluate(node.getParent(), node);
-			return result;
+			boolean valid = checkExpression.evaluate(node.getParent(), node);
+			return ValidationResultFlag.valueOf(valid, this.getFlag());
 		} catch (InvalidExpressionException e) {
 			throw new IdmInterpretationError("Error evaluating custom check", e);
 		}

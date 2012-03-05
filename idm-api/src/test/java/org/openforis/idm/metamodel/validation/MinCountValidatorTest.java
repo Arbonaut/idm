@@ -17,16 +17,16 @@ public class MinCountValidatorTest extends ValidationTest {
 	@Test
 	public void testMissingOptionalSingleAttribute() {
 //		ValidationResults results = validate(cluster);
-		boolean valid = cluster.validateMinCount("crew_no");
-		assertTrue(valid);
+		ValidationResultFlag result = cluster.validateMinCount("crew_no");
+		assertTrue(result.isOk());
 //		List<ValidationResult> errors = results.getErrors();
 //		assertFalse(containsMinCountError(errors, "crew_no"));
 	}
 
 	@Test
 	public void testMissingRequiredSingleAttribute() {
-		boolean valid = cluster.validateMinCount("region");
-		assertFalse(valid);
+		ValidationResultFlag result = cluster.validateMinCount("region");
+		assertFalse(result.isOk());
 //		ValidationResults results = validate(cluster);
 //		List<ValidationResult> errors = results.getErrors();
 //		assertTrue(containsMinCountError(errors, "region"));
@@ -35,8 +35,8 @@ public class MinCountValidatorTest extends ValidationTest {
 	@Test
 	public void testSpecifiedRequiredSingleAttribute() {
 		cluster.addValue("region", new Code("001"));
-		boolean valid = cluster.validateMinCount("region");
-		assertTrue(valid);
+		ValidationResultFlag result = cluster.validateMinCount("region");
+		assertTrue(result.isOk());
 //		ValidationResults results = validate(cluster);
 //		List<ValidationResult> errors = results.getErrors();
 //		assertFalse(containsMinCountError(errors, "region"));
@@ -48,8 +48,8 @@ public class MinCountValidatorTest extends ValidationTest {
 //		List<ValidationResult> errors = results.getErrors();
 //		assertFalse(containsMinCountError(errors, "map_sheet"));
 //		
-		boolean valid = cluster.validateMinCount("map_sheet");
-		assertTrue(valid);
+		ValidationResultFlag result = cluster.validateMinCount("map_sheet");
+		assertTrue(result.isOk());
 	}
 
 	@Test
@@ -60,8 +60,8 @@ public class MinCountValidatorTest extends ValidationTest {
 //		List<ValidationResult> errors = results.getErrors();
 //		assertFalse(containsMinCountError(errors, "map_sheet"));
 		
-		boolean valid = cluster.validateMinCount("map_sheet");
-		assertTrue(valid);
+		ValidationResultFlag result = cluster.validateMinCount("map_sheet");
+		assertTrue(result.isOk());
 	}
 
 	@Test
@@ -69,8 +69,8 @@ public class MinCountValidatorTest extends ValidationTest {
 		cluster.addValue("map_sheet", "");
 		cluster.addValue("map_sheet", "567");
 		
-		boolean valid = cluster.validateMinCount("map_sheet");
-		assertTrue(valid);
+		ValidationResultFlag result = cluster.validateMinCount("map_sheet");
+		assertTrue(result.isOk());
 		
 //		ValidationResults results = validate(cluster);
 //		List<ValidationResult> errors = results.getErrors();
@@ -82,8 +82,8 @@ public class MinCountValidatorTest extends ValidationTest {
 		cluster.addValue("map_sheet", "123");
 		cluster.addValue("map_sheet", "567");
 		
-		boolean valid = cluster.validateMinCount("map_sheet");
-		assertTrue(valid);
+		ValidationResultFlag result = cluster.validateMinCount("map_sheet");
+		assertTrue(result.isOk());
 //		ValidationResults results = validate(cluster);
 //		List<ValidationResult> errors = results.getErrors();
 //		assertFalse(containsMinCountError(errors, "map_sheet"));
@@ -91,8 +91,8 @@ public class MinCountValidatorTest extends ValidationTest {
 
 	@Test
 	public void testMissingRequiredMultipleEntity() {
-		boolean valid = cluster.validateMinCount("time_study");
-		assertFalse(valid);
+		ValidationResultFlag result = cluster.validateMinCount("time_study");
+		assertFalse(result.isOk());
 		
 //		ValidationResults results = validate(cluster);
 //		List<ValidationResult> errors = results.getErrors();
@@ -104,8 +104,8 @@ public class MinCountValidatorTest extends ValidationTest {
 		Entity timeStudy = cluster.addEntity("time_study");
 		timeStudy.addValue("date", (Date) null);
 		
-		boolean valid = cluster.validateMinCount("time_study");
-		assertFalse(valid);
+		ValidationResultFlag result = cluster.validateMinCount("time_study");
+		assertFalse(result.isOk());
 		
 //		ValidationResults results = validate(cluster);
 //		List<ValidationResult> errors = results.getErrors();
@@ -120,8 +120,8 @@ public class MinCountValidatorTest extends ValidationTest {
 //		List<ValidationResult> errors = results.getErrors();
 //		assertFalse(containsMinCountError(errors, "time_study"));
 		
-		boolean valid = cluster.validateMinCount("time_study");
-		assertTrue(valid);
+		ValidationResultFlag result = cluster.validateMinCount("time_study");
+		assertTrue(result.isOk());
 	}
 
 //	private boolean containsMinCountError(List<ValidationResult> errors, String name) {

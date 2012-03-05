@@ -11,6 +11,6 @@ import org.openforis.idm.model.Node;
  */
 public interface ValidationRule<N extends Node<?>> {
 
-	boolean evaluate(N node);
+	ValidationResultFlag evaluate(N node);
 	
 }

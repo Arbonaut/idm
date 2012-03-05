@@ -18,20 +18,20 @@ import org.openforis.idm.model.CodeAttribute;
 public class CodeParentValidator implements ValidationRule<CodeAttribute> {
 
 	@Override
-	public boolean evaluate(CodeAttribute node) {
+	public ValidationResultFlag evaluate(CodeAttribute node) {
 		CodeAttributeDefinition definition = node.getDefinition();
 		if (StringUtils.isBlank(definition.getParentExpression())) {
-			return true;
+			return ValidationResultFlag.OK;
 		} else {
 			CodeAttribute parentCode = node.getCodeParent();
 			if (parentCode == null) {
-				return false;
+				return ValidationResultFlag.WARNING;
 			} else {
 				CodeListItem parentCodeListItem = parentCode.getCodeListItem();
 				if (parentCodeListItem == null) {
-					return false;
+					return ValidationResultFlag.WARNING;
 				}
-				return true;
+				return ValidationResultFlag.OK;
 			}
 		}
 	}

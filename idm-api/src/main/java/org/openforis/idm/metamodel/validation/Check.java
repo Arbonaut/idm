@@ -43,9 +43,13 @@ public abstract class Check<T extends Attribute<?, ?>> implements Serializable, 
 	private List<LanguageSpecificText> messages;
 
 	public Flag getFlag() {
-		return this.flag;
+		return flag == null ? Flag.ERROR : flag;
 	}
 
+	public void setFlag(Flag flag) {
+		this.flag = flag;
+	}
+	
 	public String getCondition() {
 		return this.condition;
 	}

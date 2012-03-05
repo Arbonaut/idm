@@ -7,12 +7,15 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.AttributeDefinition;
+import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.IdmInterpretationError;
+import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.CoordinateAttribute;
 import org.openforis.idm.model.DateAttribute;
+import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.TimeAttribute;
 import org.openforis.idm.model.expression.CheckConditionExpression;
@@ -28,74 +31,41 @@ public class Validator {
 	public ValidationResults validate(Attribute<?, ?> attribute) {
 		ValidationResults results = new ValidationResults();
 		if (!attribute.isEmpty()) {
-			boolean valid = validateAttributeValue(attribute, results);
-			if (valid) {
+			validateAttributeValue(attribute, results);
+			if ( !results.hasErrors() ) {
 				validateAttributeChecks(attribute, results);
 			}
 		}
 		return results;
 	}
-
-	// @Deprecated
-	// public ValidationResults validate(NodeState nodeState) {
-	// Node<?> node = nodeState.getNode();
-	// if (node instanceof Entity) {
-	// return validateEntity(nodeState);
-	// } else {
-	// return validateAttribute(nodeState);
-	// }
-	// }
-
-	// public ValidationResults validate(Node<?> node) {
-	// if (node instanceof Entity) {
-	// return validate((Entity) node);
-	// } else {
-	// return validate((Attribute<?, ?>) node);
-	// }
-	// }
-
-	// /**
-	// * Validates cardinality of all entity children
-	// *
-	// * @param nodeState
-	// */
-	// @Deprecated
-	// protected ValidationResults validateEntity(NodeState nodeState) {
-	// ValidationResults validationResults = new ValidationResults();
-	// Entity entity = (Entity) nodeState.getNode();
-	// List<NodeDefinition> childDefinitions = entity.getDefinition().getChildDefinitions();
-	// for (NodeDefinition childDef : childDefinitions) {
-	// validateChildMinCount(nodeState, childDef, validationResults);
-	// validateChildMaxCount(nodeState, childDef, validationResults);
-	// }
-	// return validationResults;
-	// }
-
-	@Deprecated
-	protected ValidationResults validateAttribute(Attribute<?, ?> attribute) {
-		ValidationResults results = new ValidationResults();
-		if (!attribute.isEmpty()) {
-			boolean valid = validateAttributeValue(attribute, results);
-			if (valid) {
-				validateAttributeChecks(attribute, results);
-			}
-		}
-		return results;
+	
+	public ValidationResultFlag validateMinCount(Entity entity, String childName) {
+		NodeDefinition childDefn = getChildDefinition(entity, childName);
+		MinCountValidator v = getMinCountValidator(childDefn);
+		ValidationResultFlag result = v.evaluate(entity);
+		return result;
+	}
+	
+	public ValidationResultFlag validateMaxCount(Entity entity, String childName) {
+		NodeDefinition childDefn = getChildDefinition(entity, childName);
+		MaxCountValidator v = getMaxCountValidator(childDefn);
+		ValidationResultFlag result = v.evaluate(entity);
+		return result;
 	}
 
-//	@Deprecated
-//	private void validateChildMinCount(NodeState nodeState, NodeDefinition childDef, ValidationResults validationResults) {
-//		MinCountValidator validator = new MinCountValidator(childDef);
-//		boolean result = validator.evaluate(nodeState);
-//		validationResults.addResult(nodeState.getNode(), validator, result);
-//	}
-//
-//	@Deprecated
-//	private void validateChildMaxCount(NodeState nodeState, NodeDefinition childDef, ValidationResults validationResults) {
-//		MaxCountValidator validator = new MaxCountValidator(childDef);
-//		boolean result = validator.evaluate(nodeState);
-//		validationResults.addResult(nodeState.getNode(), validator, result);
-//	}
+	protected MinCountValidator getMinCountValidator(NodeDefinition defn) {
+		return new MinCountValidator(defn);
+	}
+
+	protected MaxCountValidator getMaxCountValidator(NodeDefinition defn) {
+		return new MaxCountValidator(defn);
+	}
+
+	private NodeDefinition getChildDefinition(Entity entity, String childName) {
+		EntityDefinition entityDefn = entity.getDefinition();
+		NodeDefinition childDefn = entityDefn.getChildDefinition(childName);
+		return childDefn;
+	}
 
 	@SuppressWarnings("rawtypes")
 	private void validateAttributeChecks(Attribute<?, ?> attribute, ValidationResults results) {
@@ -106,57 +76,51 @@ public class Validator {
 		for (Check check : checks) {
 			if (evaluateCheckCondition(attribute, check.getCondition())) {
 				@SuppressWarnings("unchecked")
-				boolean result = check.evaluate(attribute);
-				results.addResult(attribute, check, result);
+				ValidationResultFlag result = check.evaluate(attribute);
+				results.addResult(check, result);
 			}
 		}
 	}
 
-	private boolean validateAttributeValue(Attribute<?, ?> attribute, ValidationResults results) {
+	private void validateAttributeValue(Attribute<?, ?> attribute, ValidationResults results) {
 		if (attribute instanceof CodeAttribute) {
-			return validateCodeAttributeValue((CodeAttribute) attribute, results);
+			validateCodeAttributeValue((CodeAttribute) attribute, results);
 		} else if (attribute instanceof CoordinateAttribute) {
-			return validateCoordinateAttributeValue((CoordinateAttribute) attribute, results);
+			validateCoordinateAttributeValue((CoordinateAttribute) attribute, results);
 		} else if (attribute instanceof DateAttribute) {
-			return validateDateAttributeValue((DateAttribute) attribute, results);
+			validateDateAttributeValue((DateAttribute) attribute, results);
 		} else if (attribute instanceof TimeAttribute) {
-			return validateTimeAttributeValue((TimeAttribute) attribute, results);
+			validateTimeAttributeValue((TimeAttribute) attribute, results);
 		}
-		return true;
 	}
 
-	private boolean validateTimeAttributeValue(TimeAttribute timeAttribute, ValidationResults results) {
+	private void validateTimeAttributeValue(TimeAttribute timeAttribute, ValidationResults results) {
 		TimeValidator validator = new TimeValidator();
-		boolean valid = validator.evaluate(timeAttribute);
-		results.addResult(timeAttribute, validator, valid);
-		return valid;
+		ValidationResultFlag result = validator.evaluate(timeAttribute);
+		results.addResult(validator, result);
 	}
 
-	private boolean validateDateAttributeValue(DateAttribute attribute, ValidationResults results) {
+	private void validateDateAttributeValue(DateAttribute attribute, ValidationResults results) {
 		DateValidator validator = new DateValidator();
-		boolean result = validator.evaluate(attribute);
-		results.addResult(attribute, validator, result);
-		return result;
+		ValidationResultFlag result = validator.evaluate(attribute);
+		results.addResult(validator, result);
 	}
 
-	private boolean validateCoordinateAttributeValue(CoordinateAttribute attribute, ValidationResults results) {
+	private void validateCoordinateAttributeValue(CoordinateAttribute attribute, ValidationResults results) {
 		CoordinateValidator validator = new CoordinateValidator();
-		boolean valid = validator.evaluate(attribute);
-		results.addResult(attribute, validator, valid);
-		return valid;
+		ValidationResultFlag result = validator.evaluate(attribute);
+		results.addResult(validator, result);
 	}
 
-	private boolean validateCodeAttributeValue(CodeAttribute attribute, ValidationResults results) {
+	private void validateCodeAttributeValue(CodeAttribute attribute, ValidationResults results) {
 		CodeParentValidator parentValidator = new CodeParentValidator();
-		boolean validParent = parentValidator.evaluate(attribute);
-		if (validParent) {
+		ValidationResultFlag validParent = parentValidator.evaluate(attribute);
+		if (validParent == ValidationResultFlag.OK ) {
 			CodeValidator codeValidator = new CodeValidator();
-			boolean valid = codeValidator.evaluate(attribute);
-			results.addResult(attribute, codeValidator, valid);
-			return valid;
+			ValidationResultFlag result = codeValidator.evaluate(attribute);
+			results.addResult(codeValidator, result);
 		} else {
-			results.addResult(attribute, parentValidator, false);
-			return false;
+			results.addResult(parentValidator, ValidationResultFlag.WARNING);
 		}
 	}
 

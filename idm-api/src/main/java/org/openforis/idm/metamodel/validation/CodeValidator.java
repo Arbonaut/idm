@@ -13,12 +13,12 @@ import org.openforis.idm.model.CodeAttribute;
 public class CodeValidator implements ValidationRule<CodeAttribute> {
 
 	@Override
-	public boolean evaluate(CodeAttribute attribute) {
+	public ValidationResultFlag evaluate(CodeAttribute attribute) {
 		CodeListItem item = attribute.getCodeListItem();
 		if (item == null) {
-			return false;
+			return ValidationResultFlag.ERROR;
 		} else {
-			return true;
+			return ValidationResultFlag.OK;
 		}
 	}
 

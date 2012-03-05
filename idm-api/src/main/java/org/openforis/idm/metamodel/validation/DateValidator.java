@@ -13,16 +13,16 @@ import org.openforis.idm.model.DateAttribute;
 public class DateValidator implements ValidationRule<DateAttribute> {
 
 	@Override
-	public boolean evaluate(DateAttribute attribute) {
+	public ValidationResultFlag evaluate(DateAttribute attribute) {
 		try {
 			Date date = attribute.getValue();
 			Calendar cal = date.toCalendar();
 			if (cal == null) {
-				return false;
+				return ValidationResultFlag.ERROR;
 			}
-			return true;
+			return ValidationResultFlag.OK;
 		} catch (IllegalArgumentException e) {
-			return false;
+			return ValidationResultFlag.ERROR;
 		}
 	}
 

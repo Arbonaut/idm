@@ -17,12 +17,14 @@ import org.openforis.idm.model.CoordinateAttribute;
 public class CoordinateValidator implements ValidationRule<CoordinateAttribute> {
 
 	@Override
-	public boolean evaluate(CoordinateAttribute node) {
+	public ValidationResultFlag evaluate(CoordinateAttribute node) {
 		Coordinate coordinate = node.getValue();
 		CoordinateAttributeDefinition definition = node.getDefinition();
 		List<SpatialReferenceSystem> srs = definition.getSurvey().getSpatialReferenceSystems();
 
-		return coordinate.getX() != null && coordinate.getY() != null && isSrsIdValid(srs, coordinate.getSrsId());
+		boolean valid = coordinate.getX() != null && coordinate.getY() != null && isSrsIdValid(srs, coordinate.getSrsId());
+		return ValidationResultFlag.valueOf(valid);
+
 	}
 
 	private boolean isSrsIdValid(List<SpatialReferenceSystem> srs, String srsId) {

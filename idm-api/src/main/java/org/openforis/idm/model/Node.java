@@ -138,10 +138,9 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 		sb.append("]");
 	}
 	
-	protected SurveyContext getRecordContext() {
+	protected SurveyContext getContext() {
 		Record record = getRecord();
-		SurveyContext context = record.getSurveyContext();
-		return context;
+		return record == null ? null : record.getSurveyContext();
 	}
 
 	public int getIndex() {

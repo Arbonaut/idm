@@ -30,6 +30,8 @@ import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
+import org.openforis.idm.metamodel.validation.ValidationResultFlag;
+import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.RelevanceExpression;
@@ -585,34 +587,16 @@ public class Entity extends Node<EntityDefinition> {
 		}
 	}
 
-	public boolean validateMinCount(String childName) {
-		int minCount = getEffectiveMinCount(childName);
-		if ( minCount == 0 ) {
-			return true;
-		} else {
-			int nonEmptyCount = 0;
-			List<Node<?>> childNodes = getAll(childName);
-			for ( Node<?> child : childNodes ) {
-				if ( !child.isEmpty() ) {
-					nonEmptyCount++;;
-					if ( nonEmptyCount >= minCount ) {
-						return true;
-					}
-				}
-			}
-			return false;
-		}
+	public ValidationResultFlag validateMinCount(String childName) {
+		SurveyContext ctx = getContext();
+		Validator v = ctx.getValidator();
+		return v.validateMinCount(this, childName);
 	}
 	
-	public boolean validateMaxCount(String childName) {
-		NodeDefinition defn = getChildDefinition(childName);
-		Integer maxCount = defn.getMaxCount();
-		if (maxCount == null) {
-			return true;
-		} else {
-			int count = getCount(childName);
-			return count <= maxCount;
-		}
+	public ValidationResultFlag validateMaxCount(String childName) {
+		SurveyContext ctx = getContext();
+		Validator v = ctx.getValidator();
+		return v.validateMaxCount(this, childName);
 	}
 	// /**
 	// *

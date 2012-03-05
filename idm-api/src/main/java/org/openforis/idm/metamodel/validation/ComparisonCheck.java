@@ -120,7 +120,7 @@ public class ComparisonCheck extends Check<Attribute<?,?>> {
 	}
 
 	@Override
-	public boolean evaluate(Attribute<?, ?> node) {
+	public ValidationResultFlag evaluate(Attribute<?, ?> node) {
 		Record record = node .getRecord();
 		SurveyContext recordContext = record.getSurveyContext();
 		if (expression == null) {
@@ -129,7 +129,8 @@ public class ComparisonCheck extends Check<Attribute<?,?>> {
 		try {
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
 			CheckExpression checkExpr = expressionFactory.createCheckExpression(expression);
-			return checkExpr.evaluate(node.getParent(), node);
+			boolean valid = checkExpr.evaluate(node.getParent(), node);
+			return ValidationResultFlag.valueOf(valid, this.getFlag());
 		} catch (InvalidExpressionException e) {
 			throw new IdmInterpretationError("Error evaluating comparison check", e);
 		}

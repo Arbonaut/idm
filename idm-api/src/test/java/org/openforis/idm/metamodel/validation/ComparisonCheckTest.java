@@ -1,7 +1,10 @@
 package org.openforis.idm.metamodel.validation;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.openforis.idm.metamodel.validation.ValidationResultFlag.ERROR;
+import static org.openforis.idm.metamodel.validation.ValidationResultFlag.OK;
 
 import java.util.List;
 
@@ -73,8 +76,8 @@ public class ComparisonCheckTest extends ValidationTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setGreaterThanExpression("-1");
 		CodeAttribute region = cluster.addValue("region", new Code("001"));
-		boolean validate = check.evaluate(region);
-		assertTrue(validate);
+		ValidationResultFlag result = check.evaluate(region);
+		assertEquals(OK, result);
 	}
 
 	@Test
@@ -82,8 +85,8 @@ public class ComparisonCheckTest extends ValidationTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setLessThanExpression("-1");
 		CodeAttribute region = cluster.addValue("region", new Code("001"));
-		boolean validate = check.evaluate(region);
-		assertFalse(validate);
+		ValidationResultFlag result = check.evaluate(region);
+		assertEquals(ERROR, result);
 	}
 
 	@Test
@@ -91,8 +94,8 @@ public class ComparisonCheckTest extends ValidationTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setGreaterThanExpression("-1");
 		TextAttribute mapSheet = cluster.addValue("map_sheet", "1");
-		boolean validate = check.evaluate(mapSheet);
-		assertTrue(validate);
+		ValidationResultFlag result = check.evaluate(mapSheet);
+		assertEquals(OK, result);
 	}
 
 	@Test
@@ -100,8 +103,8 @@ public class ComparisonCheckTest extends ValidationTest {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setLessThanExpression("-1");
 		TextAttribute mapSheet = cluster.addValue("map_sheet", "1");
-		boolean validate = check.evaluate(mapSheet);
-		assertFalse(validate);
+		ValidationResultFlag result = check.evaluate(mapSheet);
+		assertEquals(ERROR, result);
 	}
 	
 	@Test

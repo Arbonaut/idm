@@ -43,7 +43,7 @@ public class PatternCheck extends Check<Attribute<?,?>> {
 	}
 
 	@Override
-	public boolean evaluate(Attribute<?,?> node) {
+	public ValidationResultFlag evaluate(Attribute<?,?> node) {
 		Object value = node.getValue();
 		String string = null;
 		if (value instanceof String) {
@@ -56,7 +56,7 @@ public class PatternCheck extends Check<Attribute<?,?>> {
 
 		Matcher matcher = getPattern().matcher(string);
 		boolean matches = matcher.matches();
-		return matches;
+		return ValidationResultFlag.valueOf(matches, this.getFlag());
 	}
 
 }

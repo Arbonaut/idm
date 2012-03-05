@@ -1,6 +1,5 @@
 package org.openforis.idm.metamodel.validation;
 
-import org.openforis.idm.model.Node;
 
 /**
  * @author G. Miceli
@@ -8,34 +7,27 @@ import org.openforis.idm.model.Node;
  */
 public final class ValidationResult {
 
-	private Node<?> node;
 	private ValidationRule<?> validator;
-	private boolean valid;
+	private ValidationResultFlag flag;
 	
-	public ValidationResult(Node<?> node, ValidationRule<?> validator, boolean valid) {
-		this.node = node;
+	public ValidationResult(ValidationRule<?> validator, ValidationResultFlag flag) {
 		this.validator = validator;
-		this.valid = valid;
-	}
-
-	public Node<?> getNode() {
-		return node;
+		this.flag = flag;
 	}
 
 	public ValidationRule<?> getValidator() {
 		return validator;
 	}
 
-	public boolean isValid() {
-		return valid;
+	public ValidationResultFlag getFlag() {
+		return flag;
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(validator);
-		sb.append(valid ? " PASSED " : " FAILED ");
-		sb.append(node.getPath());
+		sb.append(flag);
 		return sb.toString();
 	}
 }

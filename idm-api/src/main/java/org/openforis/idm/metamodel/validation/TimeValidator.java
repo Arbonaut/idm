@@ -13,17 +13,17 @@ import org.openforis.idm.model.TimeAttribute;
 public class TimeValidator implements ValidationRule<TimeAttribute> {
 
 	@Override
-	public boolean evaluate(TimeAttribute timeAttribute) {
+	public ValidationResultFlag evaluate(TimeAttribute timeAttribute) {
 		try {
 			Time time = timeAttribute.getValue();
 			Integer hour = time.getHour();
 			Integer minute = time.getMinute();
 			if (hour < 0 || hour >= 24 || minute < 0 || minute >= 60) {
-				return false;
+				return ValidationResultFlag.ERROR;
 			}
-			return true;
+			return ValidationResultFlag.OK;
 		} catch (Exception e) {
-			return false;
+			return ValidationResultFlag.ERROR;
 		}
 	}
 

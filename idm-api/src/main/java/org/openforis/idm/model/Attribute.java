@@ -147,7 +147,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	 */
 	public ValidationResults validateValue() {
 		if ( validationResults == null ) {
-			SurveyContext recordContext = getRecordContext();
+			SurveyContext recordContext = getContext();
 			Validator validator = recordContext.getValidator();
 			validationResults = validator.validate(this);
 		}

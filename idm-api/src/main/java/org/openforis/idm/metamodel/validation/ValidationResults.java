@@ -6,8 +6,6 @@ package org.openforis.idm.metamodel.validation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openforis.idm.metamodel.validation.Check.Flag;
-import org.openforis.idm.model.Node;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -19,12 +17,10 @@ import org.openforis.idm.util.CollectionUtil;
  */
 public class ValidationResults {
 
-	private List<ValidationResult> passed;
 	private List<ValidationResult> errors;
 	private List<ValidationResult> warnings;
 	
 	public ValidationResults() {
-		passed = new ArrayList<ValidationResult>();
 		errors = new ArrayList<ValidationResult>();
 		warnings = new ArrayList<ValidationResult>();
 	}
@@ -37,40 +33,50 @@ public class ValidationResults {
 		return CollectionUtil.unmodifiableList(warnings);
 	}
 
-	public List<ValidationResult> getPassed() {
-		return CollectionUtil.unmodifiableList(passed);
-	}
-
 	public List<ValidationResult> getFailed() {
 		List<ValidationResult> failed = new ArrayList<ValidationResult>(errors.size() + warnings.size());
 		failed.addAll(errors);
 		failed.addAll(warnings);
 		return failed;
 	}
+
+	public void addResults(List<ValidationResult> results) {
+		for (ValidationResult result : results) {
+			addResult(result);
+		}
+	}
 	
 	public void addResults(ValidationResults other){
 		errors.addAll(other.errors);
 		warnings.addAll(other.warnings);
-		passed.addAll(other.passed);
 	}
 	
-	public void addResult(Node<?> node, ValidationRule<?> validator, boolean result) {
-		ValidationResult r = new ValidationResult(node, validator, result);
-		if (result) {
-			passed.add(r);
-		} else if (validator instanceof Check) {
-			Flag flag = ((Check<?>) validator).getFlag();
-			if ( flag == Flag.ERROR ) {
-				errors.add(r);
-			} else {
-				warnings.add(r);
-			}
-		}else if (validator instanceof CodeParentValidator){
-			warnings.add(r);
-		} else {
-			errors.add(r);
+	public void addResult(ValidationResult result) {
+		switch (result.getFlag()) {
+		case OK:
+			// no-op
+			break;
+		case ERROR:
+			errors.add(result);
+			break;
+		case WARNING:
+			warnings.add(result);
+			break;
+		default:
+			throw new UnsupportedOperationException();
 		}
 	}
 
+	public void addResult(ValidationRule<?> rule, ValidationResultFlag flag) {
+		ValidationResult validationResult = new ValidationResult(rule, flag);
+		addResult(validationResult);
+	}
 
+	public boolean hasErrors() {
+		return !errors.isEmpty();
+	}
+
+	public boolean hasWarnings() {
+		return !warnings.isEmpty();
+	}
 }

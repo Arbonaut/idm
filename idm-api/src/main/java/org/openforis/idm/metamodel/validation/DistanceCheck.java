@@ -62,7 +62,7 @@ public class DistanceCheck extends Check<CoordinateAttribute> {
 	}
 
 	@Override
-	public boolean evaluate(CoordinateAttribute coordinateAttr) {
+	public ValidationResultFlag evaluate(CoordinateAttribute coordinateAttr) {
 		try {
 			boolean valid = true;
 			beforeExecute(coordinateAttr);
@@ -87,7 +87,7 @@ public class DistanceCheck extends Check<CoordinateAttribute> {
 				}
 			}
 
-			return valid;
+			return ValidationResultFlag.valueOf(valid, this.getFlag());
 		} catch (Exception e) {
 			throw new IdmInterpretationError("Unable to execute distance check", e);
 		}

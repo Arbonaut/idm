@@ -288,6 +288,7 @@ public class Entity extends Node<EntityDefinition> {
 			return null;
 		} else {
 			Node<? extends NodeDefinition> node = list.remove(index);
+			node.detach();
 			// this.updateList(index, name);
 			return node;
 		}
@@ -678,4 +679,14 @@ public class Entity extends Node<EntityDefinition> {
 		}
 		return Collections.unmodifiableList(result);
 	}
+	
+	@Override
+	protected void detach() {
+		super.detach();
+		List<Node<? extends NodeDefinition>> children = getChildren();
+		for (Node<? extends NodeDefinition> child : children) {
+			child.detach();
+		}
+	}
+	
 }

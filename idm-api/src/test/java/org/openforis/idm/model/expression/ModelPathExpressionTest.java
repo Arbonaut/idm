@@ -13,6 +13,7 @@ import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.RealAttribute;
 
 /**
  * @author M. Togna
@@ -30,7 +31,22 @@ public class ModelPathExpressionTest extends AbstractTest {
 
 		Assert.assertEquals(3, list.size());
 	}
+	
+	@Test
+	public void testParent() throws InvalidExpressionException{
+		Entity plot = cluster.addEntity("plot");
+		List<Node<?>> plots = iterateExpression("parent()", plot);
+		Assert.assertEquals(1, plots.size());
+	}
 
+	@Test
+	public void testAttributeParent() throws InvalidExpressionException{
+		Entity plot = cluster.addEntity("plot");
+		RealAttribute canopyCover = plot.addValue("canopy_cover", 12.56);
+		List<Node<?>> plots = iterateExpression("parent()", canopyCover);
+		Assert.assertEquals(1, plots.size());
+	}
+	
 	@Test(expected = InvalidExpressionException.class)
 	public void testIterateInvalidPath() throws InvalidExpressionException {
 		String entityName = "plot";

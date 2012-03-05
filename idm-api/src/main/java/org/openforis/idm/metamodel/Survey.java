@@ -3,6 +3,7 @@ package org.openforis.idm.metamodel;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -14,7 +15,13 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.openforis.idm.metamodel.validation.Check;
+import org.openforis.idm.metamodel.validation.ComparisonCheck;
+import org.openforis.idm.metamodel.validation.CustomCheck;
+import org.openforis.idm.metamodel.validation.DistanceCheck;
+import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
+import org.openforis.idm.model.NodePathPointer;
 
 
 /**
@@ -68,6 +75,15 @@ public class Survey implements Serializable {
 
 	@XmlTransient
 	private SurveyContext surveyContext;
+	
+	@XmlTransient
+	private StateDependencyMap relevanceDependencies;
+	
+	@XmlTransient
+	private StateDependencyMap requiredDependencies;
+	
+	@XmlTransient
+	private StateDependencyMap checkDependencies;
 	
 	public Integer getId() {
 		return id;
@@ -163,6 +179,75 @@ public class Survey implements Serializable {
 		this.surveyContext = surveyContext;
 	}
 	
+	public Set<NodePathPointer> getCheckDependencies(NodeDefinition definition) {
+		if(checkDependencies == null){
+			initDependencies();
+		}
+		return checkDependencies.getDependencySet(definition.getPath());
+	}
+	
+	public Set<NodePathPointer> getRelevanceDependencies(NodeDefinition definition) {
+		if(relevanceDependencies == null){
+			initDependencies();
+		}
+		return relevanceDependencies.getDependencySet(definition.getPath());
+	}
+	
+	public Set<NodePathPointer> getRequiredDependencies(NodeDefinition definition) {
+		if(requiredDependencies == null){
+			initDependencies();
+		}
+		return requiredDependencies.getDependencySet(definition.getPath());
+	}
+	
+	private void initDependencies() {
+		requiredDependencies = new StateDependencyMap(surveyContext.getExpressionFactory());
+		relevanceDependencies = new StateDependencyMap(surveyContext.getExpressionFactory());
+		checkDependencies = new StateDependencyMap(surveyContext.getExpressionFactory());
+		
+		List<EntityDefinition> rootEntityDefinitions = schema.getRootEntityDefinitions();
+		for (EntityDefinition rootDefn : rootEntityDefinitions) {
+			registerDependencies(rootDefn);
+		}
+	}
+	
+	private void registerDependencies(EntityDefinition entityDefinition) {
+		List<NodeDefinition> childDefinitions = entityDefinition.getChildDefinitions();
+		for (NodeDefinition nodeDefinition : childDefinitions) {
+			relevanceDependencies.registerDependencies(nodeDefinition, nodeDefinition.getRelevantExpression());
+			requiredDependencies.registerDependencies(nodeDefinition, nodeDefinition.getRequiredExpression());
+
+			if (nodeDefinition instanceof AttributeDefinition) {
+				registerDependencies((AttributeDefinition) nodeDefinition);
+			} else {
+				registerDependencies((EntityDefinition) nodeDefinition);
+			}
+		}
+	}
+	
+	private void registerDependencies(AttributeDefinition attributeDefinition) {
+		List<Check<?>> checks = attributeDefinition.getChecks();
+		for (Check<?> check : checks) {
+			checkDependencies.registerDependencies(attributeDefinition, check.getCondition());
+			if (check instanceof ComparisonCheck) {
+				checkDependencies.registerDependencies(attributeDefinition, ((ComparisonCheck) check).getEqualsExpression());
+				checkDependencies.registerDependencies(attributeDefinition, ((ComparisonCheck) check).getLessThanExpression());
+				checkDependencies.registerDependencies(attributeDefinition, ((ComparisonCheck) check).getLessThanOrEqualsExpression());
+				checkDependencies.registerDependencies(attributeDefinition, ((ComparisonCheck) check).getGreaterThanExpression());
+				checkDependencies.registerDependencies(attributeDefinition, ((ComparisonCheck) check).getGreaterThanOrEqualsExpression());
+			} else if (check instanceof CustomCheck) {
+				checkDependencies.registerDependencies(attributeDefinition, ((CustomCheck) check).getExpression());
+			} else if (check instanceof DistanceCheck) {
+				checkDependencies.registerDependencies(attributeDefinition, ((DistanceCheck) check).getDestinationPointExpression());
+				checkDependencies.registerDependencies(attributeDefinition, ((DistanceCheck) check).getMaxDistanceExpression());
+				checkDependencies.registerDependencies(attributeDefinition, ((DistanceCheck) check).getMinDistanceExpression());
+				checkDependencies.registerDependencies(attributeDefinition, ((DistanceCheck) check).getSourcePointExpression());
+			} else if (check instanceof UniquenessCheck) {
+				checkDependencies.registerDependencies(attributeDefinition, ((UniquenessCheck) check).getExpression());
+			}
+		}
+	}
+
 	/**
 	 * Workaround for JAXB since @XmlAnyElement, @XmlElementWrapper and @XmlJavaTypeAdapter 
 	 * wouldn't play nice together

@@ -72,7 +72,7 @@ public class Schema  implements Serializable {
 					indexById(definition);
 				}
 			});
-		} 
+		}
 	}
 
 	void indexByPath(NodeDefinition definition) {
@@ -102,4 +102,5 @@ public class Schema  implements Serializable {
 	public EntityDefinition getRootEntityDefinition(String name) {
 		return (EntityDefinition) getByPath("/"+name);
 	}
+	
 }

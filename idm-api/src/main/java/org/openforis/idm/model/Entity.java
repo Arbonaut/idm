@@ -696,13 +696,13 @@ public class Entity extends Node<EntityDefinition> {
 		return Collections.unmodifiableList(result);
 	}
 	
-	@Override
-	protected void detach() {
-		super.detach();
-		List<Node<? extends NodeDefinition>> children = getChildren();
-		for (Node<? extends NodeDefinition> child : children) {
-			child.detach();
-		}
-	}
+//	@Override
+//	protected void detach() {
+//		super.detach();
+//		List<Node<? extends NodeDefinition>> children = getChildren();
+//		for (Node<? extends NodeDefinition> child : children) {
+//			child.detach();
+//		}
+//	}
 	
 }

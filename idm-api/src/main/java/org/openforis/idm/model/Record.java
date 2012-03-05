@@ -3,8 +3,6 @@
  */
 package org.openforis.idm.model;
 
-
-import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,18 +18,16 @@ import org.openforis.idm.metamodel.SurveyContext;
  * @author G. Miceli
  * @author M. Togna
  */
-public class Record implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class Record {
 	
-	private transient Map<Integer, Node<? extends NodeDefinition>> nodesByInternalId;
-	private transient Survey survey;
+	private Map<Integer, Node<? extends NodeDefinition>> nodesByInternalId;
+	private Survey survey;
 	
 	private Integer id;
 	private ModelVersion modelVersion;
 	private int nextId;
 	private Entity rootEntity;
-	
+
 	public Record(Survey survey, String version) {
 		if ( survey == null ) {
 			throw new IllegalArgumentException("Survey required");
@@ -45,7 +41,7 @@ public class Record implements Serializable {
 		}
 		this.nextId = 0;
 	}
-	
+
 	public Entity createRootEntity(String name) {
 		if ( rootEntity != null ) {
 			throw new IllegalStateException("Record already has an associated root entity");

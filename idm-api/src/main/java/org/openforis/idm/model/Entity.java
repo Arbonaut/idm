@@ -523,7 +523,7 @@ public class Entity extends Node<EntityDefinition> {
 
 	private boolean evaluateRelevance(String childName) {
 		NodeDefinition defn = getChildDefinition(childName);
-		String expr = defn.getRequiredExpression();
+		String expr = defn.getRelevantExpression();
 		if (StringUtils.isBlank(expr)) {
 			return true;
 		} else {
@@ -532,6 +532,9 @@ public class Entity extends Node<EntityDefinition> {
 				RelevanceExpression relevanceExpr = expressionFactory.createRelevanceExpression(expr);
 				return relevanceExpr.evaluate(this, null);
 			} catch (InvalidExpressionException e) {
+				throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
+			} catch(Exception e){
+				System.out.println(expr);
 				throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
 			}
 		}
@@ -680,13 +683,13 @@ public class Entity extends Node<EntityDefinition> {
 		return Collections.unmodifiableList(result);
 	}
 	
-	@Override
-	protected void detach() {
-		super.detach();
-		List<Node<? extends NodeDefinition>> children = getChildren();
-		for (Node<? extends NodeDefinition> child : children) {
-			child.detach();
-		}
-	}
+//	@Override
+//	protected void detach() {
+//		super.detach();
+//		List<Node<? extends NodeDefinition>> children = getChildren();
+//		for (Node<? extends NodeDefinition> child : children) {
+//			child.detach();
+//		}
+//	}
 	
 }

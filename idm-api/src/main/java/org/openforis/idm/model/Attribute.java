@@ -129,8 +129,9 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	
 	public Set<Attribute<?, ?>> getCheckDependencies() {
 		Set<Attribute<?, ?>> attributes = new HashSet<Attribute<?, ?>>();
-		Set<String> paths = getDefinition().getCheckDependencyPaths();
-		for (String path : paths) {
+		Set<NodePathPointer> dependencyPaths = getDefinition().getCheckDependencyPaths();
+		for (NodePathPointer npp : dependencyPaths) {
+			String path = npp.getEntityPath() + "/" + npp.getChildName() + "[1]";
 			try {
 				Attribute<?, ?> attribute = (Attribute<?, ?>) evaluateModelPathExpression(this, path);
 				attributes.add(attribute);

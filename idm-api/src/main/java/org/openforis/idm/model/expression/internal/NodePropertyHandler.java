@@ -67,7 +67,7 @@ public class NodePropertyHandler implements DynamicPropertyHandler {
 			return array;
 		} else {
 			String[] array = new String[1];
-			array[0] = "_parent";
+			array[0] = "__parent";
 			return array;
 		}
 	}

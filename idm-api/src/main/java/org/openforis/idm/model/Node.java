@@ -204,7 +204,7 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 			String entityPath = nodePathPointer.getEntityPath();
 			String childName = nodePathPointer.getChildName();
 			try {
-				Entity entity = (Entity) evaluateModelPathExpression(getParent(), entityPath);
+				Entity entity = (Entity) evaluateModelPathExpression(this, entityPath);
 				NodePointer nodePointer = new NodePointer(entity, childName);
 				addNodePointer(nodePointer, nodePointers);
 			} catch (MissingValueException e) {

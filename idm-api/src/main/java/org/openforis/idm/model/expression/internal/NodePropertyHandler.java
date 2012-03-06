@@ -53,23 +53,23 @@ public class NodePropertyHandler implements DynamicPropertyHandler {
 
 	@Override
 	public String[] getPropertyNames(Object object) {
+		String[] array;
 		if (object instanceof Entity) {
 			Entity entity = (Entity) object;
 			EntityDefinition entityDef = entity.getDefinition();
 			List<NodeDefinition> childDefs = entityDef.getChildDefinitions();
 			// Set<String> childNames = ((Entity) object).getChildNames();
-			String[] array = new String[childDefs.size()+1];
+			array = new String[childDefs.size()+1];
 			int i = 0;
 			for (NodeDefinition def : childDefs) {
 				array[i++] = def.getName();
 			}
-			array[i] = "__parent";
-			return array;
 		} else {
-			String[] array = new String[1];
-			array[0] = "__parent";
-			return array;
+			array = new String[1];
 		}
+		int last = array.length -1;
+		array[last] = "__parent";
+		return array;
 	}
 
 	@Override

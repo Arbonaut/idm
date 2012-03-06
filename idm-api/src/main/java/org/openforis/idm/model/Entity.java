@@ -522,21 +522,26 @@ public class Entity extends Node<EntityDefinition> {
 	}
 
 	private boolean evaluateRelevance(String childName) {
-		NodeDefinition defn = getChildDefinition(childName);
-		String expr = defn.getRelevantExpression();
-		if (StringUtils.isBlank(expr)) {
-			return true;
-		} else {
-			try {
-				ExpressionFactory expressionFactory = getExpressionFactory();
-				RelevanceExpression relevanceExpr = expressionFactory.createRelevanceExpression(expr);
-				return relevanceExpr.evaluate(this, null);
-			} catch (InvalidExpressionException e) {
-				throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
-			} catch(Exception e){
-				System.out.println(expr);
-				throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
+		EntityDefinition parentDefn = getDefinition().getParentDefinition();
+		String parentName = parentDefn.getName(); 
+		if(parent == null || parent.isRelevant(parentName)){
+			NodeDefinition defn = getChildDefinition(childName);
+			String expr = defn.getRelevantExpression();
+			if (StringUtils.isBlank(expr)) {
+				return true;
+			} else {
+				try {
+					ExpressionFactory expressionFactory = getExpressionFactory();
+					RelevanceExpression relevanceExpr = expressionFactory.createRelevanceExpression(expr);
+					return relevanceExpr.evaluate(this, null);
+				} catch (InvalidExpressionException e) {
+					throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
+				} catch(Exception e){
+					throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
+				}
 			}
+		} else {
+			return false;
 		}
 	}
 

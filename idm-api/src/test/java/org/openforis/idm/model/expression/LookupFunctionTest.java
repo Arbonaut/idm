@@ -23,7 +23,7 @@ public class LookupFunctionTest extends AbstractTest {
 		Record record = cluster.getRecord();
 		SurveyContext recordContext = record.getSurveyContext();
 
-		String expr = "idm:lookup('sampling_design', 'plot_centre', 'id', 1)";
+		String expr = "idm:lookup('sampling_design', 'plot_centre','cluster', 'id','plot', 1)";
 
 		DefaultValueExpression expression = recordContext.getExpressionFactory().createDefaultValueExpression(expr);
 		Object object = expression.evaluate(cluster, null);
@@ -36,7 +36,7 @@ public class LookupFunctionTest extends AbstractTest {
 		Record record = cluster.getRecord();
 		SurveyContext recordContext = record.getSurveyContext();
 
-		String expr = "idm:lookup('sampling_design', 'plot_centre', 'id')";
+		String expr = "idm:lookup('sampling_design', 'plot_centre','cluster' ,'id')";
 		DefaultValueExpression expression = recordContext.getExpressionFactory().createDefaultValueExpression(expr);
 		Object object = expression.evaluate(cluster, null);
 		Assert.assertEquals(TEST_COORDINATE, object);

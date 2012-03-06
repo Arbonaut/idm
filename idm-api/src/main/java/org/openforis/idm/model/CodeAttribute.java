@@ -80,18 +80,23 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 
 	public CodeAttribute getCodeParent() {
 		try {
-			String parentExpr = getDefinition().getParentExpression();
-			SurveyContext recordContext = getRecord().getSurveyContext();
-			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
-			ModelPathExpression expression = expressionFactory.createModelPathExpression(parentExpr);
-			Node<?> parentNode = expression.evaluate(getParent(), this);
-			if (parentNode != null && parentNode instanceof CodeAttribute) {
-				return (CodeAttribute) parentNode;
+			String parentExpr = definition.getParentExpression();
+			if (StringUtils.isBlank(parentExpr)) {
+				return null;
+			} else {
+				SurveyContext recordContext = getRecord().getSurveyContext();
+				ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
+				ModelPathExpression expression = expressionFactory.createModelPathExpression(parentExpr);
+				Node<?> parentNode = expression.evaluate(getParent(), this);
+				if (parentNode != null && parentNode instanceof CodeAttribute) {
+					return (CodeAttribute) parentNode;
+				} else {
+					return null;
+				}
 			}
 		} catch (Exception e) {
-			// return null;
+			throw new RuntimeException("Error while getting parent code " + e);
 		}
-		return null;
 	}
 
 	// TODO

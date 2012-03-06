@@ -40,6 +40,9 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	@XmlTransient
 	private CodeList list;
 
+	@XmlTransient
+	private CodeAttributeDefinition parentCodeAttributeDefinition; 
+	
 	public CodeList getList() {
 		return this.list;
 	}
@@ -75,6 +78,14 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	
 	public String getParentExpression() {
 		return this.parentExpression;
+	}
+
+	public CodeAttributeDefinition getParentCodeAttributeDefinition() {
+		if (StringUtils.isNotBlank(parentExpression) && parentCodeAttributeDefinition == null) {
+			NodeDefinition parentDefinition = getParentDefinition();
+			parentCodeAttributeDefinition = (CodeAttributeDefinition) parentDefinition.getDefinitionByRelativePath(parentExpression);
+		}
+		return parentCodeAttributeDefinition;
 	}
 
 	@Override

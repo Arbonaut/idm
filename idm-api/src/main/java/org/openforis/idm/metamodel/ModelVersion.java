@@ -69,4 +69,15 @@ public class ModelVersion implements Serializable {
 		}
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{name: ");
+		sb.append(name);
+		sb.append(", date: ");
+		sb.append(date);
+		sb.append("}");
+		return sb.toString();
+	}
+	
 }

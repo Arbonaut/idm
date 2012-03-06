@@ -15,7 +15,7 @@ import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 abstract class AbstractBooleanExpression extends AbstractExpression {
 
 	private boolean defaultValue;
-	
+
 	AbstractBooleanExpression(ModelJXPathCompiledExpression compiledExpression, ModelJXPathContext jxPathContext, boolean defaultValue) {
 		super(compiledExpression, jxPathContext);
 		this.defaultValue = defaultValue;
@@ -24,10 +24,13 @@ abstract class AbstractBooleanExpression extends AbstractExpression {
 	protected boolean evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
 		try {
 			Object result = evaluateSingle(contextNode, thisNode);
-			if(result == null){
+			if (result == null) {
 				return false;
-			} else {
+			} else if (result instanceof Boolean) {
 				return (Boolean) result;
+			} else {
+				// result is not null
+				return true;
 			}
 		} catch (MissingValueException e) {
 			return defaultValue;

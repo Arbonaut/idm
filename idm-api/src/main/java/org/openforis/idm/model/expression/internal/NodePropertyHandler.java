@@ -74,7 +74,7 @@ public class NodePropertyHandler implements DynamicPropertyHandler {
 
 	@Override
 	public void setProperty(Object object, String propertyName, Object value) {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("setProperty() not yet supported");
 	}
 
 }

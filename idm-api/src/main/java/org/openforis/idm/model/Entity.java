@@ -523,8 +523,7 @@ public class Entity extends Node<EntityDefinition> {
 
 	private boolean evaluateRelevance(String childName) {
 		EntityDefinition parentDefn = getDefinition().getParentDefinition();
-		String parentName = parentDefn.getName(); 
-		if(parent == null || parent.isRelevant(parentName)){
+		if(parentDefn == null || parent == null || parent.isRelevant(parentDefn.getName())){
 			NodeDefinition defn = getChildDefinition(childName);
 			String expr = defn.getRelevantExpression();
 			if (StringUtils.isBlank(expr)) {

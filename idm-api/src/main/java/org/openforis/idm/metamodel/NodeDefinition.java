@@ -16,8 +16,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openforis.idm.metamodel.expression.SchemaPathExpression;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
@@ -32,7 +30,7 @@ import org.openforis.idm.util.CollectionUtil;
 @XmlTransient
 public abstract class NodeDefinition extends Versionable implements Annotatable, Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final transient Log LOG = LogFactory.getLog(NodeDefinition.class);
+//	private static final transient Log LOG = LogFactory.getLog(NodeDefinition.class);
 
 	@XmlTransient
 	private Integer id;

@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,9 +10,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openforis.idm.metamodel.validation.Check;
 import org.openforis.idm.metamodel.validation.ComparisonCheck;
 import org.openforis.idm.metamodel.validation.CustomCheck;
@@ -30,7 +26,7 @@ import org.openforis.idm.util.CollectionUtil;
 @XmlTransient
 public abstract class AttributeDefinition extends NodeDefinition {
 	
-	private static final transient Log LOG = LogFactory.getLog(AttributeDefinition.class);
+//	private static final transient Log LOG = LogFactory.getLog(AttributeDefinition.class);
 	private static final long serialVersionUID = 1L;
 
 	@XmlElements({ 

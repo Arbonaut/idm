@@ -21,7 +21,6 @@ import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.NodePathPointer;
-import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.util.CollectionUtil;
 
 /**

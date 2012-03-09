@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.SurveyContext;
+import org.openforis.idm.model.Code;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.Record;
 
@@ -28,7 +29,6 @@ public class LookupFunctionTest extends AbstractTest {
 		DefaultValueExpression expression = recordContext.getExpressionFactory().createDefaultValueExpression(expr);
 		Object object = expression.evaluate(cluster, null);
 		Assert.assertEquals(TEST_COORDINATE, object);
-
 	}
 
 	@Test
@@ -37,6 +37,19 @@ public class LookupFunctionTest extends AbstractTest {
 		SurveyContext recordContext = record.getSurveyContext();
 
 		String expr = "idm:lookup('sampling_design', 'plot_centre','cluster' ,'id')";
+		DefaultValueExpression expression = recordContext.getExpressionFactory().createDefaultValueExpression(expr);
+		Object object = expression.evaluate(cluster, null);
+		Assert.assertEquals(TEST_COORDINATE, object);
+	}
+	
+	@Test
+	public void testLookupFunctionWithPath() throws InvalidExpressionException {
+		Record record = cluster.getRecord();
+		cluster.addValue("id", new Code("205_128"));
+		SurveyContext recordContext = record.getSurveyContext();
+
+		String expr = "idm:lookup('sampling_design', 'plot_centre','cluster', id,'plot', '0')";
+
 		DefaultValueExpression expression = recordContext.getExpressionFactory().createDefaultValueExpression(expr);
 		Object object = expression.evaluate(cluster, null);
 		Assert.assertEquals(TEST_COORDINATE, object);

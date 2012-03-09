@@ -72,18 +72,20 @@ public class DistanceCheck extends Check<CoordinateAttribute> {
 			Coordinate from = getCoordinate(recordContext, getSourcePointExpression(), parentEntity, coordinateAttr, coordinateAttr.getValue());
 			Coordinate to = getCoordinate(recordContext, getDestinationPointExpression(), parentEntity, coordinateAttr, null);
 
-			double distance = CoordinateOperations.orthodromicDistance(from, to);
+			if ( !(from == null || to == null) ) {
+				double distance = CoordinateOperations.orthodromicDistance(from, to);
 
-			if (maxDistanceExpression != null) {
-				double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, coordinateAttr, maxDistanceExpression);
-				if (distance > maxDistance) {
-					valid = false;
+				if (maxDistanceExpression != null) {
+					double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, coordinateAttr, maxDistanceExpression);
+					if (distance > maxDistance) {
+						valid = false;
+					}
 				}
-			}
-			if (minDistanceExpression != null) {
-				double minDistance = evaluateDistanceExpression(recordContext, parentEntity, coordinateAttr, minDistanceExpression);
-				if (distance < minDistance) {
-					valid = false;
+				if (minDistanceExpression != null) {
+					double minDistance = evaluateDistanceExpression(recordContext, parentEntity, coordinateAttr, minDistanceExpression);
+					if (distance < minDistance) {
+						valid = false;
+					}
 				}
 			}
 
@@ -93,13 +95,13 @@ public class DistanceCheck extends Check<CoordinateAttribute> {
 		}
 	}
 
-	private double evaluateDistanceExpression(SurveyContext recordContext, Entity context, Attribute<?,?> thisNode, String expression) throws InvalidExpressionException {
+	private double evaluateDistanceExpression(SurveyContext recordContext, Entity context, Attribute<?, ?> thisNode, String expression) throws InvalidExpressionException {
 		DefaultValueExpression defaultValueExpression = recordContext.getExpressionFactory().createDefaultValueExpression(expression);
 		Double value = (Double) defaultValueExpression.evaluate(context, thisNode);
 		return value;
 	}
 
-	private Coordinate getCoordinate(SurveyContext recordContext, String expression, Node<?> context, Attribute<?,?> thisNode, Coordinate defaultCoordinate) throws InvalidExpressionException {
+	private Coordinate getCoordinate(SurveyContext recordContext, String expression, Node<?> context, Attribute<?, ?> thisNode, Coordinate defaultCoordinate) throws InvalidExpressionException {
 		if (expression == null) {
 			return defaultCoordinate;
 		} else {

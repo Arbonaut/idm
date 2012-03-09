@@ -100,7 +100,7 @@ public class Survey implements Serializable {
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return CollectionUtil.unmodifiableList(this.descriptions);
+		return Collections.unmodifiableList(this.descriptions);
 	}
 
 	public List<ModelVersion> getVersions() {
@@ -157,7 +157,7 @@ public class Survey implements Serializable {
 		if ( configuration == null ) {
 			return (List<Configuration>) Collections.EMPTY_LIST;
 		} else {
-			return Collections.unmodifiableList(configuration.list);
+			return CollectionUtil.unmodifiableList(configuration.list);
 		}
 	}
 	

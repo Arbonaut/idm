@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
 import org.openforis.idm.model.NodePathPointer;
+import org.openforis.idm.util.CollectionUtil;
 
 
 /**
@@ -91,7 +92,7 @@ public class Survey implements Serializable {
 	}
 
 	public List<LanguageSpecificText> getProjectNames() {
-		return Collections.unmodifiableList(this.projectNames);
+		return CollectionUtil.unmodifiableList(this.projectNames);
 	}
 
 	public Integer getCycle() {
@@ -99,23 +100,23 @@ public class Survey implements Serializable {
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return Collections.unmodifiableList(this.descriptions);
+		return CollectionUtil.unmodifiableList(this.descriptions);
 	}
 
 	public List<ModelVersion> getVersions() {
-		return Collections.unmodifiableList(this.modelVersions);
+		return CollectionUtil.unmodifiableList(this.modelVersions);
 	}
 
 	public List<CodeList> getCodeLists() {
-		return Collections.unmodifiableList(this.codeLists);
+		return CollectionUtil.unmodifiableList(this.codeLists);
 	}
 
 	public List<Unit> getUnits() {
-		return Collections.unmodifiableList(this.units);
+		return CollectionUtil.unmodifiableList(this.units);
 	}
 
 	public List<SpatialReferenceSystem> getSpatialReferenceSystems() {
-		return Collections.unmodifiableList(this.spatialReferenceSystems);
+		return CollectionUtil.unmodifiableList(this.spatialReferenceSystems);
 	}
 
 	public Schema getSchema() {

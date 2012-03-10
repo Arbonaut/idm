@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.xml.internal.XmlInit;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -96,7 +97,7 @@ public class Schema  implements Serializable {
 	}
 	
 	public List<EntityDefinition> getRootEntityDefinitions() {
-		return Collections.unmodifiableList(this.rootEntityDefinitions);
+		return CollectionUtil.unmodifiableList(rootEntityDefinitions);
 	}
 
 	public EntityDefinition getRootEntityDefinition(String name) {

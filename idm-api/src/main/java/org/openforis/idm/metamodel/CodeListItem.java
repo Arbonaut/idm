@@ -4,7 +4,6 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,6 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -63,27 +63,15 @@ public class CodeListItem extends Versionable implements Serializable {
 	}
 
 	public List<LanguageSpecificText> getLabels() {
-		if(this.labels != null) {
-			return Collections.unmodifiableList(this.labels);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(labels);
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		if(this.descriptions != null) {
-			return Collections.unmodifiableList(this.descriptions);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(descriptions);
 	}
 
 	public List<CodeListItem> getChildItems() {
-		if(this.childItems != null) {
-			return Collections.unmodifiableList(this.childItems);
-		} else {
-			return null;
-		}
+		return CollectionUtil.unmodifiableList(childItems);
 	}
 
 	public CodeListItem getParentItem() {

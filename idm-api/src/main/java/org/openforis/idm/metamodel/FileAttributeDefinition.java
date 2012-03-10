@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,6 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.openforis.idm.model.File;
 import org.openforis.idm.model.FileAttribute;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -37,7 +37,7 @@ public class FileAttributeDefinition extends AttributeDefinition {
 	}
 
 	public List<String> getExtensions() {
-		return Collections.unmodifiableList(this.extensions);
+		return CollectionUtil.unmodifiableList(extensions);
 	}
 
 	@Override

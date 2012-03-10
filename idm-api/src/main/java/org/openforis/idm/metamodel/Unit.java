@@ -4,7 +4,6 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,6 +11,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -51,10 +52,10 @@ public class Unit implements Serializable {
 	}
 
 	public List<LanguageSpecificText> getLabels() {
-		return Collections.unmodifiableList(this.labels);
+		return CollectionUtil.unmodifiableList(labels);
 	}
 
 	public List<LanguageSpecificText> getAbbreviations() {
-		return Collections.unmodifiableList(this.abbreviations);
+		return CollectionUtil.unmodifiableList(abbreviations);
 	}
 }

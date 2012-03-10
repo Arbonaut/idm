@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -42,7 +43,7 @@ public class EntityDefinition extends NodeDefinition {
 	private List<NodeDefinition> childDefinitions;
 
 	public List<NodeDefinition> getChildDefinitions() {
-		return Collections.unmodifiableList(childDefinitions);
+		return CollectionUtil.unmodifiableList(childDefinitions);
 	}
 	
 	public NodeDefinition getChildDefinition(String name) {

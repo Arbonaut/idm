@@ -8,9 +8,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
+import org.openforis.idm.metamodel.DateAttributeDefinition;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
+import org.openforis.idm.metamodel.TimeAttributeDefinition;
 
 /**
  * @author G. Miceli
@@ -83,8 +85,12 @@ public class AutomaticColumnProvider extends ColumnProviderChain {
 		} else {
 			if(defn instanceof CoordinateAttributeDefinition){
 				cols.add(new CoordinateColumnProvider(name));
+			} else if(defn instanceof DateAttributeDefinition) {
+				cols.add(new DateColumnProvider(name));
 			} else if(defn instanceof TaxonAttributeDefinition){
 				cols.add(new TaxonColumnProvider(name));
+			} else if(defn instanceof TimeAttributeDefinition){
+				cols.add(new TimeColumnProvider(name));
 			} else {
 				SingleAttributeColumnProvider col = new SingleAttributeColumnProvider(name, name);
 				cols.add(col);

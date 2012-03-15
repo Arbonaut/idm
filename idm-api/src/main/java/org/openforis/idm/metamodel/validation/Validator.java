@@ -68,7 +68,7 @@ public class Validator {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private void validateAttributeChecks(Attribute<?, ?> attribute, ValidationResults results) {
+	protected void validateAttributeChecks(Attribute<?, ?> attribute, ValidationResults results) {
 		
 		// Attribute<? extends AttributeDefinition, ?> attribute = (Attribute<? extends AttributeDefinition, ?>) nodeState.getNode();
 		AttributeDefinition defn = attribute.getDefinition();
@@ -82,7 +82,7 @@ public class Validator {
 		}
 	}
 
-	private void validateAttributeValue(Attribute<?, ?> attribute, ValidationResults results) {
+	protected void validateAttributeValue(Attribute<?, ?> attribute, ValidationResults results) {
 		if (attribute instanceof CodeAttribute) {
 			validateCodeAttributeValue((CodeAttribute) attribute, results);
 		} else if (attribute instanceof CoordinateAttribute) {

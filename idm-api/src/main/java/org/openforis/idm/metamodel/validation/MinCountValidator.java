@@ -35,8 +35,8 @@ public class MinCountValidator implements ValidationRule<Entity> {
 			int nonEmptyCount = 0;
 			List<Node<?>> childNodes = entity.getAll(childName);
 			for ( Node<?> child : childNodes ) {
-				if ( !child.isEmpty() ) {
-					nonEmptyCount++;;
+				if ( !isEmpty(child) ) {
+					nonEmptyCount++;
 					if ( nonEmptyCount >= minCount ) {
 						return ValidationResultFlag.OK;
 					}
@@ -46,6 +46,10 @@ public class MinCountValidator implements ValidationRule<Entity> {
 		}
 	}
 
+	protected boolean isEmpty(Node<?> node){
+		return node.isEmpty();
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

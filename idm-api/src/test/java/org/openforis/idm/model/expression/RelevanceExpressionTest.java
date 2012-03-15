@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.RealAttribute;
 
 /**
  * @author M. Togna
@@ -42,6 +43,39 @@ public class RelevanceExpressionTest extends AbstractTest {
 		Assert.assertTrue(b);
 	}
 
+	@Test
+	public void testRelevanceOnNodeExpression() throws InvalidExpressionException {
+		cluster.addValue("plot_direction", 345.45);
+		RealAttribute plotDistance = cluster.addValue("plot_distance", 12.2);
+		String expr = "parent()/plot_direction";
+		boolean b = evaluateExpression(expr, plotDistance);
+		Assert.assertTrue(b);
+	}
+	
+	@Test
+	public void testRelevanceOnNegativeNodeExpression() throws InvalidExpressionException {
+		cluster.addValue("plot_direction", 345.45);
+		RealAttribute plotDistance = cluster.addValue("plot_distance", 12.2);
+		String expr = "not(parent()/plot_direction)";
+		boolean b = evaluateExpression(expr, plotDistance);
+		Assert.assertFalse(b);
+	}
+	
+	@Test
+	public void testBlankValueWithMissingValue() throws InvalidExpressionException {
+		String expr = "plot_direction != ''";
+		boolean b = evaluateExpression(expr, cluster);
+//		Assert.assertFalse(b);
+	}
+	
+	@Test
+	public void testBlankValue() throws InvalidExpressionException {
+		String expr = "plot_direction != ''";
+		cluster.addValue("plot_direction", (Double)null);
+		boolean b = evaluateExpression(expr, cluster);
+		Assert.assertFalse(b);
+	}
+	
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 		RelevanceExpression expression = context.getRecord().getSurveyContext().getExpressionFactory().createRelevanceExpression(expr);
 		boolean b = expression.evaluate(context, null);

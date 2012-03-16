@@ -20,6 +20,7 @@ public class DateValidator implements ValidationRule<DateAttribute> {
 			if (cal == null) {
 				return ValidationResultFlag.ERROR;
 			}
+			cal.getTime();
 			return ValidationResultFlag.OK;
 		} catch (IllegalArgumentException e) {
 			return ValidationResultFlag.ERROR;

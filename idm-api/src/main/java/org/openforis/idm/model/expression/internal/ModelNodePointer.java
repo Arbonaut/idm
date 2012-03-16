@@ -44,7 +44,7 @@ public class ModelNodePointer extends DynamicPointer {
 	}
 
 	private Object getValue(Attribute<?, ?> attribute) {
-		if (attribute.getValue() == null) {
+		if (attribute.getValue() == null || !attribute.isFilled() ) {
 			return null;
 		} else if (attribute instanceof TimeAttribute) {
 			Time time = ((TimeAttribute) attribute).getValue();

@@ -33,6 +33,12 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 	}
 
 	@Override
+	public boolean isFilled() {
+		Field<?> codeField = getField(0);
+		return !codeField.isEmpty();
+	}
+	
+	@Override
 	public Code getValue() {
 		String code = getCodeField().getValue();
 		String qualifier = getQualifierField().getValue();

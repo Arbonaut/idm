@@ -104,6 +104,19 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		}
 		return true;
 	}
+	
+	/**
+	 * Returns true if all fields are not empty
+	 * @return
+	 */
+	public boolean isFilled(){
+		for ( Field<?> field : fields ) {
+			if ( field.isEmpty() ) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 //	public boolean isDefaultValue() {
 //		return defaultValue;

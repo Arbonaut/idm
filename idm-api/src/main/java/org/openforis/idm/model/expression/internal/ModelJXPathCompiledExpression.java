@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.jxpath.ri.JXPathCompiledExpression;
-import org.apache.commons.jxpath.ri.compiler.CoreOperation;
 import org.apache.commons.jxpath.ri.compiler.Expression;
+import org.apache.commons.jxpath.ri.compiler.Operation;
 
 /**
  * @author M. Togna
@@ -28,12 +28,14 @@ public class ModelJXPathCompiledExpression extends JXPathCompiledExpression {
 	}
 
 	private void addReferencePath(Expression expression, List<ModelLocationPath> list) {
-		if (expression instanceof ModelLocationPath) {
+		if ( expression instanceof ModelLocationPath ) {
 			list.add((ModelLocationPath) expression);
-		} else if (expression instanceof CoreOperation) {
-			Expression[] arguments = ((CoreOperation) expression).getArguments();
-			for (Expression arg : arguments) {
-				addReferencePath(arg, list);
+		} else if ( expression instanceof Operation ) {
+			Expression[] arguments = ((Operation) expression).getArguments();
+			if( arguments != null && arguments.length > 0 ) {
+				for (Expression arg : arguments) {
+					addReferencePath(arg, list);
+				}
 			}
 		}
 

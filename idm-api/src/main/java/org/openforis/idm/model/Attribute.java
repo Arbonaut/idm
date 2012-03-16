@@ -5,6 +5,7 @@ package org.openforis.idm.model;
 
 import java.io.StringWriter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.openforis.idm.metamodel.AttributeDefinition;
@@ -146,8 +147,11 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		for (NodePathPointer npp : dependencyPaths) {
 			String path = npp.getEntityPath() + "/" + npp.getChildName() + "[1]";
 			try {
-				Attribute<?, ?> attribute = (Attribute<?, ?>) evaluateModelPathExpression(this, path);
-				attributes.add(attribute);
+				List<Node<?>> nodes = iterateModelPathExpression(this, path);
+				for (Node<?> node : nodes) {
+					Attribute<?, ?> attribute = (Attribute<?, ?>) node;
+					attributes.add(attribute);
+				}
 			} catch (MissingValueException e) {
 				continue;
 			}

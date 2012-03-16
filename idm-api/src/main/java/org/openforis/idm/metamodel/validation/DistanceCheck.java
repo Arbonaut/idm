@@ -10,8 +10,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openforis.idm.geospatial.CoordinateOperations;
-import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.SpatialReferenceSystem;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
@@ -32,7 +33,8 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
 public class DistanceCheck extends Check<CoordinateAttribute> {
 
 	private static final long serialVersionUID = 1L;
-
+	private static final Log LOG = LogFactory.getLog(DistanceCheck.class);
+	
 	@XmlAttribute(name = "to")
 	private String destinationPointExpression;
 
@@ -91,7 +93,11 @@ public class DistanceCheck extends Check<CoordinateAttribute> {
 
 			return ValidationResultFlag.valueOf(valid, this.getFlag());
 		} catch (Exception e) {
-			throw new IdmInterpretationError("Unable to execute distance check", e);
+//			throw new IdmInterpretationError("Unable to execute distance check", e);
+			if( LOG.isInfoEnabled() ){
+				LOG.info("Unable to evaluate distance check " , e);
+			}
+			return ValidationResultFlag.OK;
 		}
 	}
 

@@ -6,6 +6,7 @@ package org.openforis.idm.metamodel;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.validation.Check;
 import org.openforis.idm.metamodel.validation.ComparisonCheck;
 import org.openforis.idm.metamodel.validation.CustomCheck;
@@ -93,6 +94,12 @@ class SurveyDependencies {
 				checkDependencies.registerDependencies(attributeDefinition, ((UniquenessCheck) check).getExpression());
 			}
 		}
+		
+		if(attributeDefinition instanceof CodeAttributeDefinition){
+			CodeAttributeDefinition codeDefinition = (CodeAttributeDefinition) attributeDefinition;
+			checkDependencies.registerDependencies(attributeDefinition, codeDefinition.getParentExpression());
+		}
+		
 	}
 
 	private ExpressionFactory getExpressionFactory(Survey survey) {

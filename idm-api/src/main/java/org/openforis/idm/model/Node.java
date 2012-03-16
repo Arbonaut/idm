@@ -236,17 +236,21 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 	}
 
 	protected Node<?> evaluateModelPathExpression(Node<? extends NodeDefinition> node, String path) {
+		List<Node<?>> nodes = iterateModelPathExpression(node, path);
+		return nodes.get(0);
+	}
+	
+	protected List<Node<?>> iterateModelPathExpression(Node<? extends NodeDefinition> node, String path) {
 		Record record = node.getRecord();
 		SurveyContext surveyContext = record.getSurveyContext();
 		ExpressionFactory exprFactory = surveyContext.getExpressionFactory();
 		try {
 			ModelPathExpression pathExpression = exprFactory.createModelPathExpression(path);
-			Node<?> resultNode = pathExpression.evaluate(node, node);
-			return resultNode;
+			List<Node<?>> list = pathExpression.iterate(node, node);
+			return list;
 		} catch (InvalidExpressionException e) {
 			throw new IdmInterpretationError("Invalid path " + path, e);
 		}
-
 	}
 	
 	public Survey getSurvey() {

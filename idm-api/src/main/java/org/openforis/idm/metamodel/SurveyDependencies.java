@@ -6,7 +6,6 @@ package org.openforis.idm.metamodel;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.validation.Check;
 import org.openforis.idm.metamodel.validation.ComparisonCheck;
 import org.openforis.idm.metamodel.validation.CustomCheck;
@@ -14,6 +13,31 @@ import org.openforis.idm.metamodel.validation.DistanceCheck;
 import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.model.expression.ExpressionFactory;
+
+/*
+Ax: = ancestors of x
+Dx := descendants of x
+Lx := relevanceDependencies U relevanceDependencies descendants 
+Qx := requiredDependencies of x
+Rx := Lx U Qx
+Vx := x U checkDependencies
+
+
+
+On update value of attribute x, field.setXXX clear state of dependent nodes:
+1. Clear relevance states of all nodes in Lx
+2. Clear required states of all nodes in Rx
+3. [Clear minCount validation state of all nodes in Rx U Ax] <-- skip for now
+4. Clear all value validation results of nodes Vx
+
+Send client updated states:
+1. For each node in Rx U Ax: (entityId, childName, relevant, required, minCountValidation)*
+2. For each node in Vx: (nodeId, validationResults)
+3. Client updates UI accordingly 
+  
+* could be optimized further in the future by only sending updated relevance for Rx/Qx and relevance, required and missing for Rx/Lx
+ 
+ */
 
 /**
  * @author M. Togna

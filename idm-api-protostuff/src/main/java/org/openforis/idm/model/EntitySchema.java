@@ -31,12 +31,15 @@ public class EntitySchema extends SchemaSupport<Entity> {
         for(Node<?> node : children) {
 			out.writeUInt32(1, node.definitionId, false);
 			out.writeObject(2, node, getSchema(node.getClass()), false);
+			
+			State childState = entity.getChildState(node.getName());
+			out.writeInt32(3, childState.intValue(), false);
         }
 	}
 
 	@Override
 	public void mergeFrom(Input input, Entity entity) throws IOException {
-        for(int number = input.readFieldNumber(this);; number = input.readFieldNumber(this))
+        for(int number = input.readFieldNumber(this); ; number = input.readFieldNumber(this))
         {
         	if ( number == 0 ) {
         		break;
@@ -55,7 +58,13 @@ public class EntitySchema extends SchemaSupport<Entity> {
         		// Node
         		readAndCheckFieldNumber(input, 2);
         		input.mergeObject(node, getSchema(node.getClass()));
-            } else {
+        		
+        		//Node state
+        		readAndCheckFieldNumber(input, 3);
+        		int intState = input.readInt32();
+        		State nodeState = State.parseState(intState);
+				entity.childStates.put(node.getName(), nodeState);
+        	} else {
             	throw new ProtostuffException("Unexpected field number");
             }
         }

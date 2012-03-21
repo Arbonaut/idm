@@ -48,17 +48,29 @@ public class Entity extends Node<EntityDefinition> {
 	private static final long serialVersionUID = 1L;
 	
 	Map<String, ArrayList<Node<? extends NodeDefinition>>> childrenByName;
-
 	private DerivedStateCache derivedStateCache;
+	Map<String, State> childStates;
 	
 	public Entity(EntityDefinition definition) {
 		super(definition);
 		this.childrenByName = new HashMap<String, ArrayList<Node<? extends NodeDefinition>>>();
-		this.derivedStateCache = new Entity.DerivedStateCache();
+		this.derivedStateCache = new DerivedStateCache();
+		this.childStates = new HashMap<String, State>();
 	}
 
 	public void add(Node<?> node) {
 		addInternal(node, null);
+	}
+	
+	public State getChildState(String childName){
+		checkChildDefinition(childName);
+		
+		State state = childStates.get(childName);
+		if( state == null ){
+			state = new State();
+			childStates.put(childName, state);
+		}
+		return state;
 	}
 	
 	/**

@@ -76,7 +76,7 @@ public class EntityTest {
 //	@Test
 //	public void testValidateRootEntity() {
 //		Entity cluster = getRootEntity();
-//		NodeState nodeState = new NodeState(cluster);
+//		State nodeState = new State(cluster);
 //		ValidationResults results = new Validator().validate(nodeState);
 //		int errors = results.getErrors().size();
 //		Assert.assertEquals(5, errors);
@@ -88,7 +88,7 @@ public class EntityTest {
 //		Entity plot = cluster.addEntity("plot");
 //		plot.addValue("share", 20.0);
 //		
-//		NodeState nodeState = new NodeState(plot);
+//		State nodeState = new State(plot);
 //		ValidationResults results = new Validator().validate(nodeState);
 //		int errors = results.getErrors().size();
 //		Assert.assertEquals(16, errors);

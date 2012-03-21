@@ -43,7 +43,7 @@ public class ProtostuffSerializationTest  {
 		// Compare
 		String r = record1.toString();
 		String r1 = record1.toString();
-//		System.out.println(r1);cf
+//		System.out.println(r1);
 		Assert.assertEquals(r, r1);
 	}
 
@@ -74,12 +74,14 @@ public class ProtostuffSerializationTest  {
 		cluster.addValue("id", new Code(id));
 		cluster.addValue("gps_realtime", Boolean.TRUE);
 		cluster.addValue("region", new Code("001", "aqualiferxxxxxxxxxxxx"));
+		cluster.getChildState("region").set(0, true);
 		cluster.addValue("district", new Code("002"));
 		cluster.addValue("crew_no", 10);
 		cluster.addValue("map_sheet", "value 1");
 		cluster.addValue("map_sheet", "value 2");
 		cluster.addValue("vehicle_location", new Coordinate((double) 12345, (double) 67890, "srs"));
-		cluster.addValue("gps_model", "TomTom 1.232");
+		TextAttribute gpsModel = cluster.addValue("gps_model", "TomTom 1.232");
+		gpsModel.getField().getState().set(0,true);
 		{
 			Entity ts = cluster.addEntity("time_study");
 			ts.addValue("date", new Date(2011, 2, 14));

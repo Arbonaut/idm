@@ -21,7 +21,7 @@ public abstract class ValidationTest  extends AbstractTest{
 	}
 	
 	protected ValidationResults validate(Attribute<?, ?> attribute){
-//		NodeState nodeState = new NodeState(node);
+//		State nodeState = new State(node);
 //		return validator.validate(nodeState);
 		ValidationResults validationResults = attribute.validateValue();
 		return validationResults;

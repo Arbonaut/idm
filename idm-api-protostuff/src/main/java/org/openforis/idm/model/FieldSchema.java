@@ -13,7 +13,7 @@ import com.dyuproject.protostuff.ProtostuffException;
 public class FieldSchema extends SchemaSupport<Field> {
 
 	public FieldSchema() {
-		super(Field.class, "value", "symbol", "remarks");
+		super(Field.class, "value", "symbol", "remarks", "state" );
 	}
 
 	@Override
@@ -43,6 +43,9 @@ public class FieldSchema extends SchemaSupport<Field> {
 		}
 		if ( fld.remarks != null ) {
 			out.writeString(3, fld.remarks, false);
+		}
+		if( fld.state != null ){
+			out.writeInt32(4, fld.state.intValue(), false);
 		}
 	}
 
@@ -74,6 +77,10 @@ public class FieldSchema extends SchemaSupport<Field> {
 				break;
 			case 3:
 				fld.remarks = in.readString();
+				break;
+			case 4:
+				State state = State.parseState(in.readInt32());
+				fld.state = state;
 				break;
 			default:
             	throw new ProtostuffException("Unexpected field number");

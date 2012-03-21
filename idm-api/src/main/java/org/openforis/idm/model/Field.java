@@ -19,10 +19,12 @@ public final class Field<T> implements Serializable {
 	String remarks;
 	Character symbol;
 	Attribute<?,?> attribute;
+	State state;
 	
 	private Field(Class<T> valueType, Attribute<?,?> attribute) {
 		this.valueType = valueType;
 		this.attribute = attribute;
+		state = new State();
 	}
 
 	public static <C> Field<C> newInstance(Class<C> valueType, Attribute<?,?> attribute) {
@@ -59,6 +61,10 @@ public final class Field<T> implements Serializable {
 		return value == null || value.toString().trim().isEmpty();
 	}
 
+	public State getState() {
+		return state;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public T parseValue(String s) {
 		if ( StringUtils.isBlank(s) ) {

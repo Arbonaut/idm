@@ -23,15 +23,15 @@ import org.openforis.idm.model.Record;
 public class NodeStateManager {
 
 	private Map<String, ModelDependencies> modelDependenciesMap;
-	//private Map<Node<?>, NodeState> nodeStateMap;
+	//private Map<Node<?>, State> nodeStateMap;
 	private Validator validator;
 
 	public NodeStateManager() {
 		modelDependenciesMap = new HashMap<String, ModelDependencies>();
-		//nodeStateMap = new HashMap<Node<?>, NodeState>();
+		//nodeStateMap = new HashMap<Node<?>, State>();
 	}
 
-//	public NodeState get(Node<?> node) {
+//	public State get(Node<?> node) {
 //		return nodeStateMap.get(node);
 //	}
 

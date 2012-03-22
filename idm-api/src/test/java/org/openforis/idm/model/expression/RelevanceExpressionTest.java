@@ -65,7 +65,7 @@ public class RelevanceExpressionTest extends AbstractTest {
 	public void testBlankValueWithMissingValue() throws InvalidExpressionException {
 		String expr = "plot_direction != ''";
 		boolean b = evaluateExpression(expr, cluster);
-//		Assert.assertFalse(b);
+		Assert.assertTrue(b);
 	}
 	
 	@Test
@@ -73,7 +73,7 @@ public class RelevanceExpressionTest extends AbstractTest {
 		String expr = "plot_direction != ''";
 		cluster.addValue("plot_direction", (Double)null);
 		boolean b = evaluateExpression(expr, cluster);
-		Assert.assertFalse(b);
+		Assert.assertTrue(b);
 	}
 	
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {

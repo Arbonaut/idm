@@ -82,6 +82,8 @@ public class ProtostuffSerializationTest  {
 		cluster.addValue("vehicle_location", new Coordinate((double) 12345, (double) 67890, "srs"));
 		TextAttribute gpsModel = cluster.addValue("gps_model", "TomTom 1.232");
 		gpsModel.getField().getState().set(0,true);
+		cluster.setChildState("accessibility", 1);
+		
 		{
 			Entity ts = cluster.addEntity("time_study");
 			ts.addValue("date", new Date(2011, 2, 14));

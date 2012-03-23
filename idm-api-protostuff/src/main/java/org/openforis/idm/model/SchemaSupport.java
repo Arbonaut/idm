@@ -60,7 +60,8 @@ public abstract class SchemaSupport<T> implements Schema<T> {
 	}
 
 	protected void readAndCheckFieldNumber(Input input, int i) throws IOException, ProtostuffException {
-		if ( input.readFieldNumber(this) != i ) {
+		int fieldNumber = input.readFieldNumber(this);
+		if ( fieldNumber != i ) {
 			throw new ProtostuffException("Corrupt NodeWrapper field number");
 		}
 	}

@@ -12,8 +12,8 @@ import java.util.BitSet;
 public class State {
 	private static final int N_BITS = 8;
 
-	private BitSet bitSet;
-
+	private transient BitSet bitSet;
+	
 	public State() {
 		bitSet = new BitSet(N_BITS);
 	}
@@ -49,20 +49,23 @@ public class State {
 		return booleanString;
 	}
 
-	public static State parseState(int value) {
+	public void set(int value) {
 		if ( value > Math.pow( 2, N_BITS ) ) {
 			throw new IllegalArgumentException("Value cannot be grater than " + Math.pow( 2, N_BITS )+ ", but it was " + value);
 		}
 		
-		State state = new State();
-
 		String binaryString = Integer.toBinaryString(value);
 		char[] charArray = binaryString.toCharArray();
 
 		int pos = binaryString.length();
 		for ( char c : charArray ) {
-			state.set(--pos, c == '1' ? true : false);
+			set(--pos, c == '1' ? true : false);
 		}
+	}
+	
+	public static State parseState(int value) {
+		State state = new State();
+		state.set(value);
 		return state;
 	}
 	
@@ -70,7 +73,5 @@ public class State {
 	public String toString() {
 		return getBooleanString();
 	}
-	
-	
-	
+
 }

@@ -62,11 +62,21 @@ public class Entity extends Node<EntityDefinition> {
 		addInternal(node, null);
 	}
 	
+	public void setChildState(String childName, int intState) {
+		State childState = getChildState(childName);
+		childState.set(intState);
+	}
+	
+	public void setChildState(String childName, int position, boolean value) {
+		State childState = getChildState(childName);
+		childState.set(position, value);
+	}
+	
 	public State getChildState(String childName){
 		checkChildDefinition(childName);
 		
 		State state = childStates.get(childName);
-		if( state == null ){
+		if (state == null) {
 			state = new State();
 			childStates.put(childName, state);
 		}

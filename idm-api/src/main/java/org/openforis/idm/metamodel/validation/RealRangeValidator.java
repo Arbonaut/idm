@@ -15,10 +15,16 @@ public class RealRangeValidator implements ValidationRule<RealRangeAttribute> {
 	@Override
 	public ValidationResultFlag evaluate(RealRangeAttribute node) {
 		RealRange range = node.getValue();
-		Double from = range.getFrom();
-		Double to = range.getTo();
-		boolean valid = to >= from;
-		return ValidationResultFlag.valueOf(valid);
+		if ( range != null ) {
+			Double from = range.getFrom();
+			Double to = range.getTo();
+			
+			if ( !( from == null || to == null ) ) {
+				boolean valid = to >= from;
+				return ValidationResultFlag.valueOf(valid);
+			}
+		}
+		return ValidationResultFlag.OK;
 	}
 
 }

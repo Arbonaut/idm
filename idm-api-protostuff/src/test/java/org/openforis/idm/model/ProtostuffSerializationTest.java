@@ -71,7 +71,7 @@ public class ProtostuffSerializationTest  {
 	}
 
 	private void addTestValues(Entity cluster, String id) {
-		cluster.addValue("id", new Code(id));
+		cluster.addValue("id", id);
 		cluster.addValue("gps_realtime", Boolean.TRUE);
 		cluster.addValue("region", new Code("001", "aqualiferxxxxxxxxxxxx"));
 		cluster.getChildState("region").set(0, true);

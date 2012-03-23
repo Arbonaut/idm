@@ -32,8 +32,10 @@ public class NodePropertyHandler implements DynamicPropertyHandler {
 			Entity entity = (Entity) object;
 			List<Node<? extends NodeDefinition>> list = new ArrayList<Node<? extends NodeDefinition>>();
 			for (int i = 0; i < entity.getCount(propertyName); i++) {
-				Node<? extends NodeDefinition> e = entity.get(propertyName, i);
-				list.add(e);
+				Node<? extends NodeDefinition> childNode = entity.get(propertyName, i);
+				if( childNode instanceof Entity || ( ! childNode.isEmpty()) ) {
+					list.add(childNode);
+				}
 			}
 			if (list.size() == 0) {
 				throw new MissingValueException();

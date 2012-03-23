@@ -45,7 +45,7 @@ public class LookupFunctionTest extends AbstractTest {
 	@Test
 	public void testLookupFunctionWithPath() throws InvalidExpressionException {
 		Record record = cluster.getRecord();
-		cluster.addValue("id", new Code("205_128"));
+		cluster.addValue("id", "205_128");
 		SurveyContext recordContext = record.getSurveyContext();
 
 		String expr = "idm:lookup('sampling_design', 'plot_centre','cluster', id,'plot', '0')";

@@ -27,22 +27,26 @@ public class MinCountValidator implements ValidationRule<Entity> {
 
 	@Override
 	public ValidationResultFlag evaluate(Entity entity) {
-		String childName = nodeDefinition.getName();				
-		int minCount = entity.getEffectiveMinCount(childName);
-		if ( minCount == 0 ) {
-			return ValidationResultFlag.OK;
-		} else {
-			int nonEmptyCount = 0;
-			List<Node<?>> childNodes = entity.getAll(childName);
-			for ( Node<?> child : childNodes ) {
-				if ( !isEmpty(child) ) {
-					nonEmptyCount++;
-					if ( nonEmptyCount >= minCount ) {
-						return ValidationResultFlag.OK;
+		String childName = nodeDefinition.getName();
+		if( entity.isRelevant(childName) ) {
+			int minCount = entity.getEffectiveMinCount(childName);
+			if ( minCount == 0 ) {
+				return ValidationResultFlag.OK;
+			} else {
+				int nonEmptyCount = 0;
+				List<Node<?>> childNodes = entity.getAll(childName);
+				for ( Node<?> child : childNodes ) {
+					if ( !isEmpty(child) ) {
+						nonEmptyCount++;
+						if ( nonEmptyCount >= minCount ) {
+							return ValidationResultFlag.OK;
+						}
 					}
 				}
+				return ValidationResultFlag.ERROR;
 			}
-			return ValidationResultFlag.ERROR;
+		} else {
+			return ValidationResultFlag.OK;
 		}
 	}
 

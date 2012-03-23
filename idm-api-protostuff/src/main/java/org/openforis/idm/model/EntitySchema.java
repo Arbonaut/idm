@@ -3,6 +3,7 @@ package org.openforis.idm.model;
 import java.io.IOException;
 import java.util.List;
 
+import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
 
@@ -17,7 +18,7 @@ import com.dyuproject.protostuff.ProtostuffException;
 public class EntitySchema extends SchemaSupport<Entity> {
 
 	public EntitySchema() {
-		super(Entity.class, "children");
+		super(Entity.class, "children", "childStates");
 	}
 
 	@Override
@@ -27,13 +28,23 @@ public class EntitySchema extends SchemaSupport<Entity> {
 
 	@Override
 	public void writeTo(Output out, Entity entity) throws IOException {
+		
+		
 		List<Node<? extends NodeDefinition>> children = entity.getChildren();
         for(Node<?> node : children) {
 			out.writeUInt32(1, node.definitionId, false);
 			out.writeObject(2, node, getSchema(node.getClass()), false);
-			
-			State childState = entity.getChildState(node.getName());
-			out.writeInt32(3, childState.intValue(), false);
+//			State childState = entity.getChildState(node.getName());
+//			out.writeInt32(3, childState.intValue(), false);
+        }
+        
+        EntityDefinition definition = entity.getDefinition();
+        List<NodeDefinition> childDefinitions = definition.getChildDefinitions();
+        for (NodeDefinition childDefinition : childDefinitions) {
+        	String childName = childDefinition.getName();
+        	State childState = entity.getChildState(childName);
+        	out.writeInt32(3, childState.intValue(), false);
+        	out.writeString(4, childName, false);
         }
 	}
 
@@ -59,11 +70,15 @@ public class EntitySchema extends SchemaSupport<Entity> {
         		readAndCheckFieldNumber(input, 2);
         		input.mergeObject(node, getSchema(node.getClass()));
         		
+        	} else if ( number == 3 ){
         		//Node state
-        		readAndCheckFieldNumber(input, 3);
         		int intState = input.readInt32();
-        		State nodeState = State.parseState(intState);
-				entity.childStates.put(node.getName(), nodeState);
+        		State state = State.parseState(intState);
+//        		entity.childStates.put(node.getName(), nodeState);
+        		
+        		readAndCheckFieldNumber(input, 4);
+        		String childName = input.readString();
+        		entity.childStates.put(childName, state);
         	} else {
             	throw new ProtostuffException("Unexpected field number");
             }

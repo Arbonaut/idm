@@ -16,10 +16,16 @@ public class IntegerRangeValidator implements ValidationRule<IntegerRangeAttribu
 	@Override
 	public ValidationResultFlag evaluate(IntegerRangeAttribute node) {
 		IntegerRange range = node.getValue();
-		Integer from = range.getFrom();
-		Integer to = range.getTo();
-		boolean valid = to >= from;
-		return ValidationResultFlag.valueOf(valid);
+		if( range != null ) {
+			Integer from = range.getFrom();
+			Integer to = range.getTo();
+			
+			if( !( from == null || to == null ) ) {
+				boolean valid = to >= from;
+				return ValidationResultFlag.valueOf(valid);
+			}
+		} 
+		return ValidationResultFlag.OK;
 	}
 
 }

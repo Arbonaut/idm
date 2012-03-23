@@ -80,7 +80,7 @@ public class ModelPathExpressionTest extends AbstractTest {
 	public void testParentFunction() throws InvalidExpressionException {
 		String entityName = "plot";
 		Entity plot = cluster.addEntity(entityName);
-		cluster.addValue("id", new Code("123_456"));
+		cluster.addValue("id", "123_456");
 
 		String expr = "parent()/id";
 		List<Node<?>> list = iterateExpression(expr, plot);

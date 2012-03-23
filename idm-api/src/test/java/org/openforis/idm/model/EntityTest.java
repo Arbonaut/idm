@@ -31,7 +31,7 @@ public class EntityTest {
 	@Test
 	public void testAddNullCode() {
 		Entity cluster = getRootEntity();
-		cluster.addValue("id", (String) null);
+		cluster.addValue("id", (Code) null);
 	}
 
 	// @Test(expected = ArrayIndexOutOfBoundsException.class)

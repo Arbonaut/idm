@@ -48,7 +48,7 @@ public class UniquenessCheck extends Check<Attribute<?, ?>> {
 					if (node != attribute) {
 						if (node instanceof Attribute) {
 							Object value = ((Attribute<?, ?>) node).getValue();
-							if (value.equals(attribute.getValue())) {
+							if ( value != null && value.equals(attribute.getValue()) ) {
 								unique = false;
 								break;
 							}

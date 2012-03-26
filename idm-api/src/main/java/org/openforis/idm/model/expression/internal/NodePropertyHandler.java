@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.openforis.idm.model.expression.internal;
 
 import java.util.ArrayList;

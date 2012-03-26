@@ -107,7 +107,7 @@ public class ProtostuffSerializationTest  {
 			// CollectAttributeMetadata('*',null,"No value specified"));
 			RealAttribute boleHeight = tree1.addValue("bole_height",
 					(Double) null);
-			boleHeight.getField().setSymbol('*');
+			boleHeight.getField().setSymbol('B');
 			boleHeight.getField().setRemarks("No value specified");
 			Entity tree2 = plot.addEntity("tree");
 			tree2.addValue("tree_no", 2);

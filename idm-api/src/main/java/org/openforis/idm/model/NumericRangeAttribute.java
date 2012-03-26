@@ -11,7 +11,7 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 	private static final long serialVersionUID = 1L;
 
 	protected NumericRangeAttribute(RangeAttributeDefinition definition, Class<V> fieldType) {
-		super(definition, fieldType, fieldType);
+		super(definition, fieldType, fieldType, String.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,6 +42,21 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 			getToField().setValue(to);
 		}
 		onUpdateValue();
+	}
+	
+	public String getUnitName(){
+		return (String) getField(2).getValue();
+	}
+
+	@SuppressWarnings("unchecked")
+	public void setUnitName(String unitName){
+		Field<String> unitFld = (Field<String>) getField(2);
+		unitFld.setValue(unitName);
+	}
+	
+	@Override
+	public boolean isFilled() {
+		return ! ( getField(0).isEmpty() || getField(1).isEmpty() ); 
 	}
 	
 	protected abstract T createRange(V from, V to);

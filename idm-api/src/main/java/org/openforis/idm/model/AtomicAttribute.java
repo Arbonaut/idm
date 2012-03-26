@@ -2,6 +2,7 @@ package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.AttributeDefinition;
 
+@Deprecated
 public abstract class AtomicAttribute<D extends AttributeDefinition, V>  extends Attribute<D,V> {
 
 	private static final long serialVersionUID = 1L;

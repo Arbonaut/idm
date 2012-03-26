@@ -9,6 +9,7 @@ import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.ModelPathExpression;
+import org.openforis.idm.model.expression.internal.MissingValueException;
 
 /**
  * @author G. Miceli
@@ -100,6 +101,8 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 					return null;
 				}
 			}
+		} catch(MissingValueException e){
+			return null;
 		} catch (Exception e) {
 			throw new RuntimeException("Error while getting parent code " + e);
 		}

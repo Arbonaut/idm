@@ -81,7 +81,7 @@ public class ProtostuffSerializationTest  {
 		cluster.addValue("map_sheet", "value 2");
 		cluster.addValue("vehicle_location", new Coordinate((double) 12345, (double) 67890, "srs"));
 		TextAttribute gpsModel = cluster.addValue("gps_model", "TomTom 1.232");
-		gpsModel.getField().getState().set(0,true);
+		gpsModel.getField(0).getState().set(0,true);
 		cluster.setChildState("accessibility", 1);
 		
 		{
@@ -107,8 +107,8 @@ public class ProtostuffSerializationTest  {
 			// CollectAttributeMetadata('*',null,"No value specified"));
 			RealAttribute boleHeight = tree1.addValue("bole_height",
 					(Double) null);
-			boleHeight.getField().setSymbol('B');
-			boleHeight.getField().setRemarks("No value specified");
+			boleHeight.getField(0).setSymbol('B');
+			boleHeight.getField(0).setRemarks("No value specified");
 			Entity tree2 = plot.addEntity("tree");
 			tree2.addValue("tree_no", 2);
 			tree2.addValue("dbh", 82.8);

@@ -709,6 +709,10 @@ public class Entity extends Node<EntityDefinition> {
 		}
 		return Collections.unmodifiableList(result);
 	}
+
+	public void clearChildStates() {
+		this.childStates = new HashMap<String, State>();
+	}
 	
 //	@Override
 //	protected void detach() {

@@ -5,6 +5,8 @@ package org.openforis.idm.model;
 
 import java.util.BitSet;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author M. Togna
  * 
@@ -55,6 +57,7 @@ public class State {
 		}
 		
 		String binaryString = Integer.toBinaryString(value);
+		binaryString = StringUtils.leftPad(binaryString, N_BITS, "0");
 		char[] charArray = binaryString.toCharArray();
 
 		int pos = binaryString.length();

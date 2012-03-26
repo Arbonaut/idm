@@ -32,6 +32,18 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		initFields(fieldTypes);
 	}
 
+	public void clearFieldSymbols() {
+		for ( Field<?> field : fields ) {
+			field.setSymbol( null );
+		}
+	} 
+	
+	public void clearFieldStates() {
+		for ( Field<?> field : fields ) {
+			field.getState().set(0);
+		}
+	} 
+	
 	private void initFields(Class<?>... fieldTypes) {
 		this.fields = new Field[fieldTypes.length];
 		for (int i = 0; i < fields.length; i++) {

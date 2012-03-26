@@ -3,6 +3,8 @@
  */
 package org.openforis.idm.metamodel.expression.internal;
 
+import java.util.List;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.openforis.idm.metamodel.AttributeDefinition;
@@ -15,21 +17,25 @@ import org.openforis.idm.metamodel.NodeDefinition;
  */
 public class NodeDefinitionPropertyHandler implements DynamicPropertyHandler {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.jxpath.DynamicPropertyHandler#getPropertyNames(java.lang.Object)
-	 */
 	@Override
 	public String[] getPropertyNames(Object object) {
-		return null;
+		String[] array;
+		if (object instanceof EntityDefinition) {
+			EntityDefinition entityDef = (EntityDefinition) object;
+			List<NodeDefinition> childDefs = entityDef.getChildDefinitions();
+			array = new String[childDefs.size()+1];
+			int i = 0;
+			for (NodeDefinition def : childDefs) {
+				array[i++] = def.getName();
+			}
+		} else {
+			array = new String[1];
+		}
+		int last = array.length -1;
+		array[last] = "__parent";
+		return array;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.jxpath.DynamicPropertyHandler#getProperty(java.lang.Object, java.lang.String)
-	 */
 	@Override
 	public Object getProperty(Object object, String propertyName) {
 
@@ -51,14 +57,9 @@ public class NodeDefinitionPropertyHandler implements DynamicPropertyHandler {
 		return property;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.jxpath.DynamicPropertyHandler#setProperty(java.lang.Object, java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public void setProperty(Object object, String propertyName, Object value) {
-		// nothing...
+		throw new UnsupportedOperationException("setProperty() not supported in " + this.getClass().getSimpleName());
 	}
 
 }

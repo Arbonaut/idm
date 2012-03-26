@@ -76,7 +76,7 @@ public class NodePropertyHandler implements DynamicPropertyHandler {
 
 	@Override
 	public void setProperty(Object object, String propertyName, Object value) {
-		throw new UnsupportedOperationException("setProperty() not yet supported");
+		throw new UnsupportedOperationException("setProperty() not supported in " + this.getClass().getSimpleName());
 	}
 
 }

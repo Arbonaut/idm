@@ -88,29 +88,27 @@ public class ModelRelationalExpression extends CoreOperation {
 	}
 
 	private boolean internalCompute(Object leftValue, Object rightValue) {
-		if ( leftValue instanceof String && rightValue instanceof String) {
-			return internalCompute((String)leftValue, (String)rightValue, operation);
-		}
-		if ( leftValue instanceof Number && rightValue instanceof Number ) {
-			return internalCompute(((Number)leftValue).doubleValue(), ((Number) rightValue).doubleValue(), this.operation);
+		if ( leftValue instanceof String && rightValue instanceof String ) {
+			return evaluate((String) leftValue, (String) rightValue, operation);
 		}
 		if ( leftValue instanceof Number && rightValue instanceof NumericRange ) {
-			return computeRange((Number) leftValue, (NumericRange<?>) rightValue, this.operation);
+			return computeRange((Number) leftValue, (NumericRange<?>) rightValue, operation);
 		}
 		if ( leftValue instanceof NumericRange && rightValue instanceof Number ) {
 			return computeRange((NumericRange<?>) leftValue, (Number) rightValue, operation);
 		}
-		
+		if ( leftValue instanceof Number || rightValue instanceof Number ) {
+			Double left = getDoubleValue(leftValue);
+			Double right = getDoubleValue(rightValue);
+			return evaluate(left, right, operation);
+		}
 
 		return false;
 	}
 
-	private <T extends Comparable<T>> boolean internalCompute(T leftValue, T rightValue, Operation operation) {
-//		String left = getStringValue(leftValue);
-//		String right = getStringValue(rightValue);
-
-		int compare =leftValue.compareTo(rightValue);
-
+	private <T extends Comparable<T>> boolean evaluate(T leftValue, T rightValue, Operation operation) {
+		int compare = leftValue.compareTo(rightValue);
+		
 		switch ( operation ) {
 			case EQ :
 				return compare == 0;
@@ -193,24 +191,42 @@ public class ModelRelationalExpression extends CoreOperation {
 		}
 	}
 
-	private Object getValue(Object object) {
-		if ( object instanceof Number || object instanceof NumericRange || object instanceof String ) {
-			return object;
+	private double getDoubleValue(Object object) {
+		if ( object instanceof Number ) {
+			return ((Number) object).doubleValue();
 		}
 
 		if ( object instanceof Boolean ) {
 			return ((Boolean) object).booleanValue() ? 0.0 : 1.0;
 		}
-		// if ( object instanceof String ) {
-		// if ( object.equals("") ) {
-		// return 0.0;
-		// }
-		// try {
-		// return Double.parseDouble((String) object);
-		// } catch ( NumberFormatException ex ) {
-		// return Double.NaN;
-		// }
-		// }
+		if ( object instanceof String ) {
+			if ( StringUtils.isBlank((String) object) ) {
+				return 0.0;
+			}
+			try {
+				return Double.parseDouble((String) object);
+			} catch ( NumberFormatException ex ) {
+				return Double.NaN;
+			}
+		}
+		if ( object instanceof NodePointer ) {
+			return getDoubleValue(((NodePointer) object).getValue());
+		}
+		if ( object instanceof EvalContext ) {
+			EvalContext ctx = (EvalContext) object;
+			Pointer ptr = ctx.getSingleNodePointer();
+			return ptr == null ? Double.NaN : getDoubleValue(ptr);
+		}
+		throw new RuntimeException("Cannot convert " + object.toString() + " to a double value");
+	}
+
+	private Object getValue(Object object) {
+		if ( object instanceof Number || object instanceof NumericRange || object instanceof String ) {
+			return object;
+		}
+		if ( object instanceof Boolean ) {
+			return ((Boolean) object).booleanValue() ? 0.0 : 1.0;
+		}
 		if ( object instanceof NodePointer ) {
 			return getValue(((NodePointer) object).getValue());
 		}
@@ -222,13 +238,13 @@ public class ModelRelationalExpression extends CoreOperation {
 		return null;
 	}
 
-	private String getStringValue(Object object) {
-		if ( object instanceof Pointer ) {
-			object = ((Pointer) object).getValue();
-		}
-
-		return object.toString();
-	}
+	// private String getStringValue(Object object) {
+	// if ( object instanceof Pointer ) {
+	// object = ((Pointer) object).getValue();
+	// }
+	//
+	// return object.toString();
+	// }
 
 	@Override
 	public String getSymbol() {

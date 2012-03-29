@@ -88,6 +88,10 @@ public class ModelRelationalExpression extends CoreOperation {
 	}
 
 	private boolean internalCompute(Object leftValue, Object rightValue) {
+		if( leftValue  == null || rightValue == null) {
+			return false;
+		}
+		
 		if ( leftValue instanceof String && rightValue instanceof String ) {
 			return evaluate((String) leftValue, (String) rightValue, operation);
 		}

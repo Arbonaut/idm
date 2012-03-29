@@ -1,6 +1,7 @@
 package org.openforis.idm.model;
 
-import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,6 +10,9 @@ import org.apache.commons.lang3.StringUtils;
  * @author M. Togna
  */
 public final class IntegerRange extends NumericRange<Integer> {
+
+	private static final String REGEX = "(-?\\d+)(-(-?\\d+))?";
+	private static final Pattern PATTERN = Pattern.compile(REGEX);
 
 	public IntegerRange(Integer value) {
 		super(value);
@@ -22,15 +26,20 @@ public final class IntegerRange extends NumericRange<Integer> {
 		if ( StringUtils.isBlank(string) ) {
 			return null;
 		} else {
-			StringTokenizer st = new StringTokenizer(string, DELIM);
-			int from = Integer.parseInt(st.nextToken());
-	
-			if (st.hasMoreTokens()) {
-				int to = Integer.parseInt(st.nextToken());
+			Matcher matcher = PATTERN.matcher(string);
+			if ( matcher.matches() ) {
+				String fromStr = matcher.group(1);
+				String toStr = matcher.group(3);
+				if ( toStr == null ) {
+					toStr = fromStr;
+				}
+				int from = Integer.parseInt(fromStr);
+				int to = Integer.parseInt(toStr);
 				return new IntegerRange(from, to);
 			} else {
-				return new IntegerRange(from);
+				return null;
 			}
 		}
 	}
+
 }

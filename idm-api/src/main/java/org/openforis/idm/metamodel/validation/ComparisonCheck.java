@@ -153,7 +153,7 @@ public class ComparisonCheck extends Check<Attribute<?,?>> {
 				expression.append("and");
 				expression.append(" ");
 			}
-			expression.append("number($this)");
+			expression.append("$this");
 			expression.append(" ");
 			expression.append(o.xpathOperator);
 			expression.append(" ");

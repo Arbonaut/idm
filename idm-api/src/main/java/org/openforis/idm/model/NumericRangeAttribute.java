@@ -59,6 +59,11 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 		return ! ( getField(0).isEmpty() || getField(1).isEmpty() ); 
 	}
 	
+	@Override
+	public boolean isEmpty() {
+		return getFromField().getValue() == null && getToField().getValue() == null;
+	}
+	
 	protected abstract T createRange(V from, V to);
 
 }

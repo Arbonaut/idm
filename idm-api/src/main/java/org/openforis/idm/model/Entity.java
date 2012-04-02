@@ -283,8 +283,32 @@ public class Entity extends Node<EntityDefinition> {
 	 */
 	public int getCount(String name) {
 		checkChildDefinition(name);
-		List<Node<? extends NodeDefinition>> list = childrenByName.get(name);
+		List<Node<?>> list = childrenByName.get(name);
 		return list == null ? 0 : list.size();
+	}
+	
+	public int getNonEmptyCount(String name) {
+		checkChildDefinition(name);
+		int count = 0;
+		List<Node<?>> list = childrenByName.get(name);
+		if(list != null && list.size() > 0) {
+			for (Node<?> node : list) {
+				if(! node.isEmpty()) {
+					count ++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	public int getMissingCount(String name) {
+		int minCount = getEffectiveMinCount(name);
+		int specified = getNonEmptyCount(name);
+		if(minCount > specified) {
+			return minCount - specified;
+		} else {
+			return 0;
+		}
 	}
 	
 	/**

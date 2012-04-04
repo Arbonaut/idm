@@ -32,6 +32,7 @@ public class EntitySchema extends SchemaSupport<Entity> {
 		
 		List<Node<? extends NodeDefinition>> children = entity.getChildren();
         for(Node<?> node : children) {
+        	System.out.println("node=" + node);
 			out.writeUInt32(1, node.definitionId, false);
 			out.writeObject(2, node, getSchema(node.getClass()), false);
 //			State childState = entity.getChildState(node.getName());

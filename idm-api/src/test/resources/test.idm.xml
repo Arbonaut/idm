@@ -5145,10 +5145,10 @@
                 <code name="acquisition_method" list="energy_acquisition_method" multiple="true">
                     <label type="heading">Acquisition method(s)</label>
                 </code>
-                <number type="real" name="monthly_consumption">
+                <range type="real" name="monthly_consumption">
                     <label>Qty/mo consumed</label>
                     <compare gt="0" flag="error"/>
-                </number>
+                </range>
                 <text name="monthly_consumption_unit" relevant="type='other'">
                     <label>Other Unit</label>
                 </text>

@@ -5,9 +5,12 @@ package org.openforis.idm.model.expression;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.model.Code;
+import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RealAttribute;
 
@@ -16,7 +19,14 @@ import org.openforis.idm.model.RealAttribute;
  * @author G. Miceli
  */
 public class RelevanceExpressionTest extends AbstractTest {
-
+	
+	protected Entity energySource;
+	
+	@Before
+	public void beforeTest(){
+		energySource = household.addEntity("energy_source");
+	}
+	
 	@Test
 	public void testTrue() throws InvalidExpressionException {
 		cluster.addValue("plot_direction", 345.45);
@@ -69,11 +79,40 @@ public class RelevanceExpressionTest extends AbstractTest {
 	}
 	
 	@Test
+	public void testBlankValueWithMissingValue2() throws InvalidExpressionException {
+		String expr = "plot_direction = ''";
+		boolean b = evaluateExpression(expr, cluster);
+		Assert.assertTrue(b);
+	}
+	
+	@Test
 	public void testBlankValue() throws InvalidExpressionException {
 		String expr = "plot_direction != ''";
 		cluster.addValue("plot_direction", (Double)null);
 		boolean b = evaluateExpression(expr, cluster);
 		Assert.assertTrue(b);
+	}
+	
+	@Test
+	public void testNotFunction() throws InvalidExpressionException {
+		String expr = "not(plot_direction != 12.8)";
+		cluster.addValue("plot_direction", 12.8);
+		boolean b = evaluateExpression(expr, cluster);
+		Assert.assertTrue(b);
+	}
+	
+	@Test
+	public void testEqStringValue() throws InvalidExpressionException {
+		energySource.addValue("type", new Code("other"));
+		boolean b = evaluateExpression("type='other'", energySource);
+		Assert.assertTrue(b);
+	}
+	
+	@Test
+	public void testNotEqStringValue() throws InvalidExpressionException {
+		energySource.addValue("type", new Code("other"));
+		boolean b = evaluateExpression("type!='other'", energySource);
+		Assert.assertFalse(b);
 	}
 	
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {

@@ -20,6 +20,9 @@ import org.apache.commons.jxpath.ri.compiler.ExtensionFunction;
  */
 public class ModelExtensionFunction extends ExtensionFunction {
 
+	private static final String IDM_PREFIX = "idm";
+	private static final String BLANK_FUNCTION = "blank";
+
 	public ModelExtensionFunction(QName functionName, Expression[] args) {
 		super(functionName, args);
 	}
@@ -27,22 +30,52 @@ public class ModelExtensionFunction extends ExtensionFunction {
 	@Override
 	public Object computeValue(EvalContext context) {
 		Object[] parameters = null;
-		if (args != null) {
+		if ( args != null ) {
 			parameters = new Object[args.length];
-			for (int i = 0; i < args.length; i++) {
+			for ( int i = 0 ; i < args.length ; i++ ) {
 				Expression expression = args[i];
 				Object computeValue = expression.computeValue(context);
 				parameters[i] = convert(computeValue);
 			}
 		}
 
-		Function function = context.getRootContext().getFunction(getFunctionName(), parameters);
-		if (function == null) {
-			throw new JXPathFunctionNotFoundException("No such function: " + getFunctionName() + Arrays.asList(parameters));
-		}
-		Object result = function.invoke(context, parameters);
+		Object result = invoke(context, parameters);
 		return result instanceof NodeSet ? new NodeSetContext(context, (NodeSet) result) : result;
 
+	}
+
+	private Object invoke(EvalContext context, Object[] parameters) {
+		
+		Object result = null;
+		Function function = null;
+		try {
+			
+			function = context.getRootContext().getFunction(getFunctionName(), parameters);
+			if ( function == null ) {
+				throw new JXPathFunctionNotFoundException("No such function: " + getFunctionName() + Arrays.asList(parameters));
+			}
+			
+		} catch ( MissingValueException e ) {
+			
+			if ( BLANK_FUNCTION.equals( getName() ) && IDM_PREFIX.equals( getPrefix() ) ) {
+				return true;
+			} else {
+				throw e;
+			}
+			
+		}
+		result = function.invoke(context, parameters);
+		return result;
+	}
+
+	protected String getPrefix() {
+		QName functionName = getFunctionName();
+		return functionName.getPrefix();
+	}
+
+	protected String getName() {
+		QName functionName = getFunctionName();
+		return functionName.getName();
 	}
 
 	/**
@@ -53,7 +86,7 @@ public class ModelExtensionFunction extends ExtensionFunction {
 	 * @return context value or <code>object</code> unscathed.
 	 */
 	private Object convert(Object object) {
-		if (object instanceof EvalContext) {
+		if ( object instanceof EvalContext ) {
 			return ((EvalContext) object).getValue();
 		} else {
 			return object;

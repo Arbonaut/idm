@@ -334,7 +334,19 @@ public class Entity extends Node<EntityDefinition> {
 			return null;
 		} else {
 			Node<? extends NodeDefinition> node = list.remove(index);
-			node.detach();
+			node.parent = null;
+			
+			if( node instanceof Entity ) {
+				Entity entity = (Entity)node;
+				entity.traverse(new NodeVisitor() {
+					@Override
+					public void visit(Node<? extends NodeDefinition> node, int idx) {
+						node.record = null;
+					}
+				});
+			} else if ( node instanceof Attribute ){
+				node.record = null;
+			}
 			// this.updateList(index, name);
 			return node;
 		}

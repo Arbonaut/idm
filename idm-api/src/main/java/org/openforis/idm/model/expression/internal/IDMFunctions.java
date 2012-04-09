@@ -2,6 +2,7 @@ package org.openforis.idm.model.expression.internal;
 
 import org.apache.commons.jxpath.ExpressionContext;
 import org.openforis.idm.metamodel.validation.LookupProvider;
+import org.openforis.idm.model.Node;
 
 /**
  * 
@@ -11,6 +12,22 @@ import org.openforis.idm.metamodel.validation.LookupProvider;
  * 
  */
 public class IDMFunctions {
+	public static boolean blank(ExpressionContext context, Object object) {
+		try {
+		//	return node.isEmpty();
+			return object == null;
+		} catch ( MissingValueException e ) {
+			return true;
+		}
+	}
+	
+	public static boolean blank(ExpressionContext context, Node<?> node) {
+		try {
+			return node.isEmpty();
+		} catch ( MissingValueException e ) {
+			return true;
+		}
+	}
 
 	public static Object lookup(ExpressionContext context, String name, String attribute, String column, String value) {
 		return internalLookup(context, name, attribute, column, value);

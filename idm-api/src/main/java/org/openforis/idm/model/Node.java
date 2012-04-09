@@ -265,8 +265,4 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 		return record == null;
 	}
 	
-	protected void detach() {
-		parent = null;
-		record = null;
-	}
 }

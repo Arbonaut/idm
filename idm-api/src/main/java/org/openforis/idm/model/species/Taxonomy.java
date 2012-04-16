@@ -8,6 +8,7 @@ public class Taxonomy {
 	
 	private Integer id;
 	private String name;
+	private String uri;
 	
 	public Integer getId() {
 		return id;
@@ -23,5 +24,13 @@ public class Taxonomy {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 }

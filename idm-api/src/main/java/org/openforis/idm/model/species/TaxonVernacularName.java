@@ -10,7 +10,7 @@ public class TaxonVernacularName {
 	private String vernacularName;
 	private String languageCode;
 	private String languageVariety;
-	private Integer taxonId;
+	private Integer taxonSystemId;
 	private int step;
 
 	public Integer getId() {
@@ -45,12 +45,12 @@ public class TaxonVernacularName {
 		this.languageVariety = languageVariety;
 	}
 
-	public Integer getTaxonId() {
-		return taxonId;
+	public Integer getTaxonSystemId() {
+		return taxonSystemId;
 	}
 
-	public void setTaxonId(Integer taxonId) {
-		this.taxonId = taxonId;
+	public void setTaxonSystemId(Integer taxonId) {
+		this.taxonSystemId = taxonId;
 	}
 
 	public int getStep() {
@@ -60,4 +60,5 @@ public class TaxonVernacularName {
 	public void setStep(int step) {
 		this.step = step;
 	}
+
 }

@@ -58,12 +58,15 @@ public class EntitySchema extends SchemaSupport<Entity> {
         	} else if ( number == 1 ) {
         		Schema idmSchema = entity.getSchema();
         		
+        		
         		// Definition id
         		int definitionId = input.readUInt32();
         		NodeDefinition defn = idmSchema.getById(definitionId);
+        		System.out.print(defn);
         		if ( defn == null ) {
         			throw new ProtostuffException("Invalid definition id "+definitionId);
         		}
+        		System.out.println(": " + defn.getPath());
         		Node<?> node = defn.createNode();
         		entity.add(node);
         		

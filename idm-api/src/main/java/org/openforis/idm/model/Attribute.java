@@ -106,12 +106,12 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 //	}
 
 	/**
-	 * @return true if value is not null
+	 * @return true if value is empty (there is not a field with value specified)
 	 */
 	@Override
 	public boolean isEmpty() {
 		for (Field<?> field : fields) {
-			if ( !field.isEmpty() ) {
+			if ( field.hasValue() ) {
 				return false;
 			}
 		}
@@ -119,12 +119,25 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 	
 	/**
-	 * Returns true if all fields are not empty
+	 * @return true if all fields are empty and 
+	 *  no remarks or symbol are specified
+	 */
+	public boolean hasData() {
+		for (Field<?> field : fields) {
+			if ( field.hasData() ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if all fields have value specified
 	 * @return
 	 */
 	public boolean isFilled(){
 		for ( Field<?> field : fields ) {
-			if ( field.isEmpty() ) {
+			if ( ! field.hasValue() ) {
 				return false;
 			}
 		}

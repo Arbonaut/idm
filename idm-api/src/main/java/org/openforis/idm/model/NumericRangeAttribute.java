@@ -56,7 +56,7 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 	
 	@Override
 	public boolean isFilled() {
-		return ! ( getField(0).isEmpty() || getField(1).isEmpty() ); 
+		return getField(0).hasValue() && getField(1).hasValue(); 
 	}
 	
 	@Override

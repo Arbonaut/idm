@@ -28,16 +28,13 @@ public class EntitySchema extends SchemaSupport<Entity> {
 
 	@Override
 	public void writeTo(Output out, Entity entity) throws IOException {
-		
-		
 		List<Node<? extends NodeDefinition>> children = entity.getChildren();
         for(Node<?> node : children) {
-			out.writeUInt32(1, node.definitionId, false);
-			out.writeObject(2, node, getSchema(node.getClass()), false);
-//			State childState = entity.getChildState(node.getName());
-//			out.writeInt32(3, childState.intValue(), false);
+        	if(isNodeToBeSaved(node)) {
+				out.writeUInt32(1, node.definitionId, false);
+				out.writeObject(2, node, getSchema(node.getClass()), false);
+        	}
         }
-        
         EntityDefinition definition = entity.getDefinition();
         List<NodeDefinition> childDefinitions = definition.getChildDefinitions();
         for (NodeDefinition childDefinition : childDefinitions) {
@@ -84,4 +81,16 @@ public class EntitySchema extends SchemaSupport<Entity> {
             }
         }
 	}
+	
+	private boolean isNodeToBeSaved(Node<?> node) {
+		if ( node instanceof Attribute<?, ?> ) {
+			Entity parent = node.getParent();
+    		int count = parent.getCount(node.getName());
+    		if ( count == 1 && ! ((Attribute<?, ?>) node).hasData() ) {
+    			return false;
+    		}
+    	}
+		return true;
+	}
+	
 }

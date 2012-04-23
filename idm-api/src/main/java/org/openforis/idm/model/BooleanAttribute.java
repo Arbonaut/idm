@@ -11,7 +11,7 @@ public class BooleanAttribute extends Attribute<BooleanAttributeDefinition, Bool
 	private static final long serialVersionUID = 1L;
 
 	public BooleanAttribute(BooleanAttributeDefinition definition) {
-		super(definition, Boolean.class);
+		super(definition);
 	}
 	
 	@SuppressWarnings("unchecked")

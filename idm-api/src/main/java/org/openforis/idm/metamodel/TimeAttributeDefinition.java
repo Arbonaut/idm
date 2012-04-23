@@ -3,6 +3,10 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
@@ -23,6 +27,11 @@ public class TimeAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
+	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
+			new FieldDefinition("hour", "h", Integer.class), 
+			new FieldDefinition("minute", "m", Integer.class)
+		));
+	
 	@Override
 	public Node<?> createNode() {
 		return new TimeAttribute(this);
@@ -36,6 +45,11 @@ public class TimeAttributeDefinition extends AttributeDefinition {
 		} else {
 			return Time.parseTime(string);
 		}
+	}
+	
+	@Override
+	public List<FieldDefinition> getFieldsDefinitions() {
+		return fieldsDefinitions;
 	}
 	
 }

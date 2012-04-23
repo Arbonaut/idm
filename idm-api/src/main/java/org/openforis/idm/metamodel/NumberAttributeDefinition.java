@@ -3,6 +3,8 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -90,5 +92,25 @@ public class NumberAttributeDefinition extends AttributeDefinition implements Ke
 			return Double.parseDouble(string);
 		}
 		throw new RuntimeException("Invalid type " + type);
+	}
+	
+	@Override
+	public List<FieldDefinition> getFieldsDefinitions() {
+		List<FieldDefinition> result = new ArrayList<FieldDefinition>();
+		Type effectiveType = getType();
+		Class<?> valueType;
+		switch (effectiveType) {
+		case INTEGER:
+			valueType = Integer.class;
+			break;
+		case REAL:
+			valueType = Double.class;
+			break;
+		default:
+			throw new UnsupportedOperationException("Unknown type");
+		}
+		result.add(new FieldDefinition("value", "v", valueType));
+		result.add(new FieldDefinition("unit", "u", String.class));
+		return Collections.unmodifiableList(result);
 	}
 }

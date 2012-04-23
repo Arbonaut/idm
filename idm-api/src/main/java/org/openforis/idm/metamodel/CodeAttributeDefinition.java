@@ -3,6 +3,10 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -26,6 +30,11 @@ import org.openforis.idm.model.Node;
 public class CodeAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
+	
+	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
+		new FieldDefinition("code", "c", String.class), 
+		new FieldDefinition("qualifier", "q", String.class)
+	));
 	
 	@XmlAttribute(name = "key")
 	private Boolean key;
@@ -102,4 +111,10 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 			return new Code(string);
 		}
 	}
+	
+	@Override
+	public List<FieldDefinition> getFieldsDefinitions() {
+		return fieldsDefinitions;
+	}
+	
 }

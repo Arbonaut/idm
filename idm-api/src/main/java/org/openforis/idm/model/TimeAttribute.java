@@ -11,7 +11,7 @@ public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 	private static final long serialVersionUID = 1L;
 
 	public TimeAttribute(TimeAttributeDefinition definition) {
-		super(definition, Integer.class, Integer.class);
+		super(definition);
 	}
 
 	@SuppressWarnings("unchecked")

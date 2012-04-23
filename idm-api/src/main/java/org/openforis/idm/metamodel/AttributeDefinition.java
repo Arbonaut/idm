@@ -22,6 +22,8 @@ import org.openforis.idm.util.CollectionUtil;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author S. Ricci
+ * 
  */
 @XmlTransient
 public abstract class AttributeDefinition extends NodeDefinition {
@@ -58,6 +60,8 @@ public abstract class AttributeDefinition extends NodeDefinition {
 		Survey survey = getSurvey();
 		return survey.getCheckDependencies(this);
 	}
+	
+	public abstract List<FieldDefinition> getFieldsDefinitions();
 
 //	private Set<String> createCheckDependencyPaths() {
 //		Set<String> paths = new HashSet<String>();

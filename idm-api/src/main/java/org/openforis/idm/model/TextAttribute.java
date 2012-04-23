@@ -11,7 +11,7 @@ public class TextAttribute extends Attribute<TextAttributeDefinition, String> {
 	private static final long serialVersionUID = 1L;
 
 	public TextAttribute(TextAttributeDefinition definition) {
-		super(definition, String.class);
+		super(definition);
 	}
 	
 	@Override

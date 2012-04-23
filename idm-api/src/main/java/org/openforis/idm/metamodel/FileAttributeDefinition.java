@@ -3,6 +3,8 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -26,6 +28,12 @@ public class FileAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
+	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
+			new FieldDefinition("fileName", "f", String.class),
+			new FieldDefinition("fileSize", "s", Long.class)
+		));
+	
+	
 	@XmlAttribute(name = "maxSize")
 	private Integer maxSize;
 
@@ -51,4 +59,8 @@ public class FileAttributeDefinition extends AttributeDefinition {
 		throw new UnsupportedOperationException();
 	}
 	
+	@Override
+	public List<FieldDefinition> getFieldsDefinitions() {
+		return fieldsDefinitions;
+	}
 }

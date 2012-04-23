@@ -3,6 +3,10 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -15,6 +19,7 @@ import org.openforis.idm.model.Node;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author S. Ricci
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
@@ -22,6 +27,10 @@ import org.openforis.idm.model.Node;
 public class BooleanAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
+	
+	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
+		new FieldDefinition("value", "v", Boolean.class)
+	));
 	
 	@XmlAttribute(name = "affirmativeOnly")
 	private Boolean affirmativeOnly;
@@ -49,4 +58,8 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 		}
 	}
 	
+	@Override
+	public List<FieldDefinition> getFieldsDefinitions() {
+		return fieldsDefinitions;
+	}
 }

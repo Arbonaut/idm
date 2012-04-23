@@ -3,6 +3,10 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
@@ -23,6 +27,12 @@ public class DateAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
+	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
+			new FieldDefinition("year", "y", Integer.class),
+			new FieldDefinition("month", "m", Integer.class),
+			new FieldDefinition("day", "d", Integer.class)
+		));
+	
 	@Override
 	public Node<?> createNode() {
 		return new DateAttribute(this);
@@ -38,4 +48,8 @@ public class DateAttributeDefinition extends AttributeDefinition {
 		}
 	}
 	
+	@Override
+	public List<FieldDefinition> getFieldsDefinitions() {
+		return fieldsDefinitions;
+	}
 }

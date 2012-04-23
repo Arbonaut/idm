@@ -11,7 +11,7 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 	private static final long serialVersionUID = 1L;
 
 	public TaxonAttribute(TaxonAttributeDefinition definition) {
-		super(definition, String.class, String.class, String.class, String.class, String.class);
+		super(definition);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -20,7 +20,7 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<String> getScientificName() {
+	public Field<String> getScientificNameField() {
 		return (Field<String>) getField(1);
 	}
 
@@ -42,7 +42,7 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 	@Override
 	public TaxonOccurrence getValue() {
 		String code = getCodeField().getValue();
-		String scientificName = getScientificName().getValue();
+		String scientificName = getScientificNameField().getValue();
 		String vernacularName = getVernacularNameField().getValue();
 		String languageCode = getLanguageCodeField().getValue();
 		String languageVariety = getLanguageVarietyField().getValue();
@@ -61,7 +61,7 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 			String languageVariety = value.getLanguageVariety();
 	
 			getCodeField().setValue(code);
-			getScientificName().setValue(scientificName);
+			getScientificNameField().setValue(scientificName);
 			getVernacularNameField().setValue(vernacularName);
 			getLanguageCodeField().setValue(languageCode);
 			getLanguageVarietyField().setValue(languageVariety);

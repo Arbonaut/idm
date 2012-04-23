@@ -10,8 +10,8 @@ public abstract class NumberAttribute<T extends Number> extends Attribute<Number
 
 	private static final long serialVersionUID = 1L;
 
-	protected NumberAttribute(NumberAttributeDefinition definition, Class<T> valueType) {
-		super(definition, valueType, String.class);
+	protected NumberAttribute(NumberAttributeDefinition definition) {
+		super(definition);
 	}
 
 	public String getUnitName() {

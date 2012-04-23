@@ -41,7 +41,7 @@ public abstract class NumberAttribute<T extends Number> extends Attribute<Number
 
 	@Override
 	public boolean isFilled() {
-		return ! getField(0).isEmpty();
+		return getField(0).hasValue();
 	}
 	
 	@Override

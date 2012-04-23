@@ -36,7 +36,7 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 	@Override
 	public boolean isFilled() {
 		Field<?> codeField = getField(0);
-		return !codeField.isEmpty();
+		return codeField.hasValue();
 	}
 	
 	@Override

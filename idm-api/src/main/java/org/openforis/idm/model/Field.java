@@ -57,10 +57,18 @@ public final class Field<T> implements Serializable {
 		this.symbol = symbol;
 	}
 
-	public boolean isEmpty() {
-		return value == null || value.toString().trim().isEmpty();
+	public boolean hasValue() {
+		return value != null && ! value.toString().trim().isEmpty();
 	}
 
+	public boolean hasData() {
+		return ! isEmpty();
+	}
+
+	public boolean isEmpty() {
+		return ! hasValue() && StringUtils.isBlank(remarks) && symbol == null;
+	}
+	
 	public State getState() {
 		return state;
 	}

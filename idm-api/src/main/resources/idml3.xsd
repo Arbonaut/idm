@@ -1115,6 +1115,27 @@
                           </xs:documentation>
                       </xs:annotation>
                     </xs:attribute>
+                    <xs:attribute name="qualifier1" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="qualifier2" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="qualifier3" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
                   </xs:extension>
                 </xs:complexContent>
               </xs:complexType>

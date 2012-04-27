@@ -707,7 +707,7 @@ public class Entity extends Node<EntityDefinition> {
 		}
 
 		private Boolean getRelevance(String childName) {
-			return childRequiredStates.get(childName);
+			return childRelevance.get(childName);
 		}
 
 		private void setRequired(String childName, boolean flag) {

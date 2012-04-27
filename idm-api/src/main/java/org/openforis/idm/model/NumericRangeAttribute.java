@@ -10,8 +10,8 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 
 	private static final long serialVersionUID = 1L;
 
-	protected NumericRangeAttribute(RangeAttributeDefinition definition, Class<V> fieldType) {
-		super(definition, fieldType, fieldType, String.class);
+	protected NumericRangeAttribute(RangeAttributeDefinition definition) {
+		super(definition);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -11,7 +11,7 @@ public class IntegerAttribute extends NumberAttribute<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	public IntegerAttribute(NumberAttributeDefinition definition) {
-		super(definition, Integer.class);
+		super(definition);
 		if ( !definition.isInteger() ) {
 			throw new IllegalArgumentException("Attempted to create IntegerAttribute with real NumberDefinition");
 		}

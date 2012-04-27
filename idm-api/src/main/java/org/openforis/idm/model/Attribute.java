@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.openforis.idm.metamodel.AttributeDefinition;
+import org.openforis.idm.metamodel.FieldDefinition;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.validation.ValidationResults;
 import org.openforis.idm.metamodel.validation.Validator;
@@ -27,9 +28,9 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	
 	private transient ValidationResults validationResults;
 	
-	protected Attribute(D definition, Class<?>... fieldTypes) {
+	protected Attribute(D definition) {
 		super(definition);
-		initFields(fieldTypes);
+		initFields();
 	}
 
 	public void clearFieldSymbols() {
@@ -44,10 +45,12 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		}
 	} 
 	
-	private void initFields(Class<?>... fieldTypes) {
-		this.fields = new Field[fieldTypes.length];
-		for (int i = 0; i < fields.length; i++) {
-			Class<?> t = fieldTypes[i];
+	private void initFields() {
+		List<FieldDefinition> fieldsDefinitions = definition.getFieldsDefinitions();
+		this.fields = new Field[fieldsDefinitions.size()];
+		for (int i = 0; i < fieldsDefinitions.size(); i++) {
+			FieldDefinition fieldDefn = fieldsDefinitions.get(i);
+			Class<?> t = fieldDefn.getValueType();
 			this.fields[i] = Field.newInstance(t, this);
 		}
 	}

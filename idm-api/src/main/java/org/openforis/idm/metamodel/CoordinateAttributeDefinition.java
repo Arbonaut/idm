@@ -3,6 +3,10 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
@@ -23,6 +27,12 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
 
+	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
+		new FieldDefinition("x", "x", Double.class),
+		new FieldDefinition("y", "y", Double.class),
+		new FieldDefinition("srsId", "srsId", String.class)
+	));
+	
 	@Override
 	public Node<?> createNode() {
 		return new CoordinateAttribute(this);
@@ -36,6 +46,11 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 		} else {
 			return Coordinate.parseCoordinate(string);
 		}
+	}
+	
+	@Override
+	public List<FieldDefinition> getFieldsDefinitions() {
+		return fieldsDefinitions;
 	}
 	
 }

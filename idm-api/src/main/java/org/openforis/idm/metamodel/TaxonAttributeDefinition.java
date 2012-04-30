@@ -18,6 +18,7 @@ import org.openforis.idm.model.TaxonOccurrence;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author W. Eko
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
@@ -31,7 +32,10 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 			new FieldDefinition("scientificName", "s", String.class), 
 			new FieldDefinition("vernacularName", "v", String.class), 
 			new FieldDefinition("languageCode", "l", String.class), 
-			new FieldDefinition("languageVariety", "lv", String.class)
+			new FieldDefinition("languageVariety", "lv", String.class),
+			new FieldDefinition("qualifer1","q1", String.class),
+			new FieldDefinition("qualifer1","q2", String.class),
+			new FieldDefinition("qualifer1","q3", String.class)
 		));
 	
 	@Override

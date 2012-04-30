@@ -1,5 +1,6 @@
 package org.openforis.idm.model.species;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

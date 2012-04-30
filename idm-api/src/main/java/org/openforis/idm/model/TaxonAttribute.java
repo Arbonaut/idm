@@ -59,6 +59,7 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 			String vernacularName = value.getVernacularName();
 			String languageCode = value.getLanguageCode();
 			String languageVariety = value.getLanguageVariety();
+			System.out.println("Eko");
 	
 			getCodeField().setValue(code);
 			getScientificNameField().setValue(scientificName);

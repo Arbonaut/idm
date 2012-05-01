@@ -68,7 +68,9 @@ public class TaxonVernacularName {
 	}
 
 	public List<String> getQualifiers() {
-		return Collections.unmodifiableList(qualifiers);
+		if(qualifiers!=null)
+			return Collections.unmodifiableList(qualifiers);
+		return null;		
 	}
 
 	public void setQualifiers(List<String> qualifier) {

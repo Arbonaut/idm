@@ -123,6 +123,17 @@ public class Entity extends Node<EntityDefinition> {
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean hasData() {
+		List<Node<?>> children = getChildren();
+		for ( Node<?> child : children ) {
+			if( child.hasData() ){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	// public <T extends Node<?>> T add(T o, int idx) {
 	// return addInternal(o, idx);

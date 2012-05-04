@@ -93,7 +93,9 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 	protected abstract void write(StringWriter sw, int indent);
 
 	public abstract boolean isEmpty();
-
+	
+	public abstract  boolean hasData();
+	
 //	public abstract ValidationResults validate();
 
 	public List<Entity> getAncestors() {

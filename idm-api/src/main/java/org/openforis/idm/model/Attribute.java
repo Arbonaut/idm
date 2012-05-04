@@ -125,6 +125,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	 * @return true if all fields are empty and 
 	 *  no remarks or symbol are specified
 	 */
+	@Override
 	public boolean hasData() {
 		for (Field<?> field : fields) {
 			if ( field.hasData() ) {

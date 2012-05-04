@@ -66,7 +66,7 @@ public final class Field<T> implements Serializable {
 	}
 
 	public boolean isEmpty() {
-		return ! hasValue() && StringUtils.isBlank(remarks) && symbol == null && (getState() == null || getState().intValue() == 0);
+		return ! hasValue() && StringUtils.isBlank(remarks) && symbol == null && (state == null || state.intValue() == 0);
 	}
 	
 	public State getState() {

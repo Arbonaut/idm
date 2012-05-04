@@ -28,10 +28,10 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
 			new FieldDefinition("code", "c", String.class), 
-			new FieldDefinition("scientificName", "s", String.class), 
-			new FieldDefinition("vernacularName", "v", String.class), 
-			new FieldDefinition("languageCode", "l", String.class), 
-			new FieldDefinition("languageVariety", "lv", String.class)
+			new FieldDefinition("scientific_name", "s", String.class), 
+			new FieldDefinition("vernacular_name", "v", String.class), 
+			new FieldDefinition("language_code", "l", String.class), 
+			new FieldDefinition("language_variety", "lv", String.class)
 		));
 	
 	@Override

@@ -62,6 +62,16 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	}
 	
 	public abstract List<FieldDefinition> getFieldsDefinitions();
+	
+	public FieldDefinition getFieldDefinition(String name) {
+		List<FieldDefinition> defns = getFieldsDefinitions();
+		for (FieldDefinition fieldDefinition : defns) {
+			if ( fieldDefinition.getName().equals(name) ) {
+				return fieldDefinition;
+			}
+		}
+		return null;
+	}
 
 //	private Set<String> createCheckDependencyPaths() {
 //		Set<String> paths = new HashSet<String>();

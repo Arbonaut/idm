@@ -58,6 +58,17 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	public Field<?> getField(int idx) {
 		return fields[idx];
 	}
+	
+	public Field<?> getField(String name) {
+		List<FieldDefinition> fieldsDefinitions = definition.getFieldsDefinitions();
+		for (int i = 0; i < fieldsDefinitions.size(); i++) {
+			FieldDefinition fieldDefn = fieldsDefinitions.get(i);
+			if (fieldDefn.getName().equals(name)) {
+				return fields[i];
+			}
+		}
+		return null;
+	}
 
 	public int getFieldCount() {
 		return fields.length;

@@ -34,8 +34,8 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 			new FieldDefinition("languageCode", "l", String.class), 
 			new FieldDefinition("languageVariety", "lv", String.class),
 			new FieldDefinition("qualifer1","q1", String.class),
-			new FieldDefinition("qualifer1","q2", String.class),
-			new FieldDefinition("qualifer1","q3", String.class)
+			new FieldDefinition("qualifer2","q2", String.class),
+			new FieldDefinition("qualifer3","q3", String.class)
 		));
 	
 	@Override
@@ -53,5 +53,7 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	public List<FieldDefinition> getFieldsDefinitions() {
 		return fieldsDefinitions;
 	}
+	
+	
 	
 }

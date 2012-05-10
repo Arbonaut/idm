@@ -79,7 +79,19 @@ class SurveyDependencies {
 		Schema schema = survey.getSchema();
 		List<EntityDefinition> rootEntityDefinitions = schema.getRootEntityDefinitions();
 		for (EntityDefinition rootDefn : rootEntityDefinitions) {
+			registerKeyDependencies(rootDefn);
 			registerDependencies(rootDefn);
+		}
+	}
+
+	private void registerKeyDependencies(EntityDefinition rootDefn) {
+		List<AttributeDefinition> keyDefns = rootDefn.getKeyAttributeDefinitions();
+		for (AttributeDefinition keyDefn : keyDefns) {
+			for (AttributeDefinition keyDep : keyDefns) {
+				if ( keyDep != keyDefn ) {
+					checkDependencies.registerDependencies(keyDefn, keyDep.getName());
+				}
+			}
 		}
 	}
 

@@ -1,8 +1,9 @@
 package org.openforis.idm.model.species;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -68,12 +69,10 @@ public class TaxonVernacularName {
 	}
 
 	public List<String> getQualifiers() {
-		if(qualifiers!=null)
-			return Collections.unmodifiableList(qualifiers);
-		return null;		
+		return CollectionUtil.unmodifiableList(qualifiers);
 	}
 
-	public void setQualifiers(List<String> qualifier) {
-		this.qualifiers = qualifier;
+	public void setQualifiers(List<String> qualifiers) {
+		this.qualifiers = new ArrayList<String>(qualifiers);
 	}
 }

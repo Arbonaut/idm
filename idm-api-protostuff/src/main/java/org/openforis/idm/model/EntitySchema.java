@@ -34,7 +34,7 @@ public class EntitySchema extends SchemaSupport<Entity> {
 				out.writeUInt32(1, node.definitionId, false);
 				out.writeObject(2, node, getSchema(node.getClass()), false);
         	}
-        	System.out.println("node=" + node);
+        	//System.out.println("node=" + node);
 			out.writeUInt32(1, node.definitionId, false);
 			out.writeObject(2, node, getSchema(node.getClass()), false);
 //			State childState = entity.getChildState(node.getName());
@@ -63,11 +63,11 @@ public class EntitySchema extends SchemaSupport<Entity> {
         		// Definition id
         		int definitionId = input.readUInt32();
         		NodeDefinition defn = idmSchema.getById(definitionId);
-        		System.out.print(defn);
+        		//System.out.print(defn);
         		if ( defn == null ) {
         			throw new ProtostuffException("Invalid definition id "+definitionId);
         		}
-        		System.out.println(": " + defn.getPath());
+        		//System.out.println(": " + defn.getPath());
         		Node<?> node = defn.createNode();
         		entity.add(node);
         		

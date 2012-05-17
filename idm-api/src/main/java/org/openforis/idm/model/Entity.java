@@ -58,6 +58,15 @@ public class Entity extends Node<EntityDefinition> {
 		this.childStates = new HashMap<String, State>();
 	}
 
+	@Override
+	protected void setRecord(Record record) {
+		super.setRecord(record);
+		List<Node<?>> children = getChildren();
+		for (Node<?> node : children) {
+			node.setRecord(record);
+		}
+	}
+	
 	public void add(Node<?> node) {
 		addInternal(node, null);
 	}

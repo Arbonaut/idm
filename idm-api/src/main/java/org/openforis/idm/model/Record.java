@@ -99,6 +99,8 @@ public class Record {
 			if ( rootEntityDefinition == null || rootEntityDefinition != currentEntityDefinition ) {
 				throw new IllegalArgumentException("Invalid root entity");
 			}
+			this.nodesByInternalId = new HashMap<Integer, Node<? extends NodeDefinition>>();
+			entity.setRecord(this);
 		}
 		this.rootEntity = entity;
 	}
@@ -126,4 +128,5 @@ public class Record {
 	int nextId() {
 		return nextId++;
 	}
+	
 }

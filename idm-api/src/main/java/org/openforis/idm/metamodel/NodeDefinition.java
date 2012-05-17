@@ -158,7 +158,12 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 
 	public boolean isMultiple() {
 		if ( multiple == null ) {
-			return (minCount != null && minCount > 1) || (maxCount != null && maxCount > 1); 
+			if ( parentDefinition == null && schema != null ) {
+				// Root entity is always multiple
+				return true;
+			} else {
+				return (minCount != null && minCount > 1) || (maxCount != null && maxCount > 1);
+			}
 		} else {
 			return multiple;
 		}

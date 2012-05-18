@@ -28,7 +28,7 @@ import org.openforis.idm.model.TextAttribute;
 public class TextAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition {
 
 	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-			new FieldDefinition("value", "v", String.class)
+			new FieldDefinition("value", "v", null, String.class)
 		));
 	
 	public enum Type {
@@ -73,4 +73,8 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 		return fieldsDefinitions;
 	}
 	
+	@Override
+	public Class<?> getValueType() {
+		return String.class;
+	}
 }

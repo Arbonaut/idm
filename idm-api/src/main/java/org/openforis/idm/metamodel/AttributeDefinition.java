@@ -73,6 +73,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 		return null;
 	}
 
+	public abstract Class<?> getValueType();
 //	private Set<String> createCheckDependencyPaths() {
 //		Set<String> paths = new HashSet<String>();
 //		for (Check<?> check : getChecks()) {

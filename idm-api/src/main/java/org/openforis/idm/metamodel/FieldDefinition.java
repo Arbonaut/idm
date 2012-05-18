@@ -11,12 +11,14 @@ public final class FieldDefinition {
 
 	private String name;
 	private String alias;
+	private String suffix;
 	private Class<?> valueType;
 	
-	public FieldDefinition(String name, String alias, Class<?> valueType) {
+	public FieldDefinition(String name, String alias, String suffix, Class<?> valueType) {
 		super();
 		this.name = name;
 		this.alias = alias;
+		this.suffix = suffix;
 		this.valueType = valueType;
 	}
 
@@ -32,13 +34,13 @@ public final class FieldDefinition {
 		return valueType;
 	}
 	
+	public String getSuffix() {
+		return suffix;
+	}
+	
 	@Override
 	public String toString() {
-		return new StringBuilder()
-			.append("FieldDefinition name: ").append(name)
-			.append(" alias: ").append(alias)
-			.append(" type: ").append(valueType.getSimpleName())
-		.toString();
+		return name;
 	}
 	
 }

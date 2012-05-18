@@ -28,9 +28,9 @@ public class DateAttributeDefinition extends AttributeDefinition {
 	private static final long serialVersionUID = 1L;
 
 	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-			new FieldDefinition("year", "y", Integer.class),
-			new FieldDefinition("month", "m", Integer.class),
-			new FieldDefinition("day", "d", Integer.class)
+			new FieldDefinition("year", "y", "y", Integer.class),
+			new FieldDefinition("month", "m", "m", Integer.class),
+			new FieldDefinition("day", "d", "d", Integer.class)
 		));
 	
 	@Override
@@ -51,5 +51,10 @@ public class DateAttributeDefinition extends AttributeDefinition {
 	@Override
 	public List<FieldDefinition> getFieldDefinitions() {
 		return fieldsDefinitions;
+	}
+
+	@Override
+	public Class<?> getValueType() {
+		return Date.class;
 	}
 }

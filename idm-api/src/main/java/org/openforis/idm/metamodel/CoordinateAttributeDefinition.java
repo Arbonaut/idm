@@ -28,9 +28,9 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 	private static final long serialVersionUID = 1L;
 
 	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-		new FieldDefinition("x", "x", Double.class),
-		new FieldDefinition("y", "y", Double.class),
-		new FieldDefinition("srs_id", "srs", String.class)
+		new FieldDefinition("x", "x", "x", Double.class),
+		new FieldDefinition("y", "y", "y", Double.class),
+		new FieldDefinition("srs_id", "srs", "srs", String.class)
 	));
 	
 	@Override
@@ -53,4 +53,9 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 		return fieldsDefinitions;
 	}
 	
+
+	@Override
+	public Class<?> getValueType() {
+		return Coordinate.class;
+	}
 }

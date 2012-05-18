@@ -97,6 +97,20 @@ public class CodeList extends Versionable implements Serializable {
 	protected void setSurvey(Survey survey) {
 		this.survey = survey;
 	}
+
+	// TODO for hierarchical lists, separate by level
+	public boolean isQualifiable() {
+		if ( items == null ) {
+			return false;
+		} else {
+			for (CodeListItem item : items) {
+				if ( item.isQualifiable() ) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
 	
 	
 }

@@ -1,6 +1,7 @@
 package org.openforis.idm.model;
 
 import java.util.Calendar;
+import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
@@ -63,13 +64,14 @@ public final class Date {
 		}
 	}
 	
+	public java.util.Date toJavaDate() {
+		return toCalendar().getTime();
+	}
+	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{year:").append(year);
-		sb.append(", month:").append(month);
-		sb.append(", day:").append(day);
-		sb.append("}");
-		return sb.toString();
+		Formatter formatter = new Formatter();
+		formatter.format("%04d-%02d-%02d", year, month, day);
+		return formatter.toString();
 	}
 }

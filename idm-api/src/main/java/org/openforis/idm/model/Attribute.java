@@ -27,7 +27,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	private Field[] fields;
 	
 	private transient ValidationResults validationResults;
-	
+
 	protected Attribute(D definition) {
 		super(definition);
 		initFields();
@@ -215,7 +215,6 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	public void clearValidationResults() {
 		validationResults = null;
 	}
-	
 	
 	@Override
 	protected void write(StringWriter sw, int indent) {

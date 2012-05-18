@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TaxonAttribute;
 import org.openforis.idm.model.TaxonOccurrence;
+import org.openforis.idm.model.species.Taxon;
 
 /**
  * @author G. Miceli
@@ -27,11 +28,11 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	private static final long serialVersionUID = 1L;
 
 	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-			new FieldDefinition("code", "c", String.class), 
-			new FieldDefinition("scientific_name", "s", String.class), 
-			new FieldDefinition("vernacular_name", "v", String.class), 
-			new FieldDefinition("language_code", "l", String.class), 
-			new FieldDefinition("language_variety", "lv", String.class)
+			new FieldDefinition("code", "c", "code", String.class), 
+			new FieldDefinition("scientific_name", "s", "name", String.class), 
+			new FieldDefinition("vernacular_name", "v", "vn", String.class), 
+			new FieldDefinition("language_code", "l", "lang", String.class), 
+			new FieldDefinition("language_variety", "lv", "lang_var", String.class)
 		));
 	
 	@Override
@@ -49,5 +50,9 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	public List<FieldDefinition> getFieldDefinitions() {
 		return fieldsDefinitions;
 	}
-	
+
+	@Override
+	public Class<?> getValueType() {
+		return Taxon.class;
+	}
 }

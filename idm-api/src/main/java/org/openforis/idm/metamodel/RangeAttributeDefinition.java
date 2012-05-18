@@ -92,21 +92,22 @@ public class RangeAttributeDefinition extends AttributeDefinition {
 	@Override
 	public List<FieldDefinition> getFieldDefinitions() {
 		List<FieldDefinition> result = new ArrayList<FieldDefinition>();
-		Type effectiveType = getType();
-		Class<?> valueType;
-		switch (effectiveType) {
+		Class<?> valueType = getValueType();
+		result.add(new FieldDefinition("from", "f", "from", valueType));
+		result.add(new FieldDefinition("to", "t", "to", valueType));
+		result.add(new FieldDefinition("unit", "u", "unit", String.class));
+		return Collections.unmodifiableList(result);
+	}
+	@Override
+	public Class<?> getValueType() {
+		Type type = getType();
+		switch (type) {
 		case INTEGER:
-			valueType = Integer.class;
-			break;
+			return Integer.class;
 		case REAL:
-			valueType = Double.class;
-			break;
+			return Double.class;
 		default:
 			throw new UnsupportedOperationException("Unknown type");
 		}
-		result.add(new FieldDefinition("from", "f", valueType));
-		result.add(new FieldDefinition("to", "t", valueType));
-		result.add(new FieldDefinition("unit", "u", String.class));
-		return Collections.unmodifiableList(result);
 	}
 }

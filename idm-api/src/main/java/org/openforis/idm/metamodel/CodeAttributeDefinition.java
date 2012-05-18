@@ -32,8 +32,8 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	private static final long serialVersionUID = 1L;
 	
 	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-		new FieldDefinition("code", "c", String.class), 
-		new FieldDefinition("qualifier", "q", String.class)
+		new FieldDefinition("code", "c", null, String.class), 
+		new FieldDefinition("qualifier", "q", "other", String.class)
 	));
 	
 	@XmlAttribute(name = "key")
@@ -116,5 +116,9 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	public List<FieldDefinition> getFieldDefinitions() {
 		return fieldsDefinitions;
 	}
-	
+
+	@Override
+	public Class<?> getValueType() {
+		return Code.class;
+	}
 }

@@ -69,7 +69,7 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldsDefinitions() {
+	public List<FieldDefinition> getFieldDefinitions() {
 		return fieldsDefinitions;
 	}
 	

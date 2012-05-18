@@ -46,7 +46,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	} 
 	
 	private void initFields() {
-		List<FieldDefinition> fieldsDefinitions = definition.getFieldsDefinitions();
+		List<FieldDefinition> fieldsDefinitions = definition.getFieldDefinitions();
 		this.fields = new Field[fieldsDefinitions.size()];
 		for (int i = 0; i < fieldsDefinitions.size(); i++) {
 			FieldDefinition fieldDefn = fieldsDefinitions.get(i);
@@ -60,7 +60,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 	
 	public Field<?> getField(String name) {
-		List<FieldDefinition> fieldsDefinitions = definition.getFieldsDefinitions();
+		List<FieldDefinition> fieldsDefinitions = definition.getFieldDefinitions();
 		for (int i = 0; i < fieldsDefinitions.size(); i++) {
 			FieldDefinition fieldDefn = fieldsDefinitions.get(i);
 			if (fieldDefn.getName().equals(name)) {

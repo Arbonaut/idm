@@ -23,9 +23,5 @@
 			  <version>1.9.0</version> 
 			  <scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.openforis.idm</groupId>
-			<artifactId>idm-test</artifactId>
-		</dependency>
 	</dependencies>
 </project>

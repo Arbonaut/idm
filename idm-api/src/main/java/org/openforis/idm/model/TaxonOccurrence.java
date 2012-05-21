@@ -1,10 +1,12 @@
 package org.openforis.idm.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public final class TaxonOccurrence {
+public final class TaxonOccurrence implements Value {
 
 	private String code;
 	private String scientificName;
@@ -72,10 +74,13 @@ public final class TaxonOccurrence {
 
 	@Override
 	public String toString() {
-		return "{code: '" + code + "' , scientificName: '"
-				+ scientificName + "', vernacularName: '"  + vernacularName
-				+ "', languageCode: '" + languageCode + "', languageVariety: '"
-				+ languageVariety + "'}";
+		return new ToStringBuilder(this)
+			.append("code", code)
+			.append("scientificName", scientificName)
+			.append("vernacularName", vernacularName)
+			.append("languageCode", languageCode)
+			.append("languageVariety", languageVariety)
+			.toString();
 	}
 
 

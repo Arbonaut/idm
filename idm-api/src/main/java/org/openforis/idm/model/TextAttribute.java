@@ -6,7 +6,7 @@ import org.openforis.idm.metamodel.TextAttributeDefinition;
  * @author G. Miceli
  * @author M. Togna
  */
-public class TextAttribute extends Attribute<TextAttributeDefinition, String> {
+public class TextAttribute extends Attribute<TextAttributeDefinition, TextValue> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -16,16 +16,16 @@ public class TextAttribute extends Attribute<TextAttributeDefinition, String> {
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public String getValue() {
+	public TextValue getValue() {
 		Field<String> field = (Field<String>) getField(0);
-		return field.getValue();
+		return field == null ? null : new TextValue(field.getValue());
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void setValue(String value) {
+	public void setValue(TextValue value) {
 		Field<String> field = (Field<String>) getField(0);
-		field.setValue(value);
+		field.setValue(value == null ? null : value.getValue());
 		onUpdateValue();
 	}
 }

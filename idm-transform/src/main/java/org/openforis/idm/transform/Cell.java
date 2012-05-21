@@ -7,6 +7,9 @@ import java.util.List;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.util.CollectionUtil;
 
+/**
+ * @author G. Miceli
+ */
 public class Cell {
 	private Object value;
 	private List<Node<?>> sourceNodes;

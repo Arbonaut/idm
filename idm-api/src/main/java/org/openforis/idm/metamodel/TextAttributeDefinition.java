@@ -17,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.xml.internal.TextAttributeDefinitionTypeAdapter;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TextAttribute;
+import org.openforis.idm.model.TextValue;
+import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -74,7 +76,7 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 	}
 	
 	@Override
-	public Class<?> getValueType() {
-		return String.class;
+	public Class<? extends Value> getValueType() {
+		return TextValue.class;
 	}
 }

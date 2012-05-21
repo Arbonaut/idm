@@ -17,6 +17,7 @@ import org.openforis.idm.metamodel.validation.DistanceCheck;
 import org.openforis.idm.metamodel.validation.PatternCheck;
 import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.model.NodePathPointer;
+import org.openforis.idm.model.Value;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -73,7 +74,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 		return null;
 	}
 
-	public abstract Class<?> getValueType();
+	public abstract Class<? extends Value> getValueType();
 //	private Set<String> createCheckDependencyPaths() {
 //		Set<String> paths = new HashSet<String>();
 //		for (Check<?> check : getChecks()) {

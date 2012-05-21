@@ -12,6 +12,7 @@ import org.openforis.idm.model.Node;
  * Provider chain is created on instantiation based IDML schema 
  * 
  * Columns are generated one call to getColumns based on provider parameters
+ * @author G. Miceli
  */
 public class EntityColumnProvider extends ColumnProviderChain {
 
@@ -20,6 +21,9 @@ public class EntityColumnProvider extends ColumnProviderChain {
 	// TODO iterate ancestor ids and add column providers
 	// TODO iterate child definitions and add column providers 
 	
+	public EntityColumnProvider(EntityDefinition entityDefinition) {
+		this(entityDefinition, null);
+	}
 	/**
 	 * 
 	 * @param entityDefinition
@@ -34,7 +38,7 @@ public class EntityColumnProvider extends ColumnProviderChain {
 			} else {
 				if (defn instanceof EntityDefinition) {
 					String name = defn.getName();
-					ColumnGroup columnGroup = new ColumnGroup(name, null, defn, parentGroup); // TODO heading
+					ColumnGroup columnGroup = new ColumnGroup(name, null, defn, parentGroup, this); // TODO heading
 					EntityColumnProvider ecp = new EntityColumnProvider((EntityDefinition) defn, columnGroup);
 					addProvider(ecp);
 				} else if (defn instanceof AttributeDefinition) {
@@ -62,4 +66,25 @@ public class EntityColumnProvider extends ColumnProviderChain {
 	public EntityDefinition getEntityDefinition() {
 		return entityDefinition;
 	}
+	
+	public void expandAll() {
+		for (ColumnProvider p : getProviders()) {
+			if ( p instanceof EntityColumnProvider ) {
+				((EntityColumnProvider) p).expandAll();
+			} else if ( p instanceof AttributeColumnProvider ) {
+				((AttributeColumnProvider) p).expand();
+			}
+		}
+	}
+	
+	public void collapseAll() {
+		for (ColumnProvider p : getProviders()) {
+			if ( p instanceof EntityColumnProvider ) {
+				((EntityColumnProvider) p).collapseAll();
+			} else if ( p instanceof AttributeColumnProvider ) {
+				((AttributeColumnProvider) p).collapse();
+			}
+		}
+	}
+	
 }

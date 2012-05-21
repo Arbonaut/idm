@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TaxonAttribute;
 import org.openforis.idm.model.TaxonOccurrence;
-import org.openforis.idm.model.species.Taxon;
+import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -52,7 +52,7 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	}
 
 	@Override
-	public Class<?> getValueType() {
-		return Taxon.class;
+	public Class<? extends Value> getValueType() {
+		return TaxonOccurrence.class;
 	}
 }

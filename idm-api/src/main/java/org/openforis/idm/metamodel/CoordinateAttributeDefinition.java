@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -55,7 +56,7 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 	
 
 	@Override
-	public Class<?> getValueType() {
+	public Class<? extends Value> getValueType() {
 		return Coordinate.class;
 	}
 }

@@ -10,12 +10,14 @@ import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointer;
 import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.BooleanValue;
 import org.openforis.idm.model.Code;
-import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Date;
-import org.openforis.idm.model.DateAttribute;
+import org.openforis.idm.model.IntegerValue;
+import org.openforis.idm.model.NumericRange;
+import org.openforis.idm.model.RealValue;
+import org.openforis.idm.model.TextValue;
 import org.openforis.idm.model.Time;
-import org.openforis.idm.model.TimeAttribute;
 
 /**
  * @author M. Togna
@@ -44,19 +46,28 @@ public class ModelNodePointer extends DynamicPointer {
 	}
 
 	private Object getValue(Attribute<?, ?> attribute) {
-		if (attribute.getValue() == null || !attribute.isFilled() ) {
-			return null;
-		} else if (attribute instanceof TimeAttribute) {
-			Time time = ((TimeAttribute) attribute).getValue();
+		Object value = attribute.getValue();
+		if ( value instanceof TextValue ) {
+			return ((TextValue) value).getValue(); 
+		} else if ( value instanceof IntegerValue ) {		
+			return ((IntegerValue) value).getValue(); 
+		} else if ( value instanceof RealValue ) {		
+			return ((RealValue) value).getValue(); 
+		} else if ( value instanceof NumericRange ) {		
+			return value; 
+		} else if ( value instanceof BooleanValue ) {		
+			return ((BooleanValue) value).getValue(); 
+		} else if (value instanceof Time ) {
+			Time time = (Time) value;
 			return time.getHour() * 100 + time.getMinute();
-		} else if (attribute instanceof DateAttribute) {
-			Date date = ((DateAttribute) attribute).getValue();
+		} else if (value instanceof Date) {
+			Date date = (Date) value;
 			return (date.getYear() * 10000) + (date.getMonth() * 100) + date.getDay();
-		} else if (attribute instanceof CodeAttribute) {
-			Code code = ((CodeAttribute) attribute).getValue();
+		} else if (value instanceof Code) {
+			Code code = (Code) value;
 			return code.getCode();
 		} else {
-			return attribute.getValue();
+			throw new UnsupportedOperationException("Unsupported value type of "+attribute.getClass());
 		}
 	}
 

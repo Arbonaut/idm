@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Record;
+import org.openforis.idm.model.Value;
 import org.openforis.idm.model.expression.DefaultConditionExpression;
 import org.openforis.idm.model.expression.DefaultValueExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
@@ -50,7 +51,7 @@ public class AttributeDefault implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <V> V evaluate(Attribute<? extends AttributeDefinition,V> attrib) throws InvalidExpressionException {
+	public <V extends Value> V evaluate(Attribute<? extends AttributeDefinition,V> attrib) throws InvalidExpressionException {
 		Record record = attrib.getRecord();
 		SurveyContext recordContext = record.getSurveyContext();
 		ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
@@ -72,7 +73,7 @@ public class AttributeDefault implements Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <V> V evaluateExpression(Attribute<?, V> attrib, ExpressionFactory expressionFactory) throws InvalidExpressionException {
+	private <V extends Value> V evaluateExpression(Attribute<?, V> attrib, ExpressionFactory expressionFactory) throws InvalidExpressionException {
 		DefaultValueExpression defaultValueExpression = expressionFactory.createDefaultValueExpression(expression);
 		Object object = defaultValueExpression.evaluate(attrib.getParent(), attrib);
 		return (V) object;

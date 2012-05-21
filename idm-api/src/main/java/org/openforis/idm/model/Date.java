@@ -1,17 +1,17 @@
 package org.openforis.idm.model;
 
 import java.util.Calendar;
-import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public final class Date {
+public final class Date implements Value {
 
 	private static final String DELIM = "-";
 	private final Integer day;
@@ -70,8 +70,10 @@ public final class Date {
 	
 	@Override
 	public String toString() {
-		Formatter formatter = new Formatter();
-		formatter.format("%04d-%02d-%02d", year, month, day);
-		return formatter.toString();
+		return new ToStringBuilder(this)
+			.append("year", year)
+			.append("month", month)
+			.append("day", day)
+			.toString();
 	}
 }

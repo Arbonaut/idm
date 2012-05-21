@@ -14,7 +14,9 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.BooleanAttribute;
+import org.openforis.idm.model.BooleanValue;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -64,7 +66,7 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	}
 
 	@Override
-	public Class<?> getValueType() {
-		return Boolean.class;
+	public Class<? extends Value> getValueType() {
+		return BooleanValue.class;
 	}
 }

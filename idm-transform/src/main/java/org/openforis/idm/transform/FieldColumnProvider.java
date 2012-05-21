@@ -9,18 +9,24 @@ import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Field;
 import org.openforis.idm.model.Node;
 
+/**
+ * @author G. Miceli
+ */
 public class FieldColumnProvider extends ColumnProvider {
 
 	private FieldDefinition fieldDefinition;
 	private List<Column> columns;
 	
 	public FieldColumnProvider(FieldDefinition fieldDefinition, ColumnGroup columnGroup) {		
+		this(fieldDefinition, columnGroup, fieldDefinition.getSuffix());
+	}
+
+	public FieldColumnProvider(FieldDefinition fieldDefinition, ColumnGroup columnGroup, String shortName) {		
 		this.fieldDefinition = fieldDefinition;
-		Column col = new Column();
-		col.setShortName(fieldDefinition.getSuffix());
-		col.setValueType(fieldDefinition.getValueType());
-		col.setParentGroup(columnGroup);
-//		TODO col.setHeading(heading)
+		Class<?> type = fieldDefinition.getValueType();
+		// TODO attach to defn
+		// TODO col.setHeading(heading)
+		Column col = new Column(shortName, null, null, columnGroup, this, type);
 		this.columns = Arrays.asList(col);
 	}
 

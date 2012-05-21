@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
@@ -15,11 +16,19 @@ public final class IntegerRange extends NumericRange<Integer> {
 	private static final Pattern PATTERN = Pattern.compile(REGEX);
 
 	public IntegerRange(Integer value) {
-		super(value);
+		super(value, value, null);
 	}
 
 	public IntegerRange(Integer from, Integer to) {
-		super(from, to);
+		super(from, to, null);
+	}
+
+	public IntegerRange(Integer value, Unit unit) {
+		super(value, value, unit);
+	}
+
+	public IntegerRange(Integer from, Integer to, Unit unit) {
+		super(from, to, unit);
 	}
 
 	public static IntegerRange parseIntegerRange(String string) {
@@ -41,5 +50,4 @@ public final class IntegerRange extends NumericRange<Integer> {
 			}
 		}
 	}
-
 }

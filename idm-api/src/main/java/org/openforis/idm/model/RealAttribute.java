@@ -1,12 +1,14 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public class RealAttribute extends NumberAttribute<Double> {
+public class RealAttribute extends NumberAttribute<Double, RealValue> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,4 +19,16 @@ public class RealAttribute extends NumberAttribute<Double> {
 		}
 	}
 
+	@Override
+	public RealValue getValue() {
+		Double value = (Double) getField(0).getValue(); 
+		Survey survey = getSurvey();
+		String unitName = (String) getField(1).getValue();
+		Unit unit = survey.getUnit(unitName);
+		return new RealValue(value, unit);
+	}
+
+	public void setValue(Double value) {
+		super.setValue(new RealValue(value));
+	}
 }

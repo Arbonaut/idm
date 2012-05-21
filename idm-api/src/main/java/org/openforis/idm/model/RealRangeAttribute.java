@@ -1,6 +1,7 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.RangeAttributeDefinition;
+import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
@@ -18,8 +19,8 @@ public class RealRangeAttribute extends NumericRangeAttribute<RealRange, Double>
 	}
 
 	@Override
-	protected RealRange createRange(Double from, Double to) {
-		return new RealRange(from, to);
+	protected RealRange createRange(Double from, Double to, Unit unit) {
+		return new RealRange(from, to, unit);
 	}
 
 }

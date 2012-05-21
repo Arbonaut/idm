@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Date;
 import org.openforis.idm.model.DateAttribute;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -54,7 +55,7 @@ public class DateAttributeDefinition extends AttributeDefinition {
 	}
 
 	@Override
-	public Class<?> getValueType() {
+	public Class<? extends Value> getValueType() {
 		return Date.class;
 	}
 }

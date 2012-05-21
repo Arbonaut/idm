@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
@@ -15,11 +16,19 @@ public final class RealRange extends NumericRange<Double> {
 	private static final Pattern PATTERN = Pattern.compile(REGEX);
 
 	public RealRange(Double value) {
-		super(value);
+		super(value, value, null);
 	}
 
 	public RealRange(Double from, Double to) {
-		super(from, to);
+		super(from, to, null);
+	}
+
+	public RealRange(Double value, Unit unit) {
+		super(value, value, unit);
+	}
+
+	public RealRange(Double from, Double to, Unit unit) {
+		super(from, to, unit);
 	}
 
 	public static RealRange parseRealRange(String string) {

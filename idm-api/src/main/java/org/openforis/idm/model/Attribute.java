@@ -4,6 +4,7 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,7 @@ import org.openforis.idm.model.expression.internal.MissingValueException;
  * @author G. Miceli
  */
 @SuppressWarnings("rawtypes")
-public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D> {
+public abstract class Attribute<D extends AttributeDefinition, V extends Value> extends Node<D> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -226,5 +227,27 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		sw.append(": ");
 		sw.append(value == null ? "!!null" : value.toString());
 		sw.append("\n");
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(fields);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Attribute other = (Attribute) obj;
+		if (!Arrays.equals(fields, other.fields))
+			return false;
+		return true;
 	}
 }

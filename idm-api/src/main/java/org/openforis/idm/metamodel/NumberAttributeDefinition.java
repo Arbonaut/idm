@@ -17,8 +17,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.xml.internal.NumberAttributeDefinitionTypeAdapter;
 import org.openforis.idm.model.IntegerAttribute;
+import org.openforis.idm.model.IntegerValue;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RealAttribute;
+import org.openforis.idm.model.RealValue;
+import org.openforis.idm.model.Value;
 import org.openforis.idm.util.CollectionUtil;
 
 
@@ -63,6 +66,26 @@ public class NumberAttributeDefinition extends AttributeDefinition implements Ke
 		return CollectionUtil.unmodifiableList(precisionDefinitions);
 	}
 
+	/**
+	 * @return true if the unit may be user-defined, false if the value is always measured with the same (or no) unit  
+	 */
+	public boolean isVariableUnit() {
+		if ( precisionDefinitions == null ) {
+			return false;
+		}
+		boolean unitFound = false;
+		for (Precision p : precisionDefinitions) {
+			String unitName = p.getUnitName();
+			if ( unitName != null ) {
+				if ( unitFound ) {
+					return true;
+				}
+				unitFound = true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean isKey() {
 		return this.key == null ? false : key;
@@ -104,13 +127,13 @@ public class NumberAttributeDefinition extends AttributeDefinition implements Ke
 	}
 
 	@Override
-	public Class<?> getValueType() {
+	public Class<? extends Value> getValueType() {
 		Type type = getType();
 		switch (type) {
 		case INTEGER:
-			return Integer.class;
+			return IntegerValue.class;
 		case REAL:
-			return Double.class;
+			return RealValue.class;
 		default:
 			throw new UnsupportedOperationException("Unknown type");
 		}

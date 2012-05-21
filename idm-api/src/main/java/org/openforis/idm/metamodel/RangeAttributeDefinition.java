@@ -22,6 +22,7 @@ import org.openforis.idm.model.Node;
 import org.openforis.idm.model.NumericRange;
 import org.openforis.idm.model.RealRange;
 import org.openforis.idm.model.RealRangeAttribute;
+import org.openforis.idm.model.Value;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -99,13 +100,13 @@ public class RangeAttributeDefinition extends AttributeDefinition {
 		return Collections.unmodifiableList(result);
 	}
 	@Override
-	public Class<?> getValueType() {
+	public Class<? extends Value> getValueType() {
 		Type type = getType();
 		switch (type) {
 		case INTEGER:
-			return Integer.class;
+			return IntegerRange.class;
 		case REAL:
-			return Double.class;
+			return RealRange.class;
 		default:
 			throw new UnsupportedOperationException("Unknown type");
 		}

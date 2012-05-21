@@ -3,6 +3,7 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 
 import org.junit.Test;
 import org.openforis.idm.metamodel.Survey;
@@ -16,7 +17,7 @@ import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.RealAttribute;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.Time;
-import org.openforis.idm.transform.DateColumnProvider;
+import org.openforis.idm.transform.Column;
 import org.openforis.idm.transform.EntityColumnProvider;
 
 /**
@@ -32,13 +33,16 @@ public class ColumnProviderTest {
 		addTestValues(cluster);
 //		System.out.println(cluster);
 		Entity plot = (Entity) cluster.get("plot", 0);
-		EntityColumnProvider ecpc = new EntityColumnProvider(plot.getDefinition(), null);
-		System.out.println(ecpc.getColumns());
+		EntityColumnProvider ecpc = new EntityColumnProvider(plot.getDefinition());
+		
+//		ecpc.expandAll();
+		List<Column> cols = ecpc.getColumns();
+		System.out.println(cols);
 		System.out.println(ecpc.getCells(cluster));
-		EntityColumnProvider tsecp = (EntityColumnProvider) ecpc.getProviders().get(2);
-		DateColumnProvider dcp = (DateColumnProvider) tsecp.getProviders().get(0);
-		dcp.setCollapse(false);
-		System.out.println(ecpc.getColumns());
+
+		ecpc.expandAll();
+		cols = ecpc.getColumns();
+		System.out.println(cols);
 		System.out.println(ecpc.getCells(cluster));
 	}
 
@@ -69,6 +73,9 @@ public class ColumnProviderTest {
 			Entity plot = cluster.addEntity("plot");
 			plot.addValue("no", new Code("1"));
 			plot.addValue("subplot", "A");
+			plot.addValue("share", 75.0);
+			RealAttribute radius = plot.addValue("radius", 12.0);
+			radius.setUnitName("m");
 			{
 				Entity ts = plot.addEntity("time_study");
 				ts.addValue("date", new Date(2011,2,15));

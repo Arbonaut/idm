@@ -1,12 +1,13 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class NumberAttribute<T extends Number> extends Attribute<NumberAttributeDefinition, T> {
+public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>> extends Attribute<NumberAttributeDefinition, T> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -24,18 +25,19 @@ public abstract class NumberAttribute<T extends Number> extends Attribute<Number
 		unitFld.setValue(unitName);
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public T getValue() {
-		Field<T> field = (Field<T>) getField(0);
-		return field.getValue();
-	}
+	public abstract T getValue();
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public void setValue(T value) {
-		Field<T> field = (Field<T>) getField(0);
-		field.setValue(value);
+		// Set value
+		Field<N> valueField = (Field<N>) getField(0);
+		N val = value.getValue();
+		valueField.setValue(val);
+		// Set unit
+		Field<String> unitField = (Field<String>) getField(1);
+		Unit unit = value.getUnit();
+		unitField.setValue(unit == null ? null : unit.getName());
 		onUpdateValue();
 	}
 

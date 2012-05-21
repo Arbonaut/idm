@@ -2,24 +2,29 @@ package org.openforis.idm.transform;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.openforis.idm.metamodel.NodeDefinition;
 
+/**
+ * @author G. Miceli
+ */
 public class ColumnGroup {
 	private String shortName;
 	private String heading;
-	private NodeDefinition nodeDefinition;
 	private boolean excluded;
+	private NodeDefinition nodeDefinition;
 	private ColumnGroup parentGroup;
 	private ColumnProvider provider;
 
 	public ColumnGroup() {
 	}
 	
-	public ColumnGroup(String name, String heading, NodeDefinition nodeDefinition, ColumnGroup parentGroup) {
-		this.shortName = name;
+	public ColumnGroup(String shortName, String heading, NodeDefinition nodeDefinition, ColumnGroup parentGroup, ColumnProvider provider) {
+		this.shortName = shortName;
 		this.heading = heading;
 		this.nodeDefinition = nodeDefinition;
 		this.parentGroup = parentGroup;
+		this.provider = provider;
 	}
 
 	public String getName() {
@@ -63,7 +68,11 @@ public class ColumnGroup {
 	}
 
 	public boolean isExcluded() {
-		return excluded;
+		if ( parentGroup != null && parentGroup.isExcluded() ) {
+			return true;
+		} else {
+			return excluded;
+		}
 	}
 
 	public void setExcluded(boolean excluded) {
@@ -80,7 +89,12 @@ public class ColumnGroup {
 	
 	@Override
 	public String toString() {
-		return getName();
+		return new ToStringBuilder(this)
+			.append("shortName", getShortName())
+			.append("heading", getHeading())
+			.append("nodeDefinition", getNodeDefinition())
+			.append("parentGroup", getParentGroup())
+			.toString();
 	}
 
 	public ColumnProvider getProvider() {

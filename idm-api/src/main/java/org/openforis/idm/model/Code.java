@@ -1,10 +1,12 @@
 package org.openforis.idm.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public class Code {
+public final class Code implements Value {
 
 	private final String code;
 	private final String qualifier;
@@ -60,12 +62,9 @@ public class Code {
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(); 
-		sb.append("{code: ").append(code);
-		if ( qualifier!=null ) {
-			sb.append(", qualifier: ").append(qualifier);
-		}
-		sb.append("}");
-		return sb.toString();
+		return new ToStringBuilder(this)
+			.append("code", code)
+			.append("qualifier", qualifier)
+			.toString();
 	}
 }

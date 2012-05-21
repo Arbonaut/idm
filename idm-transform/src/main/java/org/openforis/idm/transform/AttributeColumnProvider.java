@@ -2,13 +2,13 @@ package org.openforis.idm.transform;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.DateAttributeDefinition;
 import org.openforis.idm.metamodel.FieldDefinition;
+import org.openforis.idm.metamodel.NumberAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Entity;
@@ -28,35 +28,14 @@ public class AttributeColumnProvider extends ColumnProvider {
 	private AttributeDefinition attributeDefinition;
 	private ColumnProviderChain fieldProviderChain;
 	private ColumnGroup parentGroup;
-	private boolean collapse;
+	private boolean expanded;
 
-	public AttributeColumnProvider(AttributeDefinition attributeDefinition, ColumnGroup parentGroup, boolean collapseDefault) {
+	public AttributeColumnProvider(AttributeDefinition attributeDefinition, ColumnGroup parentGroup) {
 		super();
 		this.parentGroup = parentGroup;
 		this.attributeDefinition = attributeDefinition;
-		this.collapse = collapseDefault;
-//		String name = attributeDefinition.getName();
-//		this.columnGroup = new ColumnGroup(name, null, attributeDefinition, parentGroup); // TODO heading	
-//		if ( attributeDefinition instanceof CodeAttributeDefinition ) {
-//			CodeAttributeDefinition defn = (CodeAttributeDefinition) attributeDefinition;
-//			fieldProviderChain.addProvider(new FieldColumnProvider(defn.getFieldDefinition("code"), columnGroup));
-//			CodeList list = defn.getList();
-//			if ( list.isQualifiable() ) {
-//				addProvider(new FieldColumnProvider(defn.getFieldDefinition("qualifier"), columnGroup));				
-//			}
-//		} else if ( attributeDefinition instanceof DateAttributeDefinition ) { 
-//		} else {
-//			this.fieldProviderChain = new ColumnProviderChain(); 
-//			List<FieldDefinition> fieldDefinitions = attributeDefinition.getFieldDefinitions();
-//			for (FieldDefinition defn : fieldDefinitions) {
-//				// TODO col.setHeading()
-//				FieldColumnProvider fcp = new FieldColumnProvider(defn, columnGroup);
-//				fieldProviderChain.addProvider(fcp);
-//			}
-//		}
+		this.expanded = false;
 	}
-
-//	protected abstract List<Cell> toCells(Attribute<?, ?> attr);
 
 	protected ColumnProviderChain getFieldProviderChain() {
 		if ( fieldProviderChain == null ) {
@@ -67,24 +46,46 @@ public class AttributeColumnProvider extends ColumnProvider {
 	
 	protected ColumnProviderChain createFieldProviderChain() {
 		String name = attributeDefinition.getName();
-		ColumnGroup columnGroup = new ColumnGroup(name, null, attributeDefinition, parentGroup); // TODO heading	
-		ColumnProviderChain chain = new ColumnProviderChain(); 
 		List<FieldDefinition> fieldDefinitions = attributeDefinition.getFieldDefinitions();
-		for (FieldDefinition defn : fieldDefinitions) {
+		ColumnProviderChain chain = new ColumnProviderChain(); 
+		if ( fieldDefinitions.size() == 1 ) {
+			FieldDefinition fldDefn = fieldDefinitions.get(0);
+			FieldColumnProvider fcp = new FieldColumnProvider(fldDefn, getParentGroup(), attributeDefinition.getName());
 			// TODO col.setHeading()
-			FieldColumnProvider fcp = new FieldColumnProvider(defn, columnGroup);
 			chain.addProvider(fcp);
+		} else {
+			ColumnGroup columnGroup = new ColumnGroup(name, null, attributeDefinition, parentGroup, this); // TODO heading	
+			for (FieldDefinition defn : fieldDefinitions) {
+				// TODO col.setHeading()
+				FieldColumnProvider fcp = new FieldColumnProvider(defn, columnGroup);
+				chain.addProvider(fcp);
+			}
 		}
 		return chain;
 	}
 
 	@Override
 	public List<Column> getColumns() {
-		if ( getCollapse() ) {
-			return collapseColumns();
+		if ( isExpanded() ) {
+			return getExpandedColumns();
 		} else {
-			return expandColumns();
+			return getCollapsedColumns();
 		}	
+	}
+
+	protected List<Column> getCollapsedColumns() {
+		AttributeDefinition attrDefn = getAttributeDefinition();
+		String shortName = attrDefn.getName();
+		Class<?> type = attrDefn.getValueType();
+		// TODO Heading
+		Column col = new Column(shortName, null, attrDefn, getParentGroup(), this, type);
+		List<Column> cols = Arrays.asList(col);
+		return cols;
+	}
+
+	protected List<Column> getExpandedColumns() {
+		ColumnProviderChain chain = getFieldProviderChain();
+		return chain.getColumns();
 	}
 
 	@Override
@@ -96,10 +97,12 @@ public class AttributeColumnProvider extends ColumnProvider {
 			String name = attributeDefinition.getName();
 			Attribute<?, ?> attr = (Attribute<?, ?>) parentEntity.get(name, 0);
 			List<Cell> cells; 
-			if ( getCollapse() ) {
-				cells = collapseCells(attr);
+			if ( attr == null ) {
+				return getEmptyCells();
+			} if ( isExpanded() ) {
+				cells = getExpandedCells(attr);
 			} else {
-				cells = expandCells(attr);
+				cells = getCollapsedCells(attr);
 			}
 			return Collections.unmodifiableList(cells);
 		} else {
@@ -107,29 +110,14 @@ public class AttributeColumnProvider extends ColumnProvider {
 		}
 	}
 
-	protected List<Column> collapseColumns() {
-		Column col = new Column();
-		AttributeDefinition attrDefn = getAttributeDefinition();
-		col.setParentGroup(getParentGroup());
-		col.setShortName(attrDefn.getName());
-		col.setValueType(Date.class);
-		List<Column> cols = Arrays.asList(col);
-		return cols;
-	}
-
-	protected List<Column> expandColumns() {
-		ColumnProviderChain chain = getFieldProviderChain();
-		return chain.getColumns();
-	}
-
-	protected List<Cell> collapseCells(Attribute<?,?> attr) {
+	protected List<Cell> getCollapsedCells(Attribute<?,?> attr) {
 		Object value = attr.getValue();
 		AttributeDefinition defn = attr.getDefinition();
 		Cell cell = new Cell(value, defn.getValueType(), attr);
 		return Arrays.asList(cell);
 	}
 
-	protected List<Cell> expandCells(Attribute<?,?> attr) {
+	protected List<Cell> getExpandedCells(Attribute<?,?> attr) {
 		ColumnProviderChain chain = getFieldProviderChain();
 		return chain.getCells(attr);
 	}
@@ -142,24 +130,31 @@ public class AttributeColumnProvider extends ColumnProvider {
 		return parentGroup;
 	}
 	
-
-	public boolean getCollapse() {
-		return collapse;
+	public boolean isExpanded() {
+		return expanded;
 	}
 
-	public void setCollapse(boolean collapse) {
-		this.collapse = collapse;
+	public void expand() {
+		fieldProviderChain = null;
+		this.expanded = true;
+	}
+
+	public void collapse() {
+		fieldProviderChain = null;
+		this.expanded = false;
 	}
 	
 	public static <T extends AttributeDefinition> AttributeColumnProvider createInstance(T definition, ColumnGroup columnGroup) {
-		if ( definition instanceof DateAttributeDefinition ) {
+		if ( definition instanceof NumberAttributeDefinition ) {
+			return new NumberColumnProvider((NumberAttributeDefinition) definition, columnGroup);
+		} else if ( definition instanceof DateAttributeDefinition ) {
 			return new DateColumnProvider((DateAttributeDefinition) definition, columnGroup);
 		} else if ( definition instanceof TimeAttributeDefinition ) {
-				return new TimeColumnProvider((TimeAttributeDefinition) definition, columnGroup);
+			return new TimeColumnProvider((TimeAttributeDefinition) definition, columnGroup);
 		} else if ( definition instanceof CodeAttributeDefinition ) { 
 			return new CodeColumnProvider((CodeAttributeDefinition) definition, columnGroup);
 		} else {
-			return new AttributeColumnProvider(definition, columnGroup, false);
+			return new AttributeColumnProvider(definition, columnGroup);
 //			throw new UnsupportedOperationException("ColumnProvider for "+definition.getClass()+" not implemented");
 		}
 	}

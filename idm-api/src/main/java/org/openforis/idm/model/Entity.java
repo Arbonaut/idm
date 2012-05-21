@@ -71,6 +71,10 @@ public class Entity extends Node<EntityDefinition> {
 		addInternal(node, null);
 	}
 	
+	public void add(Node<?> node, int idx) {
+		addInternal(node, idx);
+	}
+	
 	public void setChildState(String childName, int intState) {
 		State childState = getChildState(childName);
 		childState.set(intState);
@@ -144,44 +148,20 @@ public class Entity extends Node<EntityDefinition> {
 		return false;
 	}
 
-	// public <T extends Node<?>> T add(T o, int idx) {
-	// return addInternal(o, idx);
-	// }
-	//
-	// public <T extends Node<?>> T add(T o) {
-	// return addInternal(o, null);
-	// }
-
-	// public Entity addEntity(Entity entity) {
-	// addInternal(entity, null);
-	// return entity;
-	// }
-	//
-	// public Entity addEntity(Entity entity, int idx) {
-	// addInternal(entity, idx);
-	// return entity;
-	// }
-
-	// public <A extends Attribute<?,?>> A addAttribute(A attr) {
-	// addInternal(attr, null);
-	// return attr;
-	// }
-	//
-	// public <A extends Attribute<?,?>> A addAttribute(A attr, int idx) {
-	// addInternal(attr, idx);
-	// return attr;
-	// }
-
-	// public <A extends Attribute<D, V>, D extends AttributeDefinition, V> A addXXX(String name, V value, int idx) {
-	// return null;
-	// }
-
+//	public <V extends Value> Attribute<?, ?> addValue(String name, V value) {
+//		return addValueInternal(name, value, null);
+//	}
+//	
+//	public <V extends Value> Attribute<?, ?> addValue(String name, V value, int idx) {
+//		return addValueInternal(name, value, idx);
+//	}
+	
 	public BooleanAttribute addValue(String name, Boolean value, int idx) {
-		return addValueInternal(name, value, idx, BooleanAttribute.class, BooleanAttributeDefinition.class);
+		return addValueInternal(name, new BooleanValue(value), idx, BooleanAttribute.class, BooleanAttributeDefinition.class);
 	}
 
 	public BooleanAttribute addValue(String name, Boolean value) {
-		return addValueInternal(name, value, null, BooleanAttribute.class, BooleanAttributeDefinition.class);
+		return addValueInternal(name, new BooleanValue(value), null, BooleanAttribute.class, BooleanAttributeDefinition.class);
 	}
 
 	public CodeAttribute addValue(String name, Code value, int idx) {
@@ -209,19 +189,19 @@ public class Entity extends Node<EntityDefinition> {
 	}
 
 	public RealAttribute addValue(String name, Double value, int idx) {
-		return addValueInternal(name, value, idx, RealAttribute.class, NumberAttributeDefinition.class);
+		return addValueInternal(name, new RealValue(value), idx, RealAttribute.class, NumberAttributeDefinition.class);
 	}
 
 	public RealAttribute addValue(String name, Double value) {
-		return addValueInternal(name, value, null, RealAttribute.class, NumberAttributeDefinition.class);
+		return addValueInternal(name, new RealValue(value), null, RealAttribute.class, NumberAttributeDefinition.class);
 	}
 
 	public IntegerAttribute addValue(String name, Integer value, int idx) {
-		return addValueInternal(name, value, idx, IntegerAttribute.class, NumberAttributeDefinition.class);
+		return addValueInternal(name, new IntegerValue(value), idx, IntegerAttribute.class, NumberAttributeDefinition.class);
 	}
 
 	public IntegerAttribute addValue(String name, Integer value) {
-		return addValueInternal(name, value, null, IntegerAttribute.class, NumberAttributeDefinition.class);
+		return addValueInternal(name, new IntegerValue(value), null, IntegerAttribute.class, NumberAttributeDefinition.class);
 	}
 
 	public RealRangeAttribute addValue(String name, RealRange value, int idx) {
@@ -249,11 +229,11 @@ public class Entity extends Node<EntityDefinition> {
 	}
 	
 	public TextAttribute addValue(String name, String value, int idx) {
-		return addValueInternal(name, value, idx, TextAttribute.class, TextAttributeDefinition.class);
+		return addValueInternal(name, new TextValue(value), idx, TextAttribute.class, TextAttributeDefinition.class);
 	}
 
 	public TextAttribute addValue(String name, String value) {
-		return addValueInternal(name, value, null, TextAttribute.class, TextAttributeDefinition.class);
+		return addValueInternal(name, new TextValue(value), null, TextAttribute.class, TextAttributeDefinition.class);
 	}
 
 	public TaxonAttribute addValue(String name, TaxonOccurrence value, int idx) {
@@ -372,7 +352,31 @@ public class Entity extends Node<EntityDefinition> {
 		}
 	}
 
-	private <T extends Attribute<D, V>, D extends AttributeDefinition, V> T addValueInternal(String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
+//	@SuppressWarnings("unchecked")
+//	private <T extends Attribute<D, V>, D extends AttributeDefinition, V extends Value> T addValueInternal(String name, Object value, Integer idx) {
+//		T attr = (T) createNode(name);
+//		if ( value instanceof Value ) {
+//			attr.setValue((V) value);
+//		} else {
+////			attr.setValue(value);
+//		}
+//		return addInternal(attr, idx);
+//	}
+
+	
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	private  Attribute<?, ?> addValueInternal(String name, Value value, Integer idx) {
+//		Node<?> node = createNode(name);
+//		if ( node instanceof Attribute ) {
+//			Attribute attr = (Attribute) node;
+//			attr.setValue((Value) value);
+//			return addInternal(attr, idx);
+//		} else {
+//			throw new IllegalArgumentException("Wrong node type; '"+name+"' is not an attribute");
+//		}
+//	}
+	
+	private <T extends Attribute<D, V>, D extends AttributeDefinition, V extends Value> T addValueInternal(String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
 		T attr = createNode(name, type, definitionType);
 		addInternal(attr, idx);
 		attr.setValue(value);
@@ -434,6 +438,12 @@ public class Entity extends Node<EntityDefinition> {
 		return o;
 	}
 
+//	private Node<?> createNode(String name) {
+//		NodeDefinition definition = getChildDefinition(name);
+//		
+//		return definition.createNode();		
+//	}
+	
 	private <T extends Node<D>, D extends NodeDefinition> T createNode(String name, Class<T> type, Class<D> definitionType) {
 		try {
 			NodeDefinition definition = getChildDefinition(name, definitionType);
@@ -769,14 +779,37 @@ public class Entity extends Node<EntityDefinition> {
 	public void clearChildStates() {
 		this.childStates = new HashMap<String, State>();
 	}
-	
-//	@Override
-//	protected void detach() {
-//		super.detach();
-//		List<Node<? extends NodeDefinition>> children = getChildren();
-//		for (Node<? extends NodeDefinition> child : children) {
-//			child.detach();
-//		}
-//	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((childStates == null) ? 0 : childStates.hashCode());
+		result = prime * result
+				+ ((childrenByName == null) ? 0 : childrenByName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Entity other = (Entity) obj;
+		if (childStates == null) {
+			if (other.childStates != null)
+				return false;
+		} else if (!childStates.equals(other.childStates))
+			return false;
+		if (childrenByName == null) {
+			if (other.childrenByName != null)
+				return false;
+		} else if (!childrenByName.equals(other.childrenByName))
+			return false;
+		return true;
+	}
 }

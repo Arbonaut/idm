@@ -3587,7 +3587,7 @@
                     <label>Date</label>
                 </date>
             </entity>
-            <code name="id" list="sampling_design" strict="false" key="true">
+            <code name="id" list="sampling_design" strict="false" key="true" required="true">
                 <label>Id</label>
             </code>
             <code name="region" list="admin_unit" required="true">
@@ -3795,7 +3795,7 @@
                     <label>Planting year</label>
                     <compare gte="1900" lte="2015" flag="error"/>
                 </number>
-                <entity name="soil" ui:tab="plot_det" relevant="accessibility = 0 and permanent">
+                <entity name="soil" ui:tab="plot_det" relevant="accessibility = 0 and permanent = true()">
                     <label>Soil</label>
                     <entity name="layer" since="1.1">
                         <label type="heading">Layers</label>
@@ -3814,7 +3814,7 @@
                         <boolean name="west_sampled" affirmativeOnly="true">
                             <label>W</label>
                         </boolean>
-                        <text name="colour">
+                        <text name="colour" relevant="false()">
                             <label>Colour</label>
                             <pattern regex="(((2.5|5|7.5|10)(R|YR|Y|GY|G|BG|B|PB|P|RP))|GLEY1|GLEY2)/1?[0-9]/([1-2]?[0-9])" flag="error">
                                 <message>Must correspond to colour codes indicated in Munsell Soil Colour Book in the form hue/value/chroma.</message>

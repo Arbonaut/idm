@@ -30,7 +30,7 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
 		new FieldDefinition("x", "x", Double.class),
 		new FieldDefinition("y", "y", Double.class),
-		new FieldDefinition("srsId", "srsId", String.class)
+		new FieldDefinition("srs_id", "srs", String.class)
 	));
 	
 	@Override
@@ -49,7 +49,7 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldsDefinitions() {
+	public List<FieldDefinition> getFieldDefinitions() {
 		return fieldsDefinitions;
 	}
 	

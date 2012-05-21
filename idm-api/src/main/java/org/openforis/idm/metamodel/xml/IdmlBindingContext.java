@@ -6,6 +6,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.openforis.idm.metamodel.Configuration;
+import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
@@ -22,6 +23,10 @@ public class IdmlBindingContext {
 	
 	private ConfigurationAdapter<? extends Configuration> configurationAdapter;
 
+	public IdmlBindingContext() {
+		this(new DefaultSurveyContext());
+	}
+	
 	public IdmlBindingContext(SurveyContext surveyContext) {
 		this(Survey.class, surveyContext);
 	}

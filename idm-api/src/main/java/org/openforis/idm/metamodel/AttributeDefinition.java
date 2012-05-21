@@ -61,7 +61,17 @@ public abstract class AttributeDefinition extends NodeDefinition {
 		return survey.getCheckDependencies(this);
 	}
 	
-	public abstract List<FieldDefinition> getFieldsDefinitions();
+	public abstract List<FieldDefinition> getFieldDefinitions();
+	
+	public FieldDefinition getFieldDefinition(String name) {
+		List<FieldDefinition> defns = getFieldDefinitions();
+		for (FieldDefinition fieldDefinition : defns) {
+			if ( fieldDefinition.getName().equals(name) ) {
+				return fieldDefinition;
+			}
+		}
+		return null;
+	}
 
 //	private Set<String> createCheckDependencyPaths() {
 //		Set<String> paths = new HashSet<String>();

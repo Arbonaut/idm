@@ -91,6 +91,20 @@ public class Record {
 		return this.rootEntity;
 	}
 
+	public void setRootEntity(Entity entity) {
+		if ( entity != null ) {
+			Schema schema = survey.getSchema();
+			EntityDefinition currentEntityDefinition = entity.getDefinition();
+			EntityDefinition rootEntityDefinition = schema.getRootEntityDefinition(entity.getName());
+			if ( rootEntityDefinition == null || rootEntityDefinition != currentEntityDefinition ) {
+				throw new IllegalArgumentException("Invalid root entity");
+			}
+			this.nodesByInternalId = new HashMap<Integer, Node<? extends NodeDefinition>>();
+			entity.setRecord(this);
+		}
+		this.rootEntity = entity;
+	}
+	
 	public ModelVersion getVersion() {
 		return this.modelVersion;
 	}
@@ -114,4 +128,5 @@ public class Record {
 	int nextId() {
 		return nextId++;
 	}
+	
 }

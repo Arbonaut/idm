@@ -44,6 +44,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.openforis.idm</groupId>
+			<artifactId>idm-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>commons-jxpath</groupId>
 			<artifactId>commons-jxpath</artifactId>
 			<version>1.4-20120215</version>

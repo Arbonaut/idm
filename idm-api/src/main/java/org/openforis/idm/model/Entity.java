@@ -58,6 +58,15 @@ public class Entity extends Node<EntityDefinition> {
 		this.childStates = new HashMap<String, State>();
 	}
 
+	@Override
+	protected void setRecord(Record record) {
+		super.setRecord(record);
+		List<Node<?>> children = getChildren();
+		for (Node<?> node : children) {
+			node.setRecord(record);
+		}
+	}
+	
 	public void add(Node<?> node) {
 		addInternal(node, null);
 	}
@@ -122,6 +131,17 @@ public class Entity extends Node<EntityDefinition> {
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean hasData() {
+		List<Node<?>> children = getChildren();
+		for ( Node<?> child : children ) {
+			if( child.hasData() ){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// public <T extends Node<?>> T add(T o, int idx) {
@@ -707,7 +727,7 @@ public class Entity extends Node<EntityDefinition> {
 		}
 
 		private Boolean getRelevance(String childName) {
-			return childRequiredStates.get(childName);
+			return childRelevance.get(childName);
 		}
 
 		private void setRequired(String childName, boolean flag) {

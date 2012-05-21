@@ -60,7 +60,7 @@ public class FileAttributeDefinition extends AttributeDefinition {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldsDefinitions() {
+	public List<FieldDefinition> getFieldDefinitions() {
 		return fieldsDefinitions;
 	}
 }

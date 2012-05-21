@@ -90,7 +90,7 @@ public class RangeAttributeDefinition extends AttributeDefinition {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldsDefinitions() {
+	public List<FieldDefinition> getFieldDefinitions() {
 		List<FieldDefinition> result = new ArrayList<FieldDefinition>();
 		Type effectiveType = getType();
 		Class<?> valueType;

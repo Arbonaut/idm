@@ -12,7 +12,11 @@
 		<dependency>
 			<groupId>org.openforis.idm</groupId>
 			<artifactId>idm-api</artifactId>
-			<version>${project.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.openforis.idm</groupId>
+			<artifactId>idm-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dyuproject.protostuff</groupId>

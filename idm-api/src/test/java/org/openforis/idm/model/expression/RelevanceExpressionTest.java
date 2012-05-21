@@ -115,6 +115,44 @@ public class RelevanceExpressionTest extends AbstractTest {
 		Assert.assertFalse(b);
 	}
 	
+	@Test
+	public void testBooelanValue(){
+		Entity plot = cluster.addEntity("plot");
+		plot.addEntity("soil");
+		boolean relevant = plot.isRelevant("soil");
+		Assert.assertTrue(relevant);
+	}
+	
+	@Test
+	public void testBooelanValue2(){
+		Entity plot = cluster.addEntity("plot");
+		plot.addValue("accessibility", new Code("0"));
+		plot.addValue("permanent", true);
+		plot.addEntity("soil");
+		boolean relevant = plot.isRelevant("soil");
+		Assert.assertTrue(relevant);
+	}
+	
+	@Test
+	public void testBooelanValue3(){
+		Entity plot = cluster.addEntity("plot");
+		plot.addValue("accessibility", new Code("1"));
+		plot.addValue("permanent", true);
+		plot.addEntity("soil");
+		boolean relevant = plot.isRelevant("soil");
+		Assert.assertFalse(relevant);
+	}
+	
+	@Test
+	public void testBooelanValue4(){
+		Entity plot = cluster.addEntity("plot");
+		plot.addValue("accessibility", new Code("0"));
+		plot.addValue("permanent", false);
+		plot.addEntity("soil");
+		boolean relevant = plot.isRelevant("soil");
+		Assert.assertFalse(relevant);
+	}
+	
 	private boolean evaluateExpression(String expr, Node<? extends NodeDefinition> context) throws InvalidExpressionException {
 		RelevanceExpression expression = context.getRecord().getSurveyContext().getExpressionFactory().createRelevanceExpression(expr);
 		boolean b = expression.evaluate(context, null);

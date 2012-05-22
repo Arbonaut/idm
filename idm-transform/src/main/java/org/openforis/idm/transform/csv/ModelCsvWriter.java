@@ -10,17 +10,17 @@ import org.openforis.idm.model.expression.AbsoluteModelPathExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.internal.MissingValueException;
-import org.openforis.idm.transform.DataTransformation;
+import org.openforis.idm.transform.Transformation;
 
 /**
  * @author G. Miceli
  */
 public class ModelCsvWriter extends CsvWriter {
 
-	private DataTransformation xform;
+	private Transformation xform;
 	private AbsoluteModelPathExpression pivotExpression;
 	
-	public ModelCsvWriter(Writer writer, DataTransformation xform) throws IOException, InvalidExpressionException {
+	public ModelCsvWriter(Writer writer, Transformation xform) throws IOException, InvalidExpressionException {
 		super(writer);
 		this.xform = xform;
 		ExpressionFactory expressionFactory = new ExpressionFactory();

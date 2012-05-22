@@ -14,14 +14,13 @@ public class Cell {
 	private Object value;
 	private List<Node<?>> sourceNodes;
 	private Class<?> valueType;
+	private Column column;
 
-	public Cell() {
-	}
-	
-	public Cell(Object value, Class<?> valueType, Node<?>... sourceNodes) {
+	public Cell(Object value, Class<?> valueType, Column column, Node<?>... sourceNodes) {
 		this.value = value;
-		this.sourceNodes = Arrays.asList(sourceNodes);
 		this.valueType = valueType;
+		this.column = column;
+		this.sourceNodes = Arrays.asList(sourceNodes);
 	}
 
 	public Object getValue() {
@@ -47,6 +46,10 @@ public class Cell {
 
 	public Class<?> getValueType() {
 		return valueType;
+	}
+
+	public Column getColumn() {
+		return column;
 	}
 	
 	@Override

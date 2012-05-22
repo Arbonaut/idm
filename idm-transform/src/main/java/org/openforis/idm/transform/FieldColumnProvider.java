@@ -27,12 +27,16 @@ public class FieldColumnProvider extends ColumnProvider {
 		// TODO attach to defn
 		// TODO col.setHeading(heading)
 		Column col = new Column(shortName, null, null, columnGroup, this, type);
-		this.columns = Arrays.asList(col);
+		this.columns = Collections.unmodifiableList(Arrays.asList(col));
 	}
 
+	public Column getColumn() {
+		return columns.get(0);
+	}
+	
 	@Override
 	public List<Column> getColumns() {
-		return Collections.unmodifiableList(columns);
+		return columns;
 	}
 
 	@Override
@@ -44,7 +48,8 @@ public class FieldColumnProvider extends ColumnProvider {
 			String fieldName = fieldDefinition.getName();
 			Field<?> fld = attr.getField(fieldName);
 			Object val = fld.getValue();
-			Cell cell = new Cell(val, fieldDefinition.getValueType(), parent);  // TODO Use field as a node
+			Column col = getColumn();
+			Cell cell = new Cell(val, fieldDefinition.getValueType(), col, parent);  // TODO Use field as a node
 			return Arrays.asList(cell);
 		} else {
 			throw new IllegalArgumentException("Expected "+Attribute.class+" but got "+parent.getClass());

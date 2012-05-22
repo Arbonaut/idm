@@ -5,10 +5,16 @@ import java.util.Collections;
 import java.util.List;
 
 import org.openforis.idm.metamodel.AttributeDefinition;
+import org.openforis.idm.metamodel.BooleanAttributeDefinition;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
+import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
 import org.openforis.idm.metamodel.DateAttributeDefinition;
 import org.openforis.idm.metamodel.FieldDefinition;
+import org.openforis.idm.metamodel.FileAttributeDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.RangeAttributeDefinition;
+import org.openforis.idm.metamodel.TaxonAttributeDefinition;
+import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Entity;
@@ -20,11 +26,8 @@ import org.openforis.idm.model.Node;
  * @author G. Miceli
  *
  */
-public class AttributeColumnProvider extends ColumnProvider {
-//	public enum Units {
-//		INCLUDE_ALL, INCLUDE_AMBIGUOUS, EXCLUDE_ALL, NORMALIZE   
-//	}
-	
+public abstract class AttributeColumnProvider extends ColumnProvider {
+
 	private AttributeDefinition attributeDefinition;
 	private ColumnProviderChain fieldProviderChain;
 	private ColumnGroup parentGroup;
@@ -113,7 +116,8 @@ public class AttributeColumnProvider extends ColumnProvider {
 	protected List<Cell> getCollapsedCells(Attribute<?,?> attr) {
 		Object value = attr.getValue();
 		AttributeDefinition defn = attr.getDefinition();
-		Cell cell = new Cell(value, defn.getValueType(), attr);
+		List<Column> cols = getCollapsedColumns();
+		Cell cell = new Cell(value, defn.getValueType(), cols.get(0), attr);
 		return Arrays.asList(cell);
 	}
 
@@ -135,27 +139,36 @@ public class AttributeColumnProvider extends ColumnProvider {
 	}
 
 	public void expand() {
-		fieldProviderChain = null;
 		this.expanded = true;
 	}
 
 	public void collapse() {
-		fieldProviderChain = null;
 		this.expanded = false;
 	}
-	
-	public static <T extends AttributeDefinition> AttributeColumnProvider createInstance(T definition, ColumnGroup columnGroup) {
-		if ( definition instanceof NumberAttributeDefinition ) {
-			return new NumberColumnProvider((NumberAttributeDefinition) definition, columnGroup);
-		} else if ( definition instanceof DateAttributeDefinition ) {
-			return new DateColumnProvider((DateAttributeDefinition) definition, columnGroup);
-		} else if ( definition instanceof TimeAttributeDefinition ) {
-			return new TimeColumnProvider((TimeAttributeDefinition) definition, columnGroup);
-		} else if ( definition instanceof CodeAttributeDefinition ) { 
-			return new CodeColumnProvider((CodeAttributeDefinition) definition, columnGroup);
+
+	public static <T extends AttributeDefinition> AttributeColumnProvider createInstance(T defn, ColumnGroup grp) {
+		if ( defn instanceof NumberAttributeDefinition ) {
+			return new NumberColumnProvider((NumberAttributeDefinition) defn, grp);
+		} else if ( defn instanceof BooleanAttributeDefinition ) { 
+			return new BooleanColumnProvider((BooleanAttributeDefinition) defn, grp);
+		} else if ( defn instanceof CodeAttributeDefinition ) { 
+			return new CodeColumnProvider((CodeAttributeDefinition) defn, grp);
+		} else if ( defn instanceof TextAttributeDefinition ) { 
+			return new TextColumnProvider((TextAttributeDefinition) defn, grp);
+		} else if ( defn instanceof DateAttributeDefinition ) {
+			return new DateColumnProvider((DateAttributeDefinition) defn, grp);
+		} else if ( defn instanceof TimeAttributeDefinition ) {
+			return new TimeColumnProvider((TimeAttributeDefinition) defn, grp);
+		} else if ( defn instanceof RangeAttributeDefinition ) { 
+			return new RangeColumnProvider((RangeAttributeDefinition) defn, grp);
+		} else if ( defn instanceof TaxonAttributeDefinition ) { 
+			return new TaxonColumnProvider((TaxonAttributeDefinition) defn, grp);
+		} else if ( defn instanceof CoordinateAttributeDefinition ) { 
+			return new CoordinateColumnProvider((CoordinateAttributeDefinition) defn, grp);
+		} else if ( defn instanceof FileAttributeDefinition ) { 
+			return new FileColumnProvider((FileAttributeDefinition) defn, grp);
 		} else {
-			return new AttributeColumnProvider(definition, columnGroup);
-//			throw new UnsupportedOperationException("ColumnProvider for "+definition.getClass()+" not implemented");
+			throw new UnsupportedOperationException("ColumnProvider for "+defn.getClass()+" not implemented");
 		}
 	}
 }

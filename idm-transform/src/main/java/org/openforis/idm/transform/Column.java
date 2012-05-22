@@ -3,7 +3,6 @@ package org.openforis.idm.transform;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.openforis.idm.metamodel.NodeDefinition;
 
-
 /**
  * @author G. Miceli
  * @author M. Togna

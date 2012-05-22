@@ -18,7 +18,7 @@ public abstract class ColumnProvider {
 		List<Column> cols = getColumns();
 		List<Cell> cells = new ArrayList<Cell>(cols.size());
 		for (Column col : cols) {
-			Cell cell = new Cell(null, col.getValueType());
+			Cell cell = new Cell(null, col.getValueType(), col);
 			cells.add(cell);
 		}
 		return cells;

@@ -3795,7 +3795,7 @@
                     <label>Planting year</label>
                     <compare gte="1900" lte="2015" flag="error"/>
                 </number>
-                <entity name="soil" ui:tab="plot_det" relevant="accessibility = 0 and permanent = true()">
+                <entity name="soil" ui:tab="plot_det" relevant="accessibility = 0 and permanent">
                     <label>Soil</label>
                     <entity name="layer" since="1.1">
                         <label type="heading">Layers</label>

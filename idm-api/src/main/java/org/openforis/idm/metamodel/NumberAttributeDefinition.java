@@ -10,20 +10,16 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.metamodel.xml.internal.NumberAttributeDefinitionTypeAdapter;
 import org.openforis.idm.model.IntegerAttribute;
 import org.openforis.idm.model.IntegerValue;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.NumberValue;
 import org.openforis.idm.model.RealAttribute;
 import org.openforis.idm.model.RealValue;
 import org.openforis.idm.model.Value;
-import org.openforis.idm.util.CollectionUtil;
-
 
 /**
  * @author G. Miceli
@@ -32,60 +28,13 @@ import org.openforis.idm.util.CollectionUtil;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="", propOrder = {"name", "type", "key", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
 		"labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
-public class NumberAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition {
+public class NumberAttributeDefinition extends NumericAttributeDefinition implements KeyAttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
 	@XmlAttribute(name = "key")
 	private Boolean key;
 
-	public enum Type {
-		INTEGER, REAL
-	}
-	
-	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(NumberAttributeDefinitionTypeAdapter.class)
-	private Type type;
-
-	@XmlElement(name = "precision", type = Precision.class)
-	private List<Precision> precisionDefinitions;
-	
-	public Type getType() {
-		return type == null ? Type.REAL : type;
-	}
-
-	public boolean isInteger() {
-		return getType() == Type.INTEGER;
-	}
-
-	public boolean isReal() {
-		return getType() == Type.REAL;
-	}
-	
-	public List<Precision> getPrecisionDefinitions() {
-		return CollectionUtil.unmodifiableList(precisionDefinitions);
-	}
-
-	/**
-	 * @return true if the unit may be user-defined, false if the value is always measured with the same (or no) unit  
-	 */
-	public boolean isVariableUnit() {
-		if ( precisionDefinitions == null ) {
-			return false;
-		}
-		boolean unitFound = false;
-		for (Precision p : precisionDefinitions) {
-			String unitName = p.getUnitName();
-			if ( unitName != null ) {
-				if ( unitFound ) {
-					return true;
-				}
-				unitFound = true;
-			}
-		}
-		return false;
-	}
-	
 	@Override
 	public boolean isKey() {
 		return this.key == null ? false : key;
@@ -106,13 +55,15 @@ public class NumberAttributeDefinition extends AttributeDefinition implements Ke
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Number createValue(String string) {
+	public NumberValue<? extends Number> createValue(String string) {
 		if ( StringUtils.isBlank(string) ) {
 			return null;
-		} else if(isInteger()){
-			return Integer.valueOf(string);
+		} 
+		Unit unit = getDefaultUnit();
+		if(isInteger()){
+			return new IntegerValue(Integer.valueOf(string), unit);
 		} else if(isReal()) {
-			return Double.parseDouble(string);
+			return new RealValue(Double.valueOf(string), unit);
 		}
 		throw new RuntimeException("Invalid type " + type);
 	}
@@ -120,8 +71,7 @@ public class NumberAttributeDefinition extends AttributeDefinition implements Ke
 	@Override
 	public List<FieldDefinition> getFieldDefinitions() {
 		List<FieldDefinition> result = new ArrayList<FieldDefinition>();
-		Class<?> valueType = getValueType();
-		result.add(new FieldDefinition("value", "v", null, valueType));
+		result.add(new FieldDefinition("value", "v", null, type.getNumberType()));
 		result.add(new FieldDefinition("unit", "u", "unit", String.class));
 		return Collections.unmodifiableList(result);
 	}

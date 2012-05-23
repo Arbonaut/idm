@@ -1,7 +1,6 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
-import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.Unit;
 
 /**
@@ -20,15 +19,7 @@ public class RealAttribute extends NumberAttribute<Double, RealValue> {
 	}
 
 	@Override
-	public RealValue getValue() {
-		Double value = (Double) getField(0).getValue(); 
-		Survey survey = getSurvey();
-		String unitName = (String) getField(1).getValue();
-		Unit unit = survey.getUnit(unitName);
+	protected RealValue createValue(Double value, Unit unit) {
 		return new RealValue(value, unit);
-	}
-
-	public void setValue(Double value) {
-		super.setValue(new RealValue(value));
 	}
 }

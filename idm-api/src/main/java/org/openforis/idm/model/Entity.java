@@ -30,6 +30,7 @@ import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
+import org.openforis.idm.metamodel.Unit;
 import org.openforis.idm.metamodel.validation.ValidationResultFlag;
 import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.expression.ExpressionFactory;
@@ -188,20 +189,36 @@ public class Entity extends Node<EntityDefinition> {
 		return addValueInternal(name, value, null, FileAttribute.class, FileAttributeDefinition.class);
 	}
 
+	public RealAttribute addValue(String name, Double value, Unit unit, int idx) {
+		return addValueInternal(name, new RealValue(value, unit), idx, RealAttribute.class, NumberAttributeDefinition.class);
+	}
+
+	public RealAttribute addValue(String name, Double value, Unit unit) {
+		return addValueInternal(name, new RealValue(value, unit), null, RealAttribute.class, NumberAttributeDefinition.class);
+	}
+
+	public IntegerAttribute addValue(String name, Integer value, Unit unit, int idx) {
+		return addValueInternal(name, new IntegerValue(value, unit), idx, IntegerAttribute.class, NumberAttributeDefinition.class);
+	}
+
+	public IntegerAttribute addValue(String name, Integer value, Unit unit) {
+		return addValueInternal(name, new IntegerValue(value, unit), null, IntegerAttribute.class, NumberAttributeDefinition.class);
+	}
+
 	public RealAttribute addValue(String name, Double value, int idx) {
-		return addValueInternal(name, new RealValue(value), idx, RealAttribute.class, NumberAttributeDefinition.class);
+		return addValueInternal(name, new RealValue(value, null), idx, RealAttribute.class, NumberAttributeDefinition.class);
 	}
 
 	public RealAttribute addValue(String name, Double value) {
-		return addValueInternal(name, new RealValue(value), null, RealAttribute.class, NumberAttributeDefinition.class);
+		return addValueInternal(name, new RealValue(value, null), null, RealAttribute.class, NumberAttributeDefinition.class);
 	}
 
 	public IntegerAttribute addValue(String name, Integer value, int idx) {
-		return addValueInternal(name, new IntegerValue(value), idx, IntegerAttribute.class, NumberAttributeDefinition.class);
+		return addValueInternal(name, new IntegerValue(value, null), idx, IntegerAttribute.class, NumberAttributeDefinition.class);
 	}
 
 	public IntegerAttribute addValue(String name, Integer value) {
-		return addValueInternal(name, new IntegerValue(value), null, IntegerAttribute.class, NumberAttributeDefinition.class);
+		return addValueInternal(name, new IntegerValue(value, null), null, IntegerAttribute.class, NumberAttributeDefinition.class);
 	}
 
 	public RealRangeAttribute addValue(String name, RealRange value, int idx) {

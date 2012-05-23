@@ -12,8 +12,4 @@ public class RealValue extends NumberValue<Double> {
 	public RealValue(Double value, Unit unit) {
 		super(value, unit);
 	}
-
-	public RealValue(Double value) {
-		super(value, null);
-	}
 }

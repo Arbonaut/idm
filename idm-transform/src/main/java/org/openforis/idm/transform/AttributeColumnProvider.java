@@ -12,6 +12,7 @@ import org.openforis.idm.metamodel.DateAttributeDefinition;
 import org.openforis.idm.metamodel.FieldDefinition;
 import org.openforis.idm.metamodel.FileAttributeDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.NumericAttributeDefinition;
 import org.openforis.idm.metamodel.RangeAttributeDefinition;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition;
@@ -148,7 +149,7 @@ public abstract class AttributeColumnProvider extends ColumnProvider {
 
 	public static <T extends AttributeDefinition> AttributeColumnProvider createInstance(T defn, ColumnGroup grp) {
 		if ( defn instanceof NumberAttributeDefinition ) {
-			return new NumberColumnProvider((NumberAttributeDefinition) defn, grp);
+			return new NumberColumnProvider((NumericAttributeDefinition) defn, grp);
 		} else if ( defn instanceof BooleanAttributeDefinition ) { 
 			return new BooleanColumnProvider((BooleanAttributeDefinition) defn, grp);
 		} else if ( defn instanceof CodeAttributeDefinition ) { 

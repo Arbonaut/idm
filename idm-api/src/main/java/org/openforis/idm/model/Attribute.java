@@ -94,6 +94,7 @@ public abstract class Attribute<D extends AttributeDefinition, V extends Value> 
 		}
 		onUpdateValue();
 	}
+	
 	/**
 	 * @return a non-null, immutable value
 	 */

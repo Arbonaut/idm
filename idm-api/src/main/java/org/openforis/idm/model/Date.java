@@ -1,6 +1,7 @@
 package org.openforis.idm.model;
 
 import java.util.Calendar;
+import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
@@ -66,6 +67,12 @@ public final class Date implements Value {
 	
 	public java.util.Date toJavaDate() {
 		return toCalendar().getTime();
+	}
+
+	public String toXmlDate() {
+		Formatter formatter = new Formatter();
+		formatter.format("%04d-%02d-%02d", year, month, day);
+		return formatter.toString();
 	}
 	
 	@Override

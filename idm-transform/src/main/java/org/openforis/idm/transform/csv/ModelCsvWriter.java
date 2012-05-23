@@ -2,14 +2,21 @@ package org.openforis.idm.transform.csv;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Date;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.expression.AbsoluteModelPathExpression;
-import org.openforis.idm.model.expression.ExpressionFactory;
+import org.openforis.idm.model.Time;
+import org.openforis.idm.model.Value;
 import org.openforis.idm.model.expression.InvalidExpressionException;
-import org.openforis.idm.model.expression.internal.MissingValueException;
+import org.openforis.idm.transform.AttributeColumnProvider;
+import org.openforis.idm.transform.Cell;
+import org.openforis.idm.transform.ColumnProvider;
+import org.openforis.idm.transform.DateColumnProvider;
+import org.openforis.idm.transform.EntityColumnProvider;
+import org.openforis.idm.transform.Row;
+import org.openforis.idm.transform.TimeColumnProvider;
 import org.openforis.idm.transform.Transformation;
 
 /**
@@ -17,36 +24,99 @@ import org.openforis.idm.transform.Transformation;
  */
 public class ModelCsvWriter extends CsvWriter {
 
-	private Transformation xform;
-	private AbsoluteModelPathExpression pivotExpression;
+	public enum HeadingType {
+		NODE_NAMES, NODE_LABELS
+	};
 	
-	public ModelCsvWriter(Writer writer, Transformation xform) throws IOException, InvalidExpressionException {
+	private Transformation transform;
+	private HeadingType headingType;
+	private ColumnProvider provider;
+	private int rowsPrinted;
+	
+	public ModelCsvWriter(Writer writer, Transformation xform, HeadingType headingType) throws InvalidExpressionException {
 		super(writer);
-		this.xform = xform;
-		ExpressionFactory expressionFactory = new ExpressionFactory();
-		this.pivotExpression = expressionFactory.createAbsoluteModelPathExpression(xform.getAxisPath());
+		this.transform = xform;
+		this.provider = xform.getColumnProvider();
+		this.headingType = headingType;
+		this.rowsPrinted = 0;
+		prepareProvider(provider);
 	}
 
-	public void printColumnHeadings() throws IOException {
-		printCsvLine(xform.getColumnProvider().getColumnHeadings());
+	protected void prepareProvider(ColumnProvider provider) {
+		if ( provider instanceof EntityColumnProvider ) {
+			List<ColumnProvider> childProviders = ((EntityColumnProvider) provider).getProviders();
+			for (ColumnProvider childProvider : childProviders) {
+				prepareProvider(childProvider);
+			}
+		} else if ( provider instanceof AttributeColumnProvider ) {
+			AttributeColumnProvider attrProvider = (AttributeColumnProvider) provider;
+			if ( isCollapseable(attrProvider) ) {
+				attrProvider.collapse();
+			} else {
+				attrProvider.expand();
+			}
+		}
 	}
 
-	public void printRow(Node<?> n) {
-		printCsvLine(xform.getColumnProvider().extractValues(n));
+	protected boolean isCollapseable(AttributeColumnProvider attrProvider) {
+		return provider instanceof DateColumnProvider || 
+			   provider instanceof TimeColumnProvider;
+	}
+
+	public void printHeader() throws IOException {
+		List<String> header;
+		if ( headingType == HeadingType.NODE_NAMES ) {
+			header = provider.getColumnNames();
+		} else {
+			header = provider.getColumnHeadings();			
+		}
+		printCsvLine(header);
+	}
+
+	protected void printRow(Row row) {
+		List<String> values = extractValues(row);
+		printCsvLine(values);
+	}
+
+	protected List<String> extractValues(Row row) {
+		List<Cell> cells = row.getCells();
+		List<String> values = new ArrayList<String>(cells.size());
+		for (Cell cell : cells) {
+			String s = extractValue(cell);
+			values.add(s);
+		}
+		return values;
+	}
+
+	protected String extractValue(Cell cell) {
+		Object value = cell.getValue();
+		System.out.println(value.getClass());
+		if ( value instanceof Date ) {
+			return ((Date) value).toXmlDate();
+		} else if ( value instanceof Time ) {
+			return ((Time) value).toXmlTime();
+		} else if ( value instanceof Value ) {
+			throw new RuntimeException("Unexpected Value of type "+value.getClass().getName());
+		} else {
+			return value.toString();
+		}
 	}
 
 	public int printData(Record record) throws InvalidExpressionException {
 		int cnt = 0;
-		try {
-			List<Node<?>> rowNodes = pivotExpression.iterate(record);
-			if ( rowNodes != null ) {
-				for (Node<?> n : rowNodes) {
-					printRow(n);
-					cnt++;
-				}
-			}
-		} catch ( MissingValueException e ) {
+		Transformation.Result result = transform.transform(record);
+		for ( Row row : result ) {
+			printRow(row);
+			rowsPrinted++;
 		}
 		return cnt;
+	}
+
+	public HeadingType getHeadingType() {
+		return headingType;
+	}
+	
+	public int getRowsPrinted() {
+		return rowsPrinted;
 	}
 }

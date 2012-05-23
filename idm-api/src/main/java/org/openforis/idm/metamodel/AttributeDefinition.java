@@ -55,7 +55,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 		return CollectionUtil.unmodifiableList(this.attributeDefaults);
 	}
 
-	public abstract <V> V createValue(String string);
+	public abstract <V extends Value> V createValue(String string);
 
 	public Set<NodePathPointer> getCheckDependencyPaths() {
 		Survey survey = getSurvey();

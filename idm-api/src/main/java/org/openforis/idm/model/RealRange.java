@@ -15,14 +15,6 @@ public final class RealRange extends NumericRange<Double> {
 	private static final String REGEX = "(-?\\d+(\\.\\d+)?)(-(-?\\d+(\\.\\d+)?))?";
 	private static final Pattern PATTERN = Pattern.compile(REGEX);
 
-	public RealRange(Double value) {
-		super(value, value, null);
-	}
-
-	public RealRange(Double from, Double to) {
-		super(from, to, null);
-	}
-
 	public RealRange(Double value, Unit unit) {
 		super(value, value, unit);
 	}
@@ -31,7 +23,7 @@ public final class RealRange extends NumericRange<Double> {
 		super(from, to, unit);
 	}
 
-	public static RealRange parseRealRange(String string) {
+	public static RealRange parseRealRange(String string, Unit unit) {
 		if ( StringUtils.isBlank(string) ) {
 			return null;
 		} else {
@@ -44,7 +36,7 @@ public final class RealRange extends NumericRange<Double> {
 				}
 				double from = Double.parseDouble(fromStr);
 				double to = Double.parseDouble(toStr);
-				return new RealRange(from, to);
+				return new RealRange(from, to, unit);
 			} else {
 				return null;
 			}

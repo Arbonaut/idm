@@ -1,6 +1,7 @@
 package org.openforis.idm.model;
 
 import java.util.Calendar;
+import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
@@ -80,6 +81,12 @@ public final class Time implements Value {
 			.append("hour", hour)
 			.append("minute", minute)
 			.toString();
+	}
+
+	public String toXmlTime() {
+		Formatter formatter = new Formatter();
+		formatter.format("%02d:%02d:00", hour, minute);
+		return formatter.toString();
 	}
 	
 	public static Time parseTime(String string) {

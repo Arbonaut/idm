@@ -15,14 +15,6 @@ public final class IntegerRange extends NumericRange<Integer> {
 	private static final String REGEX = "(-?\\d+)(-(-?\\d+))?";
 	private static final Pattern PATTERN = Pattern.compile(REGEX);
 
-	public IntegerRange(Integer value) {
-		super(value, value, null);
-	}
-
-	public IntegerRange(Integer from, Integer to) {
-		super(from, to, null);
-	}
-
 	public IntegerRange(Integer value, Unit unit) {
 		super(value, value, unit);
 	}
@@ -31,7 +23,7 @@ public final class IntegerRange extends NumericRange<Integer> {
 		super(from, to, unit);
 	}
 
-	public static IntegerRange parseIntegerRange(String string) {
+	public static IntegerRange parseIntegerRange(String string, Unit unit) {
 		if ( StringUtils.isBlank(string) ) {
 			return null;
 		} else {
@@ -44,7 +36,7 @@ public final class IntegerRange extends NumericRange<Integer> {
 				}
 				int from = Integer.parseInt(fromStr);
 				int to = Integer.parseInt(toStr);
-				return new IntegerRange(from, to);
+				return new IntegerRange(from, to, unit);
 			} else {
 				return null;
 			}

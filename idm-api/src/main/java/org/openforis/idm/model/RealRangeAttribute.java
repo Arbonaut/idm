@@ -22,5 +22,4 @@ public class RealRangeAttribute extends NumericRangeAttribute<RealRange, Double>
 	protected RealRange createRange(Double from, Double to, Unit unit) {
 		return new RealRange(from, to, unit);
 	}
-
 }

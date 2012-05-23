@@ -3,6 +3,9 @@ package org.openforis.idm.transform;
 import java.util.Iterator;
 import java.util.List;
 
+import org.openforis.idm.metamodel.EntityDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.expression.AbsoluteModelPathExpression;
@@ -13,10 +16,15 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
  * @author G. Miceli
  */
 public class Transformation {
+	
 	private String axisPath;
 	private ColumnProvider provider;
 	private AbsoluteModelPathExpression pivotExpression;
 	
+	public Transformation(Schema schema, String axisPath) throws InvalidExpressionException {
+		this(axisPath, createDefaultColumnProvider(schema, axisPath));
+	}
+
 	public Transformation(String axisPath, ColumnProvider provider) throws InvalidExpressionException {
 		this.axisPath = axisPath;
 		this.provider = provider;
@@ -26,6 +34,15 @@ public class Transformation {
 	
 	public String getAxisPath() {
 		return axisPath;
+	}
+	
+	private static ColumnProvider createDefaultColumnProvider(Schema schema, String axisPath) {
+		NodeDefinition defn = schema.getByPath(axisPath);
+		if ( defn instanceof EntityDefinition ) {
+			return new EntityColumnProvider((EntityDefinition) defn);
+		} else {
+			throw new UnsupportedOperationException("Attribute axes not yet supported");
+		}
 	}
 	
 	public ColumnProvider getColumnProvider() {

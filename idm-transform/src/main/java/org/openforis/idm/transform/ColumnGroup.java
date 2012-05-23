@@ -27,7 +27,7 @@ public class ColumnGroup {
 		this.provider = provider;
 	}
 
-	public String getName() {
+	public String getFullName() {
 		StringBuilder sb = new StringBuilder();
 		ColumnGroup g = this;
 		do {

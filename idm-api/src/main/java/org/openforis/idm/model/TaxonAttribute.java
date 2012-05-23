@@ -39,6 +39,42 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 		return (Field<String>) getField(4);
 	}
 
+	public String getScientificName() {
+		return getScientificNameField().getValue();
+	}
+	
+	public void setScientificName(String name) {
+		getScientificNameField().setValue(name);
+		onUpdateValue();
+	}
+
+	public String getVernacularName() {
+		return getCodeField().getValue();
+	}
+	
+	public void setVernacularName(String name) {
+		getVernacularNameField().setValue(name);
+		onUpdateValue();
+	}
+
+	public String getLanguageCode() {
+		return getLanguageCodeField().getValue();
+	}
+	
+	public void setLanguageCode(String lang) {
+		getLanguageCodeField().setValue(lang);
+		onUpdateValue();
+	}
+
+	public String getLanguageVariety() {
+		return getLanguageVarietyField().getValue();
+	}
+	
+	public void setLanguageVariety(String var) {
+		getLanguageVarietyField().setValue(var);
+		onUpdateValue();
+	}
+	
 	@Override
 	public TaxonOccurrence getValue() {
 		String code = getCodeField().getValue();

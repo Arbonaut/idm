@@ -25,6 +25,7 @@ import org.openforis.idm.transform.EntityColumnProvider;
  */
 public class ColumnProviderTest {
 
+	/*
 	@Test
 	public void test() throws IOException, InvalidIdmlException {
 		Survey survey = loadModel();
@@ -118,4 +119,5 @@ public class ColumnProviderTest {
 		survey.setName("archenland1");
 		return survey;
 	}
+	*/
 }

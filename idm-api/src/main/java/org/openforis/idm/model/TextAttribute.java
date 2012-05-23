@@ -14,18 +14,27 @@ public class TextAttribute extends Attribute<TextAttributeDefinition, TextValue>
 		super(definition);
 	}
 	
-	@Override
 	@SuppressWarnings("unchecked")
+	public Field<String> getTextField() {
+		return (Field<String>) getField(0);
+	}
+
+	public String getText() {
+		return getTextField().getValue();
+	}
+
+	public void setText(String value) {
+		getTextField().setValue(value);
+		onUpdateValue();
+	}
+	
+	@Override
 	public TextValue getValue() {
-		Field<String> field = (Field<String>) getField(0);
-		return field == null ? null : new TextValue(field.getValue());
+		return new TextValue(getText());
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void setValue(TextValue value) {
-		Field<String> field = (Field<String>) getField(0);
-		field.setValue(value == null ? null : value.getValue());
-		onUpdateValue();
+		setText(value.getValue());
 	}
 }

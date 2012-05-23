@@ -1,7 +1,6 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
-import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.Unit;
 
 /**
@@ -19,16 +18,9 @@ public class IntegerAttribute extends NumberAttribute<Integer, IntegerValue> {
 		}
 	}
 
-	@Override
-	public IntegerValue getValue() {
-		Integer value = (Integer) getField(0).getValue(); 
-		Survey survey = getSurvey();
-		String unitName = (String) getField(1).getValue();
-		Unit unit = survey.getUnit(unitName);
-		return new IntegerValue(value, unit);
-	}
 	
-	public void setValue(Integer value) {
-		super.setValue(new IntegerValue(value));
+	@Override
+	protected IntegerValue createValue(Integer value, Unit unit) {
+		return new IntegerValue(value, unit);
 	}
 }

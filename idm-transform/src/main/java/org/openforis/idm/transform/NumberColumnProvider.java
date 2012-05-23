@@ -1,21 +1,21 @@
 package org.openforis.idm.transform;
 
 import org.openforis.idm.metamodel.FieldDefinition;
-import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.NumericAttributeDefinition;
 
 /**
  * @author G. Miceli
  */
 public class NumberColumnProvider extends AttributeColumnProvider {
 
-	public NumberColumnProvider(NumberAttributeDefinition attributeDefinition, ColumnGroup parentGroup) {
+	public NumberColumnProvider(NumericAttributeDefinition attributeDefinition, ColumnGroup parentGroup) {
 		super(attributeDefinition, parentGroup);
 	}
 	
 	@Override
 	protected ColumnProviderChain createFieldProviderChain() {
 		ColumnProviderChain chain = new ColumnProviderChain(); 
-		NumberAttributeDefinition defn = (NumberAttributeDefinition) getAttributeDefinition();
+		NumericAttributeDefinition defn = (NumericAttributeDefinition) getAttributeDefinition();
 		// Only include qualifier and column group if qualifier is ever allowed   
 		FieldDefinition valueFieldDefinition = defn.getFieldDefinition("value");
 		if ( defn.isVariableUnit() ) {

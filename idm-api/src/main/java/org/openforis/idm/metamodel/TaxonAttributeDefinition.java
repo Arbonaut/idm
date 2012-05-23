@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Node;
@@ -20,7 +21,7 @@ import org.openforis.idm.model.TaxonOccurrence;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+@XmlType(name="", propOrder = {"name", "taxonomy", "highestRank", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
 		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class TaxonAttributeDefinition extends AttributeDefinition {
 
@@ -34,6 +35,12 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 			new FieldDefinition("language_variety", "lv", String.class)
 		));
 	
+	@XmlAttribute(name = "taxonomy")
+	private String taxonomy;
+
+	@XmlAttribute(name = "highestRank")
+	private String highestRank;
+
 	@Override
 	public Node<?> createNode() {
 		return new TaxonAttribute(this);
@@ -48,6 +55,14 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	@Override
 	public List<FieldDefinition> getFieldDefinitions() {
 		return fieldsDefinitions;
+	}
+
+	public String getTaxonomy() {
+		return taxonomy;
+	}
+
+	public String getHighestRank() {
+		return highestRank;
 	}
 	
 }

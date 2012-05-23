@@ -7,6 +7,8 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.LocationPath;
 import org.apache.commons.jxpath.ri.compiler.Step;
 import org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer;
+import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
+import org.openforis.idm.model.BooleanAttribute;
 
 /**
  * @author M. Togna
@@ -33,9 +35,19 @@ public class ModelLocationPath extends LocationPath {
 	@Override
 	public Object computeValue(EvalContext context) {
 		Object value = super.computeValue(context);
-		if (value instanceof NullPropertyPointer) {
+
+		if ( value instanceof NullPropertyPointer ) {
 			throw new MissingValueException();
 		}
+
+		if ( value instanceof DynamicPropertyPointer ) {
+			ModelNodePointer pointer = (ModelNodePointer) ((DynamicPropertyPointer) value).getValuePointer();
+			Object object = pointer.getNode();
+			if ( object instanceof BooleanAttribute ) {
+				return pointer.getValue();
+			}
+		}
+		
 		return value;
 	}
 

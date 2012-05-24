@@ -8,7 +8,7 @@ import org.openforis.idm.model.TimeAttribute;
 
 /**
  * @author M. Togna
- * 
+ * @author S. Ricci
  */
 public class TimeValidator implements ValidationRule<TimeAttribute> {
 
@@ -20,10 +20,11 @@ public class TimeValidator implements ValidationRule<TimeAttribute> {
 				Integer hour = time.getHour();
 				Integer minute = time.getMinute();
 				
-				if ( !( hour == null || minute == null ) ) {
-					if (hour < 0 || hour >= 24 || minute < 0 || minute >= 60) {
-						return ValidationResultFlag.ERROR;
-					}
+				if ( ! (hour == null && minute == null) && ( 
+						hour == null || hour < 0 || hour >= 24 || 
+						minute == null || minute < 0 || minute >= 60
+					) ) {
+					return ValidationResultFlag.ERROR;
 				}
 			}
 			return ValidationResultFlag.OK;

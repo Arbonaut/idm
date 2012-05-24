@@ -6,6 +6,7 @@ package org.openforis.idm.model.expression.internal;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.LocationPath;
 import org.apache.commons.jxpath.ri.compiler.Step;
+import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
 import org.openforis.idm.model.BooleanAttribute;
@@ -41,7 +42,7 @@ public class ModelLocationPath extends LocationPath {
 		}
 
 		if ( value instanceof DynamicPropertyPointer ) {
-			ModelNodePointer pointer = (ModelNodePointer) ((DynamicPropertyPointer) value).getValuePointer();
+			NodePointer pointer = ((DynamicPropertyPointer) value).getValuePointer();
 			Object object = pointer.getNode();
 			if ( object instanceof BooleanAttribute ) {
 				return pointer.getValue();

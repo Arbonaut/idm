@@ -31,7 +31,7 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	private static final long serialVersionUID = 1L;
 
 	@XmlAttribute(name = "qualifiers")
-	private String qualifierExpressions;
+	private String qualifiers;
 	
 	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
 			new FieldDefinition("code", "c", String.class), 
@@ -46,8 +46,8 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 		return new TaxonAttribute(this);
 	}
 
-	public List<String> getQualifierExpressions() {
-		String[] exprs = qualifierExpressions.split(",");
+	public List<String> getQualifiers() {
+		String[] exprs = qualifiers.split(",");
 		return Arrays.asList(exprs);
 	}
 	

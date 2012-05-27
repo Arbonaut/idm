@@ -1115,7 +1115,7 @@
                           </xs:documentation>
                       </xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="qualifier" type="xs:string">
+                    <xs:attribute name="qualifiers" type="xs:string">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                             TO-DO

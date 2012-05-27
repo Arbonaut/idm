@@ -22,16 +22,16 @@ import org.openforis.idm.model.TaxonOccurrence;
  * @author W. Eko
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
-/*@XmlType(name="", propOrder = {"name", "relevantExpression","qualifiers", "required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})*/		
+/*@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})*/
+@XmlType(name="", propOrder = {"name", "relevantExpression","qualifiers", "required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})		
 public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	//@XmlAttribute(name = "qualifiers")
-	//private String qualifierExpressions;
+	@XmlAttribute(name = "qualifiers")
+	private String qualifierExpressions;
 	
 	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
 			new FieldDefinition("code", "c", String.class), 
@@ -46,10 +46,11 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 		return new TaxonAttribute(this);
 	}
 
-	/*public List<String> getQualifierExpressions() {
+	public List<String> getQualifierExpressions() {
 		String[] exprs = qualifierExpressions.split(",");
 		return Arrays.asList(exprs);
-	}*/
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public TaxonOccurrence createValue(String string) {

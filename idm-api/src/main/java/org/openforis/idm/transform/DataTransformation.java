@@ -2,7 +2,9 @@ package org.openforis.idm.transform;
 
 /**
  * @author G. Miceli
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class DataTransformation {
 	private String axisPath;
 	private ColumnProvider provider;

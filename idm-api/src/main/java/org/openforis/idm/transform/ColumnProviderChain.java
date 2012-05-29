@@ -9,7 +9,9 @@ import org.openforis.idm.model.Node;
 
 /**
  * @author G. Miceli
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class ColumnProviderChain implements ColumnProvider {
 	private List<ColumnProvider> providers;
 	private List<String> headings;

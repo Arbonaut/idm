@@ -9,7 +9,9 @@ import org.openforis.idm.model.Field;
 /**
  * @author M. Togna
  * 
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class CoordinateColumnProvider extends CompositeAttributeColumnProvider {
 
 	public CoordinateColumnProvider(String attributeName) {

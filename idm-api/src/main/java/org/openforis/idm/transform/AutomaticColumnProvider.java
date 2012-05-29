@@ -17,7 +17,9 @@ import org.openforis.idm.metamodel.TimeAttributeDefinition;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class AutomaticColumnProvider extends ColumnProviderChain {
 	
 	private static final Log LOG = LogFactory.getLog(AutomaticColumnProvider.class);

@@ -9,7 +9,9 @@ import org.openforis.idm.model.Field;
 /**
  * @author S. Ricci
  *
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class TimeColumnProvider extends CompositeAttributeColumnProvider {
 	
 	public TimeColumnProvider(String attributeName) {

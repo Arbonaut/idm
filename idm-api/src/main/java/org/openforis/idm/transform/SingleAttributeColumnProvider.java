@@ -12,7 +12,9 @@ import org.openforis.idm.model.Node;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class SingleAttributeColumnProvider implements ColumnProvider {
 	private String attributeName;
 	private String headerName;

@@ -6,7 +6,9 @@ import org.openforis.idm.model.Node;
 
 /**
  * @author G. Miceli
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public interface ColumnProvider {
 	
 	List<String> getColumnHeadings();

@@ -11,7 +11,9 @@ import org.openforis.idm.model.Node;
 
 /**
  * @author G. Miceli
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class MultipleAttributeColumnProvider implements ColumnProvider {
 
 	private String attributeName;

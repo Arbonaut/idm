@@ -7,7 +7,7 @@ import org.openforis.idm.metamodel.FileAttributeDefinition;
  */
 public class FileColumnProvider extends AttributeColumnProvider {
 
-	public FileColumnProvider(FileAttributeDefinition attributeDefinition, ColumnGroup parentGroup) {
-		super(attributeDefinition, parentGroup);
+	public FileColumnProvider(FileAttributeDefinition attributeDefinition, EntityColumnProvider parentProvider) {
+		super(attributeDefinition, parentProvider);
 	}
 }

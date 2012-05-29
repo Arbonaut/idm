@@ -29,9 +29,9 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-		new FieldDefinition("value", "v", null, Boolean.class)
-	));
+	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<Boolean>("value", "v", null, Boolean.class)
+	};
 	
 	@XmlAttribute(name = "affirmativeOnly")
 	private Boolean affirmativeOnly;
@@ -56,8 +56,8 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
 	}
 
 	@Override

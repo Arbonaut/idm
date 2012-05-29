@@ -28,10 +28,10 @@ public class TimeAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-			new FieldDefinition("hour", "h", "h", Integer.class), 
-			new FieldDefinition("minute", "m", "m", Integer.class)
-		));
+	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<Integer>("hour", "h", "h", Integer.class), 
+			new FieldDefinition<Integer>("minute", "m", "m", Integer.class)
+	};
 	
 	@Override
 	public Node<?> createNode() {
@@ -49,10 +49,9 @@ public class TimeAttributeDefinition extends AttributeDefinition {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
 	}
-	
 	
 	@Override
 	public Class<? extends Value> getValueType() {

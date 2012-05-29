@@ -61,7 +61,7 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 		N value = (N) getNumberField().getValue(); 
 		Survey survey = getSurvey();
 		String unitName = (String) getUnitField().getValue();
-		Unit unit = survey.getUnit(unitName);
+		Unit unit = unitName == null ? null : survey.getUnit(unitName);
 		
 		return createValue(value, unit);
 	}

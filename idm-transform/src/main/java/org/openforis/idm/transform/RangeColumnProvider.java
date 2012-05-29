@@ -7,7 +7,7 @@ import org.openforis.idm.metamodel.RangeAttributeDefinition;
  */
 public class RangeColumnProvider extends AttributeColumnProvider {
 
-	public RangeColumnProvider(RangeAttributeDefinition attributeDefinition, ColumnGroup parentGroup) {
-		super(attributeDefinition, parentGroup);
+	public RangeColumnProvider(RangeAttributeDefinition attributeDefinition, EntityColumnProvider parentProvider) {
+		super(attributeDefinition, parentProvider);
 	}
 }

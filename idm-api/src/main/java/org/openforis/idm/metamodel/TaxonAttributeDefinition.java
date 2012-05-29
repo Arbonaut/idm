@@ -27,13 +27,13 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-			new FieldDefinition("code", "c", "code", String.class), 
-			new FieldDefinition("scientific_name", "s", "name", String.class), 
-			new FieldDefinition("vernacular_name", "v", "vn", String.class), 
-			new FieldDefinition("language_code", "l", "lang", String.class), 
-			new FieldDefinition("language_variety", "lv", "lang_var", String.class)
-		));
+	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<String>("code", "c", "code", String.class), 
+			new FieldDefinition<String>("scientific_name", "s", "name", String.class), 
+			new FieldDefinition<String>("vernacular_name", "v", "vn", String.class), 
+			new FieldDefinition<String>("language_code", "l", "lang", String.class), 
+			new FieldDefinition<String>("language_variety", "lv", "lang_var", String.class)
+	};
 	
 	@Override
 	public Node<?> createNode() {
@@ -47,8 +47,8 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
 	}
 
 	@Override

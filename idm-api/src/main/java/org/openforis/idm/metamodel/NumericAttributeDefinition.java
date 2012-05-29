@@ -1,5 +1,6 @@
 package org.openforis.idm.metamodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -45,6 +46,11 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		return type == null ? Type.REAL : type;
 	}
 
+	public void setType(Type type) {
+		checkLockState();
+		this.type = type;
+	}
+	
 	public boolean isInteger() {
 		return getType() == Type.INTEGER;
 	}
@@ -57,6 +63,14 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		return CollectionUtil.unmodifiableList(precisionDefinitions);
 	}
 
+	public void addPrecisionDefinition(Precision precision) {
+		checkLockState();
+		if ( precisionDefinitions == null ) {
+			precisionDefinitions = new ArrayList<Precision>();
+		}
+		precisionDefinitions.add(precision);
+	}
+	
 	/**
 	 * @return true if the unit may be user-defined, false if the value is always measured with the same (or no) unit  
 	 */
@@ -66,8 +80,8 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		}
 		boolean unitFound = false;
 		for (Precision p : precisionDefinitions) {
-			String unitName = p.getUnitName();
-			if ( unitName != null ) {
+			Unit unit = p.getUnit();
+			if ( unit != null ) {
 				if ( unitFound ) {
 					return true;
 				}

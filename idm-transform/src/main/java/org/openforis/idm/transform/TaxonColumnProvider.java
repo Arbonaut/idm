@@ -1,13 +1,13 @@
 package org.openforis.idm.transform;
 
-import org.openforis.idm.metamodel.AttributeDefinition;
+import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 
 /**
  * @author G. Miceli
  */
 public class TaxonColumnProvider extends AttributeColumnProvider {
 
-	public TaxonColumnProvider(AttributeDefinition attributeDefinition, ColumnGroup parentGroup) {
-		super(attributeDefinition, parentGroup);
+	public TaxonColumnProvider(TaxonAttributeDefinition attributeDefinition, EntityColumnProvider parentProvider) {
+		super(attributeDefinition, parentProvider);
 	}
 }

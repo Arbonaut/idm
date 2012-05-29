@@ -8,57 +8,59 @@ import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.expression.AbsoluteModelPathExpression;
-import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
+import org.openforis.idm.path.Axis;
 
 /**
  * @author G. Miceli
  */
 public class Transformation {
 	
-	private String axisPath;
-	private ColumnProvider provider;
-	private AbsoluteModelPathExpression pivotExpression;
+	private Axis rowAxis;
+	private NodeColumnProvider provider;
 	
-	public Transformation(Schema schema, String axisPath) throws InvalidExpressionException {
-		this(axisPath, createDefaultColumnProvider(schema, axisPath));
+	public Transformation(Axis rowAxis, NodeColumnProvider provider) throws InvalidExpressionException {
+		this.rowAxis = rowAxis;
+		this.provider = provider;
 	}
 
-	public Transformation(String axisPath, ColumnProvider provider) throws InvalidExpressionException {
-		this.axisPath = axisPath;
-		this.provider = provider;
-		ExpressionFactory expressionFactory = new ExpressionFactory();
-		this.pivotExpression = expressionFactory.createAbsoluteModelPathExpression(axisPath);
+	public Axis getRowAxis() {
+		return rowAxis;
 	}
 	
-	public String getAxisPath() {
-		return axisPath;
+	public static Transformation createDefaultTransformation(Schema schema, Axis rowAxis) throws InvalidExpressionException {
+		return new Transformation(rowAxis, createDefaultColumnProvider(schema, rowAxis));
 	}
 	
-	private static ColumnProvider createDefaultColumnProvider(Schema schema, String axisPath) {
-		NodeDefinition defn = schema.getByPath(axisPath);
+	private static NodeColumnProvider createDefaultColumnProvider(Schema schema, Axis rowAxis) {
+		NodeDefinition defn = rowAxis.evaluate(schema);
 		if ( defn instanceof EntityDefinition ) {
 			return new EntityColumnProvider((EntityDefinition) defn);
 		} else {
-			throw new UnsupportedOperationException("Attribute axes not yet supported");
+			throw new UnsupportedOperationException("Attribute and Field row axes not yet supported");
 		}
 	}
 	
-	public ColumnProvider getColumnProvider() {
+	public NodeColumnProvider getRootColumnProvider() {
 		return provider;
 	}
 	
-	public Result transform(Record record) throws InvalidExpressionException {
-		List<Node<?>> rowNodes = pivotExpression.iterate(record);
+	public Result transform(Record record) throws IllegalTransformationException {
+		List<Node<?>> rowNodes = rowAxis.evaluate(record);
 		return new Result(rowNodes);
 	}
 	
 	public class Result implements Iterable<Row> {
 		private List<Node<?>> rowNodes;
+		private List<Column> columns;
 		
-		private Result(List<Node<?>> rowNodes) {
+		private Result(List<Node<?>> rowNodes) throws IllegalTransformationException {
+			this.columns = provider.getColumns();
 			this.rowNodes = rowNodes;
+		}
+		
+		public List<Column> getColumns() {
+			return columns;
 		}
 		
 		@Override
@@ -75,9 +77,14 @@ public class Transformation {
 
 				@Override
 				public Row next() {
-					Node<?> node = iterator.next();
-					List<Cell> cells = provider.getCells(node);
-					return new Row(cells);
+					try {
+						Node<?> node = iterator.next();
+						List<Cell> cells;
+						cells = provider.getCells(node);
+						return new Row(cells);
+					} catch (IllegalTransformationException e) {
+						throw new RuntimeException("Transformation exception should have already been thrown by prior call to getColumns()");
+					}
 				}
 
 				@Override

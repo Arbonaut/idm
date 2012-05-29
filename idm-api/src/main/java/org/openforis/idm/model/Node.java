@@ -90,6 +90,7 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 		}
 	}
 
+	@Deprecated
 	protected abstract void write(StringWriter sw, int indent);
 
 	public abstract boolean isEmpty();
@@ -160,7 +161,7 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 		}
 	}
 	
-	public void clearDependencyStates(){
+	public void clearDependencyStates() {
 		Set<NodePointer> dependencies =  getRelevantDependencies();
 		clearRelevantDependencies(dependencies);
 		Set<NodePointer> requiredDependencies = getRequiredDependencies();
@@ -263,7 +264,7 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 		return getSurvey() == null ? null : getSurvey().getSchema();
 	}
 
-	public boolean isDetached(){
+	public boolean isDetached() {
 		return record == null;
 	}
 	

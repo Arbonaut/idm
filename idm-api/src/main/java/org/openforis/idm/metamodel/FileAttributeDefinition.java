@@ -29,10 +29,10 @@ public class FileAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-			new FieldDefinition("fileName", "f", null, String.class),
-			new FieldDefinition("fileSize", "s", "size", Long.class)
-		));
+	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<String>("fileName", "f", null, String.class),
+			new FieldDefinition<Long>("fileSize", "s", "size", Long.class)
+	};
 	
 	
 	@XmlAttribute(name = "maxSize")
@@ -61,8 +61,8 @@ public class FileAttributeDefinition extends AttributeDefinition {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
 	}
 
 	@Override

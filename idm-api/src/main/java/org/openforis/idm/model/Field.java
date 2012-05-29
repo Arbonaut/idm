@@ -1,14 +1,16 @@
 package org.openforis.idm.model;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.idm.metamodel.FieldDefinition;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public final class Field<T> implements Serializable {
+public final class Field<T> extends Node<FieldDefinition<T>> implements Serializable {
 	
 	private static final long serialVersionUID = 1;
 	
@@ -21,20 +23,20 @@ public final class Field<T> implements Serializable {
 	Attribute<?,?> attribute;
 	State state;
 	
-	private Field(Class<T> valueType, Attribute<?,?> attribute) {
+	public Field(Class<T> valueType, Attribute<?,?> attribute) {
 		this.valueType = valueType;
 		this.attribute = attribute;
 		state = new State();
 	}
-
-	public static <C> Field<C> newInstance(Class<C> valueType, Attribute<?,?> attribute) {
-		return new Field<C>(valueType, attribute);
+	
+	public Field(Class<T> valueType) {
+		this(valueType, null);
 	}
 	
 	public T getValue() {
 		return value;
 	}
-
+	
 	public void setValue(T value) {
 		this.value = value;
 		this.symbol = null;
@@ -71,6 +73,10 @@ public final class Field<T> implements Serializable {
 	
 	public State getState() {
 		return state;
+	}
+	
+	public Attribute<?, ?> getAttribute() {
+		return attribute;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -156,4 +162,14 @@ public final class Field<T> implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	@Deprecated
+	protected void write(StringWriter sw, int indent) {
+		sw.append(String.valueOf(value));
+	}
+	
+	public void setAttribute(Attribute<?, ?> attribute) {
+		this.attribute = attribute;
+	}	
 }

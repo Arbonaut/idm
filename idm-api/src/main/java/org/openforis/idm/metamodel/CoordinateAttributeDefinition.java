@@ -28,11 +28,11 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
 
-	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-		new FieldDefinition("x", "x", "x", Double.class),
-		new FieldDefinition("y", "y", "y", Double.class),
-		new FieldDefinition("srs_id", "srs", "srs", String.class)
-	));
+	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+		new FieldDefinition<Double>("x", "x", "x", Double.class),
+		new FieldDefinition<Double>("y", "y", "y", Double.class),
+		new FieldDefinition<String>("srs_id", "srs", "srs", String.class)
+	};
 	
 	@Override
 	public Node<?> createNode() {
@@ -50,10 +50,9 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
 	}
-	
 
 	@Override
 	public Class<? extends Value> getValueType() {

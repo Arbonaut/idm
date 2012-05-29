@@ -7,7 +7,7 @@ import org.openforis.idm.metamodel.AttributeDefinition;
  */
 public class CoordinateColumnProvider extends AttributeColumnProvider {
 
-	public CoordinateColumnProvider(AttributeDefinition attributeDefinition, ColumnGroup parentGroup) {
-		super(attributeDefinition, parentGroup);
+	public CoordinateColumnProvider(AttributeDefinition attributeDefinition, EntityColumnProvider parentProvider) {
+		super(attributeDefinition, parentProvider);
 	}
 }

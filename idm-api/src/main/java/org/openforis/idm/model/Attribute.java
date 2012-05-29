@@ -47,12 +47,12 @@ public abstract class Attribute<D extends AttributeDefinition, V extends Value> 
 	} 
 	
 	private void initFields() {
-		List<FieldDefinition> fieldsDefinitions = definition.getFieldDefinitions();
+		List<FieldDefinition<?>> fieldsDefinitions = definition.getFieldDefinitions();
 		this.fields = new Field[fieldsDefinitions.size()];
 		for (int i = 0; i < fieldsDefinitions.size(); i++) {
 			FieldDefinition fieldDefn = fieldsDefinitions.get(i);
-			Class<?> t = fieldDefn.getValueType();
-			this.fields[i] = Field.newInstance(t, this);
+			this.fields[i] = (Field) fieldDefn.createNode();
+			this.fields[i].setAttribute(this);
 		}
 	}
 	
@@ -61,7 +61,7 @@ public abstract class Attribute<D extends AttributeDefinition, V extends Value> 
 	}
 	
 	public Field<?> getField(String name) {
-		List<FieldDefinition> fieldsDefinitions = definition.getFieldDefinitions();
+		List<FieldDefinition<?>> fieldsDefinitions = definition.getFieldDefinitions();
 		for (int i = 0; i < fieldsDefinitions.size(); i++) {
 			FieldDefinition fieldDefn = fieldsDefinitions.get(i);
 			if (fieldDefn.getName().equals(name)) {
@@ -106,7 +106,9 @@ public abstract class Attribute<D extends AttributeDefinition, V extends Value> 
 	public abstract void setValue(V value);
 	
 	protected void onUpdateValue(){
-		clearDependencyStates();
+		if ( !isDetached() ) {
+			clearDependencyStates();
+		}
 	}
 	
 //	public V getDefaultValue() throws InvalidExpressionException {

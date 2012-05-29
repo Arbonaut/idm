@@ -28,9 +28,9 @@ import org.openforis.idm.model.Value;
 	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class TextAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition {
 
-	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-			new FieldDefinition("value", "v", null, String.class)
-		));
+	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<String>("value", "v", null, String.class)
+	};
 	
 	public enum Type {
 		SHORT, MEMO
@@ -66,8 +66,8 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
 	}
 	
 	@Override

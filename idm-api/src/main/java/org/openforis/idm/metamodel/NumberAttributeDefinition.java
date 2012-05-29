@@ -69,10 +69,20 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		List<FieldDefinition> result = new ArrayList<FieldDefinition>();
-		result.add(new FieldDefinition("value", "v", null, type.getNumberType()));
-		result.add(new FieldDefinition("unit", "u", "unit", String.class));
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		List<FieldDefinition<?>> result = new ArrayList<FieldDefinition<?>>(2);
+		Type type = getType();
+		switch (type) {
+		case INTEGER:
+			result.add(new FieldDefinition<Integer>("value", "v", null, Integer.class));
+			break;
+		case REAL:
+			result.add(new FieldDefinition<Double>("value", "v", null, Double.class));
+			break;
+		default:
+			throw new UnsupportedOperationException("Unknown type");
+		}
+		result.add(new FieldDefinition<String>("unit", "u", "unit", String.class));
 		return Collections.unmodifiableList(result);
 	}
 

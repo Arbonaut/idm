@@ -7,7 +7,7 @@ import org.openforis.idm.metamodel.TimeAttributeDefinition;
  */
 public class TimeColumnProvider extends AttributeColumnProvider {
 
-	public TimeColumnProvider(TimeAttributeDefinition attributeDefinition, ColumnGroup parentGroup) {
-		super(attributeDefinition, parentGroup);
+	public TimeColumnProvider(TimeAttributeDefinition attributeDefinition, EntityColumnProvider parentProvider) {
+		super(attributeDefinition, parentProvider);
 	}
 }

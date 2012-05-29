@@ -17,7 +17,6 @@ public class IntegerAttribute extends NumberAttribute<Integer, IntegerValue> {
 			throw new IllegalArgumentException("Attempted to create IntegerAttribute with real NumberDefinition");
 		}
 	}
-
 	
 	@Override
 	protected IntegerValue createValue(Integer value, Unit unit) {

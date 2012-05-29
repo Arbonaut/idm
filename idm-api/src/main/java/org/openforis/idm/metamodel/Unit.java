@@ -60,6 +60,10 @@ public class Unit implements Serializable {
 		return CollectionUtil.unmodifiableList(abbreviations);
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)

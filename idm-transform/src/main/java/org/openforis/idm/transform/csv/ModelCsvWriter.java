@@ -12,7 +12,7 @@ import org.openforis.idm.model.Value;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.transform.AttributeColumnProvider;
 import org.openforis.idm.transform.Cell;
-import org.openforis.idm.transform.ColumnProvider;
+import org.openforis.idm.transform.NodeColumnProvider;
 import org.openforis.idm.transform.DateColumnProvider;
 import org.openforis.idm.transform.EntityColumnProvider;
 import org.openforis.idm.transform.Row;
@@ -30,30 +30,30 @@ public class ModelCsvWriter extends CsvWriter {
 	
 	private Transformation transform;
 	private HeadingType headingType;
-	private ColumnProvider provider;
+	private NodeColumnProvider provider;
 	private int rowsPrinted;
 	
 	public ModelCsvWriter(Writer writer, Transformation xform, HeadingType headingType) throws InvalidExpressionException {
 		super(writer);
 		this.transform = xform;
-		this.provider = xform.getColumnProvider();
+		this.provider = xform.getRootColumnProvider();
 		this.headingType = headingType;
 		this.rowsPrinted = 0;
-		prepareProvider(provider);
+//		prepareProvider(provider);
 	}
-
-	protected void prepareProvider(ColumnProvider provider) {
+/*
+	protected void prepareProvider(NodeColumnProvider provider) {
 		if ( provider instanceof EntityColumnProvider ) {
-			List<ColumnProvider> childProviders = ((EntityColumnProvider) provider).getProviders();
-			for (ColumnProvider childProvider : childProviders) {
+			List<NodeColumnProvider> childProviders = ((EntityColumnProvider) provider).getProviders();
+			for (NodeColumnProvider childProvider : childProviders) {
 				prepareProvider(childProvider);
 			}
 		} else if ( provider instanceof AttributeColumnProvider ) {
 			AttributeColumnProvider attrProvider = (AttributeColumnProvider) provider;
 			if ( isCollapseable(attrProvider) ) {
-				attrProvider.collapse();
+				attrProvider.collapseFields();
 			} else {
-				attrProvider.expand();
+				attrProvider.expandFields();
 			}
 		}
 	}
@@ -89,7 +89,7 @@ public class ModelCsvWriter extends CsvWriter {
 	}
 
 	protected String extractValue(Cell cell) {
-		Object value = cell.getValue();
+		Object value = cell.getContents();
 		System.out.println(value.getClass());
 		if ( value instanceof Date ) {
 			return ((Date) value).toXmlDate();
@@ -119,4 +119,5 @@ public class ModelCsvWriter extends CsvWriter {
 	public int getRowsPrinted() {
 		return rowsPrinted;
 	}
+	*/
 }

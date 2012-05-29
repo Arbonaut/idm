@@ -19,7 +19,6 @@ import org.openforis.idm.metamodel.BooleanAttributeDefinition;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
 import org.openforis.idm.metamodel.DateAttributeDefinition;
-import org.openforis.idm.metamodel.DetachedNodeDefinitionException;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.FileAttributeDefinition;
 import org.openforis.idm.metamodel.IdmInterpretationError;
@@ -410,10 +409,10 @@ public class Entity extends Node<EntityDefinition> {
 	 *             if inserting object would break the maxCount rule
 	 */
 	private <T extends Node<?>> T addInternal(T o, Integer idx) {
-		Record record = getRecord();
-		if (record == null) {
-			throw new DetachedNodeDefinitionException(o.getDefinition().getClass(), this.getClass());
-		}
+//		Record record = getRecord();
+//		if (record == null) {
+//			throw new DetachedNodeDefinitionException(o.getDefinition().getClass(), this.getClass());
+//		}
 
 		// Get child definition and name
 		NodeDefinition defn = o.getDefinition();
@@ -450,7 +449,9 @@ public class Entity extends Node<EntityDefinition> {
 
 		o.setParent(this);
 
-		o.clearDependencyStates();
+		if ( !isDetached() ) {
+			o.clearDependencyStates();
+		}
 		
 		return o;
 	}

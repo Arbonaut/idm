@@ -7,7 +7,7 @@ import org.openforis.idm.metamodel.DateAttributeDefinition;
  */
 public class DateColumnProvider extends AttributeColumnProvider {
 
-	public DateColumnProvider(DateAttributeDefinition attributeDefinition, ColumnGroup parentGroup) {
-		super(attributeDefinition, parentGroup);
+	public DateColumnProvider(DateAttributeDefinition attributeDefinition, EntityColumnProvider parentProvider) {
+		super(attributeDefinition, parentProvider);
 	}
 }

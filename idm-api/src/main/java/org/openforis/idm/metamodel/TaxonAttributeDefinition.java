@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Node;
@@ -27,12 +28,13 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
-			new FieldDefinition<String>("code", "c", "code", String.class), 
-			new FieldDefinition<String>("scientific_name", "s", "name", String.class), 
-			new FieldDefinition<String>("vernacular_name", "v", "vn", String.class), 
-			new FieldDefinition<String>("language_code", "l", "lang", String.class), 
-			new FieldDefinition<String>("language_variety", "lv", "lang_var", String.class)
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<String>("code", "c", "code", String.class, this), 
+			new FieldDefinition<String>("scientific_name", "s", "name", String.class, this), 
+			new FieldDefinition<String>("vernacular_name", "v", "vn", String.class, this), 
+			new FieldDefinition<String>("language_code", "l", "lang", String.class, this), 
+			new FieldDefinition<String>("language_variety", "lv", "lang_var", String.class, this)
 	};
 	
 	@Override

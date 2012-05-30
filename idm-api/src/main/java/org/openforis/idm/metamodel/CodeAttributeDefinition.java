@@ -32,9 +32,10 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
-		new FieldDefinition<String>("code", "c", null, String.class), 
-		new FieldDefinition<String>("qualifier", "q", "other", String.class)
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+		new FieldDefinition<String>("code", "c", null, String.class, this), 
+		new FieldDefinition<String>("qualifier", "q", "other", String.class, this)
 	};
 	
 	@XmlAttribute(name = "key")

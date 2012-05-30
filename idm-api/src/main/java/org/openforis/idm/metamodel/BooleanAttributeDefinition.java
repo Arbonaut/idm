@@ -10,6 +10,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.BooleanAttribute;
@@ -29,8 +30,9 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
-			new FieldDefinition<Boolean>("value", "v", null, Boolean.class)
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<Boolean>("value", "v", null, Boolean.class, this)
 	};
 	
 	@XmlAttribute(name = "affirmativeOnly")

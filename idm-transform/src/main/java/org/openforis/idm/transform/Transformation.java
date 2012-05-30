@@ -29,17 +29,19 @@ public class Transformation {
 	}
 	
 	public static Transformation createDefaultTransformation(Schema schema, Axis rowAxis) throws InvalidExpressionException {
-		return new Transformation(rowAxis, createDefaultColumnProvider(schema, rowAxis));
+		return createDefaultTransformation(schema, rowAxis, null);
 	}
 	
-	private static NodeColumnProvider createDefaultColumnProvider(Schema schema, Axis rowAxis) {
+	public static Transformation createDefaultTransformation(Schema schema, Axis rowAxis, ChildExpansionFilter childExpansionFilter) throws InvalidExpressionException {
 		NodeDefinition defn = rowAxis.evaluate(schema);
 		if ( defn instanceof EntityDefinition ) {
-			return new EntityColumnProvider((EntityDefinition) defn);
+			NodeColumnProvider ncp = new EntityColumnProvider((EntityDefinition) defn, null, childExpansionFilter);
+			return new Transformation(rowAxis, ncp);
 		} else {
 			throw new UnsupportedOperationException("Attribute and Field row axes not yet supported");
 		}
 	}
+	
 	
 	public NodeColumnProvider getRootColumnProvider() {
 		return provider;

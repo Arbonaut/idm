@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,9 +29,10 @@ public class TimeAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
-			new FieldDefinition<Integer>("hour", "h", "h", Integer.class), 
-			new FieldDefinition<Integer>("minute", "m", "m", Integer.class)
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<Integer>("hour", "h", "h", Integer.class, this), 
+			new FieldDefinition<Integer>("minute", "m", "m", Integer.class, this)
 	};
 	
 	@Override

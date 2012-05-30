@@ -98,19 +98,12 @@ public class CodeList extends Versionable implements Serializable {
 		this.survey = survey;
 	}
 
-	// TODO for hierarchical lists, separate by level
 	public boolean isQualifiable() {
-		if ( items == null ) {
-			return false;
-		} else {
-			for (CodeListItem item : items) {
-				if ( item.isQualifiable() ) {
-					return true;
-				}
+		for (CodeListItem item : getItems()) {
+			if ( item.isQualifiableRecursive() ) {
+				return true;
 			}
-			return false;
 		}
+		return false;
 	}
-	
-	
 }

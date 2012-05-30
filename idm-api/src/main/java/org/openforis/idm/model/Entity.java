@@ -628,7 +628,7 @@ public class Entity extends Node<EntityDefinition> {
 	}
 
 	private boolean evaluateRelevance(String childName) {
-		EntityDefinition parentDefn = getDefinition().getParentDefinition();
+		EntityDefinition parentDefn = (EntityDefinition) getDefinition().getParentDefinition();
 		 
 		if(parentDefn == null || parent == null || parent.isRelevant(getName())){
 			NodeDefinition defn = getChildDefinition(childName);

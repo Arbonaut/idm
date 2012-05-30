@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,10 +29,11 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
-		new FieldDefinition<Double>("x", "x", "x", Double.class),
-		new FieldDefinition<Double>("y", "y", "y", Double.class),
-		new FieldDefinition<String>("srs_id", "srs", "srs", String.class)
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+		new FieldDefinition<Double>("x", "x", "x", Double.class, this),
+		new FieldDefinition<Double>("y", "y", "y", Double.class, this),
+		new FieldDefinition<String>("srs_id", "srs", "srs", String.class, this)
 	};
 	
 	@Override

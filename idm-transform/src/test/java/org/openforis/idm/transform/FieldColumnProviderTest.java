@@ -29,8 +29,8 @@ public class FieldColumnProviderTest {
 		time.setValue(new Time(17,16));
 		
 		// Provider
-		FieldColumnProvider hourFcp= new FieldColumnProvider(timeDefn.getFieldDefinition("hour"), null);
-		FieldColumnProvider minFcp= new FieldColumnProvider(timeDefn.getFieldDefinition("minute"), null);
+		FieldColumnProvider hourFcp= new FieldColumnProvider(timeDefn.getFieldDefinition("hour"), null, null);
+		FieldColumnProvider minFcp= new FieldColumnProvider(timeDefn.getFieldDefinition("minute"), null, null);
 				
 		// Test columns
 		{

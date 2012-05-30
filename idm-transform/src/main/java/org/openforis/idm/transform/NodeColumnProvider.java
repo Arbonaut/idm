@@ -17,11 +17,15 @@ public abstract class NodeColumnProvider implements ColumnProvider {
 	private boolean expandChildren;
 	private List<NodeColumnProvider> childProviders;
 	private NodeColumnProvider parentProvider;
+	private ChildExpansionFilter childExpansionFilter;
 	
-	public NodeColumnProvider(NodeDefinition nodeDefinition, NodeColumnProvider parentProvider) {
+	public NodeColumnProvider(NodeDefinition nodeDefinition, NodeColumnProvider parentProvider,
+			ChildExpansionFilter childExpansionFilter) {
 		this.nodeDefinition = nodeDefinition;
 		this.parentProvider = parentProvider;
+		this.childExpansionFilter = childExpansionFilter;
 	}
+
 
 	public NodeDefinition getNodeDefinition() {
 		return nodeDefinition;
@@ -43,6 +47,18 @@ public abstract class NodeColumnProvider implements ColumnProvider {
 		this.expandChildren = expandChildren;
 	}
 
+	private ChildExpansionFilter getChildExpansionFilter() {
+		if ( childExpansionFilter == null ) {
+			if( parentProvider == null ) {
+				return DefaultChildExpansionFilter.getInstance();
+			} else {
+				return parentProvider.getChildExpansionFilter();
+			}
+		} else {
+			return childExpansionFilter;
+		}
+	}
+	
 	public List<NodeColumnProvider> getChildProviders() throws IllegalTransformationException {
 		if ( childProviders == null ) {
 			childProviders = new ArrayList<NodeColumnProvider>();
@@ -145,4 +161,13 @@ public abstract class NodeColumnProvider implements ColumnProvider {
 		}
 		return cells;
 	}	
+
+	/**
+	 * Override this method to conditionally exclude children when expanding
+	 * @param fieldDefinition
+	 * @return
+	 */
+	protected boolean isIncluded(NodeDefinition nodeDefinition) {
+		return getChildExpansionFilter().isIncluded(nodeDefinition);
+	}
 }

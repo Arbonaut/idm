@@ -38,7 +38,7 @@ public class NumberColumnProviderTest {
 		IntegerAttribute number1 = plot.addValue("number", 1);
 		
 		// Provider
-		NumberColumnProvider provider = new NumberColumnProvider(numberDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null, null);
 		
 		// Test columns
 		List<Column> columns = provider.getColumns();
@@ -71,7 +71,7 @@ public class NumberColumnProviderTest {
 		IntegerAttribute number2 = plot.addValue("number", 2);
 		
 		// Provider
-		NumberColumnProvider provider = new NumberColumnProvider(numberDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null, null);
 		
 		// Test columns
 		List<Column> columns = provider.getColumns();
@@ -104,7 +104,7 @@ public class NumberColumnProviderTest {
 		Entity plot = (Entity) plotDef.createNode();
 		
 		// Provider
-		NumberColumnProvider provider = new NumberColumnProvider(numberDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null, null);
 		
 		// Test columns
 		List<Column> columns = provider.getColumns();
@@ -134,7 +134,7 @@ public class NumberColumnProviderTest {
 		Entity plot = (Entity) plotDef.createNode();
 		
 		// Provider
-		NumberColumnProvider provider = new NumberColumnProvider(numberDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null, null);
 		
 		// Test columns
 		List<Column> columns = provider.getColumns();
@@ -166,7 +166,7 @@ public class NumberColumnProviderTest {
 		plot.addValue("number", 1);
 		
 		// Provider
-		NumberColumnProvider provider = new NumberColumnProvider(numberDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null);
 		provider.setExpandChildren(true);
 		
 		// Test columns
@@ -199,13 +199,13 @@ public class NumberColumnProviderTest {
 		Entity plot = (Entity) plotDef.createNode();
 		
 		// Provider
-		NumberColumnProvider provider = new NumberColumnProvider(numberDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null);
 		provider.setExpandChildren(true);
 		
 		// Test columns
 		List<Column> columns = provider.getColumns();
 		assertEquals(1, columns.size());
-		assertEquals("value[1]", columns.get(0).getPath());
+		assertEquals("number[1]/value[1]", columns.get(0).getPath().toString());
 		
 		// Test cells
 		List<Cell> cells = provider.getCells(plot);
@@ -242,7 +242,7 @@ public class NumberColumnProviderTest {
 		plot.addValue("number", 1, u2);
 		
 		// Provider
-		NumberColumnProvider provider = new NumberColumnProvider(numberDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null);
 		provider.setExpandChildren(true);
 		
 		// Test columns
@@ -280,7 +280,7 @@ public class NumberColumnProviderTest {
 //		plot.addValue("number", 2);
 //		
 //		// Provider
-//		NumberColumnProvider provider = new NumberColumnProvider(numberDefn, null);
+//		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null);
 //		
 //		// Tests
 //		List<String> names = provider.getColumnNames();

@@ -86,4 +86,16 @@ public class CodeListItem extends Versionable implements Serializable {
 	public Survey getSurvey() {
 		return list == null ? null : list.getSurvey();
 	}
+
+	boolean isQualifiableRecursive() {
+		if ( isQualifiable() ) {
+			return true;
+		}
+		for (CodeListItem child : getChildItems()) {
+			if ( child.isQualifiableRecursive() ) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

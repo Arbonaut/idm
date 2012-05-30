@@ -10,6 +10,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.File;
@@ -29,9 +30,10 @@ public class FileAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
-			new FieldDefinition<String>("fileName", "f", null, String.class),
-			new FieldDefinition<Long>("fileSize", "s", "size", Long.class)
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<String>("fileName", "f", null, String.class, this),
+			new FieldDefinition<Long>("fileSize", "s", "size", Long.class, this)
 	};
 	
 	

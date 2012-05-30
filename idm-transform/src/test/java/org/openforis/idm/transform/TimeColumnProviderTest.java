@@ -33,7 +33,7 @@ public class TimeColumnProviderTest {
 		TimeAttribute time = plot.addValue("time", new Time(17,16));
 		
 		// Provider
-		TimeColumnProvider provider = new TimeColumnProvider(timeDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(timeDefn, null);
 				
 		// Test columns
 		List<Column> columns = provider.getColumns();
@@ -65,7 +65,7 @@ public class TimeColumnProviderTest {
 		TimeAttribute time2 = plot.addValue("time", new Time(17,16));
 		
 		// Provider
-		TimeColumnProvider provider = new TimeColumnProvider(timeDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(timeDefn, null);
 		provider.setExpandMultiple(true);
 
 		// Test columns
@@ -102,7 +102,7 @@ public class TimeColumnProviderTest {
 		TimeAttribute time = plot.addValue("time", new Time(17,16));
 
 		// Provider
-		TimeColumnProvider provider = new TimeColumnProvider(timeDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(timeDefn, null);
 		provider.setExpandChildren(true);
 		
 		// Test columns
@@ -133,7 +133,7 @@ public class TimeColumnProviderTest {
 		Entity plot = (Entity) plotDef.createNode();
 		
 		// Provider
-		TimeColumnProvider provider = new TimeColumnProvider(timeDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(timeDefn, null);
 		
 		// Test columns
 		List<Column> columns = provider.getColumns();
@@ -162,7 +162,7 @@ public class TimeColumnProviderTest {
 		Entity plot = (Entity) plotDef.createNode();
 		
 		// Provider
-		TimeColumnProvider provider = new TimeColumnProvider(timeDefn, null);
+		AttributeColumnProvider provider = new AttributeColumnProvider(timeDefn, null);
 		provider.setExpandChildren(true);
 		
 		// Test columns

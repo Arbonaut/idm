@@ -15,23 +15,18 @@ public final class FieldDefinition<T> extends NodeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	private String name;
 	private String alias;
 	private String suffix;
 	private Class<T> valueType;
 	
-	public FieldDefinition(String name, String alias, String suffix, Class<T> valueType) {
-		super();
-		this.name = name;
+	public FieldDefinition(String name, String alias, String suffix, Class<T> valueType, AttributeDefinition parentDefinition) {
+		setName(name);
+		setParentDefinition(parentDefinition);
 		this.alias = alias;
 		this.suffix = suffix;
 		this.valueType = valueType;
 	}
 
-	public String getName() {
-		return name;
-	}
-	
 	public String getAlias() {
 		return alias;
 	}
@@ -45,11 +40,6 @@ public final class FieldDefinition<T> extends NodeDefinition {
 	}
 	
 	@Override
-	public String toString() {
-		return name;
-	}
-
-	@Override
 	public Node<?> createNode() {
 		return new Field<T>(valueType); 
 	}
@@ -59,7 +49,7 @@ public final class FieldDefinition<T> extends NodeDefinition {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((alias == null) ? 0 : alias.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
 		result = prime * result + ((suffix == null) ? 0 : suffix.hashCode());
 		result = prime * result
 				+ ((valueType == null) ? 0 : valueType.hashCode());
@@ -80,10 +70,10 @@ public final class FieldDefinition<T> extends NodeDefinition {
 				return false;
 		} else if (!alias.equals(other.alias))
 			return false;
-		if (name == null) {
-			if (other.name != null)
+		if (getName() == null) {
+			if (other.getName() != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!getName().equals(other.getName()))
 			return false;
 		if (suffix == null) {
 			if (other.suffix != null)

@@ -74,15 +74,15 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 		Type type = getType();
 		switch (type) {
 		case INTEGER:
-			result.add(new FieldDefinition<Integer>("value", "v", null, Integer.class));
+			result.add(new FieldDefinition<Integer>("value", "v", null, Integer.class, this));
 			break;
 		case REAL:
-			result.add(new FieldDefinition<Double>("value", "v", null, Double.class));
+			result.add(new FieldDefinition<Double>("value", "v", null, Double.class, this));
 			break;
 		default:
 			throw new UnsupportedOperationException("Unknown type");
 		}
-		result.add(new FieldDefinition<String>("unit", "u", "unit", String.class));
+		result.add(new FieldDefinition<String>("unit", "u", "unit", String.class, this));
 		return Collections.unmodifiableList(result);
 	}
 

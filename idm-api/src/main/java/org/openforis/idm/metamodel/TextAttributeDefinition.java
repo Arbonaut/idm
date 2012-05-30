@@ -10,6 +10,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -28,8 +29,9 @@ import org.openforis.idm.model.Value;
 	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class TextAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition {
 
-	private static final FieldDefinition<?>[] FIELD_DEFINITIONS = {
-			new FieldDefinition<String>("value", "v", null, String.class)
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<String>("value", "v", null, String.class, this)
 	};
 	
 	public enum Type {

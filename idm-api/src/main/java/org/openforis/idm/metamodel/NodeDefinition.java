@@ -37,7 +37,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	
 	@XmlTransient
 	@XmlParent
-	private EntityDefinition parentDefinition;
+	private NodeDefinition parentDefinition;
 	
 	@XmlTransient
 	@XmlParent
@@ -232,11 +232,11 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return sb.toString();
 	}
 
-	public EntityDefinition getParentDefinition() {
+	public NodeDefinition getParentDefinition() {
 		return this.parentDefinition;
 	}
 
-	protected void setParentDefinition(EntityDefinition parentDefinition) {
+	protected void setParentDefinition(NodeDefinition parentDefinition) {
 		this.parentDefinition = parentDefinition;
 		this.schema = parentDefinition.getSchema();
 	}

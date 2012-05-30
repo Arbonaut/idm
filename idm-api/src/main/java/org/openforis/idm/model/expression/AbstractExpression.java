@@ -28,7 +28,7 @@ abstract class AbstractExpression {
 
 	private ModelJXPathContext jxPathContext;
 	private ModelJXPathCompiledExpression compiledExpression;
-
+	
 	AbstractExpression(ModelJXPathCompiledExpression compiledExpression, ModelJXPathContext jxPathContext) {
 		this.jxPathContext = jxPathContext;
 		this.compiledExpression = compiledExpression;
@@ -140,7 +140,7 @@ abstract class AbstractExpression {
 	 * @return
 	 */
 	private JXPathContext createJXPathContext(Node<?> contextNode, Node<?> thisNode) {
-		JXPathContext jxPathContext = ModelJXPathContext.newContext(this.jxPathContext, contextNode);
+		ModelJXPathContext jxPathContext = ModelJXPathContext.newContext(this.jxPathContext, contextNode);
 		if (thisNode != null) {
 			Variables variables = jxPathContext.getVariables();
 			variables.declareVariable("this", thisNode);

@@ -135,6 +135,22 @@ public class ComparisonCheckTest extends ValidationTest {
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 	
+	@Test
+	public void testLteWithNormalizedValuesPassOnLt() {
+		RealAttribute plotDistance = cluster.addValue("plot_distance", 25000d);
+		plotDistance.setUnitName("cm");
+		ValidationResults results = validate(plotDistance);
+		assertFalse(containsComparisonCheck(results.getErrors()));
+	}
+	
+	@Test
+	public void testLteWithNormalizedValuesFailOnLt() {
+		RealAttribute plotDistance = cluster.addValue("plot_distance", 25000d);
+		plotDistance.setUnitName("m");
+		ValidationResults results = validate(plotDistance);
+		assertTrue(containsComparisonCheck(results.getErrors()));
+	}
+	
 	private boolean containsComparisonCheck(List<ValidationResult> results) {
 		for (ValidationResult result : results) {
 			ValidationRule<?> validator = result.getValidator();

@@ -1,6 +1,7 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.RangeAttributeDefinition;
+import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
@@ -46,6 +47,16 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 	
 	public String getUnitName(){
 		return (String) getField(2).getValue();
+	}
+	
+	public Unit getUnit() {
+		String unitName = getUnitName();
+		if ( unitName != null ) {
+			Unit unit = getSurvey().getUnit(unitName);
+			return unit;
+		} else {
+			return null;
+		}
 	}
 
 	@SuppressWarnings("unchecked")

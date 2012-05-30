@@ -14,6 +14,7 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
 import org.apache.commons.jxpath.ri.compiler.CoreOperation;
 import org.apache.commons.jxpath.ri.compiler.Expression;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.model.VariablePointer;
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.NumericRange;
 
@@ -23,6 +24,8 @@ import org.openforis.idm.model.NumericRange;
  */
 public class ModelRelationalExpression extends CoreOperation {
 
+	private boolean normalizeNumbers = false;
+	
 	protected enum Operation {
 		LT("<"), LTE("<="), GT(">"), GTE(">="), EQ("="), NOTEQ("!=");
 
@@ -232,6 +235,10 @@ public class ModelRelationalExpression extends CoreOperation {
 			return ((Boolean) object).booleanValue() ? 0.0 : 1.0;
 		}
 		if ( object instanceof NodePointer ) {
+			if(object instanceof VariablePointer && normalizeNumbers){
+				ModelNodePointer valuePointer = (ModelNodePointer) ((NodePointer) object).getValuePointer();
+				valuePointer.setNormalizeNumbers(true);
+			}
 			return getValue(((NodePointer) object).getValue());
 		}
 		if ( object instanceof EvalContext ) {
@@ -342,4 +349,12 @@ public class ModelRelationalExpression extends CoreOperation {
 		return false;
 	}
 
+	void setNormalizeNumbers(boolean normalizeNumbers) {
+		this.normalizeNumbers = normalizeNumbers;
+	}
+	
+	
+	boolean isNormalizeNumbers() {
+		return normalizeNumbers;
+	}
 }

@@ -20,23 +20,43 @@ import org.openforis.idm.metamodel.validation.LookupProvider;
 /**
  * @author M. Togna
  * @author G. Miceli
+ * @author S. Ricci
  */
 @SuppressWarnings("rawtypes")
 public class ModelJXPathContext extends JXPathContextReferenceImpl {
 
 	private static int cleanupCount = 0;
-	private static final Compiler COMPILER = new ModelTreeCompiler();
 	// The frequency of the cache cleanup
 	private static final int CLEANUP_THRESHOLD = 500;
 
 	private LookupProvider lookupProvider;
 	private Map<String, Object> compiled;
-
+	private boolean normalizeNumbers;
+	private static volatile ModelJXPathContext compilationContext;
+	
 	protected ModelJXPathContext(JXPathContext parentContext, Object contextNode) {
 		super(parentContext, contextNode);
 		this.compiled = new HashMap<String, Object>();
+		this.normalizeNumbers = false;
 	}
 
+	/**
+     * Compiles the supplied XPath and returns an internal representation
+     * of the path that can then be evaluated.  Use CompiledExpressions
+     * when you need to evaluate the same expression multiple times
+     * and there is a convenient place to cache CompiledExpression
+     * between invocations.
+     * @param xpath to compile
+     * @return CompiledExpression
+     */
+    public synchronized static CompiledExpression compile(String xpath, boolean normalizeNumbers) {
+        if (compilationContext == null) {
+            compilationContext = (ModelJXPathContext) JXPathContext.newContext(null);
+        }
+        compilationContext.setNormalizeNumbers(normalizeNumbers);
+        return compilationContext.compilePath(xpath);
+    }
+    
 	public static ModelJXPathContext newContext(JXPathContext parentContext, Object contextNode) {
 		ModelJXPathContext jxPathContext = new ModelJXPathContext(parentContext, contextNode);
 		copyProperties(parentContext, jxPathContext);
@@ -60,7 +80,11 @@ public class ModelJXPathContext extends JXPathContextReferenceImpl {
 
 	@Override
 	protected Compiler getCompiler() {
-		return COMPILER;
+		ModelTreeCompiler treeCompiler = new ModelTreeCompiler();
+		if ( normalizeNumbers ) {
+			treeCompiler.setNormalizeNumbers(normalizeNumbers);
+		}
+		return treeCompiler;
 	}
 
 	public LookupProvider getLookupProvider() {
@@ -69,6 +93,14 @@ public class ModelJXPathContext extends JXPathContextReferenceImpl {
 
 	public void setLookupProvider(LookupProvider lookupProvider) {
 		this.lookupProvider = lookupProvider;
+	}
+	
+	public boolean isNormalizeNumbers() {
+		return normalizeNumbers;
+	}
+
+	public void setNormalizeNumbers(boolean normalizeNumbers) {
+		this.normalizeNumbers = normalizeNumbers;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -113,4 +145,5 @@ public class ModelJXPathContext extends JXPathContextReferenceImpl {
 
 		return expr;
 	}
+
 }

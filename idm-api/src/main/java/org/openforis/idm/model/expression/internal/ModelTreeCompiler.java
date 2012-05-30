@@ -15,6 +15,8 @@ import org.openforis.idm.model.expression.internal.ModelRelationalExpression.Ope
  */
 public class ModelTreeCompiler extends TreeCompiler {
 
+	private boolean normalizeNumbers = false;
+	
 	@Override
 	public Object locationPath(boolean absolute, Object[] steps) {
 		return new ModelLocationPath(absolute, toStepArray(steps));
@@ -27,34 +29,42 @@ public class ModelTreeCompiler extends TreeCompiler {
 
 	@Override
 	public Object lessThan(Object left, Object right) {
-		return new ModelRelationalExpression(Operation.LT, (Expression) left, (Expression) right);
+		return getRelationalExpression(Operation.LT, (Expression) left, (Expression) right);
 	}
 
 	@Override
 	public Object lessThanOrEqual(Object left, Object right) {
-		return new ModelRelationalExpression(Operation.LTE, (Expression) left, (Expression) right);
+		return getRelationalExpression(Operation.LTE, (Expression) left, (Expression) right);
 	}
 
 	@Override
 	public Object greaterThan(Object left, Object right) {
-		return new ModelRelationalExpression(Operation.GT, (Expression) left, (Expression) right);
+		return getRelationalExpression(Operation.GT, (Expression) left, (Expression) right);
 	}
 
 	@Override
 	public Object greaterThanOrEqual(Object left, Object right) {
-		return new ModelRelationalExpression(Operation.GTE, (Expression) left, (Expression) right);
+		return getRelationalExpression(Operation.GTE, (Expression) left, (Expression) right);
 	}
 
 	@Override
 	public Object equal(Object left, Object right) {
-		return new ModelRelationalExpression(Operation.EQ, (Expression) left, (Expression) right);
+		return getRelationalExpression(Operation.EQ, (Expression) left, (Expression) right);
 	}
 
 	@Override
 	public Object notEqual(Object left, Object right) {
-		return new ModelRelationalExpression(Operation.NOTEQ, (Expression) left, (Expression) right);
+		return getRelationalExpression(Operation.NOTEQ, (Expression) left, (Expression) right);
 	}
 
+	private ModelRelationalExpression getRelationalExpression(Operation op, Expression left, Expression right) {
+		ModelRelationalExpression expression = new ModelRelationalExpression(op, left, right);
+		if(normalizeNumbers){
+			expression.setNormalizeNumbers(normalizeNumbers);
+		}
+		return expression;
+	}
+	
 	private Step[] toStepArray(Object[] array) {
 		Step[] stepArray = null;
 		if ( array != null ) {
@@ -84,4 +94,12 @@ public class ModelTreeCompiler extends TreeCompiler {
 		return expArray;
 	}
 
+	
+	void setNormalizeNumbers(boolean normalizeNumbers) {
+		this.normalizeNumbers = normalizeNumbers;
+	}
+	
+	boolean isNormalizeNumbers() {
+		return normalizeNumbers;
+	}
 }

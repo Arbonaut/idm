@@ -128,7 +128,7 @@ public class ComparisonCheck extends Check<Attribute<?,?>> {
 		}
 		try {
 			ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
-			CheckExpression checkExpr = expressionFactory.createCheckExpression(expression);
+			CheckExpression checkExpr = expressionFactory.createCheckExpression(expression, true);
 			boolean valid = checkExpr.evaluate(node.getParent(), node);
 			return ValidationResultFlag.valueOf(valid, this.getFlag());
 		} catch (InvalidExpressionException e) {

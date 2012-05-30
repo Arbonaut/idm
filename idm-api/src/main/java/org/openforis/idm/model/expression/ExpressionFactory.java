@@ -43,7 +43,11 @@ public class ExpressionFactory {
 	}
 
 	public CheckExpression createCheckExpression(String expression) throws InvalidExpressionException {
-		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression);
+		return createCheckExpression(expression, false);
+	}
+	
+	public CheckExpression createCheckExpression(String expression, boolean normalizeNumbers) throws InvalidExpressionException {
+		ModelJXPathCompiledExpression compiledExpression = compileExpression(expression, normalizeNumbers);
 		CheckExpression expr = new CheckExpression(compiledExpression, jxPathContext);
 		return expr;
 	}
@@ -114,15 +118,20 @@ public class ExpressionFactory {
 	}
 
 	private static ModelJXPathCompiledExpression compileExpression(String expression) throws InvalidExpressionException {
+		return compileExpression(expression, false);
+	}
+
+	private static ModelJXPathCompiledExpression compileExpression(String expression, boolean normalizeNumber) throws InvalidExpressionException {
 		try {
 			String normalizedExpression = getNormalizedExpression(expression);
-			ModelJXPathCompiledExpression compiled = (ModelJXPathCompiledExpression) JXPathContext.compile(normalizedExpression);
+			ModelJXPathCompiledExpression compiled = (ModelJXPathCompiledExpression) ModelJXPathContext.compile(normalizedExpression, normalizeNumber);
 			return compiled;
 		} catch(JXPathInvalidSyntaxException e){
 			throw new InvalidExpressionException(e.getMessage());
 		}
 	}
 
+	
 	protected static String getNormalizedExpression(String expression) {
 		return expression.replaceAll("\\bparent\\(\\)", "__parent");
 	}

@@ -1,6 +1,7 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
@@ -16,6 +17,16 @@ public abstract class NumberAttribute<T extends Number> extends Attribute<Number
 
 	public String getUnitName() {
 		return (String) getField(1).getValue();
+	}
+
+	public Unit getUnit() {
+		String unitName = getUnitName();
+		if ( unitName != null ) {
+			Unit unit = getSurvey().getUnit(unitName);
+			return unit;
+		} else {
+			return null;
+		}
 	}
 
 	@SuppressWarnings("unchecked")

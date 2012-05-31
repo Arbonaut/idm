@@ -34,11 +34,6 @@ public class EntitySchema extends SchemaSupport<Entity> {
 				out.writeUInt32(1, node.definitionId, false);
 				out.writeObject(2, node, getSchema(node.getClass()), false);
         	}
-        	//System.out.println("node=" + node);
-			out.writeUInt32(1, node.definitionId, false);
-			out.writeObject(2, node, getSchema(node.getClass()), false);
-//			State childState = entity.getChildState(node.getName());
-//			out.writeInt32(3, childState.intValue(), false);
         }
         EntityDefinition definition = entity.getDefinition();
         List<NodeDefinition> childDefinitions = definition.getChildDefinitions();
@@ -59,15 +54,12 @@ public class EntitySchema extends SchemaSupport<Entity> {
         	} else if ( number == 1 ) {
         		Schema idmSchema = entity.getSchema();
         		
-        		
         		// Definition id
         		int definitionId = input.readUInt32();
         		NodeDefinition defn = idmSchema.getById(definitionId);
-        		//System.out.print(defn);
         		if ( defn == null ) {
         			throw new ProtostuffException("Invalid definition id "+definitionId);
         		}
-        		//System.out.println(": " + defn.getPath());
         		Node<?> node = defn.createNode();
         		entity.add(node);
         		
@@ -79,8 +71,6 @@ public class EntitySchema extends SchemaSupport<Entity> {
         		//Node state
         		int intState = input.readInt32();
         		State state = State.parseState(intState);
-//        		entity.childStates.put(node.getName(), nodeState);
-        		
         		readAndCheckFieldNumber(input, 4);
         		String childName = input.readString();
         		entity.childStates.put(childName, state);

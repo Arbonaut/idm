@@ -41,7 +41,7 @@ public class ProtostuffSerializationTest  {
 		ser.mergeFrom(data, cluster1);
 
 		// Compare
-		String r = record1.toString();
+		String r = record.toString();
 		String r1 = record1.toString();
 //		System.out.println(r1);
 		Assert.assertEquals(r, r1);

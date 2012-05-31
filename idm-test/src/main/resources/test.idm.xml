@@ -3630,7 +3630,9 @@
             <number type="real" name="plot_distance">
                 <label>Distance to 1st plot</label>
                 <default value="0"/>
-                <precision unit="m" decimalDigits="0"/>
+                <precision unit="m" decimalDigits="0" default="true"/>
+                <precision unit="cm" decimalDigits="0"/>
+                <precision unit="km" decimalDigits="0"/>
                 <compare gte="0" lte="20000" flag="error"/>
             </number>
             <entity name="time_study" required="true" maxCount="2">

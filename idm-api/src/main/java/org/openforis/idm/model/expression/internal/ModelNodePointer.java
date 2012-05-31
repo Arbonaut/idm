@@ -3,12 +3,17 @@
  */
 package org.openforis.idm.model.expression.internal;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointer;
+import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.Precision;
+import org.openforis.idm.metamodel.RangeAttributeDefinition;
 import org.openforis.idm.metamodel.Unit;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Code;
@@ -21,6 +26,7 @@ import org.openforis.idm.model.NumericRangeAttribute;
 import org.openforis.idm.model.RealRange;
 import org.openforis.idm.model.Time;
 import org.openforis.idm.model.TimeAttribute;
+import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author M. Togna
@@ -92,33 +98,99 @@ public class ModelNodePointer extends DynamicPointer {
 	
 	private Number getNormalizedValue(NumberAttribute<? extends Number> attr) {
 		Number value = attr.getValue();
-		Unit unit = attr.getUnit();
-		Number normalizedValue = getNormalizedValue(value, unit);
-		return normalizedValue;
-	}
-	
-	private NumericRange<?> getNormalizedValue(NumericRangeAttribute<?, ?> attr) {
-		NumericRange<?> range = attr.getValue();
-		Unit unit = attr.getUnit();
-		if ( unit != null ) {
-			Number from = range.getFrom();
-			Number to = range.getTo();
-			Double normalizedFrom = (Double) getNormalizedValue(from, unit);
-			Double normalizedTo = (Double) getNormalizedValue(to, unit);
-			RealRange normalizedRange = new RealRange(normalizedFrom, normalizedTo);
-			return normalizedRange;
-		} else {
-			return range;
-		}
-	}
-	
-	private Number getNormalizedValue(Number value, Unit unit) {
-		if ( value != null && unit != null && unit.getConversionFactor() != null ) {
-			Double result = value.doubleValue() * unit.getConversionFactor().doubleValue();
-			return result;
+		NumberAttributeDefinition defn = attr.getDefinition();
+		List<Unit> units = getUnits(defn);
+		if ( units != null && units.size() > 1 ) {
+			Unit unit = attr.getUnit();
+			Unit defaultUnit = getDefaultUnit(defn);
+			if ( unit != null && defaultUnit != null ) {
+				Number normalizedValue = getNormalizedValue(value, unit, defaultUnit);
+				return normalizedValue;
+			} else {
+				return value;
+			}
 		} else {
 			return value;
 		}
+	}
+	
+	private NumericRange<?> getNormalizedValue(NumericRangeAttribute<?, ?> attr) {
+		NumericRange<?> value = attr.getValue();
+		RangeAttributeDefinition defn = attr.getDefinition();
+		List<Unit> units = getUnits(defn);
+		if ( units != null && units.size() > 1 ) {
+			Unit unit = attr.getUnit();
+			Unit defaultUnit = getDefaultUnit(defn);
+			if ( unit != null && defaultUnit != null && unit != defaultUnit ) {
+				Number from = value.getFrom();
+				Number to = value.getTo();
+				Double normalizedFrom = (Double) getNormalizedValue(from, unit, defaultUnit);
+				Double normalizedTo = (Double) getNormalizedValue(to, unit, defaultUnit);
+				RealRange normalizedValue = new RealRange(normalizedFrom, normalizedTo);
+				return normalizedValue;
+			} else {
+				return value;
+			}
+		} else {
+			return value;
+		}
+	}
+	
+	private Number getNormalizedValue(Number value, Unit unit, Unit defaultUnit) {
+		if ( value != null && unit.getConversionFactor() != null && defaultUnit.getConversionFactor() != null ) {
+			float unitConvFact = unit.getConversionFactor().floatValue();
+			float defaultUnitConvFact = defaultUnit.getConversionFactor().floatValue();
+			float floatValue = value.floatValue();
+			float normalized = floatValue * unitConvFact;
+			Float normalizedToDefault = normalized / defaultUnitConvFact;
+			return normalizedToDefault;
+		} else {
+			return value;
+		}
+	}
+
+	/*
+	 * todo move these methods in RangeAttributeDefinition and NumberAttributeDefinition
+	 */
+	private List<Unit> getUnits(RangeAttributeDefinition defn) {
+		List<Precision> precisions = defn.getPrecisionDefinitions();
+		return getUnits(precisions);
+	}
+	
+	private List<Unit> getUnits(NumberAttributeDefinition defn) {
+		List<Precision> precisions = defn.getPrecisionDefinitions();
+		return getUnits(precisions);
+	}
+
+	private List<Unit> getUnits(List<Precision> precisions) {
+		List<Unit> units = new ArrayList<Unit>();
+		for (Precision precision : precisions) {
+			Unit unit = precision.getUnit();
+			if ( unit != null ) {
+				units.add(unit);
+			}
+		}
+		return CollectionUtil.unmodifiableList(units);
+	}
+	
+	private Unit getDefaultUnit(NumberAttributeDefinition defn) {
+		List<Precision> precisions = defn.getPrecisionDefinitions();
+		return getDefaultUnit(precisions);
+	}
+	
+	private Unit getDefaultUnit(RangeAttributeDefinition defn) {
+		List<Precision> precisions = defn.getPrecisionDefinitions();
+		return getDefaultUnit(precisions);
+	}
+
+	private Unit getDefaultUnit(List<Precision> precisions) {
+		for (Precision precision : precisions) {
+			Unit unit = precision.getUnit();
+			if ( unit != null && precision.isDefaultPrecision() ) {
+				return unit;
+			}
+		}
+		return null;
 	}
 	
 	void setNormalizeNumbers(boolean normalizeNumbers) {

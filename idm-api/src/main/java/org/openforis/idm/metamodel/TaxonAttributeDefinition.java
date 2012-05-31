@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Node;
@@ -18,14 +19,20 @@ import org.openforis.idm.model.TaxonOccurrence;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author W. Eko
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
+/*@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})*/
+@XmlType(name="", propOrder = {"name", "relevantExpression","qualifiers", "required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})		
 public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
+	@XmlAttribute(name = "qualifiers")
+	private String qualifiers;
+	
 	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
 			new FieldDefinition("code", "c", String.class), 
 			new FieldDefinition("scientific_name", "s", String.class), 
@@ -39,6 +46,11 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 		return new TaxonAttribute(this);
 	}
 
+	public List<String> getQualifiers() {
+		String[] exprs = qualifiers.split(",");
+		return Arrays.asList(exprs);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public TaxonOccurrence createValue(String string) {
@@ -49,5 +61,7 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	public List<FieldDefinition> getFieldDefinitions() {
 		return fieldsDefinitions;
 	}
+	
+	
 	
 }

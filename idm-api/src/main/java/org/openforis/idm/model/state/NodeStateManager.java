@@ -71,13 +71,13 @@ public class NodeStateManager {
 	protected ModelDependencies getModelDependencies(Node<?> node) {
 		Record record = node.getRecord();
 		Survey survey = record.getSurvey();
-		String surveyName = survey.getName();
-		ModelDependencies modelDependencies = modelDependenciesMap.get(surveyName);
+		String surveyUri= survey.getUri();
+		ModelDependencies modelDependencies = modelDependenciesMap.get(surveyUri);
 		if (modelDependencies == null) {
 			SurveyContext recordContext = record.getSurveyContext();
 			modelDependencies = new ModelDependencies(recordContext.getExpressionFactory());
 			modelDependencies.register(survey);
-			modelDependenciesMap.put(surveyName, modelDependencies);
+			modelDependenciesMap.put(surveyUri, modelDependencies);
 		}
 		return modelDependencies;
 	}

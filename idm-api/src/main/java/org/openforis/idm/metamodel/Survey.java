@@ -33,9 +33,6 @@ public class Survey implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@XmlTransient
-	private String name;
-	
-	@XmlTransient
 	private Integer id;
 	
 	@XmlTransient
@@ -84,14 +81,6 @@ public class Survey implements Serializable {
 	
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public List<LanguageSpecificText> getProjectNames() {

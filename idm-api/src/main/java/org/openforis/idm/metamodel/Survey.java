@@ -25,7 +25,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "projectNames", "cycle", "descriptions", "configuration", "modelVersions",
+@XmlType(name = "", propOrder = { "projectNames", "uri", "cycle", "descriptions", "configuration", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
 @XmlRootElement(name = "survey")
 public class Survey implements Serializable {
@@ -36,10 +36,13 @@ public class Survey implements Serializable {
 	private Integer id;
 	
 	@XmlTransient
-	private String uri;
+	private String name;
 	
 	@XmlElement(name = "project", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> projectNames;
+	
+	@XmlElement(name = "uri", type = String.class)
+	private String uri;
 
 	@XmlElement(name = "cycle")
 	private Integer cycle;
@@ -81,6 +84,14 @@ public class Survey implements Serializable {
 	
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<LanguageSpecificText> getProjectNames() {
@@ -186,6 +197,7 @@ public class Survey implements Serializable {
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
+	
 	/**
 	 * Workaround for JAXB since @XmlAnyElement, @XmlElementWrapper and @XmlJavaTypeAdapter 
 	 * wouldn't play nice together

@@ -210,8 +210,8 @@ public class ModelDependencies {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		String uri = survey.getUri();
-		result = prime * result + ((uri == null) ? 0 : uri.hashCode());
+		String name = survey.getName();
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -224,10 +224,10 @@ public class ModelDependencies {
 		if (getClass() != obj.getClass())
 			return false;
 		ModelDependencies other = (ModelDependencies) obj;
-		if (survey.getUri() == null) {
-			if (other.survey.getUri() != null)
+		if (survey.getName() == null) {
+			if (other.survey.getName() != null)
 				return false;
-		} else if (!survey.getUri().equals(other.survey.getUri()))
+		} else if (!survey.getName().equals(other.survey.getName()))
 			return false;
 		return true;
 	}

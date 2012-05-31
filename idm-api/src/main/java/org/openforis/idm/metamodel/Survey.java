@@ -38,6 +38,9 @@ public class Survey implements Serializable {
 	@XmlTransient
 	private Integer id;
 	
+	@XmlTransient
+	private String uri;
+	
 	@XmlElement(name = "project", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> projectNames;
 
@@ -186,6 +189,13 @@ public class Survey implements Serializable {
 			surveyDependencies = new SurveyDependencies(this);
 		}
 		return surveyDependencies;
+	}
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 	/**
 	 * Workaround for JAXB since @XmlAnyElement, @XmlElementWrapper and @XmlJavaTypeAdapter 

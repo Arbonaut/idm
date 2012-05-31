@@ -19,14 +19,19 @@ import org.openforis.idm.model.TaxonOccurrence;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author S. Ricci
+ * @author W. Eko
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "taxonomy", "highestRank", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
+@XmlType(name="", propOrder = {"name", "taxonomy", "highestRank", "qualifiers", "relevantExpression", "required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})		
 public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
+	@XmlAttribute(name = "qualifiers")
+	private String qualifiers;
+	
 	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
 			new FieldDefinition("code", "c", String.class), 
 			new FieldDefinition("scientific_name", "s", String.class), 
@@ -63,6 +68,11 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	public String getHighestRank() {
 		return highestRank;
+	}
+	
+	public List<String> getQualifiers() {
+		String[] exprs = qualifiers.split(",");
+		return Arrays.asList(exprs);
 	}
 	
 }

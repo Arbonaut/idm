@@ -81,6 +81,7 @@ public class ModelSerializer {
 	synchronized
 	public void mergeFrom(byte[] data, Entity entity) {
 		try {
+			//System.out.print("entity = " + entity);
 			ProtostuffIOUtil.mergeFrom(data, entity, ENTITY_SCHEMA);
 		} finally {
 			buffer.clear();

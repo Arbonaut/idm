@@ -1,17 +1,24 @@
 package org.openforis.idm.model.species;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openforis.idm.util.CollectionUtil;
+
 /**
-*	@author G. Miceli
-*	@author M. Togna
-*/
+ * @author G. Miceli
+ * @author M. Togna
+ * @author E. Wibowo
+ */
 public class TaxonVernacularName {
-	
+
 	private Integer id;
 	private String vernacularName;
 	private String languageCode;
 	private String languageVariety;
 	private Integer taxonSystemId;
 	private int step;
+	private List<String> qualifiers;
 
 	public Integer getId() {
 		return id;
@@ -61,4 +68,11 @@ public class TaxonVernacularName {
 		this.step = step;
 	}
 
+	public List<String> getQualifiers() {
+		return CollectionUtil.unmodifiableList(qualifiers);
+	}
+
+	public void setQualifiers(List<String> qualifiers) {
+		this.qualifiers = new ArrayList<String>(qualifiers);
+	}
 }

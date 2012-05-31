@@ -25,7 +25,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "projectNames", "cycle", "descriptions", "configuration", "modelVersions",
+@XmlType(name = "", propOrder = { "projectNames", "uri", "cycle", "descriptions", "configuration", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
 @XmlRootElement(name = "survey")
 public class Survey implements Serializable {
@@ -38,12 +38,12 @@ public class Survey implements Serializable {
 	@XmlTransient
 	private Integer id;
 	
-	@XmlTransient
-	private String uri;
-	
 	@XmlElement(name = "project", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> projectNames;
 
+	@XmlElement(name = "uri")
+	private String uri;
+	
 	@XmlElement(name = "cycle")
 	private Integer cycle;
 

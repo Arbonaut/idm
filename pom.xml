@@ -12,13 +12,27 @@
 <!--     	<module>idm-transform</module> -->
 <!--     	<module>idm-db</module> -->
     	<module>idm-test</module>
-  </modules>
+  	</modules>
 
 	<properties>
 		<geotools.version>2.6.5</geotools.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Repository with internal releases</name>
+			<url>http://ldvfo01:9000/nexus/content/repositories/releases</url>
+		</repository>
+	</distributionManagement>
+
+	<scm>
+		<connection>scm:git:git@github.com:openforis/idm.git</connection>
+		<url>scm:git:git@github.com:openforis/idm.git</url>
+		<developerConnection>scm:git:git@github.com:openforis/idm.git</developerConnection>
+	</scm>
 
 	<repositories>
 		<repository>
@@ -67,12 +81,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<scm>
-		<connection>scm:git:git@github.com:openforis/idm.git</connection>
-		<url>scm:git:git@github.com:openforis/idm.git</url>
-		<developerConnection>scm:git:git@github.com:openforis/idm.git</developerConnection>
-	</scm>
 
 	<dependencyManagement>
 		<dependencies>

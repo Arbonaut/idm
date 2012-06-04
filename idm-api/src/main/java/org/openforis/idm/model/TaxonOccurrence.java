@@ -3,6 +3,7 @@ package org.openforis.idm.model;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author S. Ricci
  */
 public final class TaxonOccurrence {
 
@@ -34,40 +35,20 @@ public final class TaxonOccurrence {
 		return code;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getScientificName() {
 		return scientificName;
-	}
-
-	public void setScientificName(String scientificName) {
-		this.scientificName = scientificName;
 	}
 
 	public String getVernacularName() {
 		return vernacularName;
 	}
 
-	public void setVernacularName(String vernacularName) {
-		this.vernacularName = vernacularName;
-	}
-
 	public String getLanguageCode() {
 		return languageCode;
 	}
 
-	public void setLanguageCode(String languageCode) {
-		this.languageCode = languageCode;
-	}
-
 	public String getLanguageVariety() {
 		return languageVariety;
-	}
-
-	public void setLanguageVariety(String languageVariety) {
-		this.languageVariety = languageVariety;
 	}
 
 	@Override

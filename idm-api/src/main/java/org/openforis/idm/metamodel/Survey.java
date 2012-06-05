@@ -23,6 +23,8 @@ import org.openforis.idm.util.CollectionUtil;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author S. Ricci
+ * @author E. Suprapto Wibowo
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "projectNames", "uri", "cycle", "descriptions", "configuration", "modelVersions",
@@ -33,17 +35,17 @@ public class Survey implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@XmlTransient
-	private String name;
+	private Integer id;
 	
 	@XmlTransient
-	private Integer id;
+	private String name;
 	
 	@XmlElement(name = "project", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> projectNames;
-
+	
 	@XmlElement(name = "uri")
 	private String uri;
-	
+
 	@XmlElement(name = "cycle")
 	private Integer cycle;
 
@@ -197,6 +199,7 @@ public class Survey implements Serializable {
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
+	
 	/**
 	 * Workaround for JAXB since @XmlAnyElement, @XmlElementWrapper and @XmlJavaTypeAdapter 
 	 * wouldn't play nice together

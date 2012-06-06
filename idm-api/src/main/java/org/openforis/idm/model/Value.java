@@ -3,7 +3,7 @@ package org.openforis.idm.model;
 /**
  * @author G. Miceli
  * @author M. Togna
- * @author S. Rici
+ * @author S. Ricci
  */
 public interface Value {
 

@@ -60,7 +60,7 @@ class StateDependencyMap {
 				try {
 					String normalizedPath = getNormalizedPath(path);
 					SchemaPathExpression schemaExpression = new SchemaPathExpression(normalizedPath);
-					EntityDefinition parentDefinition = nodeDefinition.getParentDefinition();
+					EntityDefinition parentDefinition = (EntityDefinition) nodeDefinition.getParentDefinition();
 					NodeDefinition dependantNode = schemaExpression.evaluate(parentDefinition);
 
 					String sourcePath = dependantNode.getPath();

@@ -37,7 +37,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	
 	@XmlTransient
 	@XmlParent
-	private EntityDefinition parentDefinition;
+	private NodeDefinition parentDefinition;
 	
 	@XmlTransient
 	@XmlParent
@@ -232,11 +232,11 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return sb.toString();
 	}
 
-	public EntityDefinition getParentDefinition() {
+	public NodeDefinition getParentDefinition() {
 		return this.parentDefinition;
 	}
 
-	protected void setParentDefinition(EntityDefinition parentDefinition) {
+	protected void setParentDefinition(NodeDefinition parentDefinition) {
 		this.parentDefinition = parentDefinition;
 		this.schema = parentDefinition.getSchema();
 	}
@@ -261,7 +261,13 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return survey.getRequiredDependencies(this);
 	}
 
-//	public Set<NodePathPointer> getDependencies(String expression) {
+	public void setName(String name) {
+		checkLockState();
+		this.name = name;
+	}
+
+	
+	//	public Set<NodePathPointer> getDependencies(String expression) {
 //		Set<NodePathPointer> nodePointers = new HashSet<NodePathPointer>();
 //		if (StringUtils.isNotBlank(expression)) {
 //			List<String> referencedPaths = getReferencedPaths(expression);
@@ -285,6 +291,44 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 //		}
 //		return nodePointers;
 //	}
+
+	public void setRelevantExpression(String relevantExpression) {
+		checkLockState();
+		this.relevantExpression = relevantExpression;
+	}
+
+	public void setRequired(Boolean required) {
+		checkLockState();
+		this.required = required;
+	}
+
+	public void setRequiredExpression(String requiredExpression) {
+		checkLockState();
+		this.requiredExpression = requiredExpression;
+	}
+
+	public void setMultiple(Boolean multiple) {
+		checkLockState();
+		this.multiple = multiple;
+	}
+
+	public void setMinCount(Integer minCount) {
+		checkLockState();
+		this.minCount = minCount;
+	}
+
+	public void setMaxCount(Integer maxCount) {
+		checkLockState();
+		this.maxCount = maxCount;
+	}
+
+	/**
+	 * @throws IllegalStateException when the survey is already 
+	 * associated with one or more records or nodes (i.e. locked)
+	 */
+	protected void checkLockState() {
+		// TODO
+	}
 
 //	protected List<String> getReferencedPaths(String expression) {
 //		if (StringUtils.isBlank(expression)) {

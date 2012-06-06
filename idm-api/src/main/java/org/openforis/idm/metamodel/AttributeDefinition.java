@@ -17,6 +17,7 @@ import org.openforis.idm.metamodel.validation.DistanceCheck;
 import org.openforis.idm.metamodel.validation.PatternCheck;
 import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.model.NodePathPointer;
+import org.openforis.idm.model.Value;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -54,18 +55,18 @@ public abstract class AttributeDefinition extends NodeDefinition {
 		return CollectionUtil.unmodifiableList(this.attributeDefaults);
 	}
 
-	public abstract <V> V createValue(String string);
+	public abstract <V extends Value> V createValue(String string);
 
 	public Set<NodePathPointer> getCheckDependencyPaths() {
 		Survey survey = getSurvey();
 		return survey.getCheckDependencies(this);
 	}
 	
-	public abstract List<FieldDefinition> getFieldDefinitions();
+	public abstract List<FieldDefinition<?>> getFieldDefinitions();
 	
-	public FieldDefinition getFieldDefinition(String name) {
-		List<FieldDefinition> defns = getFieldDefinitions();
-		for (FieldDefinition fieldDefinition : defns) {
+	public FieldDefinition<?> getFieldDefinition(String name) {
+		List<FieldDefinition<?>> defns = getFieldDefinitions();
+		for (FieldDefinition<?> fieldDefinition : defns) {
 			if ( fieldDefinition.getName().equals(name) ) {
 				return fieldDefinition;
 			}
@@ -73,6 +74,8 @@ public abstract class AttributeDefinition extends NodeDefinition {
 		return null;
 	}
 
+	public abstract Class<? extends Value> getValueType();
+	
 //	private Set<String> createCheckDependencyPaths() {
 //		Set<String> paths = new HashSet<String>();
 //		for (Check<?> check : getChecks()) {

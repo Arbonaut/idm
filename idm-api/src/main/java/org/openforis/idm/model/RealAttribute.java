@@ -1,12 +1,13 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public class RealAttribute extends NumberAttribute<Double> {
+public class RealAttribute extends NumberAttribute<Double, RealValue> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,4 +18,8 @@ public class RealAttribute extends NumberAttribute<Double> {
 		}
 	}
 
+	@Override
+	protected RealValue createValue(Double value, Unit unit) {
+		return new RealValue(value, unit);
+	}
 }

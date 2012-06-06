@@ -1,12 +1,13 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public class IntegerAttribute extends NumberAttribute<Integer> {
+public class IntegerAttribute extends NumberAttribute<Integer, IntegerValue> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,4 +18,8 @@ public class IntegerAttribute extends NumberAttribute<Integer> {
 		}
 	}
 	
+	@Override
+	protected IntegerValue createValue(Integer value, Unit unit) {
+		return new IntegerValue(value, unit);
+	}
 }

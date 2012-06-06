@@ -10,13 +10,15 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.xml.internal.TextAttributeDefinitionTypeAdapter;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TextAttribute;
+import org.openforis.idm.model.TextValue;
+import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -27,9 +29,10 @@ import org.openforis.idm.model.TextAttribute;
 	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class TextAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition {
 
-	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-			new FieldDefinition("value", "v", String.class)
-		));
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<String>("value", "v", null, String.class, this)
+	};
 	
 	public enum Type {
 		SHORT, MEMO
@@ -60,17 +63,17 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public String createValue(String string) {
-		if ( StringUtils.isBlank(string) ) {
-			return null;
-		} else {
-			return string;
-		}
+	public TextValue createValue(String string) {
+		return new TextValue(string);
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
 	}
 	
+	@Override
+	public Class<? extends Value> getValueType() {
+		return TextValue.class;
+	}
 }

@@ -6,7 +6,7 @@ import org.openforis.idm.metamodel.BooleanAttributeDefinition;
  * @author G. Miceli
  * @author M. Togna
  */
-public class BooleanAttribute extends Attribute<BooleanAttributeDefinition, Boolean> {
+public class BooleanAttribute extends Attribute<BooleanAttributeDefinition, BooleanValue> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -16,16 +16,16 @@ public class BooleanAttribute extends Attribute<BooleanAttributeDefinition, Bool
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Boolean getValue() {
+	public BooleanValue getValue() {
 		Field<Boolean> field = (Field<Boolean>) getField(0);
-		return field.getValue();
+		return field == null ? null : new BooleanValue(field.getValue());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setValue(Boolean value) {
+	public void setValue(BooleanValue value) {
 		Field<Boolean> field = (Field<Boolean>) getField(0);
-		field.setValue(value);
+		field.setValue(value == null ? null : value.getValue());
 		onUpdateValue();
 	}
 

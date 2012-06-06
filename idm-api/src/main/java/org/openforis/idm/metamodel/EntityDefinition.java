@@ -57,6 +57,15 @@ public class EntityDefinition extends NodeDefinition {
 		return null;
 	}
 	
+	
+	public void addChildDefinition(NodeDefinition defn) {
+		checkLockState();
+		if (childDefinitions == null) {
+			childDefinitions = new ArrayList<NodeDefinition>();
+		}
+		childDefinitions.add(defn);
+	}
+
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {
 		ArrayList<AttributeDefinition> result = new ArrayList<AttributeDefinition>();
 		for (NodeDefinition nodeDefinition : childDefinitions) {

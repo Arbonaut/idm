@@ -1,10 +1,12 @@
 package org.openforis.idm.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public final class File {
+public final class File implements Value {
 
 	private final String filename;
 	private final Long size;
@@ -56,10 +58,9 @@ public final class File {
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{filename:").append(filename);
-		sb.append(", size:").append(size);
-		sb.append("}");
-		return sb.toString();
+		return new ToStringBuilder(this)
+			.append("filename", filename)
+			.append("size", size)
+			.toString();
 	}
 }

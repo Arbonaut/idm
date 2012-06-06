@@ -4,12 +4,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public final class Coordinate {
+public final class Coordinate implements Value{
 
 	private static final String STRING_FORMAT = "SRID=(.+);POINT\\((\\d+)\\s(\\d+)\\)";
 	private static final Pattern PATTERN = Pattern.compile(STRING_FORMAT);
@@ -100,11 +101,10 @@ public final class Coordinate {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{x:").append(x);
-		sb.append(", y:").append(y);
-		sb.append(", srsId:").append(srsId);
-		sb.append("}");
-		return sb.toString();
+		return new ToStringBuilder(this)
+			.append("x", x)
+			.append("y", y)
+			.append("srsId", srsId)
+			.toString();
 	}
 }

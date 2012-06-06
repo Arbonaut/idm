@@ -24,6 +24,22 @@ public class TimeAttribute extends Attribute<TimeAttributeDefinition, Time> {
 		return (Field<Integer>) getField(1);
 	}
 	
+	public Integer getHour() {
+		return getHourField().getValue();
+	}
+	
+	public void setHour(Integer hour) {
+		getHourField().setValue(hour);
+	}
+	
+	public Integer getMinute() {
+		return getMinuteField().getValue();
+	}
+	
+	public void setMinute(Integer min) {
+		getMinuteField().setValue(min);
+	}
+	
 	@Override
 	public Time getValue() {
 		Integer hour = getHourField().getValue();

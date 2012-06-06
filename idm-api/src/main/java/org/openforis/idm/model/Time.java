@@ -1,16 +1,18 @@
 package org.openforis.idm.model;
 
 import java.util.Calendar;
+import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public final class Time {
+public final class Time implements Value {
 	private static final String DELIM = ":";
 
 	private final Integer hour;
@@ -75,13 +77,18 @@ public final class Time {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{hour:").append(hour);
-		sb.append(", minute:").append(minute);
-		sb.append("}");
-		return sb.toString();
+		return new ToStringBuilder(this)
+			.append("hour", hour)
+			.append("minute", minute)
+			.toString();
 	}
 
+	public String toXmlTime() {
+		Formatter formatter = new Formatter();
+		formatter.format("%02d:%02d:00", hour, minute);
+		return formatter.toString();
+	}
+	
 	public static Time parseTime(String string) {
 		if ( StringUtils.isBlank(string) ) {
 			return null;

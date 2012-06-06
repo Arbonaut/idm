@@ -4,6 +4,7 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,14 +21,14 @@ import org.openforis.idm.model.expression.internal.MissingValueException;
  * @author G. Miceli
  */
 @SuppressWarnings("rawtypes")
-public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D> {
+public abstract class Attribute<D extends AttributeDefinition, V extends Value> extends Node<D> {
 
 	private static final long serialVersionUID = 1L;
 
 	private Field[] fields;
 	
 	private transient ValidationResults validationResults;
-	
+
 	protected Attribute(D definition) {
 		super(definition);
 		initFields();
@@ -46,12 +47,12 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	} 
 	
 	private void initFields() {
-		List<FieldDefinition> fieldsDefinitions = definition.getFieldDefinitions();
+		List<FieldDefinition<?>> fieldsDefinitions = definition.getFieldDefinitions();
 		this.fields = new Field[fieldsDefinitions.size()];
 		for (int i = 0; i < fieldsDefinitions.size(); i++) {
 			FieldDefinition fieldDefn = fieldsDefinitions.get(i);
-			Class<?> t = fieldDefn.getValueType();
-			this.fields[i] = Field.newInstance(t, this);
+			this.fields[i] = (Field) fieldDefn.createNode();
+			this.fields[i].setAttribute(this);
 		}
 	}
 	
@@ -60,7 +61,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	}
 	
 	public Field<?> getField(String name) {
-		List<FieldDefinition> fieldsDefinitions = definition.getFieldDefinitions();
+		List<FieldDefinition<?>> fieldsDefinitions = definition.getFieldDefinitions();
 		for (int i = 0; i < fieldsDefinitions.size(); i++) {
 			FieldDefinition fieldDefn = fieldsDefinitions.get(i);
 			if (fieldDefn.getName().equals(name)) {
@@ -93,6 +94,7 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		}
 		onUpdateValue();
 	}
+	
 	/**
 	 * @return a non-null, immutable value
 	 */
@@ -104,7 +106,9 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 	public abstract void setValue(V value);
 	
 	protected void onUpdateValue(){
-		clearDependencyStates();
+		if ( !isDetached() ) {
+			clearDependencyStates();
+		}
 	}
 	
 //	public V getDefaultValue() throws InvalidExpressionException {
@@ -216,7 +220,6 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		validationResults = null;
 	}
 	
-	
 	@Override
 	protected void write(StringWriter sw, int indent) {
 		V value = getValue();
@@ -227,5 +230,27 @@ public abstract class Attribute<D extends AttributeDefinition, V> extends Node<D
 		sw.append(": ");
 		sw.append(value == null ? "!!null" : value.toString());
 		sw.append("\n");
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(fields);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Attribute other = (Attribute) obj;
+		if (!Arrays.equals(fields, other.fields))
+			return false;
+		return true;
 	}
 }

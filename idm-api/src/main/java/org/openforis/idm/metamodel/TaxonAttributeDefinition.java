@@ -10,11 +10,13 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TaxonAttribute;
 import org.openforis.idm.model.TaxonOccurrence;
+import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -32,13 +34,14 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	@XmlAttribute(name = "qualifiers")
 	private String qualifiers;
 	
-	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-			new FieldDefinition("code", "c", String.class), 
-			new FieldDefinition("scientific_name", "s", String.class), 
-			new FieldDefinition("vernacular_name", "v", String.class), 
-			new FieldDefinition("language_code", "l", String.class), 
-			new FieldDefinition("language_variety", "lv", String.class)
-		));
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<String>("code", "c", "code", String.class, this), 
+			new FieldDefinition<String>("scientific_name", "s", "name", String.class, this), 
+			new FieldDefinition<String>("vernacular_name", "v", "vn", String.class, this), 
+			new FieldDefinition<String>("language_code", "l", "lang", String.class, this), 
+			new FieldDefinition<String>("language_variety", "lv", "lang_var", String.class, this)
+	};
 	
 	@XmlAttribute(name = "taxonomy")
 	private String taxonomy;
@@ -58,8 +61,13 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
+	}
+
+	@Override
+	public Class<? extends Value> getValueType() {
+		return TaxonOccurrence.class;
 	}
 
 	public String getTaxonomy() {

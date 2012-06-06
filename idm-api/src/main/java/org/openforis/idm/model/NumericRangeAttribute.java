@@ -1,13 +1,14 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.RangeAttributeDefinition;
+import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends Number> extends Attribute<RangeAttributeDefinition, T> {
+public abstract class NumericRangeAttribute<T extends NumericRange<N>,N extends Number> extends Attribute<RangeAttributeDefinition, T> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -16,20 +17,50 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<V> getFromField() {
-		return (Field<V>) getField(0);
+	public Field<N> getFromField() {
+		return (Field<N>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<V> getToField() {
-		return (Field<V>) getField(1);
+	public Field<N> getToField() {
+		return (Field<N>) getField(1);
 	}
 
+	@SuppressWarnings("unchecked")
+	public Field<String> getUnitField() {
+		return (Field<String>) getField(2);		
+	}
+	public N getFrom() {
+		return getFromField().getValue();
+	}
+	
+	public void setFrom(N value) {
+		getFromField().setValue(value);
+		onUpdateValue();
+	}	
+
+	public N getTo() {
+		return getToField().getValue();
+	}
+	
+	public void setTo(N value) {
+		getToField().setValue(value);
+		onUpdateValue();
+	}	
+
+	public void setUnitName(String name){
+		getUnitField().setValue(name);
+		onUpdateValue();
+	}
+	
 	@Override
 	public T getValue() {
-		V from = getFromField().getValue();
-		V to = getToField().getValue();
-		return createRange(from, to);
+		N from = getFromField().getValue();
+		N to = getToField().getValue();
+		String unitName = getUnitField().getValue();
+		Survey survey = getSurvey();
+		Unit unit = survey.getUnit(unitName);
+		return createRange(from, to, unit);
 	}
 
 	@Override
@@ -37,16 +68,19 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 		if ( value == null ) {
 			clearValue();
 		} else {
-			V from = value.getFrom();
-			V to = value.getTo();
+			N from = value.getFrom();
+			N to = value.getTo();
+			Unit unit = value.getUnit();
+			String unitName = unit == null ? null : unit.getName();
 			getFromField().setValue(from);
 			getToField().setValue(to);
+			getUnitField().setValue(unitName);
 		}
 		onUpdateValue();
 	}
 	
 	public String getUnitName(){
-		return (String) getField(2).getValue();
+		return getUnitField().getValue();
 	}
 	
 	public Unit getUnit() {
@@ -59,12 +93,6 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setUnitName(String unitName){
-		Field<String> unitFld = (Field<String>) getField(2);
-		unitFld.setValue(unitName);
-	}
-	
 	@Override
 	public boolean isFilled() {
 		return getField(0).hasValue() && getField(1).hasValue(); 
@@ -75,6 +103,6 @@ public abstract class NumericRangeAttribute<T extends NumericRange<V>,V extends 
 		return getFromField().getValue() == null && getToField().getValue() == null;
 	}
 	
-	protected abstract T createRange(V from, V to);
+	protected abstract T createRange(N from, N to, Unit unit);
 
 }

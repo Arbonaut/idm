@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Code;
+import org.openforis.idm.model.TextValue;
 
 /**
  * @author G. Miceli
@@ -46,8 +47,8 @@ public class PatternCheck extends Check<Attribute<?,?>> {
 	public ValidationResultFlag evaluate(Attribute<?,?> node) {
 		Object value = node.getValue();
 		String string = null;
-		if (value instanceof String) {
-			string = (String) value;
+		if (value instanceof TextValue) {
+			string = ((TextValue) value).getValue();
 		} else if (value instanceof Code) {
 			string = ((Code) value).getCode();
 		} else {

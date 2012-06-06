@@ -15,7 +15,9 @@ import org.openforis.idm.model.Node;
 /**
  * @author M. Togna
  * 
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public abstract class CompositeAttributeColumnProvider implements ColumnProvider {
 
 	private String attributeName;

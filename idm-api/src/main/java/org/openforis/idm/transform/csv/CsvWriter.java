@@ -6,7 +6,9 @@ import java.util.List;
 
 /**
  * @author G. Miceli
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class CsvWriter extends PrintWriter {
 
 	public CsvWriter(Writer out) {

@@ -14,7 +14,9 @@ import org.openforis.idm.model.Node;
 
 /**
  * @author G. Miceli
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class EnumerableEntityColumnProvider extends ColumnProviderChain {
 
 	// TODO Support multiple code keys 

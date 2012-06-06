@@ -10,11 +10,13 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.BooleanAttribute;
+import org.openforis.idm.model.BooleanValue;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -28,9 +30,10 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-		new FieldDefinition("value", "v", Boolean.class)
-	));
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<Boolean>("value", "v", null, Boolean.class, this)
+	};
 	
 	@XmlAttribute(name = "affirmativeOnly")
 	private Boolean affirmativeOnly;
@@ -50,16 +53,17 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Boolean createValue(String string) {
-		if ( StringUtils.isBlank(string) ) {
-			return null;
-		} else {
-			return Boolean.parseBoolean(string);
-		}
+	public BooleanValue createValue(String string) {
+		return new BooleanValue(string);
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
+	}
+
+	@Override
+	public Class<? extends Value> getValueType() {
+		return BooleanValue.class;
 	}
 }

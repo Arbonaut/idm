@@ -1,23 +1,24 @@
 package org.openforis.idm.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.openforis.idm.metamodel.Unit;
+
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class NumericRange<T extends Number> {
+public abstract class NumericRange<T extends Number> implements Value {
 
 	private final T from;
 	private final T to;
-	protected static final String DELIM = "-";
+	private final Unit unit;
 	
-	NumericRange(T value) {
-		this.from = value;
-		this.to = value;
-	}
+	protected static final String DELIM = "-";
 
-	NumericRange(T from, T to) {
+	NumericRange(T from, T to, Unit unit) {
 		this.from = from;
 		this.to = to;
+		this.unit = unit;
 	}
 
 	public T getFrom() {
@@ -28,6 +29,10 @@ public abstract class NumericRange<T extends Number> {
 		return to;
 	}
 
+	public Unit getUnit() {
+		return unit;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -62,10 +67,10 @@ public abstract class NumericRange<T extends Number> {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{from:").append(from);
-		sb.append(", to:").append(to);
-		sb.append("}");
-		return sb.toString();
+		return new ToStringBuilder(this)
+			.append("from", from)
+			.append("to", to)
+			.append("unit", unit)
+			.toString();
 	}
 }

@@ -83,11 +83,11 @@ public class NumericRangeTest {
 	}
 	
 	private RealRange getRealRange(String str){
-		return RealRange.parseRealRange(str);
+		return RealRange.parseRealRange(str, null);
 	}
 	
 	private IntegerRange getIntegerRange(String str){
-		return IntegerRange.parseIntegerRange(str);
+		return IntegerRange.parseIntegerRange(str, null);
 	}
 	
 }

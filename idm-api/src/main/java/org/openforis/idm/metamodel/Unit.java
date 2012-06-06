@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -57,5 +58,16 @@ public class Unit implements Serializable {
 
 	public List<LanguageSpecificText> getAbbreviations() {
 		return CollectionUtil.unmodifiableList(abbreviations);
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+			.append("name", name)
+			.toString();
 	}
 }

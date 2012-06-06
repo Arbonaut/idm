@@ -10,11 +10,13 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.model.File;
 import org.openforis.idm.model.FileAttribute;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Value;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -28,10 +30,11 @@ public class FileAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-			new FieldDefinition("fileName", "f", String.class),
-			new FieldDefinition("fileSize", "s", Long.class)
-		));
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+			new FieldDefinition<String>("fileName", "f", null, String.class, this),
+			new FieldDefinition<Long>("fileSize", "s", "size", Long.class, this)
+	};
 	
 	
 	@XmlAttribute(name = "maxSize")
@@ -60,7 +63,12 @@ public class FileAttributeDefinition extends AttributeDefinition {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
+	}
+
+	@Override
+	public Class<? extends Value> getValueType() {
+		return File.class;
 	}
 }

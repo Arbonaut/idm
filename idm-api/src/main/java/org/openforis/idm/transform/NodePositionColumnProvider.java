@@ -9,7 +9,9 @@ import org.openforis.idm.transform.ColumnProvider;
 
 /**
  * @author S. Ricci
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class NodePositionColumnProvider implements ColumnProvider {
 	private String headerName;
 

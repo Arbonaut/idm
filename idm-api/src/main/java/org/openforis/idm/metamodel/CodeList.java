@@ -97,6 +97,13 @@ public class CodeList extends Versionable implements Serializable {
 	protected void setSurvey(Survey survey) {
 		this.survey = survey;
 	}
-	
-	
+
+	public boolean isQualifiable() {
+		for (CodeListItem item : getItems()) {
+			if ( item.isQualifiableRecursive() ) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

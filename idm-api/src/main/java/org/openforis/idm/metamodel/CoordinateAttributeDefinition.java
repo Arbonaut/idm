@@ -9,12 +9,14 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Coordinate;
 import org.openforis.idm.model.CoordinateAttribute;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -27,11 +29,12 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
 
-	static final List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-		new FieldDefinition("x", "x", Double.class),
-		new FieldDefinition("y", "y", Double.class),
-		new FieldDefinition("srs", "srs", String.class)
-	));
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+		new FieldDefinition<Double>("x", "x", "x", Double.class, this),
+		new FieldDefinition<Double>("y", "y", "y", Double.class, this),
+		new FieldDefinition<String>("srs", "srs", "srs", String.class, this)
+	};
 	
 	@Override
 	public Node<?> createNode() {
@@ -49,8 +52,12 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
 	}
-	
+
+	@Override
+	public Class<? extends Value> getValueType() {
+		return Coordinate.class;
+	}
 }

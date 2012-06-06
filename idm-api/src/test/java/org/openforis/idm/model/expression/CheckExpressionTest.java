@@ -18,6 +18,15 @@ import org.openforis.idm.model.RealAttribute;
 public class CheckExpressionTest extends AbstractTest {
 
 	@Test
+	public void testStatic() throws InvalidExpressionException {
+		RealAttribute plotDirection = cluster.addValue("plot_direction", 385.45);
+
+		String expr = "900 < 359";
+		boolean b = evaluateExpression(expr, plotDirection);
+		Assert.assertFalse(b);
+	}
+
+	@Test
 	public void testTrue() throws InvalidExpressionException {
 		RealAttribute plotDirection = cluster.addValue("plot_direction", 345.45);
 

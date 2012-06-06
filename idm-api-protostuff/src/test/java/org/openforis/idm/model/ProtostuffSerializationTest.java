@@ -28,23 +28,20 @@ public class ProtostuffSerializationTest  {
 		// Set up
 		Survey survey = getTestSurvey();
 		assignFakeNodeDefinitionIds(survey.getSchema());
-		Record record = createTestRecord(survey);
-		Entity cluster = record.getRootEntity();
+		Record record1 = createTestRecord(survey);
+		Entity cluster1 = record1.getRootEntity();
 		
 		// Write
 		ModelSerializer ser = new ModelSerializer(10000);
-		byte[] data = ser.toByteArray(cluster);
+		byte[] data = ser.toByteArray(cluster1);
 		
 		// Read
-		Record record1 = new Record(survey, "2.0");
-		Entity cluster1 = record1.createRootEntity("cluster");
-		ser.mergeFrom(data, cluster1);
+		Record record2 = new Record(survey, "2.0");
+		Entity cluster2 = record2.createRootEntity("cluster");
+		ser.mergeFrom(data, cluster2);
 
 		// Compare
-		String r = record.toString();
-		String r1 = record1.toString();
-//		System.out.println(r1);
-		Assert.assertEquals(r, r1);
+		Assert.assertTrue(record1.getRootEntity().equals(record2.getRootEntity()));
 	}
 
 	private Survey getTestSurvey() throws IOException, InvalidIdmlException {

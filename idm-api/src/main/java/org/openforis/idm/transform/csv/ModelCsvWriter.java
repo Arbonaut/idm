@@ -14,7 +14,9 @@ import org.openforis.idm.transform.DataTransformation;
 
 /**
  * @author G. Miceli
+ * @deprecated replaced with idm-transform api
  */
+@Deprecated
 public class ModelCsvWriter extends CsvWriter {
 
 	private DataTransformation xform;

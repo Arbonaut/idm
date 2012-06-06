@@ -7,16 +7,15 @@ import org.openforis.idm.metamodel.Unit;
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class NumberAttribute<T extends Number> extends Attribute<NumberAttributeDefinition, T> {
+public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>> extends Attribute<NumberAttributeDefinition, T> {
 
 	private static final long serialVersionUID = 1L;
 
 	protected NumberAttribute(NumberAttributeDefinition definition) {
 		super(definition);
 	}
-
 	public String getUnitName() {
-		return (String) getField(1).getValue();
+		return getUnitField().getValue();
 	}
 
 	public Unit getUnit() {
@@ -30,26 +29,48 @@ public abstract class NumberAttribute<T extends Number> extends Attribute<Number
 	}
 
 	@SuppressWarnings("unchecked")
-	public void setUnitName(String unitName) {
-		Field<String> unitFld = (Field<String>) getField(1);
-		unitFld.setValue(unitName);
+	public Field<N> getNumberField() {
+		return (Field<N>) getField(0);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
-	public T getValue() {
-		Field<T> field = (Field<T>) getField(0);
-		return field.getValue();
+	public Field<String> getUnitField() {
+		return (Field<String>) getField(1);
 	}
 
+	public N getNumber() {
+		return getNumberField().getValue();
+	}
+	
+	public void setNumber(N value) {
+		getNumberField().setValue(value);
+		onUpdateValue();
+	}
+	
+	public void setUnitName(String name) {
+		getUnitField().setValue(name);
+		onUpdateValue();
+	}
+	
+	protected abstract T createValue(N value, Unit unit);
+	
 	@Override
-	@SuppressWarnings("unchecked")
 	public void setValue(T value) {
-		Field<T> field = (Field<T>) getField(0);
-		field.setValue(value);
+		N number = value.getValue();
+		Unit unit = value.getUnit();
+		String unitName = unit == null ? null : unit.getName();
+		getNumberField().setValue(number);
+		getUnitField().setValue(unitName);
 		onUpdateValue();
 	}
 
+	@Override
+	public T getValue() {
+		N value = (N) getNumberField().getValue();
+		Unit unit = getUnit();
+		return createValue(value, unit);
+	}
+	
 	@Override
 	public boolean isFilled() {
 		return getField(0).hasValue();
@@ -59,4 +80,6 @@ public abstract class NumberAttribute<T extends Number> extends Attribute<Number
 	public boolean isEmpty() {
 		return getValue() == null;
 	}
+	
+	
 }

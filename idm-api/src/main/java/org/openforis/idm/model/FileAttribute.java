@@ -25,6 +25,24 @@ public class FileAttribute extends Attribute<FileAttributeDefinition, File> {
 		return (Field<Long>) getField(1);
 	}
 	
+	public String getFilename() {
+		return getFilenameField().getValue();
+	}
+	
+	public void setFilename(String filename) {
+		getFilenameField().setValue(filename);
+		onUpdateValue();
+	}
+
+	public Long getSize() {
+		return getSizeField().getValue();
+	}
+	
+	public void setSize(Long size) {
+		getSizeField().setValue(size);
+		onUpdateValue();
+	}
+	
 	@Override
 	public File getValue() {
 		String filename = getFilenameField().getValue();

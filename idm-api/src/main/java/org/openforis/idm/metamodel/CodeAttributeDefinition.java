@@ -19,6 +19,7 @@ import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.Value;
 
 /**
  * @author G. Miceli
@@ -31,10 +32,11 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 
 	private static final long serialVersionUID = 1L;
 	
-	static List<FieldDefinition> fieldsDefinitions = Collections.unmodifiableList(Arrays.asList(
-		new FieldDefinition("code", "c", String.class), 
-		new FieldDefinition("qualifier", "q", String.class)
-	));
+	@XmlTransient
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+		new FieldDefinition<String>("code", "c", null, String.class, this), 
+		new FieldDefinition<String>("qualifier", "q", "other", String.class, this)
+	};
 	
 	@XmlAttribute(name = "key")
 	private Boolean key;
@@ -113,8 +115,12 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	}
 	
 	@Override
-	public List<FieldDefinition> getFieldDefinitions() {
-		return fieldsDefinitions;
+	public List<FieldDefinition<?>> getFieldDefinitions() {
+		return Collections.unmodifiableList(Arrays.asList(FIELD_DEFINITIONS));
 	}
-	
+
+	@Override
+	public Class<? extends Value> getValueType() {
+		return Code.class;
+	}
 }

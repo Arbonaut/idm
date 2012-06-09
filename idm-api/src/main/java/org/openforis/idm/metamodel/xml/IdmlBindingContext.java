@@ -6,7 +6,9 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.openforis.idm.metamodel.Configuration;
+import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
 import org.openforis.idm.metamodel.xml.internal.DefaultConfigurationAdapter;
 
@@ -15,13 +17,25 @@ import org.openforis.idm.metamodel.xml.internal.DefaultConfigurationAdapter;
  */
 public class IdmlBindingContext {
 	private final JAXBContext surveyJaxbContext;
-	private static final ConfigurationXmlAdapter DEFAULT_CONFIG_ADAPTER;
-
+	protected static final ConfigurationXmlAdapter DEFAULT_CONFIG_ADAPTER;
+	private Class<? extends Survey> surveyClass;
+	private SurveyContext surveyContext;
+	
 	private ConfigurationAdapter<? extends Configuration> configurationAdapter;
 
 	public IdmlBindingContext() {
+		this(new DefaultSurveyContext());
+	}
+	
+	public IdmlBindingContext(SurveyContext surveyContext) {
+		this(Survey.class, surveyContext);
+	}
+	
+	public IdmlBindingContext(Class<? extends Survey> surveyClass,SurveyContext surveyContext) {
 		try {
-			this.surveyJaxbContext = JAXBContext.newInstance(Survey.class);
+			this.surveyClass = surveyClass;
+			this.surveyJaxbContext = JAXBContext.newInstance(surveyClass);
+			this.surveyContext = surveyContext;
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
 		}
@@ -61,7 +75,7 @@ public class IdmlBindingContext {
 			} else {
 				unmarshaller.setAdapter(new ConfigurationXmlAdapter(configurationAdapter));
 			}
-			return new SurveyUnmarshaller(unmarshaller);
+			return new SurveyUnmarshaller(unmarshaller, surveyClass, surveyContext);
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
 		}

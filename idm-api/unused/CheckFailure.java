@@ -1,6 +1,6 @@
 package org.openforis.idm.model;
 
-import org.openforis.idm.metamodel.Check;
+import org.openforis.idm.metamodel.validation.Check;
 
 /**
  * @author G. Miceli

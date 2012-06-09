@@ -18,6 +18,7 @@ import org.openforis.idm.metamodel.xml.IdmlBindingContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
 import org.openforis.idm.metamodel.xml.SurveyMarshaller;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
+import org.openforis.idm.model.TestSurveyContext;
 
 /**
  * @author G. Miceli
@@ -32,7 +33,7 @@ public class XmlBindingIntegrationTest {
 		try {
 			URL idm = ClassLoader.getSystemResource("test.idm.xml");
 			InputStream is = idm.openStream();
-			IdmlBindingContext idmlBindingContext = new IdmlBindingContext();
+			IdmlBindingContext idmlBindingContext = new IdmlBindingContext(new TestSurveyContext());
 			SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
 			Survey survey = su.unmarshal(is);
 
@@ -178,7 +179,6 @@ public class XmlBindingIntegrationTest {
 	//
 	// @Override
 	// public Object convert(Object object, Class toType) {
-	// // TODO Auto-generated method stub
 	// // if(object instanceof Number){
 	// //
 	// // }

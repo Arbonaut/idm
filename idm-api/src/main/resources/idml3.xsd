@@ -191,19 +191,19 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-
-        <xs:element name="name" type="internalName">
-          <xs:annotation>
-            <xs:documentation xml:lang="en">
-        	    Internal system code name for survey (e.g. archenlandnfi1).
-        	  </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-
+        
         <xs:element name="project" type="unformattedText" minOccurs="1" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               Name of survey project in human-readable text (e.g. Archenland NFI).
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <xs:element name="uri" type="unformattedText" minOccurs="1" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              Specific identification for a single IDM (e.g. http://www.openforis.org/idm/idnfi).
             </xs:documentation>
           </xs:annotation>
         </xs:element>
@@ -278,7 +278,7 @@
                         </xs:documentation>
                       </xs:annotation>
                     </xs:element>
-                    <xs:element minOccurs="0" maxOccurs="1" name="date" type="xs:date">
+                    <xs:element minOccurs="1" maxOccurs="1" name="date" type="xs:date">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                           Date from which data was collected using this version of the model.
@@ -1123,6 +1123,13 @@
                           </xs:documentation>
                       </xs:annotation>
                     </xs:attribute>
+                    <xs:attribute name="qualifiers" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            TO-DO
+                          </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
                   </xs:extension>
                 </xs:complexContent>
               </xs:complexType>
@@ -1214,7 +1221,14 @@
             </xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="required" type="expression" use="optional" default="false">
+        <xs:attribute name="required" type="xs:boolean" use="optional" default="false">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              TO-DO
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="requiredIf" type="expression" use="optional" default="false">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               TO-DO
@@ -1293,7 +1307,14 @@
             </xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="required" type="xs:string" use="optional" default="false">
+        <xs:attribute name="required" type="xs:boolean" use="optional" default="false">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              TO-DO
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="requiredIf" type="expression" use="optional" default="false">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               TO-DO

@@ -19,7 +19,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
+@XmlType(name = "", propOrder = { "name", "lookupTable", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
 public class CodeList extends Versionable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -34,6 +34,9 @@ public class CodeList extends Versionable implements Serializable {
 
 	@XmlAttribute(name = "name")
 	private String name;
+
+	@XmlAttribute(name = "lookup")
+	private String lookupTable;
 
 	@XmlElement(name = "label", type = CodeListLabel.class)
 	private List<CodeListLabel> labels;
@@ -57,6 +60,10 @@ public class CodeList extends Versionable implements Serializable {
 
 	public String getName() {
 		return this.name;
+	}
+	
+	public String getLookupTable() {
+		return lookupTable;
 	}
 
 	public List<CodeListLabel> getLabels() {
@@ -90,6 +97,13 @@ public class CodeList extends Versionable implements Serializable {
 	protected void setSurvey(Survey survey) {
 		this.survey = survey;
 	}
-	
-	
+
+	public boolean isQualifiable() {
+		for (CodeListItem item : getItems()) {
+			if ( item.isQualifiableRecursive() ) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

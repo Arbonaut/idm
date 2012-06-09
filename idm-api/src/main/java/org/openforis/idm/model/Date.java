@@ -1,14 +1,20 @@
 package org.openforis.idm.model;
 
 import java.util.Calendar;
+import java.util.Formatter;
 import java.util.GregorianCalendar;
+import java.util.StringTokenizer;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public final class Date {
+public final class Date implements Value {
 
+	private static final String DELIM = "-";
 	private final Integer day;
 	private final Integer month;
 	private final Integer year;
@@ -19,6 +25,22 @@ public final class Date {
 		this.day = day;		
 	}
 
+	public static Date parseDate(String string){
+		if ( StringUtils.isBlank(string) ) {
+			return null;
+		} else {
+			StringTokenizer st = new StringTokenizer(string, DELIM);
+			int tokens = st.countTokens();
+			if(tokens != 3){
+				throw new IllegalArgumentException("Invalid date " + string);
+			}
+			int year =  Integer.parseInt(st.nextToken());
+			int month =  Integer.parseInt(st.nextToken());
+			int day =  Integer.parseInt(st.nextToken());
+			return new Date(year, month, day);
+		}
+	}
+	
 	public Integer getDay() {
 		return day;
 	}
@@ -43,13 +65,22 @@ public final class Date {
 		}
 	}
 	
+	public java.util.Date toJavaDate() {
+		return toCalendar().getTime();
+	}
+
+	public String toXmlDate() {
+		Formatter formatter = new Formatter();
+		formatter.format("%04d-%02d-%02d", year, month, day);
+		return formatter.toString();
+	}
+	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{year:").append(year);
-		sb.append(", month:").append(month);
-		sb.append(", day:").append(day);
-		sb.append("}");
-		return sb.toString();
+		return new ToStringBuilder(this)
+			.append("year", year)
+			.append("month", month)
+			.append("day", day)
+			.toString();
 	}
 }

@@ -3,6 +3,7 @@ package org.openforis.idm.metamodel;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,28 +16,35 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
+import org.openforis.idm.model.NodePathPointer;
+import org.openforis.idm.util.CollectionUtil;
 
 
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author S. Ricci
+ * @author E. Suprapto Wibowo
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "projectNames", "cycle", "descriptions", "configuration", "modelVersions",
+@XmlType(name = "", propOrder = { "projectNames", "uri", "cycle", "descriptions", "configuration", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
 @XmlRootElement(name = "survey")
-public final class Survey implements Serializable{
+public class Survey implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@XmlTransient
 	private Integer id;
 	
-	@XmlElement(name = "name")
+	@XmlTransient
 	private String name;
-
+	
 	@XmlElement(name = "project", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> projectNames;
+	
+	@XmlElement(name = "uri")
+	private String uri;
 
 	@XmlElement(name = "cycle")
 	private Integer cycle;
@@ -66,6 +74,12 @@ public final class Survey implements Serializable{
 	@XmlElement(name = "schema", type = Schema.class)
 	private Schema schema;
 
+	@XmlTransient
+	private SurveyContext surveyContext;
+	
+	@XmlTransient
+	private SurveyDependencies surveyDependencies;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -73,13 +87,17 @@ public final class Survey implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
-		return this.name;
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<LanguageSpecificText> getProjectNames() {
-		return Collections.unmodifiableList(this.projectNames);
+		return CollectionUtil.unmodifiableList(this.projectNames);
 	}
 
 	public Integer getCycle() {
@@ -91,19 +109,19 @@ public final class Survey implements Serializable{
 	}
 
 	public List<ModelVersion> getVersions() {
-		return Collections.unmodifiableList(this.modelVersions);
+		return CollectionUtil.unmodifiableList(this.modelVersions);
 	}
 
 	public List<CodeList> getCodeLists() {
-		return Collections.unmodifiableList(this.codeLists);
+		return CollectionUtil.unmodifiableList(this.codeLists);
 	}
 
 	public List<Unit> getUnits() {
-		return Collections.unmodifiableList(this.units);
+		return CollectionUtil.unmodifiableList(this.units);
 	}
 
 	public List<SpatialReferenceSystem> getSpatialReferenceSystems() {
-		return Collections.unmodifiableList(this.spatialReferenceSystems);
+		return CollectionUtil.unmodifiableList(this.spatialReferenceSystems);
 	}
 
 	public Schema getSchema() {
@@ -144,8 +162,42 @@ public final class Survey implements Serializable{
 		if ( configuration == null ) {
 			return (List<Configuration>) Collections.EMPTY_LIST;
 		} else {
-			return Collections.unmodifiableList(configuration.list);
+			return CollectionUtil.unmodifiableList(configuration.list);
 		}
+	}
+	
+	public SurveyContext getContext() {
+		return surveyContext;
+	}
+	
+	public void setSurveyContext(SurveyContext surveyContext) {
+		this.surveyContext = surveyContext;
+	}
+	
+	public Set<NodePathPointer> getCheckDependencies(NodeDefinition definition) {
+		return getSurveyDependencies().getCheckDependencies(definition);
+	}
+	
+	public Set<NodePathPointer> getRelevanceDependencies(NodeDefinition definition) {
+		return getSurveyDependencies().getRelevanceDependencies(definition);
+	}
+	
+	public Set<NodePathPointer> getRequiredDependencies(NodeDefinition definition) {
+		return getSurveyDependencies().getRequiredDependencies(definition);
+	}
+	
+	private SurveyDependencies getSurveyDependencies() {
+		if(surveyDependencies == null){
+			surveyDependencies = new SurveyDependencies(this);
+		}
+		return surveyDependencies;
+	}
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 	
 	/**

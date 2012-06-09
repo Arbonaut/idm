@@ -14,12 +14,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
+import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.Node;
+import org.openforis.idm.util.CollectionUtil;
+
 /**
  * @author G. Miceli
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
+@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
 public class EntityDefinition extends NodeDefinition {
 
 	private static final long serialVersionUID = 1L;
@@ -39,7 +43,7 @@ public class EntityDefinition extends NodeDefinition {
 	private List<NodeDefinition> childDefinitions;
 
 	public List<NodeDefinition> getChildDefinitions() {
-		return Collections.unmodifiableList(childDefinitions);
+		return CollectionUtil.unmodifiableList(childDefinitions);
 	}
 	
 	public NodeDefinition getChildDefinition(String name) {
@@ -53,6 +57,15 @@ public class EntityDefinition extends NodeDefinition {
 		return null;
 	}
 	
+	
+	public void addChildDefinition(NodeDefinition defn) {
+		checkLockState();
+		if (childDefinitions == null) {
+			childDefinitions = new ArrayList<NodeDefinition>();
+		}
+		childDefinitions.add(defn);
+	}
+
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {
 		ArrayList<AttributeDefinition> result = new ArrayList<AttributeDefinition>();
 		for (NodeDefinition nodeDefinition : childDefinitions) {
@@ -88,5 +101,33 @@ public class EntityDefinition extends NodeDefinition {
 				}
 			}
 		}		
+	}
+
+	@Override
+	public Node<?> createNode() {
+		return new Entity(this);
+	}
+	
+	/**
+	 *  
+	 * @return true if entities with only keys of type internal code (not lookup)
+	 */
+	public boolean isEnumerable() {
+		List<AttributeDefinition> keyDefs = getKeyAttributeDefinitions();
+		if ( keyDefs.isEmpty() ) {
+			return false;
+		} else {
+			for (AttributeDefinition keyDef : keyDefs) {
+				if ( keyDef instanceof CodeAttributeDefinition ) {
+					CodeList list = ((CodeAttributeDefinition) keyDef).getList();
+					if ( list.getLookupTable() != null ) {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 }

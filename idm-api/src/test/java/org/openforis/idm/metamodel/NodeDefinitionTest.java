@@ -1,6 +1,7 @@
 package org.openforis.idm.metamodel;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,5 +33,12 @@ public class NodeDefinitionTest {
 
 		String path = mock.getPath();
 		assertEquals("/cluster/plot", path);
+	}
+	
+	@Test
+	public void testRootEntityDefinitionIsMultiple() {
+		NodeDefinition defn = new EntityDefinition();
+		defn.setSchema(new Schema());
+		assertTrue(defn.isMultiple());
 	}
 }

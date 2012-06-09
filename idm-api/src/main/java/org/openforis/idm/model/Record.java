@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.model;
 
-
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,30 +12,36 @@ import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.SurveyContext;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
 public class Record {
-
-	private Integer id;
+	
+	private Map<Integer, Node<? extends NodeDefinition>> nodesByInternalId;
 	private Survey survey;
+	
+	private Integer id;
 	private ModelVersion modelVersion;
-	private Map<Integer, Node<? extends NodeDefinition>> nodesById;
 	private int nextId;
 	private Entity rootEntity;
 
 	public Record(Survey survey, String version) {
+		if ( survey == null ) {
+			throw new IllegalArgumentException("Survey required");
+		}
+		this.survey = survey;
+		this.nodesByInternalId = new HashMap<Integer, Node<? extends NodeDefinition>>();
 		this.survey = survey;
 		this.modelVersion = survey.getVersion(version);
 		if ( modelVersion == null ) {
 			throw new IllegalArgumentException("Invalid version '"+version+'"');
 		}
-		this.nodesById = new HashMap<Integer, Node<? extends NodeDefinition>>();
 		this.nextId = 0;
 	}
-	
+
 	public Entity createRootEntity(String name) {
 		if ( rootEntity != null ) {
 			throw new IllegalStateException("Record already has an associated root entity");
@@ -51,6 +56,21 @@ public class Record {
 		return rootEntity;
 	}
 	
+
+	public Entity createRootEntity(int id) {
+		if ( rootEntity != null ) {
+			throw new IllegalStateException("Record already has an associated root entity");
+		}
+		Schema schema = survey.getSchema();
+		NodeDefinition def = schema.getById(id);
+		if ( def == null || !(def instanceof EntityDefinition) || def.getParentDefinition() != null) {
+			throw new IllegalArgumentException("Invalid root entity id");			
+		}
+		rootEntity = new Entity((EntityDefinition) def);
+		rootEntity.setRecord(this);
+		return rootEntity;
+	}
+
 	public Integer getId() {
 		return this.id;
 	}
@@ -59,6 +79,10 @@ public class Record {
 		this.id = id;
 	}
 
+	public SurveyContext getSurveyContext() {
+		return survey.getContext();
+	}
+	
 	public Survey getSurvey() {
 		return this.survey;
 	}
@@ -67,15 +91,20 @@ public class Record {
 		return this.rootEntity;
 	}
 
-	// TODO Need path?
-//	
-//	public void setRootEntity(Entity rootEntity) {
-//		Entity entityImpl = (Entity) rootEntity;
-//		this.rootEntity = entityImpl;
-//		entityImpl.setRecord(this);
-//		entityImpl.setPath("/" + rootEntity.getDefinition().getName());
-//	}
-
+	public void setRootEntity(Entity entity) {
+		if ( entity != null ) {
+			Schema schema = survey.getSchema();
+			EntityDefinition currentEntityDefinition = entity.getDefinition();
+			EntityDefinition rootEntityDefinition = schema.getRootEntityDefinition(entity.getName());
+			if ( rootEntityDefinition == null || rootEntityDefinition != currentEntityDefinition ) {
+				throw new IllegalArgumentException("Invalid root entity");
+			}
+			this.nodesByInternalId = new HashMap<Integer, Node<? extends NodeDefinition>>();
+			entity.setRecord(this);
+		}
+		this.rootEntity = entity;
+	}
+	
 	public ModelVersion getVersion() {
 		return this.modelVersion;
 	}
@@ -87,19 +116,17 @@ public class Record {
 		rootEntity.write(sw, 0);
 		return sw.toString();
 	}
-//	
-//	public void setVersion(ModelVersion modelVersion) {
-//		this.modelVersion = modelVersion;
-//	}
-	public Node<? extends NodeDefinition> getNodeById(int id) {
-		return this.nodesById.get(id);
+
+	public Node<? extends NodeDefinition> getNodeByInternalId(int id) {
+		return this.nodesByInternalId.get(id);
 	}
 	
-	protected void put(Node<? extends NodeDefinition> node){
-		this.nodesById.put(node.getId(), node);
+	void put(Node<? extends NodeDefinition> node){
+		this.nodesByInternalId.put(node.getInternalId(), node);
 	}
 
-	protected int nextId() {
+	int nextId() {
 		return nextId++;
 	}
+	
 }

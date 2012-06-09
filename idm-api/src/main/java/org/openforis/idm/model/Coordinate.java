@@ -3,18 +3,20 @@ package org.openforis.idm.model;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public final class Coordinate {
+public final class Coordinate implements Value{
 
 	private static final String STRING_FORMAT = "SRID=(.+);POINT\\((\\d+)\\s(\\d+)\\)";
 	private static final Pattern PATTERN = Pattern.compile(STRING_FORMAT);
 	
-	private Long x;
-	private Long y;
-	private Long z;
+	private Double x;
+	private Double y;
 	private String srsId;
 
 
@@ -25,47 +27,36 @@ public final class Coordinate {
 	 * @param string
 	 */
 	public static Coordinate parseCoordinate(String string) {
-		Matcher matcher = PATTERN.matcher(string);
-		if (matcher.matches()) {
-			String srsId = matcher.group(1);
-
-			String group2 = matcher.group(2);
-			String group3 = matcher.group(3);
-			long x = Long.parseLong(group2);
-			long y = Long.parseLong(group3);
-
-			Coordinate coordinate = new Coordinate(x, y, srsId);
-			return coordinate;
+		if ( StringUtils.isBlank(string) ) {
+			return null;
 		} else {
-			throw new IllegalArgumentException("Unable to convert " + string + " to a valid coordinate");
+			Matcher matcher = PATTERN.matcher(string);
+			if (matcher.matches()) {
+				String srsId = matcher.group(1);
+				double x = Double.parseDouble(matcher.group(2));
+				double y = Double.parseDouble(matcher.group(3));
+				Coordinate coordinate = new Coordinate(x, y, srsId);
+				return coordinate;
+			} else {
+				throw new IllegalArgumentException("Unable to convert " + string + " to a valid coordinate");
+			}
 		}
 	}
-
-	public Coordinate(Long x, Long y, String srsId) {
+	
+	public Coordinate(Double x, Double y, String srsId) {
 		this.x = x;
 		this.y = y;
-		this.z = null;
 		this.srsId = srsId;
 	}
 
-	public Coordinate(Long x, Long y, Long z, String srsId) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.srsId = srsId;
-	}
-
-	public Long getX() {
+	public Double getX() {
 		return x;
 	}
 
-	public Long getY() {
+	public Double getY() {
 		return y;
 	}
 
-	public Long getZ() {
-		return z;
-	}
 
 	public String getSrsId() {
 		return srsId;
@@ -78,7 +69,6 @@ public final class Coordinate {
 		result = prime * result + ((srsId == null) ? 0 : srsId.hashCode());
 		result = prime * result + ((x == null) ? 0 : x.hashCode());
 		result = prime * result + ((y == null) ? 0 : y.hashCode());
-		result = prime * result + ((z == null) ? 0 : z.hashCode());
 		return result;
 	}
 
@@ -106,24 +96,15 @@ public final class Coordinate {
 				return false;
 		} else if (!y.equals(other.y))
 			return false;
-		if (z == null) {
-			if (other.z != null)
-				return false;
-		} else if (!z.equals(other.z))
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{x:").append(x);
-		sb.append(", y:").append(y);
-		if (z != null) {
-			sb.append(", z:").append(z);
-		}
-		sb.append(", srsId:").append(srsId);
-		sb.append("}");
-		return sb.toString();
+		return new ToStringBuilder(this)
+			.append("x", x)
+			.append("y", y)
+			.append("srsId", srsId)
+			.toString();
 	}
 }

@@ -19,4 +19,18 @@ public class InvalidIdmlException extends Exception {
 	public ValidationEvent[] getValidationEvents() {
 		return validationEvents;
 	}
+	
+	@Override
+	public String getMessage() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Invalid IDML. Messages: ");
+		for (int i = 0; i < validationEvents.length; i++) {
+			ValidationEvent event = validationEvents[i];
+			if ( i > 0 ) {
+				sb.append(", ");
+			}
+			sb.append(event.getMessage());
+		}
+		return sb.toString();
+	}
 }

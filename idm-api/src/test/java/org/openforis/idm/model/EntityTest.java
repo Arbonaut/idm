@@ -13,6 +13,7 @@ import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 
 /**
  * @author G. Miceli
+ * @author M. Togna
  */
 public class EntityTest {
 
@@ -22,7 +23,7 @@ public class EntityTest {
 	public static void setUp() throws IOException, InvalidIdmlException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
-		IdmlBindingContext idmlBindingContext = new IdmlBindingContext();
+		IdmlBindingContext idmlBindingContext = new IdmlBindingContext(new TestSurveyContext());
 		SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
 		survey = su.unmarshal(is);
 	}
@@ -33,20 +34,20 @@ public class EntityTest {
 		cluster.addValue("id", (Code) null);
 	}
 
-	@Test(expected = ArrayIndexOutOfBoundsException.class)
-	public void testAddTooManySingleAttributes() {
-		Entity cluster = getRootEntity();
-		cluster.addValue("id", new Code("123_456"));
-		cluster.addValue("id", new Code("789_012"));
-	}
+	// @Test(expected = ArrayIndexOutOfBoundsException.class)
+	// public void testAddTooManySingleAttributes() {
+	// Entity cluster = getRootEntity();
+	// cluster.addValue("id", new Code("123_456"));
+	// cluster.addValue("id", new Code("789_012"));
+	// }
 
-	@Test(expected = ArrayIndexOutOfBoundsException.class)
-	public void testAddTooManyMultipleEntities() {
-		Entity cluster = getRootEntity();
-		cluster.addEntity("time_study");
-		cluster.addEntity("time_study");
-		cluster.addEntity("time_study");
-	}
+	// @Test(expected = ArrayIndexOutOfBoundsException.class)
+	// public void testAddTooManyMultipleEntities() {
+	// Entity cluster = getRootEntity();
+	// cluster.addEntity("time_study");
+	// cluster.addEntity("time_study");
+	// cluster.addEntity("time_study");
+	// }
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddAttributeOnEntity() {
@@ -71,6 +72,27 @@ public class EntityTest {
 		Entity cluster = getRootEntity();
 		cluster.addValue("xxx", 2.0);
 	}
+
+//	@Test
+//	public void testValidateRootEntity() {
+//		Entity cluster = getRootEntity();
+//		State nodeState = new State(cluster);
+//		ValidationResults results = new Validator().validate(nodeState);
+//		int errors = results.getErrors().size();
+//		Assert.assertEquals(5, errors);
+//	}
+
+//	@Test
+//	public void testValidatePlot() {
+//		Entity cluster = getRootEntity();
+//		Entity plot = cluster.addEntity("plot");
+//		plot.addValue("share", 20.0);
+//		
+//		State nodeState = new State(plot);
+//		ValidationResults results = new Validator().validate(nodeState);
+//		int errors = results.getErrors().size();
+//		Assert.assertEquals(16, errors);
+//	}
 
 	private Entity getRootEntity() {
 		Record record = new Record(survey, "2.0");

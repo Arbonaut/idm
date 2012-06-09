@@ -3,16 +3,21 @@
  */
 package org.openforis.idm.model.expression;
 
+import org.openforis.idm.model.Node;
+import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
  * @author M. Togna
- * 
+ * @author G. Miceli
  */
 public class CheckExpression extends AbstractBooleanExpression {
 
-	protected CheckExpression(String expression, ModelJXPathContext context) {
-		super(expression, context, Boolean.TRUE);
+	CheckExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
+		super(expression, context, true);
 	}
 
+	public boolean evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
+		return super.evaluate(contextNode, thisNode);
+	}
 }

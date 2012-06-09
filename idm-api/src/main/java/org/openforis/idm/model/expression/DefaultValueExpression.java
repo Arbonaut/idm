@@ -3,23 +3,26 @@
  */
 package org.openforis.idm.model.expression;
 
-import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.expression.internal.MissingValueException;
+import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
  * @author M. Togna
- * 
+ * @author G. Miceli
  */
 public class DefaultValueExpression extends AbstractExpression {
 
-	protected DefaultValueExpression(String expression, ModelJXPathContext context) {
+	DefaultValueExpression(ModelJXPathCompiledExpression expression, ModelJXPathContext context) {
 		super(expression, context);
 	}
 
-	public Object evaluate(Node<? extends NodeDefinition> context) throws InvalidPathException {
-		Object object = super.evaluateSingle(context);
-		return object;
+	public Object evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
+		try {
+			return evaluateSingle(contextNode, thisNode);
+		} catch (MissingValueException e) {
+			return null;
+		}
 	}
-
 }

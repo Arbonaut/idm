@@ -5,32 +5,53 @@ package org.openforis.idm.model.expression;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
+import org.openforis.idm.metamodel.SurveyContext;
+import org.openforis.idm.model.Code;
 import org.openforis.idm.model.Coordinate;
-import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
 
 /**
  * @author M. Togna
  * 
  */
-public class LookupFunctionTest extends AbstractExpressionTest {
+public class LookupFunctionTest extends AbstractTest {
 
-	static Coordinate TEST_COORDINATE = Coordinate.parseCoordinate("SRID=32632;POINT(0 0)");
+	public static Coordinate TEST_COORDINATE = Coordinate.parseCoordinate("SRID=EPSG:21035;POINT(805750 9333820)");
 
 	@Test
-	public void testLookupFunction() throws InvalidPathException {
-		Record record = getRecord();
-		Entity rootEntity = record.getRootEntity();
-		String expr = "idm:lookup('sampling_design', 'plot_centre', 'id', 1)";
+	public void testLookupFunction1Arg() throws InvalidExpressionException {
+		Record record = cluster.getRecord();
+		SurveyContext recordContext = record.getSurveyContext();
 
-		DefaultValueExpression expression = getValidationContext().getExpressionFactory().createDefaultValueExpression(expr);
-		Object object = expression.evaluate(rootEntity);
-		Assert.assertEquals(TEST_COORDINATE, object);
+		String expr = "idm:lookup('sampling_design', 'plot_centre','cluster', 'id','plot', 1)";
 
-		expr = "idm:lookup('sampling_design', 'plot_centre', 'id')";
-		expression = getValidationContext().getExpressionFactory().createDefaultValueExpression(expr);
-		object = expression.evaluate(rootEntity);
+		DefaultValueExpression expression = recordContext.getExpressionFactory().createDefaultValueExpression(expr);
+		Object object = expression.evaluate(cluster, null);
 		Assert.assertEquals(TEST_COORDINATE, object);
 	}
 
+	@Test
+	public void testLookupFunction2Arg() throws InvalidExpressionException {
+		Record record = cluster.getRecord();
+		SurveyContext recordContext = record.getSurveyContext();
+
+		String expr = "idm:lookup('sampling_design', 'plot_centre','cluster' ,'id')";
+		DefaultValueExpression expression = recordContext.getExpressionFactory().createDefaultValueExpression(expr);
+		Object object = expression.evaluate(cluster, null);
+		Assert.assertEquals(TEST_COORDINATE, object);
+	}
+	
+	@Test
+	public void testLookupFunctionWithPath() throws InvalidExpressionException {
+		Record record = cluster.getRecord();
+		cluster.addValue("id", new Code("205_128"));
+		SurveyContext recordContext = record.getSurveyContext();
+
+		String expr = "idm:lookup('sampling_design', 'plot_centre','cluster', id,'plot', '0')";
+
+		DefaultValueExpression expression = recordContext.getExpressionFactory().createDefaultValueExpression(expr);
+		Object object = expression.evaluate(cluster, null);
+		Assert.assertEquals(TEST_COORDINATE, object);
+	}
 }

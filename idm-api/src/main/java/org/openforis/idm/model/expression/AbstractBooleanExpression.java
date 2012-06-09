@@ -3,37 +3,37 @@
  */
 package org.openforis.idm.model.expression;
 
-import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.model.expression.internal.MissingValueException;
+import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression;
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 
 /**
  * @author M. Togna
- * 
+ * @author G. Miceli
  */
 abstract class AbstractBooleanExpression extends AbstractExpression {
 
 	private boolean defaultValue;
 
-	protected AbstractBooleanExpression(String expression, ModelJXPathContext context, boolean defaultValue) {
-		super(expression, context);
+	AbstractBooleanExpression(ModelJXPathCompiledExpression compiledExpression, ModelJXPathContext jxPathContext, boolean defaultValue) {
+		super(compiledExpression, jxPathContext);
 		this.defaultValue = defaultValue;
 	}
 
-	public boolean evaluate(Node<? extends NodeDefinition> context) throws InvalidPathException {
+	protected boolean evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
 		try {
-			if ("true".equals(getExpression())) {
-				return Boolean.TRUE;
+			Object result = evaluateSingle(contextNode, thisNode);
+			if (result == null) {
+				return false;
+			} else if (result instanceof Boolean) {
+				return (Boolean) result;
+			} else {
+				// result is not null
+				return true;
 			}
-			if ("false".equals(getExpression())) {
-				return Boolean.FALSE;
-			}
-			Boolean result = (Boolean) super.evaluateSingle(context);
-			return result;
 		} catch (MissingValueException e) {
 			return defaultValue;
 		}
-
 	}
-
 }

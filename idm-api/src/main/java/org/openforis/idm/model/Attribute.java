@@ -51,8 +51,9 @@ public abstract class Attribute<D extends AttributeDefinition, V extends Value> 
 		this.fields = new Field[fieldsDefinitions.size()];
 		for (int i = 0; i < fieldsDefinitions.size(); i++) {
 			FieldDefinition fieldDefn = fieldsDefinitions.get(i);
-			this.fields[i] = (Field) fieldDefn.createNode();
-			this.fields[i].setAttribute(this);
+			Field<?> field = (Field) fieldDefn.createNode();
+			field.setAttribute(this);
+			this.fields[i] = field;
 		}
 	}
 	

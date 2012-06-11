@@ -90,7 +90,7 @@ public class RelevanceExpressionTest extends AbstractTest {
 		String expr = "plot_direction != ''";
 		cluster.addValue("plot_direction", (Double)null);
 		boolean b = evaluateExpression(expr, cluster);
-		Assert.assertFalse(b);
+		Assert.assertTrue(b);
 	}
 	
 	@Test

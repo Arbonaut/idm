@@ -79,8 +79,12 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	}
 	
 	public List<String> getQualifiers() {
-		String[] exprs = qualifiers.split(",");
-		return Arrays.asList(exprs);
+		if ( qualifiers != null ) {
+			String[] exprs = qualifiers.split(",");
+			return Collections.unmodifiableList(Arrays.asList(exprs));
+		} else {
+			return Collections.emptyList();
+		}
 	}
 	
 }

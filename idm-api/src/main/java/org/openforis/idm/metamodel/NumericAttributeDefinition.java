@@ -113,9 +113,12 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	 * returns the first unit defined
 	 */
 	public Unit getDefaultUnit() {
+		Unit unit = null;
 		Precision defaultPrecision = getDefaultPrecision();
-		Unit unit = defaultPrecision.getUnit();
-		if ( unit != null && precisionDefinitions != null ) {
+		if ( defaultPrecision != null) {
+			unit = defaultPrecision.getUnit();
+		}
+		if ( unit == null && precisionDefinitions != null ) {
 			for (Precision pd : precisionDefinitions) {
 				unit = pd.getUnit();
 				if ( unit != null ) {

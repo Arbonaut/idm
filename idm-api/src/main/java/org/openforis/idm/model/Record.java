@@ -128,5 +128,50 @@ public class Record {
 	int nextId() {
 		return nextId++;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((modelVersion == null) ? 0 : modelVersion.hashCode());
+		result = prime * result + ((rootEntity == null) ? 0 : rootEntity.hashCode());
+		result = prime * result + ((survey == null) ? 0 : survey.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Record other = (Record) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (modelVersion == null) {
+			if (other.modelVersion != null)
+				return false;
+		} else if (!modelVersion.equals(other.modelVersion))
+			return false;
+		if (rootEntity == null) {
+			if (other.rootEntity != null)
+				return false;
+		} else if (!rootEntity.equals(other.rootEntity))
+			return false;
+		if (survey == null) {
+			if (other.survey != null)
+				return false;
+		} else if (!survey.equals(other.survey))
+			return false;
+		return true;
+	}
+	
+	
 	
 }

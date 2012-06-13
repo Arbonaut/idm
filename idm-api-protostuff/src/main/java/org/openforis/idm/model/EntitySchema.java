@@ -80,7 +80,7 @@ public class EntitySchema extends SchemaSupport<Entity> {
         }
 	}
 	
-	private boolean isNodeToBeSaved(Node<?> node) {
+	protected boolean isNodeToBeSaved(Node<?> node) {
 		if ( node instanceof Attribute<?, ?> ) {
 			Entity parent = node.getParent();
     		int count = parent.getCount(node.getName());

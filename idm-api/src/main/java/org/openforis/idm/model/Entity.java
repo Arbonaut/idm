@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
@@ -802,6 +805,9 @@ public class Entity extends Node<EntityDefinition> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		//custom code
+		removeEmptyChildStates();
+		normalizeChildrenByName();
 		result = prime * result
 				+ ((childStates == null) ? 0 : childStates.hashCode());
 		result = prime * result
@@ -818,16 +824,61 @@ public class Entity extends Node<EntityDefinition> {
 		if (getClass() != obj.getClass())
 			return false;
 		Entity other = (Entity) obj;
-		if (childStates == null) {
-			if (other.childStates != null)
-				return false;
-		} else if (!childStates.equals(other.childStates))
+		//custom check
+		if (! isChildStatesEquals(other) ) {
 			return false;
+		}
 		if (childrenByName == null) {
 			if (other.childrenByName != null)
 				return false;
-		} else if (!childrenByName.equals(other.childrenByName))
-			return false;
+		} else {
+			//custom check
+			normalizeChildrenByName();
+			other.normalizeChildrenByName();
+			if (!childrenByName.equals(other.childrenByName))
+				return false;
+		}
 		return true;
+	}
+
+	private boolean isChildStatesEquals(Entity other) {
+		if (childStates == null) {
+			if (other.childStates != null) {
+				return false;
+			}
+		} else {
+			removeEmptyChildStates();
+			other.removeEmptyChildStates();
+			if (!childStates.equals(other.childStates)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	protected void removeEmptyChildStates() {
+		if ( childStates != null ) {
+			Set<Entry<String,State>> entrySet = childStates.entrySet();
+			Iterator<Entry<String, State>> iterator = entrySet.iterator();
+			while ( iterator.hasNext() ) {
+				Entry<String, State> entry = iterator.next();
+				State childState = entry.getValue();
+				if ( childState.intValue() == 0 ) {
+					iterator.remove();
+				}
+			}
+		}
+	}
+	
+	protected void normalizeChildrenByName() {
+		Set<Entry<String, ArrayList<Node<?>>>> entrySet = childrenByName.entrySet();
+		Iterator<Entry<String, ArrayList<Node<?>>>> iterator = entrySet.iterator();
+		while ( iterator.hasNext() ) {
+			Entry<String, ArrayList<Node<?>>> entry = iterator.next();
+			ArrayList<Node<?>> nodes = entry.getValue();
+			if ( nodes == null || nodes.isEmpty()) {
+				iterator.remove();
+			}
+		}
 	}
 }

@@ -13,9 +13,16 @@ import com.dyuproject.protostuff.ProtostuffException;
 
 /**
  * @author G. Miceli
+ * @author S. Ricci
+ * 
  */
 @SuppressWarnings("unchecked")
 public class EntitySchema extends SchemaSupport<Entity> {
+
+	private static final int FIELD_DEFINITION_ID = 1;
+	private static final int FIELD_NODE = 2;
+	private static final int FIELD_CHILD_NODE_STATE = 3;
+	private static final int FIELD_CHILD_DEFINITION_ID = 4;
 
 	public EntitySchema() {
 		super(Entity.class, "children", "childStates");
@@ -31,8 +38,8 @@ public class EntitySchema extends SchemaSupport<Entity> {
 		List<Node<? extends NodeDefinition>> children = entity.getChildren();
         for(Node<?> node : children) {
         	if(isNodeToBeSaved(node)) {
-				out.writeUInt32(1, node.definitionId, false);
-				out.writeObject(2, node, getSchema(node.getClass()), false);
+				out.writeUInt32(FIELD_DEFINITION_ID, node.definitionId, false);
+				out.writeObject(FIELD_NODE, node, getSchema(node.getClass()), false);
         	}
         }
         EntityDefinition definition = entity.getDefinition();
@@ -40,8 +47,8 @@ public class EntitySchema extends SchemaSupport<Entity> {
         for (NodeDefinition childDefinition : childDefinitions) {
         	String childName = childDefinition.getName();
         	State childState = entity.getChildState(childName);
-        	out.writeInt32(3, childState.intValue(), false);
-        	out.writeString(4, childName, false);
+        	out.writeInt32(FIELD_CHILD_NODE_STATE, childState.intValue(), false);
+        	out.writeInt32(FIELD_CHILD_DEFINITION_ID, childDefinition.getId(), false);
         }
 	}
 
@@ -51,7 +58,7 @@ public class EntitySchema extends SchemaSupport<Entity> {
         {
         	if ( number == 0 ) {
         		break;
-        	} else if ( number == 1 ) {
+        	} else if ( number == FIELD_DEFINITION_ID ) {
         		Schema idmSchema = entity.getSchema();
         		
         		// Definition id
@@ -64,16 +71,18 @@ public class EntitySchema extends SchemaSupport<Entity> {
         		entity.add(node);
         		
         		// Node
-        		readAndCheckFieldNumber(input, 2);
+        		readAndCheckFieldNumber(input, FIELD_NODE);
         		input.mergeObject(node, getSchema(node.getClass()));
         		
-        	} else if ( number == 3 ){
+        	} else if ( number == FIELD_CHILD_NODE_STATE ){
         		//Node state
         		int intState = input.readInt32();
         		State state = State.parseState(intState);
-        		readAndCheckFieldNumber(input, 4);
-        		String childName = input.readString();
-        		entity.childStates.put(childName, state);
+        		readAndCheckFieldNumber(input, FIELD_CHILD_DEFINITION_ID);
+        		int childDefnId = input.readInt32();
+        		Schema schema = entity.getSchema();
+        		NodeDefinition childDefn = schema.getById(childDefnId);
+        		entity.childStates.put(childDefn.getName(), state);
         	} else {
             	throw new ProtostuffException("Unexpected field number");
             }

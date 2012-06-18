@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openforis.idm</groupId>
 	<artifactId>idm</artifactId>
-	<version>3.0-Alpha2</version>
+	<version>3.0-Alpha2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -24,7 +24,7 @@
 		<repository>
 			<id>releases</id>
 			<name>Repository with internal releases</name>
-			<url>http://ldvfo01:9000/nexus/content/repositories/releases</url>
+			<url>${idm-internal-repository.url}</url>
 		</repository>
 	</distributionManagement>
 

@@ -3,9 +3,14 @@
 	<parent>
 		<groupId>org.openforis.idm</groupId>
 		<artifactId>idm</artifactId>
-		<version>3.0-Alpha2-SNAPSHOT</version>
+		<version>3.0-Alpha2</version>
 		<relativePath>..</relativePath>
 	</parent>
+	
+	<properties>
+		<protostuff.version>1.0.4</protostuff.version>
+	</properties>
+	
 	<artifactId>idm-api-protostuff</artifactId>
 	<dependencies>
 		<dependency>

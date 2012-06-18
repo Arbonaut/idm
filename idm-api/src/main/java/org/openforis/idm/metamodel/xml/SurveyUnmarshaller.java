@@ -1,19 +1,25 @@
 package org.openforis.idm.metamodel.xml;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.ValidationEventCollector;
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openforis.idm.metamodel.IdmInterpretationError;
@@ -22,9 +28,12 @@ import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlInit;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
+import org.xml.sax.SAXException;
 
 /**
  * @author G. Miceli
+ * @author S. Ricci
+ * 
  */
 public class SurveyUnmarshaller {
 
@@ -57,14 +66,20 @@ public class SurveyUnmarshaller {
 		}
 	}
 	
-	public Survey unmarshal(InputStream is) throws IOException, InvalidIdmlException {
+	public Survey unmarshal(InputStream is) throws InvalidIdmlException {
 		try {
+			//cannot read two times the same input stream, so use a temporary byte array
+			byte[] byteArray = IOUtils.toByteArray(is);
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
+			validateAgainstSchema(byteArrayInputStream);
+			
 			Unmarshaller.Listener listener = getListener();
 			unmarshaller.setListener(listener);
 			ValidationEventCollector vec = new ValidationEventCollector();
 			unmarshaller.setEventHandler(vec);
 
-			JAXBElement<? extends Survey> jaxbElement = unmarshaller.unmarshal(new StreamSource(is), surveyClass);
+			byteArrayInputStream = new ByteArrayInputStream(byteArray);
+			JAXBElement<? extends Survey> jaxbElement = unmarshaller.unmarshal(new StreamSource(byteArrayInputStream), surveyClass);
 			Survey survey = jaxbElement.getValue();
 			survey.setSurveyContext(surveyContext);
 			
@@ -74,6 +89,23 @@ public class SurveyUnmarshaller {
 			return survey;
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
+		} catch (SAXException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private void validateAgainstSchema(InputStream is) throws SAXException {
+		try {
+			SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+			URL schemaLocation = getClass().getResource("/idml3.xsd");
+			Schema schema = factory.newSchema(schemaLocation);
+	        javax.xml.validation.Validator validator = schema.newValidator();
+	        Source source = new StreamSource(is);
+            validator.validate(source);
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot find the xsd to validate the idml", e);
 		}
 	}
 

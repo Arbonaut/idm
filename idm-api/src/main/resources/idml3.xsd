@@ -112,6 +112,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:sequence>
+      <xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
       <xs:element name="code" maxOccurs="unbounded" minOccurs="1">
         <xs:annotation>
           <xs:documentation xml:lang="en">
@@ -191,7 +192,6 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        
         <xs:element name="project" type="unformattedText" minOccurs="1" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -263,6 +263,7 @@
                 </xs:annotation>
                 <xs:complexType>
                   <xs:sequence>
+                   	<xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
                     <xs:element name="label" minOccurs="0" type="unformattedText">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
@@ -311,6 +312,7 @@
           </xs:annotation>
           <xs:complexType>
             <xs:sequence>
+              <xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
               <xs:element minOccurs="1" maxOccurs="unbounded" name="list">
                 <xs:annotation>
                   <xs:documentation xml:lang="en">
@@ -499,6 +501,7 @@
                             </xs:annotation>
                             <xs:complexType>
                               <xs:sequence>
+                              	<xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
                                 <xs:element name="label" type="unformattedText" minOccurs="0"
                                   maxOccurs="unbounded">
                                   <xs:annotation>
@@ -602,6 +605,7 @@
                 </xs:annotation>
                 <xs:complexType>
                   <xs:sequence>
+	                <xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
                     <xs:element name="label" minOccurs="0" maxOccurs="unbounded"
                       type="unformattedText">
                       <xs:annotation>
@@ -741,6 +745,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:sequence>
+      <xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
       <xs:element name="label" minOccurs="0" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation xml:lang="en">

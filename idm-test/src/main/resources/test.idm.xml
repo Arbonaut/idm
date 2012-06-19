@@ -3,7 +3,7 @@
      xmlns:ui="http://www.openforis.org/collect/3.0/ui"
      xmlns:collect="http://www.openforis.org/collect/3.0/collect"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.openforis.org/idml/3.0 https://raw.github.com/openforis/idm/alpha2/idm-api/src/main/resources/idml3.xsd">
+     xsi:schemaLocation="http://www.openforis.org/idml/3.0 https://raw.github.com/openforis/idm/uniqueid/idm-api/src/main/resources/idml3.xsd">
      <!--http://www.openforis.org/idml/3.0 ../../../../idm-api/src/main/resources/idml3.xsd-->
     <project>Archenland NFI</project>
     <uri>http://www.openforis.org/idm/archenland</uri>
@@ -79,6 +79,7 @@
     </configuration>
     <versioning>
         <version name="1.0">
+        	<id>1</id>
             <label>BP 1.3.1015</label>
             <description>Original forms used during pilot and for most of first year</description>
             <date>1015-03-01</date>

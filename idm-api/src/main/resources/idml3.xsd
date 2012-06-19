@@ -112,7 +112,6 @@
       </xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
       <xs:element name="code" maxOccurs="unbounded" minOccurs="1">
         <xs:annotation>
           <xs:documentation xml:lang="en">
@@ -155,6 +154,7 @@
         </xs:annotation>
       </xs:element>
     </xs:sequence>
+    <xs:attribute name="id" type="xs:integer" use="required" />
     <xs:attribute name="qualifiable" type="xs:boolean">
       <xs:annotation>
         <xs:documentation xml:lang="en">
@@ -263,7 +263,6 @@
                 </xs:annotation>
                 <xs:complexType>
                   <xs:sequence>
-                   	<xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
                     <xs:element name="label" minOccurs="0" type="unformattedText">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
@@ -287,6 +286,7 @@
                       </xs:annotation>
                     </xs:element>
                   </xs:sequence>
+    			  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="name" type="versionName" use="required">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
@@ -312,7 +312,6 @@
           </xs:annotation>
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
               <xs:element minOccurs="1" maxOccurs="unbounded" name="list">
                 <xs:annotation>
                   <xs:documentation xml:lang="en">
@@ -501,8 +500,7 @@
                             </xs:annotation>
                             <xs:complexType>
                               <xs:sequence>
-                              	<xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
-                                <xs:element name="label" type="unformattedText" minOccurs="0"
+                              	<xs:element name="label" type="unformattedText" minOccurs="0"
                                   maxOccurs="unbounded">
                                   <xs:annotation>
                                     <xs:documentation xml:lang="en">
@@ -519,6 +517,7 @@
                                   </xs:annotation>
                                 </xs:element>
                               </xs:sequence>
+                              <xs:attribute name="id" type="xs:integer" use="required" />
                               <xs:attribute name="name" type="internalName" use="required">
                                 <xs:annotation>
                                   <xs:documentation xml:lang="en">
@@ -551,6 +550,7 @@
                       </xs:complexType>
                     </xs:element>
                   </xs:sequence>
+    			  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="name" type="internalName" use="required">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
@@ -605,7 +605,6 @@
                 </xs:annotation>
                 <xs:complexType>
                   <xs:sequence>
-	                <xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
                     <xs:element name="label" minOccurs="0" maxOccurs="unbounded"
                       type="unformattedText">
                       <xs:annotation>
@@ -623,6 +622,7 @@
                       </xs:annotation>
                     </xs:element>
                   </xs:sequence>
+    			  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="name" use="required" type="internalName">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
@@ -694,6 +694,7 @@
                       </xs:annotation>
                     </xs:element>
                   </xs:sequence>
+      			  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="srid" type="xs:string">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
@@ -745,7 +746,6 @@
       </xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="id" minOccurs="1" maxOccurs="1" type="xs:integer" />
       <xs:element name="label" minOccurs="0" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation xml:lang="en">
@@ -755,6 +755,7 @@
         <xs:complexType>
           <xs:complexContent>
             <xs:extension base="unformattedText">
+    		  <xs:attribute name="id" type="xs:integer" use="required" />
               <xs:attribute name="type" use="optional" default="instance">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">

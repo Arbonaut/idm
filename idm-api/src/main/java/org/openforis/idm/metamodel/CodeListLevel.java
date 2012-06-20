@@ -19,10 +19,13 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "labels", "descriptions" })
+@XmlType(name = "", propOrder = { "id", "name", "labels", "descriptions" })
 public class CodeListLevel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@XmlAttribute(name = "id")
+	private int id;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -33,6 +36,10 @@ public class CodeListLevel implements Serializable {
 	@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
+	public int getId() {
+		return id;
+	}
+	
 	public List<LanguageSpecificText> getLabels() {
 		return CollectionUtil.unmodifiableList(labels);
 	}

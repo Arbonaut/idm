@@ -25,7 +25,7 @@ import org.openforis.idm.model.Value;
  * @author W. Eko
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "taxonomy", "highestRank", "qualifiers", "relevantExpression", "required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+@XmlType(name="", propOrder = {"id", "name", "taxonomy", "highestRank", "qualifiers", "relevantExpression", "required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
 		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})		
 public class TaxonAttributeDefinition extends AttributeDefinition {
 

@@ -24,7 +24,7 @@ import org.openforis.idm.model.Value;
  * @author S. Ricci
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
+@XmlType(name="", propOrder = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
 		"affirmativeOnly", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class BooleanAttributeDefinition extends AttributeDefinition {
 

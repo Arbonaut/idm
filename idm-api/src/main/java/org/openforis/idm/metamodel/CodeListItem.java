@@ -24,10 +24,13 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "qualifiable", "sinceVersionName", "deprecatedVersionName", "code", "labels", "descriptions", "childItems" })
+@XmlType(name = "", propOrder = { "id", "qualifiable", "sinceVersionName", "deprecatedVersionName", "code", "labels", "descriptions", "childItems" })
 public class CodeListItem extends Versionable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@XmlAttribute(name = "id")
+	private int id;
 
 	@XmlAttribute(name = "qualifiable")
 	private Boolean qualifiable;
@@ -53,6 +56,10 @@ public class CodeListItem extends Versionable implements Serializable {
 	@XmlTransient
 	@XmlParent
 	private CodeListItem parentItem;
+	
+	public int getId() {
+		return id;
+	}
 	
 	public boolean isQualifiable() {
 		return qualifiable == null ? false : qualifiable;

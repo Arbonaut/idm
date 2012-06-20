@@ -19,7 +19,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "lookupTable", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
+@XmlType(name = "", propOrder = { "id", "name", "lookupTable", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
 public class CodeList extends Versionable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,6 +31,9 @@ public class CodeList extends Versionable implements Serializable {
 	@XmlTransient
 	@XmlParent
 	private Survey survey;
+
+	@XmlAttribute(name = "id")
+	private int id;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -58,6 +61,10 @@ public class CodeList extends Versionable implements Serializable {
 	@XmlElementWrapper(name = "items")
 	private List<CodeListItem> items;
 
+	public int getId() {
+		return id;
+	}
+	
 	public String getName() {
 		return this.name;
 	}

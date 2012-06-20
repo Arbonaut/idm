@@ -19,10 +19,13 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "labels", "descriptions", "date" })
+@XmlType(name = "", propOrder = { "id", "name", "labels", "descriptions", "date" })
 public class ModelVersion implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@XmlAttribute(name = "id")
+	private int id;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -36,6 +39,10 @@ public class ModelVersion implements Serializable {
 	@XmlElement(name = "date")
 	private String date;
 
+	public int getId() {
+		return id;
+	}
+	
 	public String getName() {
 		return this.name;
 	}

@@ -26,7 +26,7 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "type", "key", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
+@XmlType(name="", propOrder = {"id", "name", "type", "key", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
 		"labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
 public class NumberAttributeDefinition extends NumericAttributeDefinition implements KeyAttributeDefinition {
 

@@ -420,7 +420,6 @@ public class Entity extends Node<EntityDefinition> {
 		// Get child definition and name
 		NodeDefinition defn = o.getDefinition();
 		String name = defn.getName();
-
 		// Get child's definition and check schema object definition is the same
 		NodeDefinition childDefn = getDefinition().getChildDefinition(name);
 		if ( childDefn == null ) {

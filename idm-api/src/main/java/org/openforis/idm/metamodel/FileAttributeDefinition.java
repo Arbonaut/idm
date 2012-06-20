@@ -24,7 +24,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "maxSize", "extensions", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", 
+@XmlType(name="", propOrder = {"id", "name", "maxSize", "extensions", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", 
 		"sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class FileAttributeDefinition extends AttributeDefinition {
 

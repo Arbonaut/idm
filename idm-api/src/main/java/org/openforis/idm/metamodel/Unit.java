@@ -20,10 +20,13 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "dimension", "conversionFactor", "labels", "abbreviations" })
+@XmlType(name = "", propOrder = { "id", "name", "dimension", "conversionFactor", "labels", "abbreviations" })
 public class Unit implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@XmlAttribute(name = "id")
+	private int id;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -40,6 +43,10 @@ public class Unit implements Serializable {
 	@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> abbreviations;
 
+	public int getId() {
+		return id;
+	}
+	
 	public String getName() {
 		return this.name;
 	}

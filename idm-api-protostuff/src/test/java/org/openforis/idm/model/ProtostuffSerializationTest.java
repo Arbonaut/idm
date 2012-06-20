@@ -27,7 +27,7 @@ public class ProtostuffSerializationTest  {
 	public void testRoundTrip() throws Exception {
 		// Set up
 		Survey survey = getTestSurvey();
-		assignFakeNodeDefinitionIds(survey.getSchema());
+		//assignFakeNodeDefinitionIds(survey.getSchema());
 		Record record1 = createTestRecord(survey);
 		Entity cluster1 = record1.getRootEntity();
 		

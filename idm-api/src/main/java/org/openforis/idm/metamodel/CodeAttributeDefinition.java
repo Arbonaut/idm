@@ -26,7 +26,7 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression","required", "requiredExpression",
+@XmlType(name="", propOrder = {"id", "name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression","required", "requiredExpression",
 		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class CodeAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition  {
 

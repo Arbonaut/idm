@@ -694,7 +694,6 @@
                       </xs:annotation>
                     </xs:element>
                   </xs:sequence>
-      			  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="srid" type="xs:string">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">

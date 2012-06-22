@@ -4,7 +4,7 @@
     xmlns:ui="http://www.openforis.org/collect/3.0/ui"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.openforis.org/idml/3.0 https://raw.github.com/openforis/idm/uniqueid/idm-api/src/main/resources/idml3.xsd">
-     <!--http://www.openforis.org/idml/3.0 ../../../../idm-api/src/main/resources/idml3.xsd-->
+<!--      http://www.openforis.org/idml/3.0 ../../../../idm-api/src/main/resources/idml3.xsd -->
     <project>Archenland NFI</project>
     <uri>http://www.openforis.org/idm/archenland</uri>
     <cycle>1</cycle>

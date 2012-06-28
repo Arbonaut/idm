@@ -12,6 +12,10 @@ public class InvalidIdmlException extends Exception {
 	
 	private ValidationEvent[] validationEvents;
 
+	public InvalidIdmlException(String message) {
+		super(message);
+	}
+	
 	public InvalidIdmlException(ValidationEvent[] validationEvents) {
 		this.validationEvents = validationEvents;
 	}

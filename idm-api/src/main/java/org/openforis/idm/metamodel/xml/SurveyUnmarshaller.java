@@ -19,7 +19,6 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openforis.idm.metamodel.IdmInterpretationError;
@@ -68,46 +67,46 @@ public class SurveyUnmarshaller {
 		}
 	}
 	
+	public Survey unmarshal(byte[] bytes) throws InvalidIdmlException {
+		return unmarshal(new ByteArrayInputStream(bytes));
+	}
+	
 	public Survey unmarshal(InputStream is) throws InvalidIdmlException {
 		try {
-			//cannot read two times the same input stream, so use a temporary byte array
-			byte[] byteArray = IOUtils.toByteArray(is);
-			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
-			validateAgainstSchema(byteArrayInputStream);
-			
 			Unmarshaller.Listener listener = getListener();
 			unmarshaller.setListener(listener);
 			ValidationEventCollector vec = new ValidationEventCollector();
 			unmarshaller.setEventHandler(vec);
 
-			byteArrayInputStream = new ByteArrayInputStream(byteArray);
-			JAXBElement<? extends Survey> jaxbElement = unmarshaller.unmarshal(new StreamSource(byteArrayInputStream), surveyClass);
+			JAXBElement<? extends Survey> jaxbElement = unmarshaller.unmarshal(new StreamSource(is), surveyClass);
 			Survey survey = jaxbElement.getValue();
 			survey.setSurveyContext(surveyContext);
-			
+
 			if (vec.hasEvents()) {
 				throw new InvalidIdmlException(vec.getEvents());
 			}
 			return survey;
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
-		} catch (SAXException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
 		}
 	}
+
+	public void validateAgainstSchema(byte[] bytes) throws InvalidIdmlException {
+		validateAgainstSchema(new ByteArrayInputStream(bytes));
+	}
 	
-	private void validateAgainstSchema(InputStream is) throws SAXException {
+	public void validateAgainstSchema(InputStream is) throws InvalidIdmlException {
 		try {
 			SchemaFactory factory = SchemaFactory.newInstance(XML_SCHEMA_LANGUAGE);
 			URL schemaLocation = getClass().getResource(IDML_SCHEMA_RESOURCE_PATH);
 			Schema schema = factory.newSchema(schemaLocation);
-	        javax.xml.validation.Validator validator = schema.newValidator();
-	        Source source = new StreamSource(is);
-            validator.validate(source);
+			javax.xml.validation.Validator validator = schema.newValidator();
+			Source source = new StreamSource(is);
+			validator.validate(source);
 		} catch (IOException e) {
-			throw new RuntimeException("Cannot find the xsd to validate the idml", e);
+			throw new InvalidIdmlException("Cannot find the xsd to validate the idml");
+		} catch (SAXException e) {
+			throw new InvalidIdmlException("Error validating the idml against the schema: " + e.getMessage());
 		}
 	}
 

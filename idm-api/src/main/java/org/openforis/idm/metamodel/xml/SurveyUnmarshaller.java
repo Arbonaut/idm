@@ -37,6 +37,8 @@ import org.xml.sax.SAXException;
  */
 public class SurveyUnmarshaller {
 
+	private static final String XML_SCHEMA_LANGUAGE = "http://www.w3.org/2001/XMLSchema";
+	private static final String IDML_SCHEMA_RESOURCE_PATH = "/idml3.xsd";
 	private Unmarshaller unmarshaller;
 	private Class<? extends Survey> surveyClass;
 	private SurveyContext surveyContext;
@@ -98,8 +100,8 @@ public class SurveyUnmarshaller {
 	
 	private void validateAgainstSchema(InputStream is) throws SAXException {
 		try {
-			SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-			URL schemaLocation = getClass().getResource("/idml3.xsd");
+			SchemaFactory factory = SchemaFactory.newInstance(XML_SCHEMA_LANGUAGE);
+			URL schemaLocation = getClass().getResource(IDML_SCHEMA_RESOURCE_PATH);
 			Schema schema = factory.newSchema(schemaLocation);
 	        javax.xml.validation.Validator validator = schema.newValidator();
 	        Source source = new StreamSource(is);

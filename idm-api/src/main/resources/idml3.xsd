@@ -1151,7 +1151,7 @@
                           </xs:documentation>
                       </xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="highestRank" type="xs:string">
+                    <xs:attribute name="highestRank" type="taxonRank">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                             TO-DO
@@ -1707,6 +1707,44 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <!--~~~~~~~~~~~~~~~~~~~~~~~-->
+  <!--     Taxon Rank        -->
+  <!--~~~~~~~~~~~~~~~~~~~~~~~-->
+  <xs:simpleType name="taxonRank">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        TO-DO
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+		<xs:enumeration value="subregnum" />
+		<xs:enumeration value="divisio" />
+		<xs:enumeration value="phylum" />
+		<xs:enumeration value="subdivisio " />
+		<xs:enumeration value="subphylum" />
+		<xs:enumeration value="classis" />
+		<xs:enumeration value="subclassis" />
+		<xs:enumeration value="ordo" />
+		<xs:enumeration value="subordo" />
+		<xs:enumeration value="familia" />
+		<xs:enumeration value="subfamilia" />
+		<xs:enumeration value="tribus" />
+		<xs:enumeration value="subtribus" />
+		<xs:enumeration value="genus" />
+		<xs:enumeration value="subgenus" />
+		<xs:enumeration value="sectio" />
+		<xs:enumeration value="subsectio" />
+		<xs:enumeration value="series" />
+		<xs:enumeration value="subseries" />
+		<xs:enumeration value="species" />
+		<xs:enumeration value="subspecies" />
+		<xs:enumeration value="varietas" />
+		<xs:enumeration value="subvarietas" />
+		<xs:enumeration value="forma" />
+		<xs:enumeration value="subforma" />
+	</xs:restriction>
+  </xs:simpleType>
+  
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->
   <!-- Natural Language Text -->
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->

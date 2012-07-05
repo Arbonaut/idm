@@ -13,7 +13,7 @@ public class Taxon {
 	private Integer taxonomyId;
 	private String code;
 	private String scientificName;
-	private String taxonomicRank;
+	private String taxonRank;
 	private int step;
 
 	public Integer getSystemId() {
@@ -56,12 +56,12 @@ public class Taxon {
 		this.scientificName = scientificName;
 	}
 
-	public String getTaxonomicRank() {
-		return taxonomicRank;
+	public String getTaxonRank() {
+		return taxonRank;
 	}
 
-	public void setTaxonomicRank(String taxonomicRank) {
-		this.taxonomicRank = taxonomicRank;
+	public void setTaxonRank(String taxonRank) {
+		this.taxonRank = taxonRank;
 	}
 
 	public int getStep() {

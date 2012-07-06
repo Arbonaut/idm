@@ -7,13 +7,38 @@ package org.openforis.idm.model.species;
  */
 public class Taxon {
 
+	public enum TaxonRank {
+		FAMILY("family"), GENUS("genus"), SPECIES("species"), SUBSPECIES("subspecies");
+		
+		private final String name;
+
+		private TaxonRank(String name) {
+			this.name = name;
+		}
+
+		public static TaxonRank fromName(String name) {
+			TaxonRank[] values = values();
+			for (TaxonRank taxonRank : values) {
+				if ( taxonRank.getName().equals(name) ) {
+					return taxonRank;
+				}
+			}
+			return null;
+		}
+		
+		public String getName() {
+			return name;
+		}
+		
+	}
+	
 	private Integer systemId;
 	private Integer taxonId;
 	private Integer parentId;
 	private Integer taxonomyId;
 	private String code;
 	private String scientificName;
-	private String taxonRank;
+	private TaxonRank taxonRank;
 	private int step;
 
 	public Integer getSystemId() {
@@ -56,11 +81,11 @@ public class Taxon {
 		this.scientificName = scientificName;
 	}
 
-	public String getTaxonRank() {
+	public TaxonRank getTaxonRank() {
 		return taxonRank;
 	}
 
-	public void setTaxonRank(String taxonRank) {
+	public void setTaxonRank(TaxonRank taxonRank) {
 		this.taxonRank = taxonRank;
 	}
 

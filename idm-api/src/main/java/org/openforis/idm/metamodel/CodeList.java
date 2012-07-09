@@ -113,4 +113,69 @@ public class CodeList extends Versionable implements Serializable {
 		}
 		return false;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((codingScheme == null) ? 0 : codingScheme.hashCode());
+		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
+		result = prime * result + ((hierarchy == null) ? 0 : hierarchy.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((items == null) ? 0 : items.hashCode());
+		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
+		result = prime * result + ((lookupTable == null) ? 0 : lookupTable.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CodeList other = (CodeList) obj;
+		if (codingScheme == null) {
+			if (other.codingScheme != null)
+				return false;
+		} else if (!codingScheme.equals(other.codingScheme))
+			return false;
+		if (descriptions == null) {
+			if (other.descriptions != null)
+				return false;
+		} else if (!descriptions.equals(other.descriptions))
+			return false;
+		if (hierarchy == null) {
+			if (other.hierarchy != null)
+				return false;
+		} else if (!hierarchy.equals(other.hierarchy))
+			return false;
+		if (id != other.id)
+			return false;
+		if (items == null) {
+			if (other.items != null)
+				return false;
+		} else if (!items.equals(other.items))
+			return false;
+		if (labels == null) {
+			if (other.labels != null)
+				return false;
+		} else if (!labels.equals(other.labels))
+			return false;
+		if (lookupTable == null) {
+			if (other.lookupTable != null)
+				return false;
+		} else if (!lookupTable.equals(other.lookupTable))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
 }

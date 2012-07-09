@@ -141,5 +141,33 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		}
 		return CollectionUtil.unmodifiableList(units);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((precisionDefinitions == null) ? 0 : precisionDefinitions.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NumericAttributeDefinition other = (NumericAttributeDefinition) obj;
+		if (precisionDefinitions == null) {
+			if (other.precisionDefinitions != null)
+				return false;
+		} else if (!precisionDefinitions.equals(other.precisionDefinitions))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
 	
 }

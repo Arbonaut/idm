@@ -57,4 +57,40 @@ public abstract class Check<T extends Attribute<?, ?>> implements Serializable, 
 	public List<LanguageSpecificText> getMessages() {
 		return CollectionUtil.unmodifiableList(this.messages);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((condition == null) ? 0 : condition.hashCode());
+		result = prime * result + ((flag == null) ? 0 : flag.hashCode());
+		result = prime * result + ((messages == null) ? 0 : messages.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Check<?> other = (Check<?>) obj;
+		if (condition == null) {
+			if (other.condition != null)
+				return false;
+		} else if (!condition.equals(other.condition))
+			return false;
+		if (flag != other.flag)
+			return false;
+		if (messages == null) {
+			if (other.messages != null)
+				return false;
+		} else if (!messages.equals(other.messages))
+			return false;
+		return true;
+	}
+	
+	
 }

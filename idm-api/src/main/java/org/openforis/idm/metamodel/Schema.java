@@ -103,5 +103,31 @@ public class Schema  implements Serializable {
 	public EntityDefinition getRootEntityDefinition(String name) {
 		return (EntityDefinition) getByPath("/"+name);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((rootEntityDefinitions == null) ? 0 : rootEntityDefinitions.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Schema other = (Schema) obj;
+		if (rootEntityDefinitions == null) {
+			if (other.rootEntityDefinitions != null)
+				return false;
+		} else if (!rootEntityDefinitions.equals(other.rootEntityDefinitions))
+			return false;
+		return true;
+	}
+	
 	
 }

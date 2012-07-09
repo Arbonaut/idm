@@ -66,4 +66,30 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	public Class<? extends Value> getValueType() {
 		return BooleanValue.class;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((affirmativeOnly == null) ? 0 : affirmativeOnly.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BooleanAttributeDefinition other = (BooleanAttributeDefinition) obj;
+		if (affirmativeOnly == null) {
+			if (other.affirmativeOnly != null)
+				return false;
+		} else if (!affirmativeOnly.equals(other.affirmativeOnly))
+			return false;
+		return true;
+	}
+	
 }

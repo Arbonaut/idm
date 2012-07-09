@@ -86,5 +86,42 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 			return Collections.emptyList();
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((highestRank == null) ? 0 : highestRank.hashCode());
+		result = prime * result + ((qualifiers == null) ? 0 : qualifiers.hashCode());
+		result = prime * result + ((taxonomy == null) ? 0 : taxonomy.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TaxonAttributeDefinition other = (TaxonAttributeDefinition) obj;
+		if (highestRank == null) {
+			if (other.highestRank != null)
+				return false;
+		} else if (!highestRank.equals(other.highestRank))
+			return false;
+		if (qualifiers == null) {
+			if (other.qualifiers != null)
+				return false;
+		} else if (!qualifiers.equals(other.qualifiers))
+			return false;
+		if (taxonomy == null) {
+			if (other.taxonomy != null)
+				return false;
+		} else if (!taxonomy.equals(other.taxonomy))
+			return false;
+		return true;
+	}
 	
 }

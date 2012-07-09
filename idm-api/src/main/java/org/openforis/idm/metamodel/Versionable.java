@@ -68,5 +68,36 @@ public abstract class Versionable {
 			return v;
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((deprecatedVersion == null) ? 0 : deprecatedVersion.hashCode());
+		result = prime * result + ((sinceVersion == null) ? 0 : sinceVersion.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Versionable other = (Versionable) obj;
+		if (deprecatedVersion == null) {
+			if (other.deprecatedVersion != null)
+				return false;
+		} else if (!deprecatedVersion.equals(other.deprecatedVersion))
+			return false;
+		if (sinceVersion == null) {
+			if (other.sinceVersion != null)
+				return false;
+		} else if (!sinceVersion.equals(other.sinceVersion))
+			return false;
+		return true;
+	}
 	
 }

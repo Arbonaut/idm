@@ -94,6 +94,7 @@ public class ModelVersion implements Serializable {
 		int result = 1;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -118,6 +119,8 @@ public class ModelVersion implements Serializable {
 				return false;
 		} else if (!descriptions.equals(other.descriptions))
 			return false;
+		if (id != other.id)
+			return false;
 		if (labels == null) {
 			if (other.labels != null)
 				return false;
@@ -130,7 +133,5 @@ public class ModelVersion implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-	
+
 }

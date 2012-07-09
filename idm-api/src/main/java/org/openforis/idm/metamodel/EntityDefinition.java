@@ -130,4 +130,31 @@ public class EntityDefinition extends NodeDefinition {
 			return true;
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((childDefinitions == null) ? 0 : childDefinitions.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EntityDefinition other = (EntityDefinition) obj;
+		if (childDefinitions == null) {
+			if (other.childDefinitions != null)
+				return false;
+		} else if (!childDefinitions.equals(other.childDefinitions))
+			return false;
+		return true;
+	}
+	
+	
 }

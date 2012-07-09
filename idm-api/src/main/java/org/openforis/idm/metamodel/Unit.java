@@ -77,4 +77,58 @@ public class Unit implements Serializable {
 			.append("name", name)
 			.toString();
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((abbreviations == null) ? 0 : abbreviations.hashCode());
+		result = prime * result + ((conversionFactor == null) ? 0 : conversionFactor.hashCode());
+		result = prime * result + ((dimension == null) ? 0 : dimension.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Unit other = (Unit) obj;
+		if (abbreviations == null) {
+			if (other.abbreviations != null)
+				return false;
+		} else if (!abbreviations.equals(other.abbreviations))
+			return false;
+		if (conversionFactor == null) {
+			if (other.conversionFactor != null)
+				return false;
+		} else if (!conversionFactor.equals(other.conversionFactor))
+			return false;
+		if (dimension == null) {
+			if (other.dimension != null)
+				return false;
+		} else if (!dimension.equals(other.dimension))
+			return false;
+		if (id != other.id)
+			return false;
+		if (labels == null) {
+			if (other.labels != null)
+				return false;
+		} else if (!labels.equals(other.labels))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+	
+	
 }

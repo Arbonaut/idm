@@ -54,4 +54,48 @@ public class SpatialReferenceSystem implements Serializable {
 	public String getWellKnownText() {
 		return this.wellKnownText;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
+		result = prime * result + ((wellKnownText == null) ? 0 : wellKnownText.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SpatialReferenceSystem other = (SpatialReferenceSystem) obj;
+		if (descriptions == null) {
+			if (other.descriptions != null)
+				return false;
+		} else if (!descriptions.equals(other.descriptions))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (labels == null) {
+			if (other.labels != null)
+				return false;
+		} else if (!labels.equals(other.labels))
+			return false;
+		if (wellKnownText == null) {
+			if (other.wellKnownText != null)
+				return false;
+		} else if (!wellKnownText.equals(other.wellKnownText))
+			return false;
+		return true;
+	}
+	
 }

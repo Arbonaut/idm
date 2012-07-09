@@ -123,4 +123,48 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	public Class<? extends Value> getValueType() {
 		return Code.class;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((allowUnlisted == null) ? 0 : allowUnlisted.hashCode());
+		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		result = prime * result + ((list == null) ? 0 : list.hashCode());
+		result = prime * result + ((parentExpression == null) ? 0 : parentExpression.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CodeAttributeDefinition other = (CodeAttributeDefinition) obj;
+		if (allowUnlisted == null) {
+			if (other.allowUnlisted != null)
+				return false;
+		} else if (!allowUnlisted.equals(other.allowUnlisted))
+			return false;
+		if (key == null) {
+			if (other.key != null)
+				return false;
+		} else if (!key.equals(other.key))
+			return false;
+		if (list == null) {
+			if (other.list != null)
+				return false;
+		} else if (!list.equals(other.list))
+			return false;
+		if (parentExpression == null) {
+			if (other.parentExpression != null)
+				return false;
+		} else if (!parentExpression.equals(other.parentExpression))
+			return false;
+		return true;
+	}
+	
 }

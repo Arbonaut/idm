@@ -29,7 +29,6 @@ import org.openforis.idm.util.CollectionUtil;
 @XmlTransient
 public abstract class AttributeDefinition extends NodeDefinition {
 	
-//	private static final transient Log LOG = LogFactory.getLog(AttributeDefinition.class);
 	private static final long serialVersionUID = 1L;
 
 	@XmlElements({ 
@@ -43,9 +42,6 @@ public abstract class AttributeDefinition extends NodeDefinition {
 
 	@XmlElement(name = "default", type = AttributeDefault.class)
 	private List<AttributeDefault> attributeDefaults;
-
-//	@XmlTransient
-//	private Set<String> checkDependencyPaths;
 
 	public List<Check<?>> getChecks() {
 		return CollectionUtil.unmodifiableList(this.checks);
@@ -75,53 +71,36 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	}
 
 	public abstract Class<? extends Value> getValueType();
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((attributeDefaults == null) ? 0 : attributeDefaults.hashCode());
+		result = prime * result + ((checks == null) ? 0 : checks.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AttributeDefinition other = (AttributeDefinition) obj;
+		if (attributeDefaults == null) {
+			if (other.attributeDefaults != null)
+				return false;
+		} else if (!attributeDefaults.equals(other.attributeDefaults))
+			return false;
+		if (checks == null) {
+			if (other.checks != null)
+				return false;
+		} else if (!checks.equals(other.checks))
+			return false;
+		return true;
+	}
 	
-//	private Set<String> createCheckDependencyPaths() {
-//		Set<String> paths = new HashSet<String>();
-//		for (Check<?> check : getChecks()) {
-//			
-//			addReferencedPath(check.getCondition(), paths);
-//			if (check instanceof ComparisonCheck) {
-//				addReferencedPath(((ComparisonCheck) check).getEqualsExpression(),paths);
-//				addReferencedPath(((ComparisonCheck) check).getLessThanExpression(),paths);
-//				addReferencedPath(((ComparisonCheck) check).getLessThanOrEqualsExpression(),paths);
-//				addReferencedPath(((ComparisonCheck) check).getGreaterThanExpression(),paths);
-//				addReferencedPath(((ComparisonCheck) check).getGreaterThanOrEqualsExpression(),paths);
-//			} else if (check instanceof CustomCheck) {
-//				addReferencedPath(((CustomCheck) check).getExpression(),paths);
-//			} else if (check instanceof DistanceCheck) {
-//				addReferencedPath(((DistanceCheck) check).getDestinationPointExpression(),paths);
-//				addReferencedPath(((DistanceCheck) check).getMaxDistanceExpression(),paths);
-//				addReferencedPath(((DistanceCheck) check).getMinDistanceExpression(),paths);
-//				addReferencedPath(((DistanceCheck) check).getSourcePointExpression(),paths);
-//			} else if (check instanceof UniquenessCheck) {
-//				addReferencedPath(((UniquenessCheck) check).getExpression(),paths);
-//			}
-//		}
-//		return paths;
-//	}
-
-//	public void addReferencedPath(String expression, Set<String> set) {
-//		if (StringUtils.isNotBlank(expression)) {
-//			List<String> referencedPaths = getReferencedPaths(expression);
-//			for (String path : referencedPaths) {
-//				try {
-//					NodeDefinition dependantNodeDefn = getDependantNodeDefinition(path);
-//
-//					String sourcePath = getPath();
-//					String destinationPath = dependantNodeDefn.getPath();
-//					String relativePath = getRelativePath(sourcePath, destinationPath);
-//					
-//					if (StringUtils.isNotBlank(relativePath)) {
-//						set.add(relativePath);
-//					}
-//				} catch (Exception e) {
-//					if (LOG.isErrorEnabled()) {
-//						LOG.error("Unable to register dependency for node " + getPath() + " with expression " + path, e);
-//					}
-//				}
-//			}
-//		}
-//	}
-
 }

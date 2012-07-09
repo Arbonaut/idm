@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openforis.idm</groupId>
 	<artifactId>idm</artifactId>
-	<version>3.0-Alpha3</version>
+	<version>3.0-Alpha4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -32,7 +32,7 @@
 		<connection>scm:git:git@github.com:openforis/idm.git</connection>
 		<url>scm:git:git@github.com:openforis/idm.git</url>
 		<developerConnection>scm:git:git@github.com:openforis/idm.git</developerConnection>
-	  <tag>idm-3.0-Alpha3</tag>
+	  <tag>HEAD</tag>
   	</scm>
 
 	<repositories>

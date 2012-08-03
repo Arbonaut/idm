@@ -2,14 +2,18 @@ package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.namespace.QName;
 
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.util.CollectionUtil;
@@ -20,7 +24,7 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "name", "lookupTable", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
-public class CodeList extends Versionable implements Serializable {
+public class CodeList extends Versionable implements Serializable, Annotatable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -57,7 +61,10 @@ public class CodeList extends Versionable implements Serializable {
 	@XmlElement(name = "item", type = CodeListItem.class)
 	@XmlElementWrapper(name = "items")
 	private List<CodeListItem> items;
-
+	
+	@XmlAnyAttribute
+	private Map<QName,String> annotations;
+	
 	public String getName() {
 		return this.name;
 	}
@@ -105,5 +112,13 @@ public class CodeList extends Versionable implements Serializable {
 			}
 		}
 		return false;
+	}
+
+	public String getAnnotation(QName qname) {
+		return annotations == null ? null : annotations.get(qname);
+	}
+
+	public Set<QName> getAnnotationNames() {
+		return CollectionUtil.unmodifiableSet(annotations.keySet());
 	}
 }

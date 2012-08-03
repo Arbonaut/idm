@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Code;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.Node;
 
 /**
@@ -24,7 +25,7 @@ public class IDMFunctionsTest extends AbstractTest {
 	
 	@Test
 	public void testBlankNullValue() throws InvalidExpressionException{
-		cluster.addValue("id", (Code) null);
+		EntityBuilder.addValue(cluster, "id", (Code) null);
 		
 		String expr = "idm:blank(id)";
 		boolean b = evaluateRelevance(cluster, null, expr);
@@ -33,7 +34,7 @@ public class IDMFunctionsTest extends AbstractTest {
 	
 	@Test
 	public void testBlankBlankValue() throws InvalidExpressionException{
-		cluster.addValue("id",  new Code(""));
+		EntityBuilder.addValue(cluster, "id",  new Code(""));
 		
 		String expr = "idm:blank(id)";
 		boolean b = evaluateRelevance(cluster, null, expr);
@@ -42,7 +43,7 @@ public class IDMFunctionsTest extends AbstractTest {
 	
 	@Test
 	public void testBlankValidCode() throws InvalidExpressionException{
-		cluster.addValue("id",  new Code("001"));
+		EntityBuilder.addValue(cluster, "id",  new Code("001"));
 		
 		String expr = "idm:blank(id)";
 		boolean b = evaluateRelevance(cluster, null, expr);
@@ -51,7 +52,7 @@ public class IDMFunctionsTest extends AbstractTest {
 	
 	@Test
 	public void testBlankValidNumber() throws InvalidExpressionException{
-		cluster.addValue("plot_direction",  3442.45);
+		EntityBuilder.addValue(cluster, "plot_direction",  3442.45);
 		
 		String expr = "not( idm:blank( plot_direction ) )";
 		boolean b = evaluateRelevance(cluster, null, expr);

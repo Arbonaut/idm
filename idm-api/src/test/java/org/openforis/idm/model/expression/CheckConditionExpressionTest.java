@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Attribute;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.RealAttribute;
 
 /**
@@ -18,7 +19,7 @@ public class CheckConditionExpressionTest extends AbstractTest {
 
 	@Test
 	public void testTrue() throws InvalidExpressionException {
-		RealAttribute plotDirection =  cluster.addValue("plot_direction", 345.45);
+		RealAttribute plotDirection =  EntityBuilder.addValue(cluster, "plot_direction", 345.45);
 
 		String expr = "$this >= 0 and $this <= 359";
 		boolean b = evaluateExpression(expr, plotDirection);
@@ -27,7 +28,7 @@ public class CheckConditionExpressionTest extends AbstractTest {
 
 	@Test
 	public void testFalse() throws InvalidExpressionException {
-		RealAttribute plotDirection =  cluster.addValue("plot_direction", 385.45);
+		RealAttribute plotDirection =  EntityBuilder.addValue(cluster, "plot_direction", 385.45);
 		
 		String expr = "$this >= 0 and $this <= 359";
 		boolean b = evaluateExpression(expr, plotDirection);
@@ -36,7 +37,7 @@ public class CheckConditionExpressionTest extends AbstractTest {
 
 	@Test(expected = InvalidExpressionException.class)
 	public void testDefaultWithMissingNode() throws InvalidExpressionException {
-		RealAttribute plotDirection =  cluster.addValue("plot_direction", 345.45);
+		RealAttribute plotDirection =  EntityBuilder.addValue(cluster, "plot_direction", 345.45);
 		
 		String expr = "parent()/missing_attr >= 0 and $this <= 359";
 		boolean b = evaluateExpression(expr, plotDirection);

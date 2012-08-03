@@ -13,6 +13,7 @@ import org.openforis.idm.metamodel.NumericAttributeDefinition.Type;
 import org.openforis.idm.metamodel.Precision;
 import org.openforis.idm.metamodel.Unit;
 import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.Field;
 import org.openforis.idm.model.IntegerAttribute;
 import org.openforis.idm.model.Node;
@@ -35,7 +36,7 @@ public class NumberColumnProviderTest {
 		
 		// Data
 		Entity plot = (Entity) plotDef.createNode();
-		IntegerAttribute number1 = plot.addValue("number", 1);
+		IntegerAttribute number1 = EntityBuilder.addValue(plot, "number", 1);
 		
 		// Provider
 		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null, null);
@@ -67,8 +68,8 @@ public class NumberColumnProviderTest {
 		
 		// Data
 		Entity plot = (Entity) plotDef.createNode();
-		IntegerAttribute number1 = plot.addValue("number", 1);
-		IntegerAttribute number2 = plot.addValue("number", 2);
+		IntegerAttribute number1 = EntityBuilder.addValue(plot, "number", 1);
+		IntegerAttribute number2 = EntityBuilder.addValue(plot, "number", 2);
 		
 		// Provider
 		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null, null);
@@ -163,7 +164,7 @@ public class NumberColumnProviderTest {
 		
 		// Data
 		Entity plot = (Entity) plotDef.createNode();
-		plot.addValue("number", 1);
+		EntityBuilder.addValue(plot, "number", 1);
 		
 		// Provider
 		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null);
@@ -239,7 +240,7 @@ public class NumberColumnProviderTest {
 		
 		// Data
 		Entity plot = (Entity) plotDef.createNode();
-		plot.addValue("number", 1, u2);
+		EntityBuilder.addValue(plot, "number", 1, u2);
 		
 		// Provider
 		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null);
@@ -276,8 +277,8 @@ public class NumberColumnProviderTest {
 //		
 //		// Data
 //		Entity plot = (Entity) plotDef.createNode();
-//		plot.addValue("number", 1);
-//		plot.addValue("number", 2);
+//		EntityBuilder.addValue(plot, "number", 1);
+//		EntityBuilder.addValue(plot, "number", 2);
 //		
 //		// Provider
 //		AttributeColumnProvider provider = new AttributeColumnProvider(numberDefn, null);
@@ -317,42 +318,42 @@ public class NumberColumnProviderTest {
 	}
 
 	private void addTestValues(Entity cluster) {
-		cluster.addValue("id", new Code("123_456"));
-		cluster.addValue("gps_realtime", Boolean.TRUE);
-		cluster.addValue("region", new Code("001"));
-		cluster.addValue("district", new Code("XXX"));	
-		cluster.addValue("crew_no", 10);
-		cluster.addValue("map_sheet", "value 1");
-		cluster.addValue("map_sheet", "value 2");
-		cluster.addValue("vehicle_location", new Coordinate((double)432423423l, (double)4324324l, "srs"));
-		cluster.addValue("gps_model", "TomTom 1.232");
+		EntityBuilder.addValue(cluster, "id", new Code("123_456"));
+		EntityBuilder.addValue(cluster, "gps_realtime", Boolean.TRUE);
+		EntityBuilder.addValue(cluster, "region", new Code("001"));
+		EntityBuilder.addValue(cluster, "district", new Code("XXX"));	
+		EntityBuilder.addValue(cluster, "crew_no", 10);
+		EntityBuilder.addValue(cluster, "map_sheet", "value 1");
+		EntityBuilder.addValue(cluster, "map_sheet", "value 2");
+		EntityBuilder.addValue(cluster, "vehicle_location", new Coordinate((double)432423423l, (double)4324324l, "srs"));
+		EntityBuilder.addValue(cluster, "gps_model", "TomTom 1.232");
 		cluster.setChildState("accessibility", 1);
 		{
-			Entity ts = cluster.addEntity("time_study");
+			Entity ts = EntityBuilder.addEntity(cluster, "time_study");
 			ts.addValue("date", new Date(2011,2,14));
 			ts.addValue("start_time", new Time(8,15));
 			ts.addValue("end_time", new Time(15,29));
 		}
 		{
-			Entity ts = cluster.addEntity("time_study");
+			Entity ts = EntityBuilder.addEntity(cluster, "time_study");
 			ts.addValue("date", new Date(2011,2,15));
 			ts.addValue("start_time", new Time(8,32));
 			ts.addValue("end_time", new Time(11,20));
 		}
 		{
-			Entity plot = cluster.addEntity("plot");
-			plot.addValue("no", new Code("1"));
-			plot.addValue("subplot", "A");
-			plot.addValue("share", 75.0);
-			RealAttribute radius = plot.addValue("radius", 12.0);
+			Entity plot = EntityBuilder.addEntity(cluster, "plot");
+			EntityBuilder.addValue(plot, "no", new Code("1"));
+			EntityBuilder.addValue(plot, "subplot", "A");
+			EntityBuilder.addValue(plot, "share", 75.0);
+			RealAttribute radius = EntityBuilder.addValue(plot, "radius", 12.0);
 			radius.setUnitName("m");
 			{
-				Entity ts = plot.addEntity("time_study");
+				Entity ts = EntityBuilder.addEntity(plot, "time_study");
 				ts.addValue("date", new Date(2011,2,15));
 				ts.addValue("start_time", new Time(8,32));
 				ts.addValue("end_time", new Time(11,20));
 			}
-			Entity tree1 = plot.addEntity("tree");
+			Entity tree1 = EntityBuilder.addEntity(plot, "tree");
 			tree1.addValue("tree_no", 1);
 			tree1.addValue("dbh", 54.2);
 			tree1.addValue("total_height", 2.0);
@@ -360,19 +361,19 @@ public class NumberColumnProviderTest {
 			RealAttribute boleHeight = tree1.addValue("bole_height", (Double) null);
 			boleHeight.getField(0).setSymbol('*');
 			boleHeight.getField(0).setRemarks("No value specified");
-			Entity tree2 = plot.addEntity("tree");
+			Entity tree2 = EntityBuilder.addEntity(plot, "tree");
 			tree2.addValue("tree_no", 2);
 			tree2.addValue("dbh", 82.8);
 			tree2.addValue("total_height", 3.0);
 		}
 		{
-			Entity plot = cluster.addEntity("plot");
-			plot.addValue("no", new Code("2"));
-			Entity tree1 = plot.addEntity("tree");
+			Entity plot = EntityBuilder.addEntity(cluster, "plot");
+			EntityBuilder.addValue(plot, "no", new Code("2"));
+			Entity tree1 = EntityBuilder.addEntity(plot, "tree");
 			tree1.addValue("tree_no", 1);
 			tree1.addValue("dbh", 34.2);
 			tree1.addValue("total_height", 2.0);
-			Entity tree2 = plot.addEntity("tree");
+			Entity tree2 = EntityBuilder.addEntity(plot, "tree");
 			tree2.addValue("tree_no", 2);
 			tree2.addValue("dbh", 85.8);
 			tree2.addValue("total_height", 4.0);

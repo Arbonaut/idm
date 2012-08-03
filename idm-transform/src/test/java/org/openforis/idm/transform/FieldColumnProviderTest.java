@@ -76,7 +76,7 @@ public class FieldColumnProviderTest {
 //		
 //		// Data
 //		Entity plot = (Entity) plotDef.createNode();
-//		TimeAttribute time = plot.addValue("time", new Time(17,16));
+//		TimeAttribute time = EntityBuilder.addValue(plot, "time", new Time(17,16));
 //		
 //		// Provider
 //		AttributeColumnProvider timeFcp = new AttributeColumnProvider(timeDefn, null);

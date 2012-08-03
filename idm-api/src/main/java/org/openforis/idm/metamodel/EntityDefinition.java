@@ -54,10 +54,24 @@ public class EntityDefinition extends NodeDefinition {
 				}
 			}
 		}
-		return null;
+		throw new IllegalArgumentException("Child definition " + name + " not found in " + getPath());
 	}
 	
-	
+	/**
+	 * Get child definition and cast to requested type
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if not defined in model or if not assignable from type defined in definitionClass
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getChildDefinition(String name, Class<T> definitionClass) {
+		NodeDefinition childDefinition = getChildDefinition(name);
+		if (!childDefinition.getClass().isAssignableFrom(definitionClass)) {
+			throw new IllegalArgumentException(childDefinition.getPath() + " is not a " + definitionClass.getSimpleName());
+		}
+		return (T) childDefinition;
+	}
+
 	public void addChildDefinition(NodeDefinition defn) {
 		checkLockState();
 		if (childDefinitions == null) {

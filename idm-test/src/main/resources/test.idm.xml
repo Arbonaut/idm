@@ -3618,7 +3618,7 @@
                 <distance flag="error" max="100000" to="idm:lookup('sampling_design', 'coordinate', 'cluster', id, 'plot', '')"/>
                 <distance flag="warn" max="50000" to="idm:lookup('sampling_design', 'coordinate','cluster', id, 'plot', '')"/>
             </coordinate>
-            <text id="13" name="gps_model" collect:index="gps_model" collect:autocomplete="true">
+            <text id="13" name="gps_model" ui:autocomplete="gps_model">
                 <label>GPS model</label>
             </text>
             <boolean id="14" name="gps_realtime">
@@ -3706,13 +3706,13 @@
                 <text id="35" name="division" required="true" ui:tab="plot_det">
                     <label>Division</label>
                 </text>
-                <text id="36" name="ward" required="true" ui:autocomplete="global" ui:tab="plot_det">
+                <text id="36" name="ward" required="true" ui:autocomplete="ward" ui:tab="plot_det">
                     <label>Ward</label>
                 </text>
-                <text id="37" name="village" required="true" ui:autocomplete="global" ui:tab="plot_det">
+                <text id="37" name="village" required="true" ui:autocomplete="village" ui:tab="plot_det">
                     <label>Village</label>
                 </text>
-                <text id="38" name="forest" ui:autocomplete="global" ui:tab="plot_det">
+                <text id="38" name="forest" ui:autocomplete="forest" ui:tab="plot_det">
                     <label>Forest or area name</label>
                 </text>
                 <number id="39" name="slope" type="real" ui:tab="plot_det">

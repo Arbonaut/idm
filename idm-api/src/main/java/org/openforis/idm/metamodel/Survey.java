@@ -1,6 +1,7 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -107,7 +108,28 @@ public class Survey implements Serializable {
 	public List<LanguageSpecificText> getProjectNames() {
 		return CollectionUtil.unmodifiableList(this.projectNames);
 	}
-
+	
+	public String getProjectName(String language) {
+		if (projectNames != null ) {
+			return LanguageSpecificText.getText(projectNames, language);
+		} else {
+			return null;
+		}
+	}
+	
+	public void setProjectName(String language, String name) {
+		if ( projectNames == null ) {
+			projectNames = new ArrayList<LanguageSpecificText>();
+		}
+		LanguageSpecificText.setText(projectNames, language, name);
+	}
+	
+	public void removeProjectName(String language) {
+		if ( projectNames != null ) {
+			LanguageSpecificText.remove(projectNames, language);
+		}
+	}
+	
 	public Integer getCycle() {
 		return this.cycle;
 	}
@@ -116,20 +138,169 @@ public class Survey implements Serializable {
 		return Collections.unmodifiableList(this.descriptions);
 	}
 
+	public String getDescription(String language) {
+		if (descriptions != null ) {
+			return LanguageSpecificText.getText(descriptions, language);
+		} else {
+			return null;
+		}
+	}
+	
+	public void setDescription(String language, String description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		LanguageSpecificText.setText(descriptions, language, description);
+	}
+	
+	public void removeDescription(String language) {
+		LanguageSpecificText.remove(descriptions, language);
+	}
+
 	public List<ModelVersion> getVersions() {
 		return CollectionUtil.unmodifiableList(this.modelVersions);
+	}
+	
+	public void addVersion(ModelVersion version) {
+		if ( modelVersions == null ) {
+			modelVersions = new ArrayList<ModelVersion>();
+		}
+		modelVersions.add(version);
+	}
+	
+	public void removeVersion(ModelVersion version) {
+		if ( modelVersions != null ) {
+			ModelVersion oldVersion = getVersionById(version.getId());
+			modelVersions.remove(oldVersion);
+		}
+	}
+	
+	public void moveVersion(ModelVersion version, int index) {
+		modelVersions.remove(version);
+		modelVersions.add(index, version);
+	}
+	
+	public void updateVersion(ModelVersion version) {
+		ModelVersion oldVersion = getVersionById(version.getId());
+		int index = modelVersions.indexOf(oldVersion);
+		modelVersions.set(index, version);
+	}
+
+	protected ModelVersion getVersionById(int id) {
+		for (ModelVersion v : modelVersions) {
+			if (id == v.getId() ) {
+				return v;
+			}
+		}
+		return null;
 	}
 
 	public List<CodeList> getCodeLists() {
 		return CollectionUtil.unmodifiableList(this.codeLists);
 	}
+	
+	public void addCodeList(CodeList codeList) {
+		if ( codeLists == null ) {
+			codeLists = new ArrayList<CodeList>();
+		}
+		codeLists.add(codeList);
+	}
+	
+	public void removeCodeList(CodeList codeList) {
+		if ( codeLists != null ) {
+			CodeList oldCodeList = getCodeListById(codeList.getId());
+			codeLists.remove(oldCodeList);
+		}
+	}
+	
+	public void moveCodeList(CodeList codeList, int index) {
+		codeLists.remove(codeList);
+		codeLists.add(index, codeList);
+	}
+	
+	public void updateCodeList(CodeList codeList) {
+		CodeList oldCodeList = getCodeListById(codeList.getId());
+		int index = codeLists.indexOf(oldCodeList);
+		codeLists.set(index, codeList);
+	}
+
+	protected CodeList getCodeListById(int id) {
+		for (CodeList c : codeLists) {
+			if ( id == c.getId() ) {
+				return c;
+			}
+		}
+		return null;
+	}
 
 	public List<Unit> getUnits() {
 		return CollectionUtil.unmodifiableList(this.units);
 	}
+	
+	public void addUnit(Unit unit) {
+		if ( units != null ) {
+			units = new ArrayList<Unit>();
+		}
+		units.add(unit);
+	}
+	
+	public void removeUnit(Unit unit) {
+		if ( units != null ) {
+			Unit oldUnit = getUnitById(unit.getId());
+			units.remove(oldUnit);
+		}
+	}
+	
+	public void moveUnit(Unit unit, int index) {
+		units.remove(unit);
+		units.add(index, unit);
+	}
+	
+	public void updateUnit(Unit unit) {
+		Unit oldUnit = getUnitById(unit.getId());
+		int index = units.indexOf(oldUnit);
+		units.set(index, unit);
+	}
+
+	protected Unit getUnitById(int id) {
+		for (Unit i : units) {
+			if ( id == i.getId() ) {
+				return i;
+			}
+		}
+		return null;
+	}
 
 	public List<SpatialReferenceSystem> getSpatialReferenceSystems() {
 		return CollectionUtil.unmodifiableList(this.spatialReferenceSystems);
+	}
+	
+	public void addSpatialReferenceSystem(SpatialReferenceSystem unit) {
+		spatialReferenceSystems.add(unit);
+	}
+	
+	public void removeSpatialReferenceSystem(SpatialReferenceSystem unit) {
+		spatialReferenceSystems.remove(unit);
+	}
+	
+	public void moveSpatialReferenceSystem(SpatialReferenceSystem unit, int index) {
+		spatialReferenceSystems.remove(unit);
+		spatialReferenceSystems.add(index, unit);
+	}
+	
+	public void updateSpatialReferenceSystem(SpatialReferenceSystem unit) {
+		SpatialReferenceSystem oldSpatialReferenceSystem = getSpatialReferenceSystemById(unit.getId());
+		int index = spatialReferenceSystems.indexOf(oldSpatialReferenceSystem);
+		spatialReferenceSystems.set(index, unit);
+	}
+
+	protected SpatialReferenceSystem getSpatialReferenceSystemById(String id) {
+		for (SpatialReferenceSystem i : spatialReferenceSystems) {
+			if ( id.equals(i.getId()) ) {
+				return i;
+			}
+		}
+		return null;
 	}
 
 	public Schema getSchema() {

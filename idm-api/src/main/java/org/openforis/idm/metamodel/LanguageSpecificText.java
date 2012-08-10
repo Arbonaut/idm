@@ -4,6 +4,7 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -53,6 +54,42 @@ public class LanguageSpecificText implements Serializable {
 	
 	protected void setText(String text) {
 		this.text = text;
+	}
+	
+	public static LanguageSpecificText getByLanguage(List<LanguageSpecificText> list, String language) {
+		for (LanguageSpecificText lst : list) {
+			if ( lst.getLanguage().equals(language)) {
+				return lst;
+			}
+		}
+		return null;
+	}
+	
+	public static String getText(List<LanguageSpecificText> list, String language) {
+		LanguageSpecificText languageSpecificText = getByLanguage(list, language);
+		if ( languageSpecificText != null ) {
+			return languageSpecificText.getText();
+		} else {
+			return null;
+		}
+	}
+	
+	public static void setText(List<LanguageSpecificText> list, String language, String text) {
+		LanguageSpecificText languageSpecificText = new LanguageSpecificText(language, text);
+		LanguageSpecificText oldLanguageSpecificText = getByLanguage(list, language);
+		if ( oldLanguageSpecificText == null ) {
+			list.add(languageSpecificText);
+		} else {
+			int index = list.indexOf(oldLanguageSpecificText);
+			list.set(index, languageSpecificText);
+		}
+	}
+	
+	public static void remove(List<LanguageSpecificText> list, String language) {
+		LanguageSpecificText languageSpecificText = getByLanguage(list, language);
+		if ( languageSpecificText != null ) {
+			list.remove(languageSpecificText);
+		}
 	}
 
 	@Override

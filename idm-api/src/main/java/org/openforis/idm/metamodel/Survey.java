@@ -378,7 +378,10 @@ public class Survey implements Serializable {
 	 */
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@XmlType
-	private static class ConfigurationWrapper {
+	private static class ConfigurationWrapper implements Serializable {
+
+		private static final long serialVersionUID = 1L;
+		
 		@XmlAnyElement
 		@XmlJavaTypeAdapter(ConfigurationXmlAdapter.class)
 		List<Configuration> list;

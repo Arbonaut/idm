@@ -21,6 +21,14 @@ public class CodeListLabel extends LanguageSpecificText {
 
 	public enum Type { ITEM, LIST }
 	
+	public CodeListLabel() {
+	}
+	
+	public CodeListLabel(Type type, String language, String text) {
+		super(language, text);
+		this.type = type;
+	}
+	
 	@XmlAttribute(name = "type")
 	@XmlJavaTypeAdapter(CodeListLabelTypeAdapter.class)
 	private Type type;

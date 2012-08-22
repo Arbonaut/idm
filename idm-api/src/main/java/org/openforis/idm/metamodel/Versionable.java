@@ -23,7 +23,7 @@ public abstract class Versionable {
 	}
 	
 	@XmlAttribute(name = "since")
-	protected void setSinceVersionName(String name) {
+	public void setSinceVersionName(String name) {
 		this.sinceVersion = findVersion(name);
 	}
 
@@ -32,7 +32,7 @@ public abstract class Versionable {
 	}
 	
 	@XmlAttribute(name = "deprecated")
-	protected void setDeprecatedVersionName(String name) {
+	public void setDeprecatedVersionName(String name) {
 		this.deprecatedVersion = findVersion(name);
 	}
 
@@ -41,7 +41,7 @@ public abstract class Versionable {
 		return this.sinceVersion;
 	}
 
-	protected void setSinceVersion(ModelVersion since) {
+	public void setSinceVersion(ModelVersion since) {
 		this.sinceVersion = since;
 	}
 
@@ -49,7 +49,7 @@ public abstract class Versionable {
 		return this.deprecatedVersion;
 	}
 
-	protected void setDeprecatedVersion(ModelVersion deprecated) {
+	public void setDeprecatedVersion(ModelVersion deprecated) {
 		this.deprecatedVersion = deprecated;
 	}
 

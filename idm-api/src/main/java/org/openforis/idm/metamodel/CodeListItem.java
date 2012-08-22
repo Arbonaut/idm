@@ -4,6 +4,8 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -22,6 +24,10 @@ import org.openforis.idm.util.CollectionUtil;
 /**
  * @author G. Miceli
  * @author M. Togna
+ */
+/**
+ * @author riccist
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "id", "qualifiable", "sinceVersionName", "deprecatedVersionName", "code", "labels", "descriptions", "childItems" })
@@ -57,38 +63,141 @@ public class CodeListItem extends Versionable implements Serializable {
 	@XmlParent
 	private CodeListItem parentItem;
 	
+	@XmlTransient
+	private int nextChildId;
+	
+	public CodeListItem() {
+		nextChildId = 1;
+	}
+	
 	public int getId() {
 		return id;
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public boolean isQualifiable() {
 		return qualifiable == null ? false : qualifiable;
+	}
+	
+	public void setQualifiable(Boolean qualifiable) {
+		this.qualifiable = qualifiable;
 	}
 
 	public String getCode() {
 		return code;
 	}
 
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
 	public List<LanguageSpecificText> getLabels() {
 		return CollectionUtil.unmodifiableList(labels);
+	}
+	
+	public String getLabel(String language) {
+		if (labels != null ) {
+			return LanguageSpecificText.getText(labels, language);
+		} else {
+			return null;
+		}
+	}
+	
+	public void addLabel(LanguageSpecificText label) {
+		if ( labels == null ) {
+			labels = new ArrayList<LanguageSpecificText>();
+		}
+		labels.add(label);
+	}
+
+	public void setLabel(String language, String description) {
+		if ( labels == null ) {
+			labels = new ArrayList<LanguageSpecificText>();
+		}
+		LanguageSpecificText.setText(labels, language, description);
+	}
+	
+	public void removeLabel(String language) {
+		LanguageSpecificText.remove(labels, language);
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
 		return CollectionUtil.unmodifiableList(descriptions);
+	}
+	
+	public String getDescription(String language) {
+		if (descriptions != null ) {
+			return LanguageSpecificText.getText(descriptions, language);
+		} else {
+			return null;
+		}
+	}
+	
+	public void setDescription(String language, String description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		LanguageSpecificText.setText(descriptions, language, description);
+	}
+	
+	public void addDescription(LanguageSpecificText description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		descriptions.add(description);
+	}
+
+	public void removeDescription(String language) {
+		LanguageSpecificText.remove(descriptions, language);
 	}
 
 	public List<CodeListItem> getChildItems() {
 		return CollectionUtil.unmodifiableList(childItems);
 	}
 
+	public void addChildItem(CodeListItem item) {
+		if ( childItems == null ) {
+			childItems = new ArrayList<CodeListItem>();
+		}
+		if ( item.getId() == 0 ) {
+			item.setId(nextChildId ++);
+		} else {
+			nextChildId = Math.max(nextChildId, item.getId() + 1);
+		}
+		childItems.add(item);
+	}
+	
+	public void removeChildItem(int id) {
+		if ( childItems != null ) {
+			Iterator<CodeListItem> it = childItems.iterator();
+			while ( it.hasNext() ) {
+				CodeListItem item = it.next();
+				if ( item.getId() == id ) {
+					it.remove();
+				}
+			}
+		}
+	}
+	
 	public CodeListItem getParentItem() {
 		return parentItem;
+	}
+	
+	public void setParentItem(CodeListItem parentItem) {
+		this.parentItem = parentItem;
 	}
 	
 	public CodeList getCodeList() {
 		return list;
 	}
 
+	public void setCodeList(CodeList list) {
+		this.list = list;
+	}
+	
 	@Override
 	public Survey getSurvey() {
 		return list == null ? null : list.getSurvey();

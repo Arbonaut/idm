@@ -4,6 +4,7 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -40,16 +41,76 @@ public class CodeListLevel implements Serializable {
 		return id;
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public List<LanguageSpecificText> getLabels() {
 		return CollectionUtil.unmodifiableList(labels);
+	}
+	
+	public String getLabel(String language) {
+		if (labels != null ) {
+			return LanguageSpecificText.getText(labels, language);
+		} else {
+			return null;
+		}
+	}
+	
+	public void addLabel(LanguageSpecificText label) {
+		if ( labels == null ) {
+			labels = new ArrayList<LanguageSpecificText>();
+		}
+		labels.add(label);
+	}
+
+	public void setLabel(String language, String description) {
+		if ( labels == null ) {
+			labels = new ArrayList<LanguageSpecificText>();
+		}
+		LanguageSpecificText.setText(labels, language, description);
+	}
+	
+	public void removeLabel(String language) {
+		LanguageSpecificText.remove(labels, language);
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
 		return CollectionUtil.unmodifiableList(descriptions);
 	}
+	
+	public String getDescription(String language) {
+		if (descriptions != null ) {
+			return LanguageSpecificText.getText(descriptions, language);
+		} else {
+			return null;
+		}
+	}
+	
+	public void setDescription(String language, String description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		LanguageSpecificText.setText(descriptions, language, description);
+	}
+	
+	public void addDescription(LanguageSpecificText description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		descriptions.add(description);
+	}
+
+	public void removeDescription(String language) {
+		LanguageSpecificText.remove(descriptions, language);
+	}
 
 	public String getName() {
 		return this.name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override

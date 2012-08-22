@@ -183,6 +183,13 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return Collections.unmodifiableList(list);
 	}
 
+	public void addLabel(NodeLabel label) {
+		if (labels == null) {
+			labels = new ArrayList<NodeLabel>();
+		}
+		labels.add(label);
+	}
+	
 	public List<Prompt> getPrompts() {
 		return CollectionUtil.unmodifiableList(prompts);
 	}

@@ -69,6 +69,13 @@ public class ModelVersion implements Serializable {
 		}
 	}
 	
+	public void addLabel(LanguageSpecificText label) {
+		if ( labels == null ) {
+			labels = new ArrayList<LanguageSpecificText>();
+		}
+		labels.add(label);
+	}
+
 	public void setLabel(String language, String description) {
 		if ( labels == null ) {
 			labels = new ArrayList<LanguageSpecificText>();
@@ -92,6 +99,13 @@ public class ModelVersion implements Serializable {
 		}
 	}
 	
+	public void addDescription(LanguageSpecificText description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		descriptions.add(description);
+	}
+	
 	public void setDescription(String language, String description) {
 		if ( descriptions == null ) {
 			descriptions = new ArrayList<LanguageSpecificText>();
@@ -106,6 +120,10 @@ public class ModelVersion implements Serializable {
 
 	public String getDate() {
 		return date;
+	}
+	
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public boolean isApplicable(Versionable versionable) {

@@ -43,10 +43,14 @@ public class Schema  implements Serializable {
 	@XmlTransient
 	@XmlParent
 	private Survey survey;
+
+	@XmlTransient
+	private int nextDefinitionId;
 	
 	public Schema() {
 		definitionsByPath = new HashMap<String, NodeDefinition>(); 
-		definitionsById = new HashMap<Integer, NodeDefinition>(); 
+		definitionsById = new HashMap<Integer, NodeDefinition>();
+		nextDefinitionId = 1;
 	}
 	
 	public Survey getSurvey() {
@@ -100,6 +104,23 @@ public class Schema  implements Serializable {
 		return CollectionUtil.unmodifiableList(rootEntityDefinitions);
 	}
 
+	public void addRootEntityDefinition(EntityDefinition defn) {
+		if ( defn.getId() == null ) {
+			defn.setId(nextDefinitionId ++);
+		} else {
+			nextDefinitionId = Math.max(nextDefinitionId, defn.getId() + 1);
+		}
+		rootEntityDefinitions.add(defn);
+		indexById(defn);
+		indexByPath(defn);
+	}
+	
+	public void removeRootEntityDefinition(String name) {
+		EntityDefinition defn = getRootEntityDefinition(name);
+		rootEntityDefinitions.remove(defn);
+		reindexDefinitions();
+	}
+	
 	public EntityDefinition getRootEntityDefinition(String name) {
 		return (EntityDefinition) getByPath("/"+name);
 	}

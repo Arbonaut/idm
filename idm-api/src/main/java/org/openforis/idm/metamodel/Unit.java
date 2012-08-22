@@ -4,6 +4,7 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -47,30 +48,94 @@ public class Unit implements Serializable {
 		return id;
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public String getName() {
 		return this.name;
-	}
-
-	public String getDimension() {
-		return this.dimension;
-	}
-
-	public Number getConversionFactor() {
-		return this.conversionFactor;
-	}
-
-	public List<LanguageSpecificText> getLabels() {
-		return CollectionUtil.unmodifiableList(labels);
-	}
-
-	public List<LanguageSpecificText> getAbbreviations() {
-		return CollectionUtil.unmodifiableList(abbreviations);
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	public String getDimension() {
+		return this.dimension;
+	}
+
+	public void setDimension(String dimension) {
+		this.dimension = dimension;
+	}
+	
+	public Number getConversionFactor() {
+		return this.conversionFactor;
+	}
+
+	public void setConversionFactor(Float conversionFactor) {
+		this.conversionFactor = conversionFactor;
+	}
+	
+	public List<LanguageSpecificText> getLabels() {
+		return CollectionUtil.unmodifiableList(labels);
+	}
+	
+	public String getLabel(String language) {
+		if (labels != null ) {
+			return LanguageSpecificText.getText(labels, language);
+		} else {
+			return null;
+		}
+	}
+	
+	public void addLabel(LanguageSpecificText label) {
+		if ( labels == null ) {
+			labels = new ArrayList<LanguageSpecificText>();
+		}
+		labels.add(label);
+	}
+
+	public void setLabel(String language, String description) {
+		if ( labels == null ) {
+			labels = new ArrayList<LanguageSpecificText>();
+		}
+		LanguageSpecificText.setText(labels, language, description);
+	}
+	
+	public void removeLabel(String language) {
+		LanguageSpecificText.remove(labels, language);
+	}
+
+	public List<LanguageSpecificText> getAbbreviations() {
+		return CollectionUtil.unmodifiableList(abbreviations);
+	}
+
+	public String getAbbreviation(String language) {
+		if (abbreviations != null ) {
+			return LanguageSpecificText.getText(abbreviations, language);
+		} else {
+			return null;
+		}
+	}
+	
+	public void addAbbreviation(LanguageSpecificText label) {
+		if ( abbreviations == null ) {
+			abbreviations = new ArrayList<LanguageSpecificText>();
+		}
+		abbreviations.add(label);
+	}
+
+	public void setAbbreviation(String language, String description) {
+		if ( abbreviations == null ) {
+			abbreviations = new ArrayList<LanguageSpecificText>();
+		}
+		LanguageSpecificText.setText(abbreviations, language, description);
+	}
+	
+	public void removeAbbreviation(String language) {
+		LanguageSpecificText.remove(abbreviations, language);
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)

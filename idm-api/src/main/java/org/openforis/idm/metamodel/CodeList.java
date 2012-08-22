@@ -1,6 +1,8 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -61,32 +63,116 @@ public class CodeList extends Versionable implements Serializable {
 	@XmlElementWrapper(name = "items")
 	private List<CodeListItem> items;
 
+	@XmlTransient
+	private int nextItemId;
+	
 	public int getId() {
 		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public String getName() {
 		return this.name;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public String getLookupTable() {
 		return lookupTable;
 	}
+	
+	public void setLookupTable(String lookupTable) {
+		this.lookupTable = lookupTable;
+	}
 
 	public List<CodeListLabel> getLabels() {
 		return CollectionUtil.unmodifiableList(this.labels);
+	}
+	
+	public String getLabel(CodeListLabel.Type type, String language) {
+		if (labels != null ) {
+			for (CodeListLabel label : labels) {
+				if ( label.getType()== type && label.getLanguage().equals(language)) {
+					return label.getText();
+				}
+			}
+		}
+		return null;
+	}
+	
+	public void addLabel(CodeListLabel label) {
+		if ( labels == null ) {
+			labels = new ArrayList<CodeListLabel>();
+		}
+		labels.add(label);
+	}
+
+	public void removeLabel(CodeListLabel.Type type, String language) {
+		if (labels != null ) {
+			Iterator<CodeListLabel> it = labels.iterator();
+			while ( it.hasNext() ) {
+				CodeListLabel label = it.next();
+				if ( label.getType()== type && label.getLanguage().equals(language)) {
+					it.remove();
+					return;
+				}
+			}
+		}
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
 		return CollectionUtil.unmodifiableList(this.descriptions);
 	}
 
+	public void addDescription(LanguageSpecificText description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		descriptions.add(description);
+	}
+
 	public List<CodeListLevel> getHierarchy() {
 		return CollectionUtil.unmodifiableList(this.hierarchy);
 	}
 
+	public void addLevel(CodeListLevel level) {
+		if ( this.hierarchy == null ) {
+			this.hierarchy = new ArrayList<CodeListLevel>();
+		}
+		this.hierarchy.add(level);
+	}
+
 	public List<CodeListItem> getItems() {
 		return CollectionUtil.unmodifiableList(this.items);
+	}
+	
+	public void addItem(CodeListItem item) {
+		if ( items == null ) {
+			items = new ArrayList<CodeListItem>();
+		}
+		if ( item.getId() == 0 ) {
+			item.setId(nextItemId ++);
+		} else {
+			nextItemId = Math.max(nextItemId, item.getId() + 1);
+		}
+		items.add(item);
+	}
+	
+	public void removeChildItem(int id) {
+		if ( items != null ) {
+			Iterator<CodeListItem> it = items.iterator();
+			while ( it.hasNext() ) {
+				CodeListItem item = it.next();
+				if ( item.getId() == id ) {
+					it.remove();
+				}
+			}
+		}
 	}
 	
 	public CodeScope getCodeScope() {
@@ -101,7 +187,7 @@ public class CodeList extends Versionable implements Serializable {
 		return survey;
 	}
 
-	protected void setSurvey(Survey survey) {
+	public void setSurvey(Survey survey) {
 		this.survey = survey;
 	}
 

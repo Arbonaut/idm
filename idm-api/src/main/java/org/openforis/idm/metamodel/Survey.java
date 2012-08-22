@@ -117,6 +117,13 @@ public class Survey implements Serializable {
 		}
 	}
 	
+	public void addProjectName(LanguageSpecificText projectName) {
+		if ( projectNames == null ) {
+			projectNames = new ArrayList<LanguageSpecificText>();
+		}
+		projectNames.add(projectName);
+	}
+
 	public void setProjectName(String language, String name) {
 		if ( projectNames == null ) {
 			projectNames = new ArrayList<LanguageSpecificText>();
@@ -132,6 +139,10 @@ public class Survey implements Serializable {
 	
 	public Integer getCycle() {
 		return this.cycle;
+	}
+	
+	public void setCycle(Integer cycle) {
+		this.cycle = cycle;
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
@@ -153,6 +164,13 @@ public class Survey implements Serializable {
 		LanguageSpecificText.setText(descriptions, language, description);
 	}
 	
+	public void addDescription(LanguageSpecificText description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		descriptions.add(description);
+	}
+
 	public void removeDescription(String language) {
 		LanguageSpecificText.remove(descriptions, language);
 	}
@@ -305,6 +323,10 @@ public class Survey implements Serializable {
 
 	public Schema getSchema() {
 		return this.schema;
+	}
+	
+	public void setSchema(Schema schema) {
+		this.schema = schema;
 	}
 	
 	public ModelVersion getVersion(String name) {
@@ -503,4 +525,5 @@ public class Survey implements Serializable {
 			return false;
 		return true;
 	}
+
 }

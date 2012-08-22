@@ -56,16 +56,17 @@ public class LanguageSpecificText implements Serializable {
 		this.text = text;
 	}
 	
-	public static LanguageSpecificText getByLanguage(List<LanguageSpecificText> list, String language) {
+	public static LanguageSpecificText getByLanguage(List<? extends LanguageSpecificText> list, String language) {
 		for (LanguageSpecificText lst : list) {
-			if ( lst.getLanguage().equals(language)) {
+			if ( lst.getLanguage() != null && lst.getLanguage().equals(language) || 
+					lst.getLanguage() == null && language == null) {
 				return lst;
 			}
 		}
 		return null;
 	}
 	
-	public static String getText(List<LanguageSpecificText> list, String language) {
+	public static String getText(List<? extends LanguageSpecificText> list, String language) {
 		LanguageSpecificText languageSpecificText = getByLanguage(list, language);
 		if ( languageSpecificText != null ) {
 			return languageSpecificText.getText();
@@ -85,7 +86,7 @@ public class LanguageSpecificText implements Serializable {
 		}
 	}
 	
-	public static void remove(List<LanguageSpecificText> list, String language) {
+	public static void remove(List<? extends LanguageSpecificText> list, String language) {
 		LanguageSpecificText languageSpecificText = getByLanguage(list, language);
 		if ( languageSpecificText != null ) {
 			list.remove(languageSpecificText);

@@ -256,7 +256,7 @@ public class Survey implements Serializable {
 	}
 	
 	public void addUnit(Unit unit) {
-		if ( units != null ) {
+		if ( units == null ) {
 			units = new ArrayList<Unit>();
 		}
 		units.add(unit);

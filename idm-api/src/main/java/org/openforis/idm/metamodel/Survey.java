@@ -293,23 +293,26 @@ public class Survey implements Serializable {
 		return CollectionUtil.unmodifiableList(this.spatialReferenceSystems);
 	}
 	
-	public void addSpatialReferenceSystem(SpatialReferenceSystem unit) {
-		spatialReferenceSystems.add(unit);
+	public void addSpatialReferenceSystem(SpatialReferenceSystem srs) {
+		if ( spatialReferenceSystems == null ) {
+			spatialReferenceSystems = new ArrayList<SpatialReferenceSystem>();
+		}
+		spatialReferenceSystems.add(srs);
 	}
 	
-	public void removeSpatialReferenceSystem(SpatialReferenceSystem unit) {
-		spatialReferenceSystems.remove(unit);
+	public void removeSpatialReferenceSystem(SpatialReferenceSystem srs) {
+		spatialReferenceSystems.remove(srs);
 	}
 	
-	public void moveSpatialReferenceSystem(SpatialReferenceSystem unit, int index) {
-		spatialReferenceSystems.remove(unit);
-		spatialReferenceSystems.add(index, unit);
+	public void moveSpatialReferenceSystem(SpatialReferenceSystem srs, int index) {
+		spatialReferenceSystems.remove(srs);
+		spatialReferenceSystems.add(index, srs);
 	}
 	
-	public void updateSpatialReferenceSystem(SpatialReferenceSystem unit) {
-		SpatialReferenceSystem oldSpatialReferenceSystem = getSpatialReferenceSystemById(unit.getId());
+	public void updateSpatialReferenceSystem(SpatialReferenceSystem srs) {
+		SpatialReferenceSystem oldSpatialReferenceSystem = getSpatialReferenceSystemById(srs.getId());
 		int index = spatialReferenceSystems.indexOf(oldSpatialReferenceSystem);
-		spatialReferenceSystems.set(index, unit);
+		spatialReferenceSystems.set(index, srs);
 	}
 
 	protected SpatialReferenceSystem getSpatialReferenceSystemById(String id) {

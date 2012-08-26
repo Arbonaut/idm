@@ -95,16 +95,38 @@ public class CodeList extends Versionable implements Serializable {
 	}
 	
 	public String getLabel(CodeListLabel.Type type, String language) {
+		CodeListLabel label = getCodeListLabel(type, language);
+		if ( label != null ) {
+			return label.getText();
+		} else {
+			return null;
+		}
+	}
+	
+	protected CodeListLabel getCodeListLabel(CodeListLabel.Type type, String language) {
 		if (labels != null ) {
 			for (CodeListLabel label : labels) {
 				if ( label.getType()== type && label.getLanguage().equals(language)) {
-					return label.getText();
+					return label;
 				}
 			}
 		}
 		return null;
 	}
 	
+	public void setLabel(CodeListLabel.Type type, String language, String text) {
+		if ( labels == null ) {
+			labels = new ArrayList<CodeListLabel>();
+		}
+		CodeListLabel oldLabel = getCodeListLabel(type, language);
+		if ( oldLabel == null ) {
+			CodeListLabel newLabel = new CodeListLabel(type, language, text);
+			addLabel(newLabel);
+		} else {
+			oldLabel.setText(text);
+		}
+	}
+
 	public void addLabel(CodeListLabel label) {
 		if ( labels == null ) {
 			labels = new ArrayList<CodeListLabel>();
@@ -129,11 +151,30 @@ public class CodeList extends Versionable implements Serializable {
 		return CollectionUtil.unmodifiableList(this.descriptions);
 	}
 
+	public String getDescription(String language) {
+		if (descriptions != null ) {
+			return LanguageSpecificText.getText(descriptions, language);
+		} else {
+			return null;
+		}
+	}
+	
+	public void setDescription(String language, String description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		LanguageSpecificText.setText(descriptions, language, description);
+	}
+	
 	public void addDescription(LanguageSpecificText description) {
 		if ( descriptions == null ) {
 			descriptions = new ArrayList<LanguageSpecificText>();
 		}
 		descriptions.add(description);
+	}
+
+	public void removeDescription(String language) {
+		LanguageSpecificText.remove(descriptions, language);
 	}
 
 	public List<CodeListLevel> getHierarchy() {
@@ -163,7 +204,7 @@ public class CodeList extends Versionable implements Serializable {
 		items.add(item);
 	}
 	
-	public void removeChildItem(int id) {
+	public void removeItem(int id) {
 		if ( items != null ) {
 			Iterator<CodeListItem> it = items.iterator();
 			while ( it.hasNext() ) {

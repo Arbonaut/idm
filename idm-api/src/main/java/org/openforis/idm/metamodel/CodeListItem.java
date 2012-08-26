@@ -24,10 +24,7 @@ import org.openforis.idm.util.CollectionUtil;
 /**
  * @author G. Miceli
  * @author M. Togna
- */
-/**
- * @author riccist
- *
+ * @author S. Ricci
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "id", "qualifiable", "sinceVersionName", "deprecatedVersionName", "code", "labels", "descriptions", "childItems" })
@@ -113,11 +110,11 @@ public class CodeListItem extends Versionable implements Serializable {
 		labels.add(label);
 	}
 
-	public void setLabel(String language, String description) {
+	public void setLabel(String language, String text) {
 		if ( labels == null ) {
 			labels = new ArrayList<LanguageSpecificText>();
 		}
-		LanguageSpecificText.setText(labels, language, description);
+		LanguageSpecificText.setText(labels, language, text);
 	}
 	
 	public void removeLabel(String language) {
@@ -168,6 +165,7 @@ public class CodeListItem extends Versionable implements Serializable {
 			nextChildId = Math.max(nextChildId, item.getId() + 1);
 		}
 		childItems.add(item);
+		item.setParentItem(this);
 	}
 	
 	public void removeChildItem(int id) {

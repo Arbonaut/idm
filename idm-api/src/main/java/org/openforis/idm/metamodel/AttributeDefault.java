@@ -5,10 +5,11 @@ package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlType;*/
+
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Attribute;
@@ -29,13 +30,13 @@ public class AttributeDefault implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "value")
+	@org.simpleframework.xml.Attribute(name = "value")
 	private String value;
 
-	@XmlAttribute(name = "expr")
+	@org.simpleframework.xml.Attribute(name = "expr")
 	private String expression;
 
-	@XmlAttribute(name = "if")
+	@org.simpleframework.xml.Attribute(name = "if")
 	private String condition;
 
 	public String getValue() {

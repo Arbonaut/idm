@@ -1,7 +1,7 @@
 package org.openforis.idm.metamodel;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
+/*import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;*/
 
 /**
  * @author G. Miceli

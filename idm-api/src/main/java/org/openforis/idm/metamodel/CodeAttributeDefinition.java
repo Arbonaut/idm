@@ -7,12 +7,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
+import org.simpleframework.xml.convert.Convert;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
@@ -24,34 +28,35 @@ import org.openforis.idm.model.Value;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"id", "name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression","required", "requiredExpression",
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes="", elements = {"id", "name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression","required", "requiredExpression",
 		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class CodeAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlTransient
+	@Transient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 		new FieldDefinition<String>("code", "c", null, String.class, this), 
 		new FieldDefinition<String>("qualifier", "q", "other", String.class, this)
 	};
 	
-	@XmlAttribute(name = "key")
+	@Attribute(name = "key")
 	private Boolean key;
 
-	@XmlAttribute(name = "strict")
-	@XmlJavaTypeAdapter(value = InvertBooleanAdapter.class)
+	@Attribute(name = "strict")
+	@Convert(InvertBooleanAdapter.class)
 	private Boolean allowUnlisted;
 
-	@XmlAttribute(name = "parent")
+	@Attribute(name = "parent")
 	private String parentExpression;
 
-	@XmlTransient
+	@Transient
 	private CodeList list;
 
-	@XmlTransient
+	@Transient
 	private CodeAttributeDefinition parentCodeAttributeDefinition; 
 	
 	public CodeList getList() {
@@ -62,7 +67,7 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		this.list = list;
 	}
 	
-	@XmlAttribute(name = "list")
+	@Attribute(name = "list")
 	public String getListName() {
 		return list == null ? null : list.getName();
 	}

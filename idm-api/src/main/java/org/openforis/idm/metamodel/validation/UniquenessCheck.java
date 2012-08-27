@@ -5,10 +5,10 @@ package org.openforis.idm.metamodel.validation;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlType;*/
 
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.SurveyContext;
@@ -29,7 +29,7 @@ public class UniquenessCheck extends Check<Attribute<?, ?>> {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "expr")
+	@org.simpleframework.xml.Attribute(name = "expr")
 	private String expression;
 
 	public String getExpression() {

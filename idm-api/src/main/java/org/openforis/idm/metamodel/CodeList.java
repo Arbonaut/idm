@@ -5,13 +5,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
 
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.util.CollectionUtil;
@@ -19,9 +23,10 @@ import org.openforis.idm.util.CollectionUtil;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "id", "name", "lookupTable", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes = "", elements = { "id", "name", "lookupTable", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
 public class CodeList extends Versionable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -30,40 +35,48 @@ public class CodeList extends Versionable implements Serializable {
 		SCHEME, LOCAL
 	}
 
-	@XmlTransient
+	@Transient
 	@XmlParent
 	private Survey survey;
 
-	@XmlAttribute(name = "id")
+	@Attribute(name = "id")
 	private int id;
 
-	@XmlAttribute(name = "name")
+	@Attribute(name = "name")
 	private String name;
 
-	@XmlAttribute(name = "lookup")
+	@Attribute(name = "lookup")
 	private String lookupTable;
 
-	@XmlElement(name = "label", type = CodeListLabel.class)
+	/*@XmlElement(name = "label", type = CodeListLabel.class)
+	private List<CodeListLabel> labels;*/
+	@ElementList(inline=true, entry="label", type=CodeListLabel.class)
 	private List<CodeListLabel> labels;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> descriptions;*/
+	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
 //	@XmlElement(name = "codingScheme", type = CodingScheme.class)
 //	private List<CodingScheme> codingSchemes;
 
-	@XmlElement(name = "codingScheme", type = CodingScheme.class)
-	private CodingScheme codingScheme;
+	/*@XmlElement(name = "codingScheme", type = CodingScheme.class)
+	private CodingScheme codingScheme;*/
+	@ElementList(inline=true, entry="codingScheme", type=CodingScheme.class)
+	private List<CodingScheme> codingScheme;
 
 	@XmlElement(name = "level", type = CodeListLevel.class)
 	@XmlElementWrapper(name = "hierarchy")
 	private List<CodeListLevel> hierarchy;
 
-	@XmlElement(name = "item", type = CodeListItem.class)
+	/*@XmlElement(name = "item", type = CodeListItem.class)
 	@XmlElementWrapper(name = "items")
+	private List<CodeListItem> items;*/
+	@ElementList(entry="item", type = CodeListItem.class, required=false)
 	private List<CodeListItem> items;
 
-	@XmlTransient
+	@Transient
 	private int nextItemId;
 	
 	public int getId() {

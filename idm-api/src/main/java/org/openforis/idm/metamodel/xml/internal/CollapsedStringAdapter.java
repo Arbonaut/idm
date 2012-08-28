@@ -16,7 +16,7 @@ public class CollapsedStringAdapter implements Converter<String> {
 			return null;
 		}
 		else{
-			return in.getValue().trim().replaceAll("[\r\n]", " ");
+			return in.getValue().trim().replaceAll("[\t\r\n]", " ");
 		}
 	}
 

@@ -7,14 +7,17 @@ package org.openforis.idm.metamodel;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.convert.Convert;
 
 import org.openforis.idm.metamodel.xml.internal.CodeListLabelTypeAdapter;
 
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+//@XmlAccessorType(XmlAccessType.FIELD)
 public class CodeListLabel extends LanguageSpecificText {
 
 	private static final long serialVersionUID = 1L;
@@ -29,8 +32,10 @@ public class CodeListLabel extends LanguageSpecificText {
 		this.type = type;
 	}
 	
-	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(CodeListLabelTypeAdapter.class)
+	/*@XmlAttribute(name = "type")
+	@XmlJavaTypeAdapter(CodeListLabelTypeAdapter.class)*/
+	@Attribute(name = "type")
+	@Convert(CodeListLabelTypeAdapter.class)
 	private Type type;
 
 	public Type getType() {

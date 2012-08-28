@@ -13,6 +13,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
+import org.simpleframework.xml.convert.Convert;
 
 import org.openforis.idm.metamodel.xml.internal.TextAttributeDefinitionTypeAdapter;
 import org.openforis.idm.model.Node;
@@ -23,13 +27,14 @@ import org.openforis.idm.model.Value;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"id", "name", "type", "key","required", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes="", elements = {"id", "name", "type", "key","required", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
 	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class TextAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition {
 
-	@XmlTransient
+	@Transient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 			new FieldDefinition<String>("value", "v", null, String.class, this)
 	};
@@ -40,11 +45,11 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(TextAttributeDefinitionTypeAdapter.class)
+	@Attribute(name = "type")
+	@Convert(TextAttributeDefinitionTypeAdapter.class)
 	private Type type;
 
-	@XmlAttribute(name = "key")
+	@Attribute(name = "key")
 	private Boolean key;
 
 	public Type getType() {

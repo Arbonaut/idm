@@ -18,11 +18,12 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
 import org.simpleframework.xml.convert.Convert;
 
-import org.openforis.idm.metamodel.CollapsedStringAdapter;
-import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
+import org.openforis.idm.metamodel.xml.internal.CollapsedStringAdapter;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.util.CollectionUtil;
@@ -54,25 +55,31 @@ public class CodeListItem extends Versionable implements Serializable {
 	@Convert(CollapsedStringAdapter.class)
 	private String code;
 
-	@XmlElement(name = "label", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> labels;*/
+	@ElementList(entry="label", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> labels;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> descriptions;*/
+	@ElementList(entry="description", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> descriptions;
 
-	@XmlElement(name = "item", type = CodeListItem.class)
+	/*@XmlElement(name = "item", type = CodeListItem.class)
+	private List<CodeListItem> childItems;*/
+	@ElementList(entry="item", type = CodeListItem.class, required=false)
 	private List<CodeListItem> childItems;
 
-	@XmlTransient
+	@Transient
 	@XmlInherited("list")
 	@XmlParent
 	private CodeList list;
 
-	@XmlTransient
+	@Transient
 	@XmlParent
 	private CodeListItem parentItem;
 	
-	@XmlTransient
+	@Transient
 	private int nextChildId;
 	
 	public CodeListItem() {

@@ -7,18 +7,25 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.convert.Convert;
+import org.simpleframework.xml.Order;
 
 import org.openforis.idm.metamodel.CodeList.CodeScope;
 import org.openforis.idm.metamodel.xml.internal.CodeScopeAdapter;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {  "codeScope" }) 
+/**
+ * @author K. Waga
+ */
+
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes = "", elements = {  "codeScope" }) 
 class CodingScheme implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "scope")
-	@XmlJavaTypeAdapter(CodeScopeAdapter.class)
+	@Attribute(name = "scope")
+	@Convert(CodeScopeAdapter.class)
 	private CodeScope codeScope;
 
 	public CodeScope getCodeScope() {

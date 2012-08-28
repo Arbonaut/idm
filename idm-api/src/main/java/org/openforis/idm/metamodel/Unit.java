@@ -12,6 +12,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Order;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.openforis.idm.util.CollectionUtil;
@@ -19,29 +22,34 @@ import org.openforis.idm.util.CollectionUtil;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "id", "name", "dimension", "conversionFactor", "labels", "abbreviations" })
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes = "", elements = { "id", "name", "dimension", "conversionFactor", "labels", "abbreviations" })
 public class Unit implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "id")
+	@Attribute(name = "id")
 	private int id;
 
-	@XmlAttribute(name = "name")
+	@Attribute(name = "name")
 	private String name;
 
-	@XmlAttribute(name = "dimension")
+	@Attribute(name = "dimension")
 	private String dimension;
 
-	@XmlAttribute(name = "conversionFactor")
+	@Attribute(name = "conversionFactor")
 	private Float conversionFactor;
 
-	@XmlElement(name = "label", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> labels;*/
+	@ElementList(entry="label", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> labels;
 
-	@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> abbreviations;*/
+	@ElementList(entry="abbreviation", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> abbreviations;
 
 	public int getId() {

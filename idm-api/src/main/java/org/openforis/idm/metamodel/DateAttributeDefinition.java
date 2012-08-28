@@ -11,6 +11,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Date;
@@ -21,15 +23,16 @@ import org.openforis.idm.model.Value;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes="", elements = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
 		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class DateAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlTransient
+	@Transient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 			new FieldDefinition<Integer>("year", "y", "y", Integer.class, this),
 			new FieldDefinition<Integer>("month", "m", "m", Integer.class, this),

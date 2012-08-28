@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;*/
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Transient;
@@ -63,11 +64,13 @@ public class CodeList extends Versionable implements Serializable {
 
 	/*@XmlElement(name = "codingScheme", type = CodingScheme.class)
 	private CodingScheme codingScheme;*/
-	@ElementList(inline=true, entry="codingScheme", type=CodingScheme.class)
-	private List<CodingScheme> codingScheme;
+	@Element(name = "codingScheme", type = CodingScheme.class)
+	private CodingScheme codingScheme;
 
-	@XmlElement(name = "level", type = CodeListLevel.class)
+	/*@XmlElement(name = "level", type = CodeListLevel.class)
 	@XmlElementWrapper(name = "hierarchy")
+	private List<CodeListLevel> hierarchy;*/
+	@ElementList(name = "level", type = CodeListLevel.class, required=false)
 	private List<CodeListLevel> hierarchy;
 
 	/*@XmlElement(name = "item", type = CodeListItem.class)

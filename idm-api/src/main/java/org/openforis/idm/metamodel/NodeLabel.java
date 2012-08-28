@@ -4,10 +4,17 @@ package org.openforis.idm.metamodel;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.convert.Convert;
 
 import org.openforis.idm.metamodel.xml.internal.NodeLabelTypeAdapter;
 
-@XmlAccessorType(XmlAccessType.FIELD)
+/**
+ * @author K. Waga
+ * 
+ */
+
+//@XmlAccessorType(XmlAccessType.FIELD)
 public class NodeLabel extends LanguageSpecificText {
 
 	private static final long serialVersionUID = 1L;
@@ -16,8 +23,8 @@ public class NodeLabel extends LanguageSpecificText {
 		HEADING, INSTANCE, NUMBER;
 	}
 
-	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(NodeLabelTypeAdapter.class)
+	@Attribute(name = "type")
+	@Convert(NodeLabelTypeAdapter.class)
 	private NodeLabel.Type type;
 
 	protected NodeLabel() {

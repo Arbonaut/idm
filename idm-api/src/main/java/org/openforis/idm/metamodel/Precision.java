@@ -10,30 +10,34 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
 
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "unitName", "decimalDigits", "defaultPrecision" })
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes = "", elements = { "unitName", "decimalDigits", "defaultPrecision" })
 public class Precision implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlTransient
+	@Transient
 	private Unit unit;
 
-	@XmlTransient
+	@Transient
 	@XmlParent
 	private NodeDefinition definition;
 	
-	@XmlAttribute(name = "decimalDigits")
+	@Attribute(name = "decimalDigits")
 	private Integer decimalDigits;
 
-	@XmlAttribute(name = "default")
+	@Attribute(name = "default")
 	private Boolean defaultPrecision;
 
 	public Unit getUnit() {
@@ -44,7 +48,7 @@ public class Precision implements Serializable {
 		this.unit = unit;
 	}
 	
-	@XmlAttribute(name = "unit")
+	@Attribute(name = "unit")
 	public String getUnitName() {
 		return unit == null ? null : unit.getName();
 	}

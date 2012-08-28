@@ -15,6 +15,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Transient;
 
 import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
 import org.openforis.idm.model.NodePathPointer;
@@ -26,34 +30,35 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  * @author S. Ricci
  * @author E. Suprapto Wibowo
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "projectNames", "uri", "cycle", "descriptions", "configuration", "modelVersions",
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes = "", elements = { "projectNames", "uri", "cycle", "descriptions", "configuration", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
-@XmlRootElement(name = "survey")
+@Root(name = "survey")
 public class Survey implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlTransient
+	@Transient
 	private Integer id;
 	
-	@XmlTransient
+	@Transient
 	private String name;
 	
-	@XmlElement(name = "project", type = LanguageSpecificText.class)
+	@Element(name = "project", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> projectNames;
 	
-	@XmlElement(name = "uri")
+	@Element(name = "uri")
 	private String uri;
 
-	@XmlElement(name = "cycle")
+	@Element(name = "cycle")
 	private Integer cycle;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	@Element(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-	@XmlElement(name = "configuration")
+	@Element(name = "configuration")
 	private ConfigurationWrapper configuration;
 	
 	@XmlElement(name = "version", type = ModelVersion.class)
@@ -72,13 +77,13 @@ public class Survey implements Serializable {
 	@XmlElementWrapper(name = "spatialReferenceSystems")
 	private List<SpatialReferenceSystem> spatialReferenceSystems;
 
-	@XmlElement(name = "schema", type = Schema.class)
+	@Element(name = "schema", type = Schema.class)
 	private Schema schema;
 
-	@XmlTransient
+	@Transient
 	private SurveyContext surveyContext;
 	
-	@XmlTransient
+	@Transient
 	private SurveyDependencies surveyDependencies;
 	
 	public Integer getId() {

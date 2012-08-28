@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.IdmInterpretationError;
@@ -21,9 +23,10 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
 /**
  * @author M. Togna
  * @author G. Miceli
+ * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType
+@Order
 public class ComparisonCheck extends Check<Attribute<?,?>> {
 
 	private static final long serialVersionUID = 1L;

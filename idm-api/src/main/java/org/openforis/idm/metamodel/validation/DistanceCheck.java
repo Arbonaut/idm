@@ -9,6 +9,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Order;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,9 +28,10 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType
+@Order
 public class DistanceCheck extends Check<CoordinateAttribute> {
 
 	private static final long serialVersionUID = 1L;

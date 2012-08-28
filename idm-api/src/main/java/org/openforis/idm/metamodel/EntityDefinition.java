@@ -13,7 +13,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.Order;
 
+import org.openforis.idm.metamodel.validation.ComparisonCheck;
+import org.openforis.idm.metamodel.validation.CustomCheck;
+import org.openforis.idm.metamodel.validation.DistanceCheck;
+import org.openforis.idm.metamodel.validation.PatternCheck;
+import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.util.CollectionUtil;
@@ -21,14 +29,15 @@ import org.openforis.idm.util.CollectionUtil;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes="", elements = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
 public class EntityDefinition extends NodeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlElements({
+	/*@XmlElements({
 		@XmlElement(name = "entity",     type = EntityDefinition.class), 
 		@XmlElement(name = "number",     type = NumberAttributeDefinition.class),
 		@XmlElement(name = "range",      type = RangeAttributeDefinition.class), 
@@ -40,6 +49,20 @@ public class EntityDefinition extends NodeDefinition {
 		@XmlElement(name = "coordinate", type = CoordinateAttributeDefinition.class), 
 		@XmlElement(name = "code",       type = CodeAttributeDefinition.class),
 		@XmlElement(name = "text",       type = TextAttributeDefinition.class) })
+	private List<NodeDefinition> childDefinitions;*/
+	@ElementUnion({
+		@Element(name = "entity",     type = EntityDefinition.class), 
+		@Element(name = "number",     type = NumberAttributeDefinition.class),
+		@Element(name = "range",      type = RangeAttributeDefinition.class), 
+		@Element(name = "boolean",    type = BooleanAttributeDefinition.class),
+		@Element(name = "date",       type = DateAttributeDefinition.class), 
+		@Element(name = "time",       type = TimeAttributeDefinition.class),
+		@Element(name = "file",       type = FileAttributeDefinition.class), 
+		@Element(name = "taxon",      type = TaxonAttributeDefinition.class),
+		@Element(name = "coordinate", type = CoordinateAttributeDefinition.class), 
+		@Element(name = "code",       type = CodeAttributeDefinition.class),
+		@Element(name = "text",       type = TextAttributeDefinition.class)
+	})
 	private List<NodeDefinition> childDefinitions;
 
 	public List<NodeDefinition> getChildDefinitions() {

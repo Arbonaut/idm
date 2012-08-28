@@ -7,6 +7,8 @@ package org.openforis.idm.metamodel;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.convert.Convert;
 
 import org.openforis.idm.metamodel.xml.internal.PromptTypeAdapter;
 
@@ -14,7 +16,7 @@ import org.openforis.idm.metamodel.xml.internal.PromptTypeAdapter;
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+//@XmlAccessorType(XmlAccessType.FIELD)
 public class Prompt extends LanguageSpecificText {
 
 	private static final long serialVersionUID = 1L;
@@ -23,8 +25,8 @@ public class Prompt extends LanguageSpecificText {
 		INTERVIEW, PAPER, HANDHELD, PC;
 	}
 
-	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(PromptTypeAdapter.class)
+	@Attribute(name = "type")
+	@Convert(PromptTypeAdapter.class)
 	private Type type;
 
 	public Prompt() {

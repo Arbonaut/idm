@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Order;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.IntegerAttribute;
@@ -25,14 +27,14 @@ import org.openforis.idm.model.Value;
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"id", "name", "type", "key", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes="", elements = {"id", "name", "type", "key", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
 		"labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
 public class NumberAttributeDefinition extends NumericAttributeDefinition implements KeyAttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlAttribute(name = "key")
+	@Attribute(name = "key")
 	private Boolean key;
 
 	@Override

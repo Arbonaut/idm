@@ -1,41 +1,43 @@
 package org.openforis.idm.metamodel;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Transient;
 
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlTransient
+@Transient
 public abstract class Versionable {
 
-	@XmlTransient
+	@Transient
 	private ModelVersion sinceVersion;
 
-	@XmlTransient
+	@Transient
 	private ModelVersion deprecatedVersion;
 	
 	public abstract Survey getSurvey();
 	
+	@Attribute(name = "since", required = false)
 	public String getSinceVersionName() {
 		return sinceVersion == null ? null : sinceVersion.getName();
 	}
 	
-	@XmlAttribute(name = "since")
+	@Attribute(name = "since", required = false)
 	public void setSinceVersionName(String name) {
 		this.sinceVersion = findVersion(name);
 	}
 
+	@Attribute(name = "deprecated", required = false)
 	public String getDeprecatedVersionName() {
 		return deprecatedVersion == null ? null : deprecatedVersion.getName();
 	}
 	
-	@XmlAttribute(name = "deprecated")
+	@Attribute(name = "deprecated", required = false)
 	public void setDeprecatedVersionName(String name) {
 		this.deprecatedVersion = findVersion(name);
 	}
-
 
 	public ModelVersion getSinceVersion() {
 		return this.sinceVersion;

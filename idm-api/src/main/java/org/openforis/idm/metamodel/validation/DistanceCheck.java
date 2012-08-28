@@ -5,10 +5,11 @@ package org.openforis.idm.metamodel.validation;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Order;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,24 +28,25 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order
 public class DistanceCheck extends Check<CoordinateAttribute> {
 
 	private static final long serialVersionUID = 1L;
 	private static final Log LOG = LogFactory.getLog(DistanceCheck.class);
 	
-	@XmlAttribute(name = "to")
+	@org.simpleframework.xml.Attribute(name = "to")
 	private String destinationPointExpression;
 
-	@XmlAttribute(name = "min")
+	@org.simpleframework.xml.Attribute(name = "min")
 	private String minDistanceExpression;
 
-	@XmlAttribute(name = "max")
+	@org.simpleframework.xml.Attribute(name = "max")
 	private String maxDistanceExpression;
 
-	@XmlAttribute(name = "from")
+	@org.simpleframework.xml.Attribute(name = "from")
 	private String sourcePointExpression;
 
 	public String getDestinationPointExpression() {

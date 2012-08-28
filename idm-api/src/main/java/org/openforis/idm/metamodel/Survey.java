@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,7 +14,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Transient;
+import org.simpleframework.xml.convert.Convert;
 
 import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
 import org.openforis.idm.model.NodePathPointer;
@@ -26,59 +32,68 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  * @author S. Ricci
  * @author E. Suprapto Wibowo
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "projectNames", "uri", "cycle", "descriptions", "configuration", "modelVersions",
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(elements = { "project", "uri", "cycle", "description", "configuration", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
-@XmlRootElement(name = "survey")
+@Root(name = "survey")
 public class Survey implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlTransient
+	@Transient
 	private Integer id;
 	
-	@XmlTransient
+	@Transient
 	private String name;
 	
-	@XmlElement(name = "project", type = LanguageSpecificText.class)
+	@ElementList(entry = "project", inline = true, type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> projectNames;
 	
-	@XmlElement(name = "uri")
+	@Element(name = "uri")
 	private String uri;
 
-	@XmlElement(name = "cycle")
+	@Element(name = "cycle")
 	private Integer cycle;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	@ElementList(entry = "description", inline = true, type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-	@XmlElement(name = "configuration")
+	@Element(name = "configuration", required = false)
 	private ConfigurationWrapper configuration;
 	
-	@XmlElement(name = "version", type = ModelVersion.class)
+	/*@XmlElement(name = "version", type = ModelVersion.class)
 	@XmlElementWrapper(name = "versioning")
+	private List<ModelVersion> modelVersions;*/
+	@ElementList(name = "modelVersions", entry = "version", type = ModelVersion.class, required=false)
 	private List<ModelVersion> modelVersions;
 
-	@XmlElement(name = "list", type = CodeList.class)
+	/*@XmlElement(name = "list", type = CodeList.class)
 	@XmlElementWrapper(name = "codeLists")
-	private List<CodeList> codeLists;
+	private List<CodeList> codeLists;*/
+	@ElementList(name = "codeLists", entry = "list", type = CodeList.class, required=false)
+	private List<CodeList> codeLists;;
 
-	@XmlElement(name = "unit", type = Unit.class)
+	/*@XmlElement(name = "unit", type = Unit.class)
 	@XmlElementWrapper(name = "units")
+	private List<Unit> units;*/
+	@ElementList(name = "units", entry = "unit", type = Unit.class, required=false)
 	private List<Unit> units;
 
-	@XmlElement(name = "spatialReferenceSystem", type = SpatialReferenceSystem.class)
+	/*@XmlElement(name = "spatialReferenceSystem", type = SpatialReferenceSystem.class)
 	@XmlElementWrapper(name = "spatialReferenceSystems")
+	private List<SpatialReferenceSystem> spatialReferenceSystems;*/
+	@ElementList(name = "spatialReferenceSystems", entry = "spatialReferenceSystem", type = SpatialReferenceSystem.class, required=false)
 	private List<SpatialReferenceSystem> spatialReferenceSystems;
 
-	@XmlElement(name = "schema", type = Schema.class)
+	@Element(name = "schema", type = Schema.class)
 	private Schema schema;
 
-	//@XmlTransient
+	//@Transient
 	private transient SurveyContext surveyContext;
 	
-	//@XmlTransient
+	//@Transient
 	private transient SurveyDependencies surveyDependencies;
 	
 	public Integer getId() {
@@ -401,14 +416,15 @@ public class Survey implements Serializable {
 	 * Workaround for JAXB since @XmlAnyElement, @XmlElementWrapper and @XmlJavaTypeAdapter 
 	 * wouldn't play nice together
 	 */
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlType
+	//@XmlAccessorType(XmlAccessType.FIELD)
+	//@Order
 	private static class ConfigurationWrapper implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 		
-		@XmlAnyElement
-		@XmlJavaTypeAdapter(ConfigurationXmlAdapter.class)
+		//@XmlAnyElement
+		@ElementList(inline = true, required = false)
+		@Convert(ConfigurationXmlAdapter.class)
 		List<Configuration> list;
 
 		@Override

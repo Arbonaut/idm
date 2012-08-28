@@ -1,10 +1,5 @@
 package org.openforis.idm.metamodel.xml;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
 import org.openforis.idm.metamodel.Configuration;
 import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
@@ -16,7 +11,7 @@ import org.openforis.idm.metamodel.xml.internal.DefaultConfigurationAdapter;
  * @author G. Miceli
  */
 public class IdmlBindingContext {
-	private final JAXBContext surveyJaxbContext;
+	//private final JAXBContext surveyJaxbContext;
 	protected static final ConfigurationXmlAdapter DEFAULT_CONFIG_ADAPTER;
 	private Class<? extends Survey> surveyClass;
 	private SurveyContext surveyContext;
@@ -32,13 +27,13 @@ public class IdmlBindingContext {
 	}
 	
 	public IdmlBindingContext(Class<? extends Survey> surveyClass,SurveyContext surveyContext) {
-		try {
+//		try {
 			this.surveyClass = surveyClass;
-			this.surveyJaxbContext = JAXBContext.newInstance(surveyClass);
+			//this.surveyJaxbContext = JAXBContext.newInstance(surveyClass);
 			this.surveyContext = surveyContext;
-		} catch (JAXBException e) {
-			throw new RuntimeException(e);
-		}
+//		} catch (JAXBException e) {
+//			throw new RuntimeException(e);
+//		}
 	}
 	
 	static {
@@ -54,7 +49,8 @@ public class IdmlBindingContext {
 	}
 	
 	public SurveyMarshaller createSurveyMarshaller(){
-		try {
+//		try {
+			/*
 			Marshaller marshaller = surveyJaxbContext.createMarshaller();
 			if ( configurationAdapter == null ) {
 				marshaller.setAdapter(DEFAULT_CONFIG_ADAPTER);
@@ -62,11 +58,14 @@ public class IdmlBindingContext {
 				marshaller.setAdapter(new ConfigurationXmlAdapter(configurationAdapter));
 			}
 			return new SurveyMarshaller(marshaller);
-		} catch (JAXBException e) {
-			throw new RuntimeException(e);
-		}
+			*/
+			return new SurveyMarshaller();
+//		} catch (JAXBException e) {
+//			throw new RuntimeException(e);
+//		}
 	}
 	
+	/*
 	public SurveyUnmarshaller createSurveyUnmarshaller(){
 		try {
 			Unmarshaller unmarshaller = surveyJaxbContext.createUnmarshaller();
@@ -80,7 +79,12 @@ public class IdmlBindingContext {
 			throw new RuntimeException(e);
 		}
 	}
+	*/
 	
+	public SurveyUnmarshaller createSurveyUnmarshaller(){
+		return new SurveyUnmarshaller(surveyClass, surveyContext);
+	}
+
 /*	
 	static JAXBContext getInstance() {
 		return JAXB_CONTEXT;

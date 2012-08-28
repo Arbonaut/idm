@@ -6,9 +6,13 @@ package org.openforis.idm.metamodel;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlElement;
+/*import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlTransient;*/
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.Transient;
 
 import org.openforis.idm.metamodel.validation.Check;
 import org.openforis.idm.metamodel.validation.ComparisonCheck;
@@ -24,23 +28,35 @@ import org.openforis.idm.util.CollectionUtil;
  * @author G. Miceli
  * @author M. Togna
  * @author S. Ricci
+ * @author K. Waga
  * 
  */
-@XmlTransient
+@Transient
 public abstract class AttributeDefinition extends NodeDefinition {
 	
 	private static final long serialVersionUID = 1L;
 
-	@XmlElements({ 
+	/*@XmlElements({ 
 			@XmlElement(name = "distance", type = DistanceCheck.class), 
 			@XmlElement(name = "pattern", type = PatternCheck.class), 
 			@XmlElement(name = "compare", type = ComparisonCheck.class),
 			@XmlElement(name = "check", type = CustomCheck.class), 
 			@XmlElement(name = "unique", type = UniquenessCheck.class) 
 			})
+	private List<Check<?>> checks;*/
+	
+	@ElementUnion({
+	    @Element(name="distance", type=DistanceCheck.class),
+	    @Element(name="pattern", type=PatternCheck.class),
+	    @Element(name="compare", type=ComparisonCheck.class),
+	    @Element(name="check", type=CustomCheck.class),
+	    @Element(name="unique", type=UniquenessCheck.class)
+	})
 	private List<Check<?>> checks;
-
-	@XmlElement(name = "default", type = AttributeDefault.class)
+	
+	/*@XmlElement(name = "default", type = AttributeDefault.class)
+	private List<AttributeDefault> attributeDefaults;*/
+	@ElementList(inline=true, entry="default", type=AttributeDefault.class)
 	private List<AttributeDefault> attributeDefaults;
 
 	public List<Check<?>> getChecks() {

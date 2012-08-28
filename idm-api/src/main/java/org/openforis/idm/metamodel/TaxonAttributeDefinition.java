@@ -7,11 +7,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
 
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TaxonAttribute;
@@ -23,18 +26,19 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  * @author S. Ricci
  * @author W. Eko
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"id", "name", "taxonomy", "highestRank", "qualifiers", "relevantExpression", "required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes="", elements = {"id", "name", "taxonomy", "highestRank", "qualifiers", "relevantExpression", "required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
 		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})		
 public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "qualifiers")
+	@Attribute(name = "qualifiers")
 	private String qualifiers;
 	
-	@XmlTransient
+	@Transient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 			new FieldDefinition<String>("code", "c", "code", String.class, this), 
 			new FieldDefinition<String>("scientific_name", "s", "name", String.class, this), 
@@ -43,10 +47,10 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 			new FieldDefinition<String>("language_variety", "lv", "lang_var", String.class, this)
 	};
 	
-	@XmlAttribute(name = "taxonomy")
+	@Attribute(name = "taxonomy")
 	private String taxonomy;
 
-	@XmlAttribute(name = "highestRank")
+	@Attribute(name = "highestRank")
 	private String highestRank;
 
 	@Override

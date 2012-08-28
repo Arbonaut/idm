@@ -3,18 +3,23 @@ package org.openforis.idm.metamodel;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAttribute;
+/*import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Transient;
+import org.simpleframework.xml.convert.Convert;
 
 import org.openforis.idm.metamodel.xml.internal.NumberAttributeDefinitionTypeAdapter;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
+ * @author K. Waga
  */
-@XmlTransient
+@Transient
 public abstract class NumericAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
@@ -32,11 +37,13 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		}
 	}
 
-	@XmlElement(name = "precision", type = Precision.class)
+	/*@XmlElement(name = "precision", type = Precision.class)
+	private List<Precision> precisionDefinitions;*/
+	@ElementList(inline=true, entry="precision", type=Precision.class)
 	private List<Precision> precisionDefinitions;
 
-	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(NumberAttributeDefinitionTypeAdapter.class) Type type;
+	@Attribute(name = "type")
+	@Convert(NumberAttributeDefinitionTypeAdapter.class) Type type;
 
 	public NumericAttributeDefinition() {
 		super();

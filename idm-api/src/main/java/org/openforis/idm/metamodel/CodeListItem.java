@@ -8,15 +8,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
+import org.simpleframework.xml.convert.Convert;
 
+import org.openforis.idm.metamodel.xml.internal.CollapsedStringAdapter;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.util.CollectionUtil;
@@ -25,42 +32,51 @@ import org.openforis.idm.util.CollectionUtil;
  * @author G. Miceli
  * @author M. Togna
  * @author S. Ricci
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "id", "qualifiable", "sinceVersionName", "deprecatedVersionName", "code", "labels", "descriptions", "childItems" })
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes = {"id", "qualifiable", "sinceVersionName", "deprecatedVersionName"}, elements = { "code", "labels", "descriptions", "childItems" })
 public class CodeListItem extends Versionable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "id")
+	@Attribute(name = "id")
 	private int id;
 
-	@XmlAttribute(name = "qualifiable")
+	@Attribute(name = "qualifiable")
 	private Boolean qualifiable;
 
-	@XmlElement(name = "code")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	//@XmlElement(name = "code")
+	//@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	@Element(name = "code")
+	@Convert(CollapsedStringAdapter.class)
 	private String code;
 
-	@XmlElement(name = "label", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> labels;*/
+	@ElementList(entry="label", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> labels;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> descriptions;*/
+	@ElementList(entry="description", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> descriptions;
 
-	@XmlElement(name = "item", type = CodeListItem.class)
+	/*@XmlElement(name = "item", type = CodeListItem.class)
+	private List<CodeListItem> childItems;*/
+	@ElementList(entry="item", type = CodeListItem.class, required=false)
 	private List<CodeListItem> childItems;
 
-	@XmlTransient
+	@Transient
 	@XmlInherited("list")
 	@XmlParent
 	private CodeList list;
 
-	@XmlTransient
+	@Transient
 	@XmlParent
 	private CodeListItem parentItem;
 	
-	@XmlTransient
+	@Transient
 	private int nextChildId;
 	
 	public CodeListItem() {

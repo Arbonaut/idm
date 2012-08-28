@@ -1,29 +1,25 @@
 package org.openforis.idm.metamodel.xml;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
 import org.openforis.idm.metamodel.Survey;
-import org.xml.sax.ContentHandler;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 /**
  * @author G. Miceli
+ * @author S. Ricci
+ * 
  */
-@SuppressWarnings("deprecation")
 public class SurveyMarshaller {
 
 	private boolean indent;
-	private Marshaller marshaller;
-
-	SurveyMarshaller(Marshaller marshaller) {
-		super();
-		this.marshaller = marshaller;
-	}
+//	private Marshaller marshaller;
+//
+//	SurveyMarshaller(Marshaller marshaller) {
+//		super();
+//		this.marshaller = marshaller;
+//	}
 
 	public boolean isIndent() {
 		return indent;
@@ -33,6 +29,7 @@ public class SurveyMarshaller {
 		this.indent = indent;
 	}
 	
+	/*
 	public void marshal(Survey survey, OutputStream os) throws IOException {
 		try {
 		
@@ -67,5 +64,11 @@ public class SurveyMarshaller {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+	*/
+	
+	public void marshal(Survey survey, OutputStream os) throws Exception {
+		Serializer serializer = new Persister();
+		serializer.write(survey, os);
 	}
 }

@@ -6,29 +6,39 @@ package org.openforis.idm.metamodel;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Namespace;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Text;
+import org.simpleframework.xml.convert.Convert;
+
+import org.openforis.idm.metamodel.xml.internal.CollapsedStringAdapter;
 
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"language", "text"})
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes = {"lang"})
 public class LanguageSpecificText implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(namespace = "http://www.w3.org/XML/1998/namespace", name = "lang")
+	@Namespace(reference = "http://www.w3.org/XML/1998/namespace") 
+	@Attribute(/*namespace = "http://www.w3.org/XML/1998/namespace", */name = "lang", required = false)
 	private String language;
 
-	@XmlValue
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	//@XmlValue
+	@Text(required=false)
+	@Convert(CollapsedStringAdapter.class)
 	private String text;
 
 	public LanguageSpecificText() {

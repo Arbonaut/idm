@@ -5,15 +5,8 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.util.ValidationEventCollector;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -21,12 +14,10 @@ import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
-import org.openforis.idm.metamodel.xml.internal.XmlInherited;
-import org.openforis.idm.metamodel.xml.internal.XmlInit;
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 import org.xml.sax.SAXException;
 
 /**
@@ -38,14 +29,22 @@ public class SurveyUnmarshaller {
 
 	private static final String XML_SCHEMA_LANGUAGE = "http://www.w3.org/2001/XMLSchema";
 	private static final String IDML_SCHEMA_RESOURCE_PATH = "/idml3.xsd";
-	private Unmarshaller unmarshaller;
+//	private Unmarshaller unmarshaller;
 	private Class<? extends Survey> surveyClass;
 	private SurveyContext surveyContext;
 	
 	private final Log log = LogFactory.getLog(getClass());
-
+	
+	/*
 	SurveyUnmarshaller(Unmarshaller unmarshaller, Class<? extends Survey> surveyClass, SurveyContext surveyContext) {
 		this.unmarshaller = unmarshaller;
+		this.surveyClass = surveyClass;
+		this.surveyContext = surveyContext;
+	}
+	*/
+	
+	public SurveyUnmarshaller(Class<? extends Survey> surveyClass,
+			SurveyContext surveyContext) {
 		this.surveyClass = surveyClass;
 		this.surveyContext = surveyContext;
 	}
@@ -73,6 +72,7 @@ public class SurveyUnmarshaller {
 	
 	public Survey unmarshal(InputStream is) throws InvalidIdmlException {
 		try {
+			/*
 			Unmarshaller.Listener listener = getListener();
 			unmarshaller.setListener(listener);
 			ValidationEventCollector vec = new ValidationEventCollector();
@@ -80,13 +80,17 @@ public class SurveyUnmarshaller {
 
 			JAXBElement<? extends Survey> jaxbElement = unmarshaller.unmarshal(new StreamSource(is), surveyClass);
 			Survey survey = jaxbElement.getValue();
+			*/
+			Serializer serializer = new Persister();
+			Survey survey = serializer.read(surveyClass, is, false);
 			survey.setSurveyContext(surveyContext);
-
+			/*
 			if (vec.hasEvents()) {
 				throw new InvalidIdmlException(vec.getEvents());
 			}
+			*/
 			return survey;
-		} catch (JAXBException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -110,14 +114,14 @@ public class SurveyUnmarshaller {
 		}
 	}
 
-	protected Unmarshaller getUnmarshaller() {
-		return unmarshaller;
-	}
+//	protected Unmarshaller getUnmarshaller() {
+//		return unmarshaller;
+//	}
 
-	protected Unmarshaller.Listener getListener() {
-		return new Listener();
-	}
-
+//	protected Unmarshaller.Listener getListener() {
+//		return new Listener();
+//	}
+/*
 	private class Listener extends Unmarshaller.Listener {
 		@Override
 		public void beforeUnmarshal(Object target, Object parent) {
@@ -212,5 +216,5 @@ public class SurveyUnmarshaller {
 		}
 		return null;
 	}
-
+*/
 }

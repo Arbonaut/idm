@@ -7,34 +7,42 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Order;
 
 import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "id", "name", "labels", "descriptions" })
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes = {"id", "name"}, elements = {"labels", "descriptions" })
 public class CodeListLevel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "id")
+	@Attribute(name = "id")
 	private int id;
 
-	@XmlAttribute(name = "name")
+	@Attribute(name = "name")
 	private String name;
 
-	@XmlElement(name = "label", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> labels;*/
+	@ElementList(entry="label", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> labels;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> descriptions;*/
+	@ElementList(entry="description", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> descriptions;
 
 	public int getId() {

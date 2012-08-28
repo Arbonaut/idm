@@ -8,37 +8,46 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Order;
 
 import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "id", "name", "labels", "descriptions", "date" })
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes = {"id", "name"}, elements = { "labels", "descriptions", "date" })
 public class ModelVersion implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "id")
+	@Attribute(name = "id")
 	private int id;
 
-	@XmlAttribute(name = "name")
+	@Attribute(name = "name")
 	private String name;
 
-	@XmlElement(name = "label", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> labels;*/
+	@ElementList(inline=true, entry="label", type=LanguageSpecificText.class)
 	private List<LanguageSpecificText> labels;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> descriptions;*/
+	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-	@XmlElement(name = "date")
+	@Element(name = "date")
 	private String date;
 
 	public int getId() {

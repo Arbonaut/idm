@@ -10,11 +10,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAnyAttribute;
+/*import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlTransient;*/
 import javax.xml.namespace.QName;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Transient;
+import org.simpleframework.xml.ElementMap;
 
 import org.openforis.idm.metamodel.expression.SchemaPathExpression;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
@@ -26,56 +30,66 @@ import org.openforis.idm.util.CollectionUtil;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlTransient
+@Transient
 public abstract class NodeDefinition extends Versionable implements Annotatable, Serializable {
 	private static final long serialVersionUID = 1L;
 //	private static final transient Log LOG = LogFactory.getLog(NodeDefinition.class);
 
-	@XmlTransient
+	@Transient
 	@XmlParent
 	private NodeDefinition parentDefinition;
 	
-	@XmlTransient
+	@Transient
 	@XmlParent
 	@XmlInherited("schema")
 	private Schema schema;
 	
-	@XmlAttribute(name = "id")
+	@Attribute(name = "id")
 	private Integer id;
 	
-	@XmlAttribute(name = "name")
+	@Attribute(name = "name")
 	private String name;
 
-	@XmlAttribute(name = "relevant")
+	@Attribute(name = "relevant")
 	private String relevantExpression;
 
-	@XmlAttribute(name = "required")
+	@Attribute(name = "required")
 	private Boolean required;
 	
-	@XmlAttribute(name = "requiredIf")
+	@Attribute(name = "requiredIf")
 	private String requiredExpression;
 
-	@XmlAttribute(name = "multiple")
+	@Attribute(name = "multiple")
 	private Boolean multiple;
 
-	@XmlAttribute(name = "minCount")
+	@Attribute(name = "minCount")
 	private Integer minCount;
 
-	@XmlAttribute(name = "maxCount")
+	@Attribute(name = "maxCount")
 	private Integer maxCount;
 
-	@XmlElement(name = "label", type = NodeLabel.class)
+	/*@XmlElement(name = "label", type = NodeLabel.class)
+	private List<NodeLabel> labels;*/
+	@ElementList(inline=true, entry="label", type=NodeLabel.class)
 	private List<NodeLabel> labels;
 
-	@XmlElement(name = "prompt", type = Prompt.class)
+	/*@XmlElement(name = "prompt", type = Prompt.class)
+	private List<Prompt> prompts;*/
+	@ElementList(inline=true, entry="prompt", type=Prompt.class)
 	private List<Prompt> prompts;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
+	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
+	private List<LanguageSpecificText> descriptions;*/
+	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-	@XmlAnyAttribute
+	@ElementMap(name="annotations",key="annotations", keyType=QName.class, 
+				valueType=String.class, attribute=true, inline=false)
 	private Map<QName,String> annotations;
+	/*@XmlAnyAttribute
+	private Map<QName,String> annotations;*/
 	
 	public abstract Node<?> createNode();
 	

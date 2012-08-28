@@ -6,24 +6,21 @@ package org.openforis.idm.metamodel.validation;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.xml.internal.CheckFlagAdapter;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.util.CollectionUtil;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.convert.Convert;
 
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "")
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes = {"flag", "if"}, elements = {"message"})
 public abstract class Check<T extends Attribute<?, ?>> implements Serializable, ValidationRule<T> {
 
 	private static final long serialVersionUID = 1L;
@@ -32,14 +29,14 @@ public abstract class Check<T extends Attribute<?, ?>> implements Serializable, 
 		ERROR, WARN
 	}
 
-	@XmlAttribute(name = "flag")
-	@XmlJavaTypeAdapter(CheckFlagAdapter.class)
+	@org.simpleframework.xml.Attribute(name = "flag")
+	@Convert(CheckFlagAdapter.class)
 	private Flag flag;
 
-	@XmlAttribute(name = "if")
+	@org.simpleframework.xml.Attribute(name = "if")
 	private String condition;
 
-	@XmlElement(name = "message", type = LanguageSpecificText.class)
+	@ElementList(entry = "message", inline = true, type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> messages;
 
 	public Flag getFlag() {

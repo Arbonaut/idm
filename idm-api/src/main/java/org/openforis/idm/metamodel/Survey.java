@@ -75,11 +75,11 @@ public class Survey implements Serializable {
 	@XmlElement(name = "schema", type = Schema.class)
 	private Schema schema;
 
-	@XmlTransient
-	private SurveyContext surveyContext;
+	//@XmlTransient
+	private transient SurveyContext surveyContext;
 	
-	@XmlTransient
-	private SurveyDependencies surveyDependencies;
+	//@XmlTransient
+	private transient SurveyDependencies surveyDependencies;
 	
 	public Integer getId() {
 		return id;

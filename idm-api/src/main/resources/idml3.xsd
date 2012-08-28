@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0"
-  xmlns:idml="http://www.openforis.org/idml/3.0" targetNamespace="http://www.openforis.org/idml/3.0"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  elementFormDefault="qualified" version="1.0"
+  xmlns:idml="http://www.openforis.org/idml/3.0" 
+  targetNamespace="http://www.openforis.org/idml/3.0"
   xmlns="http://www.openforis.org/idml/3.0">
   <xs:annotation>
     <xs:documentation xml:lang="en">
@@ -154,6 +156,7 @@
         </xs:annotation>
       </xs:element>
     </xs:sequence>
+    <xs:attribute name="id" type="xs:integer" use="required" />
     <xs:attribute name="qualifiable" type="xs:boolean">
       <xs:annotation>
         <xs:documentation xml:lang="en">
@@ -191,7 +194,6 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        
         <xs:element name="project" type="unformattedText" minOccurs="1" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -286,6 +288,7 @@
                       </xs:annotation>
                     </xs:element>
                   </xs:sequence>
+    			  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="name" type="versionName" use="required">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
@@ -297,6 +300,10 @@
               </xs:element>
             </xs:sequence>
           </xs:complexType>
+		  <xs:unique name="versioningKey">
+            <xs:selector xpath="idml:version" />
+            <xs:field xpath="@id" />
+          </xs:unique>
         </xs:element>
 
         <!--~~~~~~~~~~~~-->
@@ -499,7 +506,7 @@
                             </xs:annotation>
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element name="label" type="unformattedText" minOccurs="0"
+                              	<xs:element name="label" type="unformattedText" minOccurs="0"
                                   maxOccurs="unbounded">
                                   <xs:annotation>
                                     <xs:documentation xml:lang="en">
@@ -516,6 +523,7 @@
                                   </xs:annotation>
                                 </xs:element>
                               </xs:sequence>
+                              <xs:attribute name="id" type="xs:integer" use="required" />
                               <xs:attribute name="name" type="internalName" use="required">
                                 <xs:annotation>
                                   <xs:documentation xml:lang="en">
@@ -527,6 +535,10 @@
                           </xs:element>
                         </xs:sequence>
                       </xs:complexType>
+                      <xs:unique name="levelKey">
+						<xs:selector xpath="idml:level" />
+						<xs:field xpath="@id" />
+					  </xs:unique>
                     </xs:element>
                     <xs:element minOccurs="0" name="items">
                       <xs:annotation>
@@ -546,8 +558,13 @@
                           </xs:element>
                         </xs:sequence>
                       </xs:complexType>
+                      <xs:unique name="codeListItemKey">
+                        <xs:selector xpath="idml:item" />
+                        <xs:field xpath="@id" />
+                      </xs:unique>
                     </xs:element>
                   </xs:sequence>
+    			  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="name" type="internalName" use="required">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
@@ -580,6 +597,10 @@
               </xs:element>
             </xs:sequence>
           </xs:complexType>
+          <xs:unique name="listKey">
+            <xs:selector xpath="idml:list" />
+            <xs:field xpath="@id" />
+          </xs:unique>
         </xs:element>
 
         <!--~~~~~~~~~~~~~~~~~~~~~~-->
@@ -619,6 +640,7 @@
                       </xs:annotation>
                     </xs:element>
                   </xs:sequence>
+    			  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="name" use="required" type="internalName">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
@@ -644,6 +666,10 @@
               </xs:element>
             </xs:sequence>
           </xs:complexType>
+          <xs:unique name="unitKey">
+            <xs:selector xpath="idml:unit" />
+            <xs:field xpath="@id" />
+          </xs:unique>
         </xs:element>
 
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -701,6 +727,10 @@
               </xs:element>
             </xs:sequence>
           </xs:complexType>
+          <xs:unique name="spatialReferenceSystemKey">
+            <xs:selector xpath="idml:spatialReferenceSystem" />
+            <xs:field xpath="@srid" />
+          </xs:unique>
         </xs:element>
 
         <!--~~~~~~~~-->
@@ -729,6 +759,20 @@
               </xs:element>
             </xs:sequence>
           </xs:complexType>
+          <xs:unique name="schemaObjectKey">
+            <xs:selector xpath=".//idml:entity | 
+				            	.//idml:boolean | 
+					            .//idml:code | 
+				            	.//idml:coordinate |
+				            	.//idml:date |
+				            	.//idml:file | 
+				            	.//idml:number | 
+				            	.//idml:range | 
+				            	.//idml:taxon | 
+				            	.//idml:text | 
+				            	.//idml:time"/>
+            <xs:field xpath="@id"/>
+          </xs:unique>
         </xs:element>
       </xs:sequence>
     </xs:complexType>
@@ -852,6 +896,7 @@
         </xs:annotation>
       </xs:element>
     </xs:sequence>
+ 	<xs:attribute name="id" type="xs:integer" use="required" />
     <xs:attribute name="name" type="internalName" use="required">
       <xs:annotation>
         <xs:documentation xml:lang="en">
@@ -1116,7 +1161,7 @@
                           </xs:documentation>
                       </xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="highestRank" type="xs:string">
+                    <xs:attribute name="highestRank" type="taxonRank">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
                             TO-DO
@@ -1672,6 +1717,23 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <!--~~~~~~~~~~~~~~~~~~~~~~~-->
+  <!--     Taxon Rank        -->
+  <!--~~~~~~~~~~~~~~~~~~~~~~~-->
+  <xs:simpleType name="taxonRank">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        TO-DO
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+		<xs:enumeration value="family" />
+		<xs:enumeration value="genus" />
+		<xs:enumeration value="species" />
+		<xs:enumeration value="subspecies" />
+	</xs:restriction>
+  </xs:simpleType>
+  
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->
   <!-- Natural Language Text -->
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->

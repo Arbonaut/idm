@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
 
@@ -22,7 +23,7 @@ public class AbsoluteModelPathExpressionTest extends AbstractTest {
 
 	@Test
 	public void testInterateRoot() throws InvalidExpressionException {
-		cluster.addEntity("plot");
+		EntityBuilder.addEntity(cluster, "plot");
 		List<Node<?>> list = iterateExpression("/cluster", record);
 
 		Assert.assertEquals(1, list.size());
@@ -30,9 +31,9 @@ public class AbsoluteModelPathExpressionTest extends AbstractTest {
 
 	@Test
 	public void testIteratePath() throws InvalidExpressionException {
-		cluster.addEntity("plot");
-		cluster.addEntity("plot");
-		cluster.addEntity("plot");
+		EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addEntity(cluster, "plot");
 		List<Node<?>> list = iterateExpression("/cluster/plot", record);
 
 		Assert.assertEquals(3, list.size());
@@ -40,12 +41,12 @@ public class AbsoluteModelPathExpressionTest extends AbstractTest {
 	
 	@Test
 	public void testIteratePath2() throws InvalidExpressionException {
-		Entity plot1 = cluster.addEntity("plot");
-		plot1.addValue("no", new Code("1"));
-		Entity plot2 = cluster.addEntity("plot");
-		plot2.addValue("no", new Code("1"));
-		Entity plot3 = cluster.addEntity("plot");
-		plot3.addValue("no", new Code("1"));
+		Entity plot1 = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addValue(plot1, "no", new Code("1"));
+		Entity plot2 = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addValue(plot2, "no", new Code("1"));
+		Entity plot3 = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addValue(plot3, "no", new Code("1"));
 
 		List<Node<?>> list = iterateExpression("/cluster/plot/no", record);
 
@@ -55,12 +56,12 @@ public class AbsoluteModelPathExpressionTest extends AbstractTest {
 
 	@Test(expected=InvalidExpressionException.class)
 	public void testInvalidExpression() throws InvalidExpressionException {
-		Entity plot1 = cluster.addEntity("plot");
-		plot1.addValue("no", new Code("1"));
-		Entity plot2 = cluster.addEntity("plot");
-		plot2.addValue("no", new Code("1"));
-		Entity plot3 = cluster.addEntity("plot");
-		plot3.addValue("no", new Code("1"));
+		Entity plot1 = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addValue(plot1, "no", new Code("1"));
+		Entity plot2 = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addValue(plot2, "no", new Code("1"));
+		Entity plot3 = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addValue(plot3, "no", new Code("1"));
 
 		iterateExpression("/plot/no", record);
 	}

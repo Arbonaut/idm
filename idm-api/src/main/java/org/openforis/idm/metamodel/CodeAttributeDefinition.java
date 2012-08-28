@@ -7,12 +7,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
+import org.simpleframework.xml.convert.Convert;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
@@ -24,34 +28,35 @@ import org.openforis.idm.model.Value;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression","required", "requiredExpression",
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes="", elements = {"id", "name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression","required", "requiredExpression",
 		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class CodeAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlTransient
+	@Transient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 		new FieldDefinition<String>("code", "c", null, String.class, this), 
 		new FieldDefinition<String>("qualifier", "q", "other", String.class, this)
 	};
 	
-	@XmlAttribute(name = "key")
+	@Attribute(name = "key")
 	private Boolean key;
 
-	@XmlAttribute(name = "strict")
-	@XmlJavaTypeAdapter(value = InvertBooleanAdapter.class)
+	@Attribute(name = "strict")
+	@Convert(InvertBooleanAdapter.class)
 	private Boolean allowUnlisted;
 
-	@XmlAttribute(name = "parent")
+	@Attribute(name = "parent")
 	private String parentExpression;
 
-	@XmlTransient
+	@Transient
 	private CodeList list;
 
-	@XmlTransient
+	@Transient
 	private CodeAttributeDefinition parentCodeAttributeDefinition; 
 	
 	public CodeList getList() {
@@ -62,7 +67,7 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		this.list = list;
 	}
 	
-	@XmlAttribute(name = "list")
+	@Attribute(name = "list")
 	public String getListName() {
 		return list == null ? null : list.getName();
 	}
@@ -123,4 +128,48 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	public Class<? extends Value> getValueType() {
 		return Code.class;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((allowUnlisted == null) ? 0 : allowUnlisted.hashCode());
+		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		result = prime * result + ((list == null) ? 0 : list.hashCode());
+		result = prime * result + ((parentExpression == null) ? 0 : parentExpression.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CodeAttributeDefinition other = (CodeAttributeDefinition) obj;
+		if (allowUnlisted == null) {
+			if (other.allowUnlisted != null)
+				return false;
+		} else if (!allowUnlisted.equals(other.allowUnlisted))
+			return false;
+		if (key == null) {
+			if (other.key != null)
+				return false;
+		} else if (!key.equals(other.key))
+			return false;
+		if (list == null) {
+			if (other.list != null)
+				return false;
+		} else if (!list.equals(other.list))
+			return false;
+		if (parentExpression == null) {
+			if (other.parentExpression != null)
+				return false;
+		} else if (!parentExpression.equals(other.parentExpression))
+			return false;
+		return true;
+	}
+	
 }

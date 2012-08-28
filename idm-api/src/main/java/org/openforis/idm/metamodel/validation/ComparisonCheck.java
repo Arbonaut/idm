@@ -3,11 +3,13 @@
  */
 package org.openforis.idm.metamodel.validation;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.IdmInterpretationError;
@@ -21,14 +23,15 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
 /**
  * @author M. Togna
  * @author G. Miceli
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order
 public class ComparisonCheck extends Check<Attribute<?,?>> {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlTransient
+	@Transient
 	private enum Operation {
 		LT("<"), LTE("<="), GT(">"), GTE(">="), EQ("=");
 
@@ -39,22 +42,22 @@ public class ComparisonCheck extends Check<Attribute<?,?>> {
 		}
 	}
 
-	@XmlTransient
+	@Transient
 	private String expression;
 
-	@XmlAttribute(name = "lt")
+	@org.simpleframework.xml.Attribute(name = "lt")
 	private String lessThanExpression;
 
-	@XmlAttribute(name = "lte")
+	@org.simpleframework.xml.Attribute(name = "lte")
 	private String lessThanOrEqualsExpression;
 
-	@XmlAttribute(name = "gt")
+	@org.simpleframework.xml.Attribute(name = "gt")
 	private String greaterThanExpression;
 
-	@XmlAttribute(name = "gte")
+	@org.simpleframework.xml.Attribute(name = "gte")
 	private String greaterThanOrEqualsExpression;
 
-	@XmlAttribute(name = "eq")
+	@org.simpleframework.xml.Attribute(name = "eq")
 	private String equalsExpression;
 
 	public String getLessThanExpression() {

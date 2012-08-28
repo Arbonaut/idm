@@ -1,13 +1,20 @@
 package org.openforis.idm.metamodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.convert.Convert;
 
 import org.openforis.idm.metamodel.xml.internal.NodeLabelTypeAdapter;
 
-@XmlAccessorType(XmlAccessType.FIELD)
+/**
+ * @author K. Waga
+ * 
+ */
+
+//@XmlAccessorType(XmlAccessType.FIELD)
 public class NodeLabel extends LanguageSpecificText {
 
 	private static final long serialVersionUID = 1L;
@@ -16,8 +23,8 @@ public class NodeLabel extends LanguageSpecificText {
 		HEADING, INSTANCE, NUMBER;
 	}
 
-	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(NodeLabelTypeAdapter.class)
+	@Attribute(name = "type")
+	@Convert(NodeLabelTypeAdapter.class)
 	private NodeLabel.Type type;
 
 	protected NodeLabel() {
@@ -31,4 +38,27 @@ public class NodeLabel extends LanguageSpecificText {
 	public NodeLabel.Type getType() {
 		return this.type;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NodeLabel other = (NodeLabel) obj;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+	
 }

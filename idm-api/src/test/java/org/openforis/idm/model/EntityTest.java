@@ -31,46 +31,46 @@ public class EntityTest {
 	@Test
 	public void testAddNullCode() {
 		Entity cluster = getRootEntity();
-		cluster.addValue("id", (Code) null);
+		EntityBuilder.addValue(cluster, "id", (Code) null);
 	}
 
 	// @Test(expected = ArrayIndexOutOfBoundsException.class)
 	// public void testAddTooManySingleAttributes() {
 	// Entity cluster = getRootEntity();
-	// cluster.addValue("id", new Code("123_456"));
-	// cluster.addValue("id", new Code("789_012"));
+	// EntityBuilder.addValue(cluster, "id", new Code("123_456"));
+	// EntityBuilder.addValue(cluster, "id", new Code("789_012"));
 	// }
 
 	// @Test(expected = ArrayIndexOutOfBoundsException.class)
 	// public void testAddTooManyMultipleEntities() {
 	// Entity cluster = getRootEntity();
-	// cluster.addEntity("time_study");
-	// cluster.addEntity("time_study");
-	// cluster.addEntity("time_study");
+	// EntityBuilder.addEntity(cluster, "time_study");
+	// EntityBuilder.addEntity(cluster, "time_study");
+	// EntityBuilder.addEntity(cluster, "time_study");
 	// }
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddAttributeOnEntity() {
 		Entity cluster = getRootEntity();
-		cluster.addValue("plot", new Code("123_456"));
+		EntityBuilder.addValue(cluster, "plot", new Code("123_456"));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddEntityOnAttribute() {
 		Entity cluster = getRootEntity();
-		cluster.addEntity("id");
+		EntityBuilder.addEntity(cluster, "id");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddUndefinedEntity() {
 		Entity cluster = getRootEntity();
-		cluster.addEntity("xxx");
+		EntityBuilder.addEntity(cluster, "xxx");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddUndefinedAttribute() {
 		Entity cluster = getRootEntity();
-		cluster.addValue("xxx", 2.0);
+		EntityBuilder.addValue(cluster, "xxx", 2.0);
 	}
 
 //	@Test
@@ -85,8 +85,8 @@ public class EntityTest {
 //	@Test
 //	public void testValidatePlot() {
 //		Entity cluster = getRootEntity();
-//		Entity plot = cluster.addEntity("plot");
-//		plot.addValue("share", 20.0);
+//		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+//		EntityBuilder.addValue(plot, "share", 20.0);
 //		
 //		State nodeState = new State(plot);
 //		ValidationResults results = new Validator().validate(nodeState);

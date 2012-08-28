@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openforis.idm</groupId>
 	<artifactId>idm</artifactId>
-	<version>3.0-Alpha2-SNAPSHOT</version>
+	<version>3.0-Alpha5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -24,7 +24,7 @@
 		<repository>
 			<id>releases</id>
 			<name>Repository with internal releases</name>
-			<url>http://ldvfo01:9000/nexus/content/repositories/releases</url>
+			<url>${idm-internal-repository.url}</url>
 		</repository>
 	</distributionManagement>
 
@@ -33,7 +33,7 @@
 		<url>scm:git:git@github.com:openforis/idm.git</url>
 		<developerConnection>scm:git:git@github.com:openforis/idm.git</developerConnection>
 	  <tag>HEAD</tag>
-  </scm>
+  	</scm>
 
 	<repositories>
 		<repository>
@@ -115,11 +115,6 @@
 				<groupId>org.openforis.idm</groupId>
 				<artifactId>idm-api-protostuff</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-impl</artifactId>
-				<version>2.2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geotools</groupId>

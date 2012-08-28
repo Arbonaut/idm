@@ -11,11 +11,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlType;*/
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
 
 import org.openforis.idm.metamodel.xml.internal.XmlInit;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
@@ -24,29 +27,36 @@ import org.openforis.idm.util.CollectionUtil;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "rootEntityDefinitions" })
-public class Schema  implements Serializable {
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(elements = { "entity" })
+public class Schema implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlElement(name = "entity", type = EntityDefinition.class)
+	/*@XmlElement(name = "entity", type = EntityDefinition.class)
+	private List<EntityDefinition> rootEntityDefinitions;*/
+	@ElementList(inline=true, entry="entity", type=EntityDefinition.class)
 	private List<EntityDefinition> rootEntityDefinitions;
 
-	@XmlTransient
+	@Transient
 	private Map<String, NodeDefinition> definitionsByPath;
 
-	@XmlTransient
+	@Transient
 	private Map<Integer, NodeDefinition> definitionsById;
 	
-	@XmlTransient
+	@Transient
 	@XmlParent
 	private Survey survey;
+
+	@Transient
+	private int nextDefinitionId;
 	
 	public Schema() {
 		definitionsByPath = new HashMap<String, NodeDefinition>(); 
-		definitionsById = new HashMap<Integer, NodeDefinition>(); 
+		definitionsById = new HashMap<Integer, NodeDefinition>();
+		nextDefinitionId = 1;
 	}
 	
 	public Survey getSurvey() {
@@ -100,8 +110,51 @@ public class Schema  implements Serializable {
 		return CollectionUtil.unmodifiableList(rootEntityDefinitions);
 	}
 
+	public void addRootEntityDefinition(EntityDefinition defn) {
+		if ( defn.getId() == null ) {
+			defn.setId(nextDefinitionId ++);
+		} else {
+			nextDefinitionId = Math.max(nextDefinitionId, defn.getId() + 1);
+		}
+		rootEntityDefinitions.add(defn);
+		indexById(defn);
+		indexByPath(defn);
+	}
+	
+	public void removeRootEntityDefinition(String name) {
+		EntityDefinition defn = getRootEntityDefinition(name);
+		rootEntityDefinitions.remove(defn);
+		reindexDefinitions();
+	}
+	
 	public EntityDefinition getRootEntityDefinition(String name) {
 		return (EntityDefinition) getByPath("/"+name);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((rootEntityDefinitions == null) ? 0 : rootEntityDefinitions.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Schema other = (Schema) obj;
+		if (rootEntityDefinitions == null) {
+			if (other.rootEntityDefinitions != null)
+				return false;
+		} else if (!rootEntityDefinitions.equals(other.rootEntityDefinitions))
+			return false;
+		return true;
+	}
+	
 	
 }

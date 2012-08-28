@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.IntegerAttribute;
 import org.openforis.idm.model.RealAttribute;
 import org.openforis.idm.model.TextAttribute;
@@ -25,48 +26,48 @@ public class ComparisonCheckTest extends ValidationTest {
 
 	@Test
 	public void testGteFailOnLt() {
-		IntegerAttribute crewNo = cluster.addValue("crew_no", 0);
+		IntegerAttribute crewNo = EntityBuilder.addValue(cluster, "crew_no", 0);
 		ValidationResults results = validate(crewNo);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testGtePassOnEq() {
-		IntegerAttribute crewNo = cluster.addValue("crew_no", 1);
+		IntegerAttribute crewNo = EntityBuilder.addValue(cluster, "crew_no", 1);
 		ValidationResults results = validate(crewNo);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testGtePassOnGt() {
-		IntegerAttribute crewNo = cluster.addValue("crew_no", 2);
+		IntegerAttribute crewNo = EntityBuilder.addValue(cluster, "crew_no", 2);
 		ValidationResults results = validate(crewNo);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testTimeGtFailOnLt() {
-		Entity timeStudy = cluster.addEntity("time_study");
-		timeStudy.addValue("start_time", new Time(10, 00));
-		TimeAttribute endTime = timeStudy.addValue("end_time", new Time(8, 00));
+		Entity timeStudy = EntityBuilder.addEntity(cluster, "time_study");
+		EntityBuilder.addValue(timeStudy, "start_time", new Time(10, 00));
+		TimeAttribute endTime = EntityBuilder.addValue(timeStudy, "end_time", new Time(8, 00));
 		ValidationResults results =  validate(endTime);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testTimeGtFailOnEq() {
-		Entity timeStudy = cluster.addEntity("time_study");
-		timeStudy.addValue("start_time", new Time(10, 00));
-		TimeAttribute endTime = timeStudy.addValue("end_time", new Time(10, 00));
+		Entity timeStudy = EntityBuilder.addEntity(cluster, "time_study");
+		EntityBuilder.addValue(timeStudy, "start_time", new Time(10, 00));
+		TimeAttribute endTime = EntityBuilder.addValue(timeStudy, "end_time", new Time(10, 00));
 		ValidationResults results = validate(endTime);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testTimeGtPassOnGt() {
-		Entity timeStudy = cluster.addEntity("time_study");
-		timeStudy.addValue("start_time", new Time(10, 00));
-		TimeAttribute endTime = timeStudy.addValue("end_time", new Time(10, 01));
+		Entity timeStudy = EntityBuilder.addEntity(cluster, "time_study");
+		EntityBuilder.addValue(timeStudy, "start_time", new Time(10, 00));
+		TimeAttribute endTime = EntityBuilder.addValue(timeStudy, "end_time", new Time(10, 01));
 		ValidationResults results = validate(endTime);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
@@ -75,7 +76,7 @@ public class ComparisonCheckTest extends ValidationTest {
 	public void testCodeGtConstant() throws Exception {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setGreaterThanExpression("-1");
-		CodeAttribute region = cluster.addValue("region", new Code("001"));
+		CodeAttribute region = EntityBuilder.addValue(cluster, "region", new Code("001"));
 		ValidationResultFlag result = check.evaluate(region);
 		assertEquals(OK, result);
 	}
@@ -84,7 +85,7 @@ public class ComparisonCheckTest extends ValidationTest {
 	public void testCodeLtConstant() {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setLessThanExpression("-1");
-		CodeAttribute region = cluster.addValue("region", new Code("001"));
+		CodeAttribute region = EntityBuilder.addValue(cluster, "region", new Code("001"));
 		ValidationResultFlag result = check.evaluate(region);
 		assertEquals(ERROR, result);
 	}
@@ -93,7 +94,7 @@ public class ComparisonCheckTest extends ValidationTest {
 	public void testTextGtConstant() throws Exception {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setGreaterThanExpression("-1");
-		TextAttribute mapSheet = cluster.addValue("map_sheet", "1");
+		TextAttribute mapSheet = EntityBuilder.addValue(cluster, "map_sheet", "1");
 		ValidationResultFlag result = check.evaluate(mapSheet);
 		assertEquals(OK, result);
 	}
@@ -102,42 +103,42 @@ public class ComparisonCheckTest extends ValidationTest {
 	public void testTextLtConstant() {
 		ComparisonCheck check = new ComparisonCheck();
 		check.setLessThanExpression("-1");
-		TextAttribute mapSheet = cluster.addValue("map_sheet", "1");
+		TextAttribute mapSheet = EntityBuilder.addValue(cluster, "map_sheet", "1");
 		ValidationResultFlag result = check.evaluate(mapSheet);
 		assertEquals(ERROR, result);
 	}
 	
 	@Test
 	public void testRealPassRange(){
-		RealAttribute plotDir = cluster.addValue("plot_direction", 256d);
+		RealAttribute plotDir = EntityBuilder.addValue(cluster, "plot_direction", 256d);
 		ValidationResults results =  validate(plotDir);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 
 	@Test
 	public void testRealPassRange2(){
-		RealAttribute plotDir = cluster.addValue("plot_direction", 0.0);
+		RealAttribute plotDir = EntityBuilder.addValue(cluster, "plot_direction", 0.0);
 		ValidationResults results = validate(plotDir);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
 	
 	@Test
 	public void testRealFailLt(){
-		RealAttribute plotDir = cluster.addValue("plot_direction", -52.345d);
+		RealAttribute plotDir = EntityBuilder.addValue(cluster, "plot_direction", -52.345d);
 		ValidationResults results =  validate(plotDir);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 	
 	@Test
 	public void testRealFailGt(){
-		RealAttribute plotDir = cluster.addValue("plot_direction", 552.345d);
+		RealAttribute plotDir = EntityBuilder.addValue(cluster, "plot_direction", 552.345d);
 		ValidationResults results =  validate(plotDir);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}
 	
 	@Test
 	public void testLteWithNormalizedValuesPassOnLt() {
-		RealAttribute plotDistance = cluster.addValue("plot_distance", 25000d);
+		RealAttribute plotDistance = EntityBuilder.addValue(cluster, "plot_distance", 25000d);
 		plotDistance.setUnitName("cm");
 		ValidationResults results = validate(plotDistance);
 		assertFalse(containsComparisonCheck(results.getErrors()));
@@ -145,7 +146,7 @@ public class ComparisonCheckTest extends ValidationTest {
 	
 	@Test
 	public void testLteWithNormalizedValuesFailOnLt() {
-		RealAttribute plotDistance = cluster.addValue("plot_distance", 25000d);
+		RealAttribute plotDistance = EntityBuilder.addValue(cluster, "plot_distance", 25000d);
 		plotDistance.setUnitName("m");
 		ValidationResults results = validate(plotDistance);
 		assertTrue(containsComparisonCheck(results.getErrors()));

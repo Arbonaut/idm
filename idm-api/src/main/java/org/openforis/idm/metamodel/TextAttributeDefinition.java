@@ -7,12 +7,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+/*import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Order;
+import org.simpleframework.xml.Transient;
+import org.simpleframework.xml.convert.Convert;
 
 import org.openforis.idm.metamodel.xml.internal.TextAttributeDefinitionTypeAdapter;
 import org.openforis.idm.model.Node;
@@ -23,13 +27,14 @@ import org.openforis.idm.model.Value;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "type", "key","required", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+//@XmlAccessorType(XmlAccessType.FIELD)
+@Order(attributes="", elements = {"id", "name", "type", "key","required", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
 	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class TextAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition {
 
-	@XmlTransient
+	@Transient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 			new FieldDefinition<String>("value", "v", null, String.class, this)
 	};
@@ -40,11 +45,11 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(TextAttributeDefinitionTypeAdapter.class)
+	@Attribute(name = "type")
+	@Convert(TextAttributeDefinitionTypeAdapter.class)
 	private Type type;
 
-	@XmlAttribute(name = "key")
+	@Attribute(name = "key")
 	private Boolean key;
 
 	public Type getType() {
@@ -76,4 +81,33 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 	public Class<? extends Value> getValueType() {
 		return TextValue.class;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TextAttributeDefinition other = (TextAttributeDefinition) obj;
+		if (key == null) {
+			if (other.key != null)
+				return false;
+		} else if (!key.equals(other.key))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+	
 }

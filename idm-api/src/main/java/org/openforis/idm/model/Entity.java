@@ -4,32 +4,22 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.metamodel.AttributeDefinition;
-import org.openforis.idm.metamodel.BooleanAttributeDefinition;
-import org.openforis.idm.metamodel.CodeAttributeDefinition;
-import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
-import org.openforis.idm.metamodel.DateAttributeDefinition;
 import org.openforis.idm.metamodel.EntityDefinition;
-import org.openforis.idm.metamodel.FileAttributeDefinition;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
-import org.openforis.idm.metamodel.NumberAttributeDefinition;
-import org.openforis.idm.metamodel.RangeAttributeDefinition;
 import org.openforis.idm.metamodel.SurveyContext;
-import org.openforis.idm.metamodel.TaxonAttributeDefinition;
-import org.openforis.idm.metamodel.TextAttributeDefinition;
-import org.openforis.idm.metamodel.TimeAttributeDefinition;
-import org.openforis.idm.metamodel.Unit;
 import org.openforis.idm.metamodel.validation.ValidationResultFlag;
 import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.expression.ExpressionFactory;
@@ -41,6 +31,7 @@ import org.openforis.idm.util.CollectionUtil;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author S. Ricci
  * 
  */
 public class Entity extends Node<EntityDefinition> {
@@ -97,31 +88,6 @@ public class Entity extends Node<EntityDefinition> {
 	}
 	
 	/**
-	 * @param name
-	 * @return the newly created Entity
-	 * @throws ArrayIndexOutOfBoundsException
-	 *             if adding would break the maxCount rule
-	 */
-	public Entity addEntity(String name) {
-		Entity entity = createEntity(name);
-		addInternal(entity, null);
-		return entity;
-	}
-
-	/**
-	 * @param name
-	 * @param idx
-	 * @return the newly created Entity
-	 * @throws ArrayIndexOutOfBoundsException
-	 *             if adding would break the maxCount rule
-	 */
-	public Entity addEntity(String name, int idx) {
-		Entity entity = createEntity(name);
-		addInternal(entity, idx);
-		return entity;
-	}
-
-	/**
 	 * @return true if any descendant is a non-blank value
 	 */
 	@Override
@@ -156,118 +122,6 @@ public class Entity extends Node<EntityDefinition> {
 //		return addValueInternal(name, value, idx);
 //	}
 	
-	public BooleanAttribute addValue(String name, Boolean value, int idx) {
-		return addValueInternal(name, new BooleanValue(value), idx, BooleanAttribute.class, BooleanAttributeDefinition.class);
-	}
-
-	public BooleanAttribute addValue(String name, Boolean value) {
-		return addValueInternal(name, new BooleanValue(value), null, BooleanAttribute.class, BooleanAttributeDefinition.class);
-	}
-
-	public CodeAttribute addValue(String name, Code value, int idx) {
-		return addValueInternal(name, value, idx, CodeAttribute.class, CodeAttributeDefinition.class);
-	}
-
-	public CodeAttribute addValue(String name, Code value) {
-		return addValueInternal(name, value, null, CodeAttribute.class, CodeAttributeDefinition.class);
-	}
-
-	public CoordinateAttribute addValue(String name, Coordinate value, int idx) {
-		return addValueInternal(name, value, idx, CoordinateAttribute.class, CoordinateAttributeDefinition.class);
-	}
-
-	public CoordinateAttribute addValue(String name, Coordinate value) {
-		return addValueInternal(name, value, null, CoordinateAttribute.class, CoordinateAttributeDefinition.class);
-	}
-
-	public FileAttribute addValue(String name, File value, int idx) {
-		return addValueInternal(name, value, idx, FileAttribute.class, FileAttributeDefinition.class);
-	}
-
-	public FileAttribute addValue(String name, File value) {
-		return addValueInternal(name, value, null, FileAttribute.class, FileAttributeDefinition.class);
-	}
-
-	public RealAttribute addValue(String name, Double value, Unit unit, int idx) {
-		return addValueInternal(name, new RealValue(value, unit), idx, RealAttribute.class, NumberAttributeDefinition.class);
-	}
-
-	public RealAttribute addValue(String name, Double value, Unit unit) {
-		return addValueInternal(name, new RealValue(value, unit), null, RealAttribute.class, NumberAttributeDefinition.class);
-	}
-
-	public IntegerAttribute addValue(String name, Integer value, Unit unit, int idx) {
-		return addValueInternal(name, new IntegerValue(value, unit), idx, IntegerAttribute.class, NumberAttributeDefinition.class);
-	}
-
-	public IntegerAttribute addValue(String name, Integer value, Unit unit) {
-		return addValueInternal(name, new IntegerValue(value, unit), null, IntegerAttribute.class, NumberAttributeDefinition.class);
-	}
-
-	public RealAttribute addValue(String name, Double value, int idx) {
-		return addValueInternal(name, new RealValue(value, null), idx, RealAttribute.class, NumberAttributeDefinition.class);
-	}
-
-	public RealAttribute addValue(String name, Double value) {
-		return addValueInternal(name, new RealValue(value, null), null, RealAttribute.class, NumberAttributeDefinition.class);
-	}
-
-	public IntegerAttribute addValue(String name, Integer value, int idx) {
-		return addValueInternal(name, new IntegerValue(value, null), idx, IntegerAttribute.class, NumberAttributeDefinition.class);
-	}
-
-	public IntegerAttribute addValue(String name, Integer value) {
-		return addValueInternal(name, new IntegerValue(value, null), null, IntegerAttribute.class, NumberAttributeDefinition.class);
-	}
-
-	public RealRangeAttribute addValue(String name, RealRange value, int idx) {
-		return addValueInternal(name, value, idx, RealRangeAttribute.class, RangeAttributeDefinition.class);
-	}
-
-	public RealRangeAttribute addValue(String name, RealRange value) {
-		return addValueInternal(name, value, null, RealRangeAttribute.class, RangeAttributeDefinition.class);
-	}
-
-	public IntegerRangeAttribute addValue(String name, IntegerRange value, int idx) {
-		return addValueInternal(name, value, idx, IntegerRangeAttribute.class, RangeAttributeDefinition.class);
-	}
-
-	public IntegerRangeAttribute addValue(String name, IntegerRange value) {
-		return addValueInternal(name, value, null, IntegerRangeAttribute.class, RangeAttributeDefinition.class);
-	}
-	
-	public DateAttribute addValue(String name, Date value, int idx) {
-		return addValueInternal(name, value, idx, DateAttribute.class, DateAttributeDefinition.class);
-	}
-
-	public DateAttribute addValue(String name, Date value) {
-		return addValueInternal(name, value, null, DateAttribute.class, DateAttributeDefinition.class);
-	}
-	
-	public TextAttribute addValue(String name, String value, int idx) {
-		return addValueInternal(name, new TextValue(value), idx, TextAttribute.class, TextAttributeDefinition.class);
-	}
-
-	public TextAttribute addValue(String name, String value) {
-		return addValueInternal(name, new TextValue(value), null, TextAttribute.class, TextAttributeDefinition.class);
-	}
-
-	public TaxonAttribute addValue(String name, TaxonOccurrence value, int idx) {
-		return addValueInternal(name, value, idx, TaxonAttribute.class, TaxonAttributeDefinition.class);
-	}
-
-	public TaxonAttribute addValue(String name, TaxonOccurrence value) {
-		return addValueInternal(name, value, null, TaxonAttribute.class, TaxonAttributeDefinition.class);
-	}
-
-	public TimeAttribute addValue(String name, Time value, int idx) {
-		return addValueInternal(name, value, idx, TimeAttribute.class, TimeAttributeDefinition.class);
-	}
-
-	public TimeAttribute addValue(String name, Time value) {
-		return addValueInternal(name, value, null, TimeAttribute.class, TimeAttributeDefinition.class);
-	}
-
 	public Node<? extends NodeDefinition> get(String name, int index) {
 		checkChildDefinition(name);
 
@@ -291,7 +145,10 @@ public class Entity extends Node<EntityDefinition> {
 	}
 
 	private void checkChildDefinition(String name) {
-		getChildDefinition(name);
+		NodeDefinition childDefn = definition.getChildDefinition(name);
+		if (childDefn == null) {
+			throw new IllegalArgumentException("Undefined schema object " + getDefinition().getPath() + "/" + name);
+		}
 	}
 
 	/*
@@ -392,13 +249,6 @@ public class Entity extends Node<EntityDefinition> {
 //		}
 //	}
 	
-	private <T extends Attribute<D, V>, D extends AttributeDefinition, V extends Value> T addValueInternal(String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
-		T attr = createNode(name, type, definitionType);
-		addInternal(attr, idx);
-		attr.setValue(value);
-		return attr;
-	}
-
 	/**
 	 * Adds an item at the specified index. Assumed o has already been checked to be of the appropriate type. All added entities or attributes pass
 	 * through this method
@@ -417,7 +267,6 @@ public class Entity extends Node<EntityDefinition> {
 		// Get child definition and name
 		NodeDefinition defn = o.getDefinition();
 		String name = defn.getName();
-
 		// Get child's definition and check schema object definition is the same
 		NodeDefinition childDefn = getDefinition().getChildDefinition(name);
 		if ( childDefn == null ) {
@@ -462,62 +311,6 @@ public class Entity extends Node<EntityDefinition> {
 //		return definition.createNode();		
 //	}
 	
-	private <T extends Node<D>, D extends NodeDefinition> T createNode(String name, Class<T> type, Class<D> definitionType) {
-		try {
-			NodeDefinition definition = getChildDefinition(name, definitionType);
-			return type.getConstructor(definitionType).newInstance(definition);
-		} catch (SecurityException e) {
-			throw new RuntimeException(e);
-		} catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (InvocationTargetException e) {
-			if (e.getCause() instanceof RuntimeException) {
-				throw (RuntimeException) e.getCause();
-			} else {
-				throw new RuntimeException(e);
-			}
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private Entity createEntity(String name) {
-		EntityDefinition defn = getChildDefinition(name, EntityDefinition.class);
-		Entity entity = new Entity(defn);
-		return entity;
-	}
-
-	/**
-	 * Get child definition
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if not defined in model
-	 */
-	private NodeDefinition getChildDefinition(String name) {
-		NodeDefinition childDefinition = getDefinition().getChildDefinition(name);
-		if (childDefinition == null) {
-			throw new IllegalArgumentException("Undefined schema object " + getDefinition().getPath() + "/" + name);
-		}
-		return childDefinition;
-	}
-
-	/**
-	 * Get child definition and cast to requested type
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if not defined in model or if not assignable from type defined in definitionClass
-	 */
-	@SuppressWarnings("unchecked")
-	private <T> T getChildDefinition(String name, Class<T> definitionClass) {
-		NodeDefinition childDefinition = getChildDefinition(name);
-		if (!childDefinition.getClass().isAssignableFrom(definitionClass)) {
-			throw new IllegalArgumentException(childDefinition.getPath() + " is not a " + definitionClass.getSimpleName());
-		}
-		return (T) childDefinition;
-	}
-
 	public List<Node<? extends NodeDefinition>> getAll(String name) {
 		List<Node<? extends NodeDefinition>> children = childrenByName.get(name);
 		return  CollectionUtil.unmodifiableList(children);
@@ -631,7 +424,7 @@ public class Entity extends Node<EntityDefinition> {
 		EntityDefinition parentDefn = (EntityDefinition) getDefinition().getParentDefinition();
 		 
 		if(parentDefn == null || parent == null || parent.isRelevant(getName())){
-			NodeDefinition defn = getChildDefinition(childName);
+			NodeDefinition defn = definition.getChildDefinition(childName);
 			String expr = defn.getRelevantExpression();
 			if (StringUtils.isBlank(expr)) {
 				return true;
@@ -652,7 +445,7 @@ public class Entity extends Node<EntityDefinition> {
 	}
 
 	public boolean isRequired(String childName) {
-		NodeDefinition defn = getChildDefinition(childName);
+		NodeDefinition defn = definition.getChildDefinition(childName);
 		Integer minCount = defn.getMinCount();
 		if ( minCount == null ) {
 			String requiredExpression = defn.getRequiredExpression();
@@ -673,7 +466,7 @@ public class Entity extends Node<EntityDefinition> {
 
 	private boolean evaluateRequiredExpression(String childName) {
 		try {
-			NodeDefinition defn = getChildDefinition(childName);
+			NodeDefinition defn = definition.getChildDefinition(childName);
 			Record record = getRecord();
 			SurveyContext context = record.getSurveyContext();
 			ExpressionFactory expressionFactory = context.getExpressionFactory();
@@ -692,7 +485,7 @@ public class Entity extends Node<EntityDefinition> {
 	 * requiredExpression properties
 	 */
 	public int getEffectiveMinCount(String childName) {
-		NodeDefinition defn = getChildDefinition(childName);
+		NodeDefinition defn = definition.getChildDefinition(childName);
 		Integer minCount = defn.getMinCount();
 		// requiredExpression is only considered if minCount and required are not set
 		if ( minCount==null ) {
@@ -802,6 +595,9 @@ public class Entity extends Node<EntityDefinition> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		//custom code
+		removeEmptyChildStates();
+		normalizeChildrenByName();
 		result = prime * result
 				+ ((childStates == null) ? 0 : childStates.hashCode());
 		result = prime * result
@@ -818,16 +614,61 @@ public class Entity extends Node<EntityDefinition> {
 		if (getClass() != obj.getClass())
 			return false;
 		Entity other = (Entity) obj;
-		if (childStates == null) {
-			if (other.childStates != null)
-				return false;
-		} else if (!childStates.equals(other.childStates))
+		//custom check
+		if (! isChildStatesEquals(other) ) {
 			return false;
+		}
 		if (childrenByName == null) {
 			if (other.childrenByName != null)
 				return false;
-		} else if (!childrenByName.equals(other.childrenByName))
-			return false;
+		} else {
+			//custom check
+			normalizeChildrenByName();
+			other.normalizeChildrenByName();
+			if (!childrenByName.equals(other.childrenByName))
+				return false;
+		}
 		return true;
+	}
+
+	private boolean isChildStatesEquals(Entity other) {
+		if (childStates == null) {
+			if (other.childStates != null) {
+				return false;
+			}
+		} else {
+			removeEmptyChildStates();
+			other.removeEmptyChildStates();
+			if (!childStates.equals(other.childStates)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	protected void removeEmptyChildStates() {
+		if ( childStates != null ) {
+			Set<Entry<String,State>> entrySet = childStates.entrySet();
+			Iterator<Entry<String, State>> iterator = entrySet.iterator();
+			while ( iterator.hasNext() ) {
+				Entry<String, State> entry = iterator.next();
+				State childState = entry.getValue();
+				if ( childState.intValue() == 0 ) {
+					iterator.remove();
+				}
+			}
+		}
+	}
+	
+	protected void normalizeChildrenByName() {
+		Set<Entry<String, ArrayList<Node<?>>>> entrySet = childrenByName.entrySet();
+		Iterator<Entry<String, ArrayList<Node<?>>>> iterator = entrySet.iterator();
+		while ( iterator.hasNext() ) {
+			Entry<String, ArrayList<Node<?>>> entry = iterator.next();
+			ArrayList<Node<?>> nodes = entry.getValue();
+			if ( nodes == null || nodes.isEmpty()) {
+				iterator.remove();
+			}
+		}
 	}
 }

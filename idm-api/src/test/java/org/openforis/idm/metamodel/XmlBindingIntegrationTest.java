@@ -5,7 +5,6 @@ package org.openforis.idm.metamodel;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -29,7 +28,7 @@ public class XmlBindingIntegrationTest {
 	private Log log = LogFactory.getLog(XmlBindingIntegrationTest.class);
 
 	@Test
-	public void roundTripMarshallingTest() throws IOException, InvalidIdmlException {
+	public void roundTripMarshallingTest() throws Exception {
 		try {
 			URL idm = ClassLoader.getSystemResource("test.idm.xml");
 			InputStream is = idm.openStream();
@@ -49,6 +48,8 @@ public class XmlBindingIntegrationTest {
 			for (ValidationEvent validationEvent : validationEvents) {
 				log.error(validationEvent.getMessage());
 			}
+			throw e;
+		} catch (Exception e) {
 			throw e;
 		}
 	}

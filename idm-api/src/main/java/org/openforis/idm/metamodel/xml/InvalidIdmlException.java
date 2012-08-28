@@ -12,6 +12,10 @@ public class InvalidIdmlException extends Exception {
 	
 	private ValidationEvent[] validationEvents;
 
+	public InvalidIdmlException(String message) {
+		super(message);
+	}
+	
 	public InvalidIdmlException(ValidationEvent[] validationEvents) {
 		this.validationEvents = validationEvents;
 	}
@@ -22,15 +26,19 @@ public class InvalidIdmlException extends Exception {
 	
 	@Override
 	public String getMessage() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Invalid IDML. Messages: ");
-		for (int i = 0; i < validationEvents.length; i++) {
-			ValidationEvent event = validationEvents[i];
-			if ( i > 0 ) {
-				sb.append(", ");
+		if ( validationEvents != null && validationEvents.length > 0 ) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("Invalid IDML. Messages: ");
+			for (int i = 0; i < validationEvents.length; i++) {
+				ValidationEvent event = validationEvents[i];
+				if ( i > 0 ) {
+					sb.append(", ");
+				}
+				sb.append(event.getMessage());
 			}
-			sb.append(event.getMessage());
+			return sb.toString();
+		} else {
+			return super.getMessage();
 		}
-		return sb.toString();
 	}
 }

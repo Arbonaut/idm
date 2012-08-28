@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openforis.idm.AbstractTest;
 import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RealAttribute;
 import org.openforis.idm.model.RealRange;
@@ -25,9 +26,9 @@ public class ComparisonExpressionTest extends AbstractTest {
 
 	@Before
 	public void beforeTest() {
-		energySource = household.addEntity("energy_source");
-		monthlyConsumption = energySource.addValue("monthly_consumption", new RealRange(null, null));
-		distanceToForest = household.addValue("distance_to_forest", (Double) null);
+		energySource = EntityBuilder.addEntity(household, "energy_source");
+		monthlyConsumption = EntityBuilder.addValue(energySource, "monthly_consumption", new RealRange(null, null));
+		distanceToForest = EntityBuilder.addValue(household, "distance_to_forest", (Double) null);
 	}
 	
 	@Test

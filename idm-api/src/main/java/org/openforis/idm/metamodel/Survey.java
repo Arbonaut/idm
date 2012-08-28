@@ -16,9 +16,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Transient;
+import org.simpleframework.xml.convert.Convert;
 
 import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
 import org.openforis.idm.model.NodePathPointer;
@@ -61,20 +63,28 @@ public class Survey implements Serializable {
 	@Element(name = "configuration")
 	private ConfigurationWrapper configuration;
 	
-	@XmlElement(name = "version", type = ModelVersion.class)
+	/*@XmlElement(name = "version", type = ModelVersion.class)
 	@XmlElementWrapper(name = "versioning")
+	private List<ModelVersion> modelVersions;*/
+	@ElementList(name = "version", type = ModelVersion.class, required=false)
 	private List<ModelVersion> modelVersions;
 
-	@XmlElement(name = "list", type = CodeList.class)
+	/*@XmlElement(name = "list", type = CodeList.class)
 	@XmlElementWrapper(name = "codeLists")
-	private List<CodeList> codeLists;
+	private List<CodeList> codeLists;*/
+	@ElementList(name = "list", type = CodeList.class, required=false)
+	private List<CodeList> codeLists;;
 
-	@XmlElement(name = "unit", type = Unit.class)
+	/*@XmlElement(name = "unit", type = Unit.class)
 	@XmlElementWrapper(name = "units")
+	private List<Unit> units;*/
+	@ElementList(name = "unit", type = Unit.class, required=false)
 	private List<Unit> units;
 
-	@XmlElement(name = "spatialReferenceSystem", type = SpatialReferenceSystem.class)
+	/*@XmlElement(name = "spatialReferenceSystem", type = SpatialReferenceSystem.class)
 	@XmlElementWrapper(name = "spatialReferenceSystems")
+	private List<SpatialReferenceSystem> spatialReferenceSystems;*/
+	@ElementList(name = "spatialReferenceSystem", type = SpatialReferenceSystem.class, required=false)
 	private List<SpatialReferenceSystem> spatialReferenceSystems;
 
 	@Element(name = "schema", type = Schema.class)
@@ -403,14 +413,15 @@ public class Survey implements Serializable {
 	 * Workaround for JAXB since @XmlAnyElement, @XmlElementWrapper and @XmlJavaTypeAdapter 
 	 * wouldn't play nice together
 	 */
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlType
+	//@XmlAccessorType(XmlAccessType.FIELD)
+	@Order
 	private static class ConfigurationWrapper implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 		
-		@XmlAnyElement
-		@XmlJavaTypeAdapter(ConfigurationXmlAdapter.class)
+		//@XmlAnyElement
+		@Element
+		@Convert(ConfigurationXmlAdapter.class)
 		List<Configuration> list;
 
 		@Override

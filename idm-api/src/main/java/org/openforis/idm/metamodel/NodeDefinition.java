@@ -182,6 +182,41 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		}
 		return Collections.unmodifiableList(list);
 	}
+	
+	public String getLabel(NodeLabel.Type type, String language) {
+		NodeLabel label = getNodeLabel(type, language);
+		if ( label != null ) {
+			return label.getText();
+		} else {
+			return null;
+		}
+	}
+	
+	public void setLabel(NodeLabel.Type type, String language, String text) {
+		if ( labels == null ) {
+			labels = new ArrayList<NodeLabel>();
+		}
+		NodeLabel oldLabel = getNodeLabel(type, language);
+		if ( oldLabel == null ) {
+			NodeLabel newLabel = new NodeLabel(type, language, text);
+			addLabel(newLabel);
+		} else {
+			oldLabel.setText(text);
+		}
+	}
+
+	protected NodeLabel getNodeLabel(NodeLabel.Type type, String language) {
+		if (labels != null ) {
+			for (NodeLabel label : labels) {
+				String labelLang = label.getLanguage();
+				if ( label.getType()== type && ( language == null && labelLang == null ||
+						language != null && language.equals(labelLang) ) ) {
+					return label;
+				}
+			}
+		}
+		return null;
+	}
 
 	public void addLabel(NodeLabel label) {
 		if (labels == null) {
@@ -210,6 +245,32 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return CollectionUtil.unmodifiableList(descriptions);
 	}
 
+	public String getDescription(String language) {
+		if (descriptions != null ) {
+			return LanguageSpecificText.getText(descriptions, language);
+		} else {
+			return null;
+		}
+	}
+	
+	public void setDescription(String language, String description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		LanguageSpecificText.setText(descriptions, language, description);
+	}
+	
+	public void addDescription(LanguageSpecificText description) {
+		if ( descriptions == null ) {
+			descriptions = new ArrayList<LanguageSpecificText>();
+		}
+		descriptions.add(description);
+	}
+
+	public void removeDescription(String language) {
+		LanguageSpecificText.remove(descriptions, language);
+	}
+	
 	public String getPath() {
 		NodeDefinition defn = this;
 		StringBuilder sb = new StringBuilder(64);

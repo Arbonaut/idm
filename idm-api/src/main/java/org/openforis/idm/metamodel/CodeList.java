@@ -106,7 +106,9 @@ public class CodeList extends Versionable implements Serializable {
 	protected CodeListLabel getCodeListLabel(CodeListLabel.Type type, String language) {
 		if (labels != null ) {
 			for (CodeListLabel label : labels) {
-				if ( label.getType()== type && label.getLanguage().equals(language)) {
+				String labelLang = label.getLanguage();
+				if ( label.getType()== type && ( language == null && labelLang == null ||
+						language != null && language.equals(labelLang) ) ) {
 					return label;
 				}
 			}

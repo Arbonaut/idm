@@ -18,7 +18,6 @@ import javax.xml.namespace.QName;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Transient;
-import org.simpleframework.xml.ElementMap;
 
 import org.openforis.idm.metamodel.expression.SchemaPathExpression;
 import org.openforis.idm.metamodel.xml.internal.XmlInherited;
@@ -85,11 +84,8 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-	@ElementMap(name="annotations",key="annotations", keyType=QName.class, 
-				valueType=String.class, attribute=true, inline=false)
+	@XmlAnyAttribute
 	private Map<QName,String> annotations;
-	/*@XmlAnyAttribute
-	private Map<QName,String> annotations;*/
 	
 	public abstract Node<?> createNode();
 	

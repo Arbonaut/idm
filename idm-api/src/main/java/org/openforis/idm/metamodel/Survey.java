@@ -73,7 +73,7 @@ public class Survey implements Serializable {
 	@XmlElementWrapper(name = "codeLists")
 	private List<CodeList> codeLists;*/
 	@ElementList(name = "codeLists", entry = "list", type = CodeList.class, required=false)
-	private List<CodeList> codeLists;;
+	private List<CodeList> codeLists;
 
 	/*@XmlElement(name = "unit", type = Unit.class)
 	@XmlElementWrapper(name = "units")
@@ -416,13 +416,10 @@ public class Survey implements Serializable {
 	 * Workaround for JAXB since @XmlAnyElement, @XmlElementWrapper and @XmlJavaTypeAdapter 
 	 * wouldn't play nice together
 	 */
-	//@XmlAccessorType(XmlAccessType.FIELD)
-	//@Order
 	private static class ConfigurationWrapper implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 		
-		//@XmlAnyElement
 		@ElementList(inline = true, required = false)
 		@Convert(ConfigurationXmlAdapter.class)
 		List<Configuration> list;

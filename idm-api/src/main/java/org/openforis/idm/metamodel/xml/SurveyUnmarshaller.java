@@ -14,10 +14,17 @@ import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openforis.idm.metamodel.CodeListLabel;
+import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
+import org.openforis.idm.metamodel.xml.internal.CodeListLabelTypeAdapter;
+import org.openforis.idm.metamodel.xml.internal.CollapsedStringAdapter;
 import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.convert.Registry;
+import org.simpleframework.xml.convert.RegistryStrategy;
 import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.strategy.Strategy;
 import org.xml.sax.SAXException;
 
 /**
@@ -81,7 +88,10 @@ public class SurveyUnmarshaller {
 			JAXBElement<? extends Survey> jaxbElement = unmarshaller.unmarshal(new StreamSource(is), surveyClass);
 			Survey survey = jaxbElement.getValue();
 			*/
-			Serializer serializer = new Persister();
+			Registry registry = new Registry();
+			registry.bind(CodeListLabel.class, CodeListLabelTypeAdapter.class);
+			Strategy strategy = new RegistryStrategy(registry);
+			Serializer serializer = new Persister(strategy);
 			Survey survey = serializer.read(surveyClass, is, false);
 			survey.setSurveyContext(surveyContext);
 			/*

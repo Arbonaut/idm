@@ -78,6 +78,7 @@ public class EntityDefinition extends NodeDefinition {
 			childDefinitions = new ArrayList<NodeDefinition>();
 		}
 		childDefinitions.add(defn);
+		defn.setParentDefinition(this);
 	}
 
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {

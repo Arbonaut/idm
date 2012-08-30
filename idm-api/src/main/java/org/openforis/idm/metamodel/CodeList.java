@@ -49,7 +49,7 @@ public class CodeList extends Versionable implements Serializable {
 
 	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;*/
-	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class)
+	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class, required = false)
 	private List<LanguageSpecificText> descriptions;
 
 //	@XmlElement(name = "codingScheme", type = CodingScheme.class)
@@ -57,7 +57,7 @@ public class CodeList extends Versionable implements Serializable {
 
 	/*@XmlElement(name = "codingScheme", type = CodingScheme.class)
 	private CodingScheme codingScheme;*/
-	@Element(name = "codingScheme", type = CodingScheme.class)
+	@Element(name = "codingScheme", type = CodingScheme.class, required = false)
 	private CodingScheme codingScheme;
 
 	/*@XmlElement(name = "level", type = CodeListLevel.class)

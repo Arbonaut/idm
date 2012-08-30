@@ -35,7 +35,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = {"id", "qualifiable", "sinceVersionName", "deprecatedVersionName"}, elements = { "code", "labels", "descriptions", "childItems" })
+@Order(attributes = {"id", "qualifiable", "since", "deprecated"}, elements = { "code", "label", "description", "item" })
 public class CodeListItem extends Versionable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -43,7 +43,7 @@ public class CodeListItem extends Versionable implements Serializable {
 	@Attribute(name = "id")
 	private int id;
 
-	@Attribute(name = "qualifiable")
+	@Attribute(name = "qualifiable", required = false)
 	private Boolean qualifiable;
 
 	//@XmlElement(name = "code")
@@ -54,17 +54,17 @@ public class CodeListItem extends Versionable implements Serializable {
 
 	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> labels;*/
-	@ElementList(entry="label", type = LanguageSpecificText.class, required=false)
+	@ElementList(inline = true, entry="label", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> labels;
 
 	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;*/
-	@ElementList(entry="description", type = LanguageSpecificText.class, required=false)
+	@ElementList(inline = true, entry="description", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> descriptions;
 
 	/*@XmlElement(name = "item", type = CodeListItem.class)
 	private List<CodeListItem> childItems;*/
-	@ElementList(entry="item", type = CodeListItem.class, required=false)
+	@ElementList(inline = true, entry="item", type = CodeListItem.class, required=false)
 	private List<CodeListItem> childItems;
 
 	@Transient

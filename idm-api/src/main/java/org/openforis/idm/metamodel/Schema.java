@@ -4,6 +4,7 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -115,6 +116,9 @@ public class Schema implements Serializable {
 			defn.setId(nextDefinitionId ++);
 		} else {
 			nextDefinitionId = Math.max(nextDefinitionId, defn.getId() + 1);
+		}
+		if ( rootEntityDefinitions == null) {
+			rootEntityDefinitions = new ArrayList<EntityDefinition>();
 		}
 		rootEntityDefinitions.add(defn);
 		indexById(defn);

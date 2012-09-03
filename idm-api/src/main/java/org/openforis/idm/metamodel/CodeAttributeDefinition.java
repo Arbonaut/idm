@@ -58,8 +58,12 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		return this.list;
 	}
 
-	protected void setList(CodeList list) {
-		this.list = list;
+	public void setList(CodeList list) {
+		if ( list == null || list.getSurvey() != null && list.getSurvey().equals(this.getSurvey() )) {
+			this.list = list;
+		} else {
+			throw new IllegalArgumentException("Cannot add a list from a different survey");
+		}
 	}
 	
 	@XmlAttribute(name = "list")
@@ -79,16 +83,30 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		this.list = newList;
 	}
 	
+	@Override
 	public boolean isKey() {
 		return this.key == null ? false : key;
+	}
+	
+	@Override
+	public void setKey(boolean key) {
+		this.key = key;
 	}
 
 	public boolean isAllowUnlisted() {
 		return allowUnlisted == null ? false : allowUnlisted;
 	}
 	
+	public void setAllowUnlisted(Boolean allowUnlisted) {
+		this.allowUnlisted = allowUnlisted;
+	}
+	
 	public String getParentExpression() {
 		return this.parentExpression;
+	}
+	
+	public void setParentExpression(String parentExpression) {
+		this.parentExpression = parentExpression;
 	}
 
 	public CodeAttributeDefinition getParentCodeAttributeDefinition() {

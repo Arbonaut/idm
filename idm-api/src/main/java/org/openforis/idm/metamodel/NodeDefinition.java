@@ -116,7 +116,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return schema;
 	}
 
-	protected void setSchema(Schema schema) {
+	public void setSchema(Schema schema) {
 		this.schema = schema;
 	}
 	

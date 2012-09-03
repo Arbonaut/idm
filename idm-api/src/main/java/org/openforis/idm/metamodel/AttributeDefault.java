@@ -42,12 +42,24 @@ public class AttributeDefault implements Serializable {
 		return value;
 	}
 	
+	public void setValue(String value) {
+		this.value = value;
+	}
+	
 	public String getExpression() {
 		return this.expression;
+	}
+	
+	public void setExpression(String expression) {
+		this.expression = expression;
 	}
 
 	public String getCondition() {
 		return this.condition;
+	}
+	
+	public void setCondition(String condition) {
+		this.condition = condition;
 	}
 	
 	@SuppressWarnings("unchecked")

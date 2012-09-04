@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import org.openforis.idm.metamodel.validation.CustomCheck;
 import org.openforis.idm.metamodel.validation.DistanceCheck;
 import org.openforis.idm.metamodel.validation.PatternCheck;
 import org.openforis.idm.metamodel.validation.UniquenessCheck;
+import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.model.Value;
 import org.openforis.idm.util.CollectionUtil;
@@ -46,9 +48,42 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	public List<Check<?>> getChecks() {
 		return CollectionUtil.unmodifiableList(this.checks);
 	}
+	
+	public void addCheck(Check<?> check) {
+		if ( checks == null ) {
+			checks = new ArrayList<Check<?>>();
+		}
+		checks.add(check);
+	}
+	
+	public void removeAllChecks() {
+		if ( checks != null ) {
+			checks.clear();
+		}
+	}
+	
+	public void removeCheck(Check<?> check) {
+		checks.remove(check);
+	}
 
 	public List<AttributeDefault> getAttributeDefaults() {
 		return CollectionUtil.unmodifiableList(this.attributeDefaults);
+	}
+
+	public void addAttributeDefault(AttributeDefault def) {
+		if ( attributeDefaults == null ) {
+			attributeDefaults = new ArrayList<AttributeDefault>();
+		}
+		attributeDefaults.add(def);
+	}
+
+	public void removeAllAttributeDefaults() {
+		if ( attributeDefaults != null ) {
+			attributeDefaults.clear();
+		}
+	}
+	public void removeAttributeDefault(AttributeDefault def) {
+		attributeDefaults.remove(def);
 	}
 
 	public abstract <V extends Value> V createValue(String string);

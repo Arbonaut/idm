@@ -40,7 +40,7 @@ public class Precision implements Serializable {
 		return this.unit;
 	}
 
-	void setUnit(Unit unit) {
+	public void setUnit(Unit unit) {
 		this.unit = unit;
 	}
 	
@@ -49,7 +49,7 @@ public class Precision implements Serializable {
 		return unit == null ? null : unit.getName();
 	}
 	
-	protected void setUnitName(String name) {
+	public void setUnitName(String name) {
 		Survey survey = getSurvey();
 		if ( survey == null ) {
 			throw new DetachedNodeDefinitionException(Precision.class, Survey.class);
@@ -68,16 +68,24 @@ public class Precision implements Serializable {
 	public Integer getDecimalDigits() {
 		return this.decimalDigits;
 	}
+	
+	public void setDecimalDigits(Integer decimalDigits) {
+		this.decimalDigits = decimalDigits;
+	}
 
 	public boolean isDefaultPrecision() {
 		return defaultPrecision == null ? false : defaultPrecision;
+	}
+	
+	public void setDefaultPrecision(boolean defaultPrecision) {
+		this.defaultPrecision = defaultPrecision;
 	}
 
 	public NodeDefinition getDefinition() {
 		return definition;
 	}
 
-	protected void setDefinition(NodeDefinition definition) {
+	public void setDefinition(NodeDefinition definition) {
 		this.definition = definition;
 	}
 

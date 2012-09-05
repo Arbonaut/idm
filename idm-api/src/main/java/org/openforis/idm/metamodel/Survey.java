@@ -361,13 +361,27 @@ public class Survey implements Serializable {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Configuration> getConfiguration() {
 		if ( configuration == null ) {
-			return (List<Configuration>) Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		} else {
 			return CollectionUtil.unmodifiableList(configuration.list);
 		}
+	}
+
+	public void addConfiguration(Configuration config) {
+		if ( configuration == null ) {
+			configuration = new ConfigurationWrapper();
+		}
+		configuration.addConfiguration(config);
+	}
+	
+	public void setConfiguration(int index, Configuration config) {
+		configuration.setConfiguration(index, config);
+	}
+	
+	public void removeConfiguration(Configuration config) {
+		configuration.removeConfiguration(config);
 	}
 	
 	public SurveyContext getContext() {
@@ -411,6 +425,21 @@ public class Survey implements Serializable {
 		@XmlJavaTypeAdapter(ConfigurationXmlAdapter.class)
 		List<Configuration> list;
 
+		void addConfiguration(Configuration config) {
+			if ( list == null ) {
+				list = new ArrayList<Configuration>();
+			}
+			list.add(config);
+		}
+		
+		void setConfiguration(int index, Configuration config) {
+			list.set(index, config);
+		}
+		
+		void removeConfiguration(Configuration config) {
+			list.remove(config);
+		}
+		
 		@Override
 		public int hashCode() {
 			final int prime = 31;

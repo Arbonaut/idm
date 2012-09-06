@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,16 +47,20 @@ public class Schema  implements Serializable {
 	private Survey survey;
 
 	@XmlTransient
-	private int nextDefinitionId;
+	private int lastDefinitionId;
 	
 	public Schema() {
 		definitionsByPath = new HashMap<String, NodeDefinition>(); 
 		definitionsById = new HashMap<Integer, NodeDefinition>();
-		nextDefinitionId = 1;
+		lastDefinitionId = 0;
 	}
 	
 	public Survey getSurvey() {
 		return survey;
+	}
+	
+	public void setSurvey(Survey survey) {
+		this.survey = survey;
 	}
 	
 	public NodeDefinition getByPath(String absolutePath) {
@@ -106,19 +111,39 @@ public class Schema  implements Serializable {
 	}
 
 	public void addRootEntityDefinition(EntityDefinition defn) {
-		if ( defn.getId() == null ) {
-			defn.setId(nextDefinitionId ++);
-		} else {
-			nextDefinitionId = Math.max(nextDefinitionId, defn.getId() + 1);
-		}
+		defn.setId(nextNodeDefinitionId());
 		if ( rootEntityDefinitions == null) {
 			rootEntityDefinitions = new ArrayList<EntityDefinition>();
 		}
 		rootEntityDefinitions.add(defn);
+		defn.setSchema(this);
 		indexById(defn);
 		indexByPath(defn);
 	}
 	
+	protected int nextNodeDefinitionId() {
+		if ( lastDefinitionId == 0 ) {
+			lastDefinitionId = calculateLastUsedDefinitionId();
+		}
+		return lastDefinitionId++;
+	}
+	
+	protected int calculateLastUsedDefinitionId() {
+		int result = 0;
+		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
+		List<EntityDefinition> rootEntityDefinitions = getRootEntityDefinitions();
+		stack.addAll(rootEntityDefinitions);
+		while ( ! stack.isEmpty() ) {
+			NodeDefinition nodeDefn = stack.pop();
+			result = Math.max(result, nodeDefn.getId());
+			if ( nodeDefn instanceof EntityDefinition ) {
+				List<NodeDefinition> childDefinitions = ((EntityDefinition) nodeDefn).getChildDefinitions();
+				stack.addAll(childDefinitions);
+			}
+		}
+		return result;
+	}
+
 	public void removeRootEntityDefinition(String name) {
 		EntityDefinition defn = getRootEntityDefinition(name);
 		rootEntityDefinitions.remove(defn);

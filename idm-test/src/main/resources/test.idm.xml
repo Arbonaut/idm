@@ -17,7 +17,7 @@
     </description>
     <configuration>
         <flex xmlns="http://www.openforis.org/collect/3.0/ui">
-        	<tabDefinition rootEntity="cluster">				
+        	<tabDefinition name="cluster">				
 				<tabs>
 		        	<tab name="cluster">
 		                <label>Cluster</label>
@@ -3578,7 +3578,7 @@
         </spatialReferenceSystem>
     </spatialReferenceSystems>
     <schema>
-        <entity id="1" name="cluster" ui:tab="cluster">
+        <entity id="1" name="cluster" ui:tabDefinition="cluster" ui:tab="cluster">
             <label>Cluster</label>
             <entity id="2" multiple="true" name="task" since="2.0">
                 <label type="heading">Quality assurance field</label>

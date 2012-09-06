@@ -11,6 +11,8 @@ import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
 import org.openforis.idm.metamodel.NumericAttributeDefinition.Type;
 import org.openforis.idm.metamodel.Precision;
+import org.openforis.idm.metamodel.Schema;
+import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.Unit;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.EntityBuilder;
@@ -26,8 +28,7 @@ public class NumberColumnProviderTest {
 	@Test
 	public void testCollapsedSingleInteger() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
+		EntityDefinition plotDef = createTestPlotRootEntity();
 		NumberAttributeDefinition numberDefn = new NumberAttributeDefinition();
 		numberDefn.setName("number");
 		numberDefn.setType(Type.INTEGER);
@@ -58,8 +59,7 @@ public class NumberColumnProviderTest {
 	@Test
 	public void testCollapsedMultipleInteger() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
+		EntityDefinition plotDef = createTestPlotRootEntity();
 		NumberAttributeDefinition numberDefn = new NumberAttributeDefinition();
 		numberDefn.setName("number");
 		numberDefn.setType(Type.INTEGER);
@@ -93,8 +93,7 @@ public class NumberColumnProviderTest {
 	@Test
 	public void testCollapsedMissingSingleInteger() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
+		EntityDefinition plotDef = createTestPlotRootEntity();
 		NumberAttributeDefinition numberDefn = new NumberAttributeDefinition();
 		numberDefn.setName("number");
 		numberDefn.setType(Type.INTEGER);
@@ -123,8 +122,7 @@ public class NumberColumnProviderTest {
 	@Test
 	public void testCollapsedMissingMultipleInteger() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
+		EntityDefinition plotDef = createTestPlotRootEntity();
 		NumberAttributeDefinition numberDefn = new NumberAttributeDefinition();
 		numberDefn.setName("number");
 		numberDefn.setType(Type.INTEGER);
@@ -154,8 +152,7 @@ public class NumberColumnProviderTest {
 	@Test
 	public void testExpandedSingleInteger() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
+		EntityDefinition plotDef = createTestPlotRootEntity();
 		NumberAttributeDefinition numberDefn = new NumberAttributeDefinition();
 		numberDefn.setName("number");
 		numberDefn.setType(Type.INTEGER);
@@ -188,8 +185,7 @@ public class NumberColumnProviderTest {
 	@Test
 	public void testExpandedMissingSingleInteger() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
+		EntityDefinition plotDef = createTestPlotRootEntity();
 		NumberAttributeDefinition numberDefn = new NumberAttributeDefinition();
 		numberDefn.setName("number");
 		numberDefn.setType(Type.INTEGER);
@@ -220,8 +216,7 @@ public class NumberColumnProviderTest {
 	@Test
 	public void testExpandedSingleIntegerWithUnits() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
+		EntityDefinition plotDef = createTestPlotRootEntity();
 		NumberAttributeDefinition numberDefn = new NumberAttributeDefinition();
 		numberDefn.setName("number");
 		numberDefn.setType(Type.INTEGER);
@@ -263,6 +258,15 @@ public class NumberColumnProviderTest {
 		assertEquals("cm", unitField.getValue());
 	}
 
+	private EntityDefinition createTestPlotRootEntity() {
+		Schema schema = new Schema();
+		Survey survey = new Survey();
+		survey.setSchema(schema);
+		EntityDefinition plotDef = new EntityDefinition();
+		plotDef.setName("plot");
+		schema.addRootEntityDefinition(plotDef);
+		return plotDef;
+	}
 	//
 //	@Test
 //	public void testExpandedMultipleNumber() throws Exception {

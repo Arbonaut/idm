@@ -76,11 +76,11 @@ public class ModelVersion implements Serializable {
 		labels.add(label);
 	}
 
-	public void setLabel(String language, String description) {
+	public void setLabel(String language, String text) {
 		if ( labels == null ) {
 			labels = new ArrayList<LanguageSpecificText>();
 		}
-		LanguageSpecificText.setText(labels, language, description);
+		LanguageSpecificText.setText(labels, language, text);
 	}
 	
 	public void removeLabel(String language) {

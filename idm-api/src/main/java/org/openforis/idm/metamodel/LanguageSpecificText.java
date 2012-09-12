@@ -6,20 +6,10 @@ package org.openforis.idm.metamodel;
 import java.io.Serializable;
 import java.util.List;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Text;
-import org.simpleframework.xml.convert.Convert;
-
-import org.openforis.idm.metamodel.xml.internal.CollapsedStringAdapter;
 
 /**
  * @author G. Miceli
@@ -38,7 +28,7 @@ public class LanguageSpecificText implements Serializable {
 
 	//@XmlValue
 	@Text(required=false)
-	@Convert(CollapsedStringAdapter.class)
+	//@Convert(CollapsedStringAdapter.class)
 	private String text;
 
 	public LanguageSpecificText() {

@@ -34,17 +34,17 @@ public class SpatialReferenceSystem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Attribute(name = "srid")
+	@Attribute(name = "srid", required = false)
 	private String id;
 
 	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> labels;*/
-	@ElementList(inline=true, entry="label", type=LanguageSpecificText.class)
+	@ElementList(inline=true, entry="label", type=LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> labels;
 
 	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;*/
-	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class)
+	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> descriptions;
 
 	@Element(name = "wkt")

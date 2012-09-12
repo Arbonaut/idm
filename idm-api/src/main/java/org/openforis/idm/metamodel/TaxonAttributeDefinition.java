@@ -29,13 +29,13 @@ import org.openforis.idm.model.Value;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "taxonomy", "highestRank", "qualifiers", "relevantExpression", "required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})		
+@Order(attributes = {"id", "name", "taxonomy", "highestRank", "qualifiers", "relevant", "required", "requiredIf", "multiple", "minCount", "maxCount", "since", "deprecated"},
+	   elements = {"label", "prompt", "description", "default"})		
 public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	@Attribute(name = "qualifiers")
+	@Attribute(name = "qualifiers", required = false)
 	private String qualifiers;
 	
 	@Transient
@@ -47,10 +47,10 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 			new FieldDefinition<String>("language_variety", "lv", "lang_var", String.class, this)
 	};
 	
-	@Attribute(name = "taxonomy")
+	@Attribute(name = "taxonomy", required = false)
 	private String taxonomy;
 
-	@Attribute(name = "highestRank")
+	@Attribute(name = "highestRank", required = false)
 	private String highestRank;
 
 	@Override

@@ -26,7 +26,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = {"id", "name"}, elements = { "labels", "descriptions", "date" })
+@Order(attributes = {"id", "name"}, elements = { "label", "description", "date" })
 public class ModelVersion implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -39,12 +39,12 @@ public class ModelVersion implements Serializable {
 
 	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> labels;*/
-	@ElementList(inline=true, entry="label", type=LanguageSpecificText.class)
+	@ElementList(inline=true, entry="label", type=LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> labels;
 
 	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;*/
-	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class)
+	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> descriptions;
 
 	@Element(name = "date")

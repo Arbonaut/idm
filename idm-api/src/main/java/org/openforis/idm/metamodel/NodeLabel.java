@@ -23,7 +23,7 @@ public class NodeLabel extends LanguageSpecificText {
 		HEADING, INSTANCE, NUMBER;
 	}
 
-	@Attribute(name = "type")
+	@Attribute(name = "type", required = false)
 	@Convert(NodeLabelTypeAdapter.class)
 	private NodeLabel.Type type;
 

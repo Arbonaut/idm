@@ -7,17 +7,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;*/
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.openforis.idm.util.CollectionUtil;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Order;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -25,18 +19,18 @@ import org.openforis.idm.util.CollectionUtil;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = { "id", "name", "dimension", "conversionFactor" }, elements = { "labels", "abbreviations" })
+@Order(attributes = { "id", "name", "dimension", "conversionFactor" }, elements = { "label", "abbreviation" })
 public class Unit implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Attribute(name = "id")
+	@Attribute(name = "id", required = false)
 	private int id;
 
 	@Attribute(name = "name")
 	private String name;
 
-	@Attribute(name = "dimension")
+	@Attribute(name = "dimension", required = false)
 	private String dimension;
 
 	@Attribute(name = "conversionFactor", required = false)
@@ -44,12 +38,12 @@ public class Unit implements Serializable {
 
 	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> labels;*/
-	@ElementList(entry="label", type = LanguageSpecificText.class, required=false)
+	@ElementList(inline=true, entry="label", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> labels;
 
 	/*@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> abbreviations;*/
-	@ElementList(entry="abbreviation", type = LanguageSpecificText.class, required=false)
+	@ElementList(inline=true, entry="abbreviation", type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> abbreviations;
 
 	public int getId() {
@@ -65,6 +59,7 @@ public class Unit implements Serializable {
 	}
 
 	public void setName(String name) {
+		
 		this.name = name;
 	}
 	

@@ -29,14 +29,14 @@ public abstract class Check<T extends Attribute<?, ?>> implements Serializable, 
 		ERROR, WARN
 	}
 
-	@org.simpleframework.xml.Attribute(name = "flag")
+	@org.simpleframework.xml.Attribute(name = "flag", required=true)
 	@Convert(CheckFlagAdapter.class)
 	private Flag flag;
 
-	@org.simpleframework.xml.Attribute(name = "if")
+	@org.simpleframework.xml.Attribute(name = "if", required=false)
 	private String condition;
 
-	@ElementList(entry = "message", inline = true, type = LanguageSpecificText.class)
+	@ElementList(entry = "message", inline = true, type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> messages;
 
 	public Flag getFlag() {

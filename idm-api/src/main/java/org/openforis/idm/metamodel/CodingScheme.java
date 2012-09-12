@@ -19,12 +19,12 @@ import org.openforis.idm.metamodel.xml.internal.CodeScopeAdapter;
  */
 
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = "codeScope") 
+@Order(attributes = "scope") 
 class CodingScheme implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Attribute(name = "scope")
+	@Attribute(name = "scope", required = false)
 	@Convert(CodeScopeAdapter.class)
 	private CodeScope codeScope;
 

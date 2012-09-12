@@ -11,8 +11,8 @@ import java.util.Stack;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.util.CollectionUtil;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.Order;
 
 /**
@@ -22,11 +22,14 @@ import org.simpleframework.xml.Order;
  * @author S. Ricci
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes={"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName"}, elements = {"labels", "prompts", "descriptions", "childDefinitions" })
+@Order(attributes={"id", "name", "relevant","required", "requiredIf", "multiple", "minCount", "maxCount", "since", "deprecated"}, 
+elements = {"label", "prompt", "description", "entity", "number", "range", "boolean", "date", "time", "file", "taxon", "coordinate", "code", "text"  })
 public class EntityDefinition extends NodeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
+	private List<NodeDefinition> childDefinitions;
+
 	/*@XmlElements({
 		@XmlElement(name = "entity",     type = EntityDefinition.class), 
 		@XmlElement(name = "number",     type = NumberAttributeDefinition.class),
@@ -40,20 +43,44 @@ public class EntityDefinition extends NodeDefinition {
 		@XmlElement(name = "code",       type = CodeAttributeDefinition.class),
 		@XmlElement(name = "text",       type = TextAttributeDefinition.class) })
 	private List<NodeDefinition> childDefinitions;*/
-	@ElementUnion({
-		@Element(name = "entity",     type = EntityDefinition.class), 
-		@Element(name = "number",     type = NumberAttributeDefinition.class),
-		@Element(name = "range",      type = RangeAttributeDefinition.class), 
-		@Element(name = "boolean",    type = BooleanAttributeDefinition.class),
-		@Element(name = "date",       type = DateAttributeDefinition.class), 
-		@Element(name = "time",       type = TimeAttributeDefinition.class),
-		@Element(name = "file",       type = FileAttributeDefinition.class), 
-		@Element(name = "taxon",      type = TaxonAttributeDefinition.class),
-		@Element(name = "coordinate", type = CoordinateAttributeDefinition.class), 
-		@Element(name = "code",       type = CodeAttributeDefinition.class),
-		@Element(name = "text",       type = TextAttributeDefinition.class)
+	@SuppressWarnings("unused")
+	@ElementListUnion({
+		@ElementList(entry = "entity",     inline=true, required=false, type = EntityDefinition.class), 
+		@ElementList(entry = "number",     inline=true, required=false, type = NumberAttributeDefinition.class),
+		@ElementList(entry = "range",      inline=true, required=false, type = RangeAttributeDefinition.class), 
+		@ElementList(entry = "boolean",    inline=true, required=false, type = BooleanAttributeDefinition.class),
+		@ElementList(entry = "date",       inline=true, required=false, type = DateAttributeDefinition.class), 
+		@ElementList(entry = "time",       inline=true, required=false, type = TimeAttributeDefinition.class),
+		@ElementList(entry = "file",       inline=true, required=false, type = FileAttributeDefinition.class), 
+		@ElementList(entry = "taxon",      inline=true, required=false, type = TaxonAttributeDefinition.class),
+		@ElementList(entry = "coordinate", inline=true, required=false, type = CoordinateAttributeDefinition.class), 
+		@ElementList(entry = "code",       inline=true, required=false, type = CodeAttributeDefinition.class),
+		@ElementList(entry = "text",       inline=true, required=false, type = TextAttributeDefinition.class)
 	})
-	private List<NodeDefinition> childDefinitions;
+	private void setChildDefinitionsInternal(List<NodeDefinition> childDefinitions) {
+		for (NodeDefinition def : childDefinitions) {
+			def.setParentDefinition(this);
+		}
+		this.childDefinitions = childDefinitions;
+	}
+	
+	@SuppressWarnings("unused")
+	@ElementListUnion({
+		@ElementList(entry = "entity",     inline=true, required=false, type = EntityDefinition.class), 
+		@ElementList(entry = "number",     inline=true, required=false, type = NumberAttributeDefinition.class),
+		@ElementList(entry = "range",      inline=true, required=false, type = RangeAttributeDefinition.class), 
+		@ElementList(entry = "boolean",    inline=true, required=false, type = BooleanAttributeDefinition.class),
+		@ElementList(entry = "date",       inline=true, required=false, type = DateAttributeDefinition.class), 
+		@ElementList(entry = "time",       inline=true, required=false, type = TimeAttributeDefinition.class),
+		@ElementList(entry = "file",       inline=true, required=false, type = FileAttributeDefinition.class), 
+		@ElementList(entry = "taxon",      inline=true, required=false, type = TaxonAttributeDefinition.class),
+		@ElementList(entry = "coordinate", inline=true, required=false, type = CoordinateAttributeDefinition.class), 
+		@ElementList(entry = "code",       inline=true, required=false, type = CodeAttributeDefinition.class),
+		@ElementList(entry = "text",       inline=true, required=false, type = TextAttributeDefinition.class)
+	})
+	private List<NodeDefinition> getChildDefinitionsInternal() {
+		return childDefinitions;
+	}
 
 	public List<NodeDefinition> getChildDefinitions() {
 		return CollectionUtil.unmodifiableList(childDefinitions);

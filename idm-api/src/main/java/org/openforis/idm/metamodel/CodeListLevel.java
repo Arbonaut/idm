@@ -24,7 +24,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = {"id", "name"}, elements = {"labels", "descriptions" })
+@Order(attributes = {"id", "name"}, elements = {"label", "description" })
 public class CodeListLevel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -37,12 +37,12 @@ public class CodeListLevel implements Serializable {
 
 	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> labels;*/
-	@ElementList(entry="label", type = LanguageSpecificText.class, required=false)
+	@ElementList(entry="label", type = LanguageSpecificText.class, inline=true, required=false)
 	private List<LanguageSpecificText> labels;
 
 	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;*/
-	@ElementList(entry="description", type = LanguageSpecificText.class, required=false)
+	@ElementList(entry="description", type = LanguageSpecificText.class, inline=true, required=false)
 	private List<LanguageSpecificText> descriptions;
 
 	public int getId() {

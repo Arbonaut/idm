@@ -22,47 +22,47 @@ import org.openforis.idm.metamodel.xml.internal.XmlParent;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = {"decimalDigits", "default"} )
+@Order(attributes = {"unit", "decimalDigits", "default"} )
 public class Precision implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Transient
-	private Unit unit;
-
-	@Transient
 	@XmlParent
 	private NodeDefinition definition;
 	
-	@Attribute(name = "decimalDigits")
+	@Attribute(name = "decimalDigits", required = false)
 	private Integer decimalDigits;
 
-	@Attribute(name = "default")
+	@Attribute(name = "default", required = false)
 	private Boolean defaultPrecision;
 
+	@Attribute(name = "unit", required = false)
+	private String unitName;
+	
 	public Unit getUnit() {
-		return this.unit;
+		return getUnitByName(unitName);
 	}
 
-	void setUnit(Unit unit) {
-		this.unit = unit;
+	public void setUnit(Unit unit) {
+		if ( unit == null ) {
+			this.unitName = null;
+		} else {
+			Unit otherUnit = getUnitByName(unit.getName());
+			if ( unit != otherUnit ) {
+				throw new IllegalArgumentException("Unit not in survey");
+			}
+			this.unitName = unit.getName();
+		}
 	}
 	
-	@Attribute(name = "unit")
-	public String getUnitName() {
-		return unit == null ? null : unit.getName();
+	public void setUnitByName(String unitName) {
+		getUnitByName(unitName);
+		this.unitName = unitName;
 	}
 	
-	protected void setUnitName(String name) {
-		Survey survey = getSurvey();
-		if ( survey == null ) {
-			throw new DetachedNodeDefinitionException(Precision.class, Survey.class);
-		}
-		Unit newUnit = survey.getUnit(name);
-		if ( newUnit == null ) {
-			throw new IllegalArgumentException("Unit '"+name+"' not defined in survey");
-		}
-		this.unit = newUnit;
+	public void setUnit(String unitName) {
+		this.unitName = unitName;
 	}
 	
 	private Survey getSurvey() {
@@ -85,13 +85,32 @@ public class Precision implements Serializable {
 		this.definition = definition;
 	}
 
+	private Unit getUnitByName(String unitName) {
+		if ( unitName == null ) {
+			return null;
+		}
+		Survey survey = getSurvey();
+		if ( survey == null ) {
+			throw new DetachedNodeDefinitionException(Precision.class, Survey.class);
+		}
+		Unit unit = survey.getUnit(unitName);
+		if ( unit == null ) {
+			throw new IllegalArgumentException("Unit '"+unitName+"' not defined in survey");
+		}
+		return unit;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((decimalDigits == null) ? 0 : decimalDigits.hashCode());
-		result = prime * result + ((defaultPrecision == null) ? 0 : defaultPrecision.hashCode());
-		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+		result = prime * result
+				+ ((decimalDigits == null) ? 0 : decimalDigits.hashCode());
+		result = prime
+				* result
+				+ ((defaultPrecision == null) ? 0 : defaultPrecision.hashCode());
+		result = prime * result
+				+ ((unitName == null) ? 0 : unitName.hashCode());
 		return result;
 	}
 
@@ -114,12 +133,11 @@ public class Precision implements Serializable {
 				return false;
 		} else if (!defaultPrecision.equals(other.defaultPrecision))
 			return false;
-		if (unit == null) {
-			if (other.unit != null)
+		if (unitName == null) {
+			if (other.unitName != null)
 				return false;
-		} else if (!unit.equals(other.unit))
+		} else if (!unitName.equals(other.unitName))
 			return false;
 		return true;
 	}
-	
 }

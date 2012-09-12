@@ -26,7 +26,6 @@ import org.openforis.idm.model.expression.ModelPathExpression;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order
 public class UniquenessCheck extends Check<Attribute<?, ?>> {
 
 	private static final long serialVersionUID = 1L;

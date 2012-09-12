@@ -31,8 +31,9 @@ import org.openforis.idm.model.Value;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression","required", "requiredExpression",
-		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
+@Order(attributes = {"id", "name", "list", "key", "strict", "parent", "relevant", "required", "requiredIf",
+		             "multiple", "minCount", "maxCount", "since", "deprecated"}, 
+	   elements = {"label", "prompt", "description", "default"})
 public class CodeAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
@@ -43,45 +44,55 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		new FieldDefinition<String>("qualifier", "q", "other", String.class, this)
 	};
 	
-	@Attribute(name = "key")
+	@Attribute(name = "key", required=false)
 	private Boolean key;
 
-	@Attribute(name = "strict")
+	@Attribute(name = "strict", required=false)
 	@Convert(InvertBooleanAdapter.class)
 	private Boolean allowUnlisted;
 
-	@Attribute(name = "parent")
+	@Attribute(name = "parent", required=false)
 	private String parentExpression;
 
 	@Transient
 	private CodeList list;
 
 	@Transient
-	private CodeAttributeDefinition parentCodeAttributeDefinition; 
+	private CodeAttributeDefinition parentCodeAttributeDefinition;
+
+	@Transient
+	private String listName; 
 	
 	public CodeList getList() {
+		if ( list == null && listName != null ) {
+			Survey survey = getSurvey();
+			if ( survey == null ) {
+				throw new DetachedNodeDefinitionException(CodeAttributeDefinition.class, Survey.class);
+			}
+			CodeList newList = survey.getCodeList(listName);
+			if ( newList == null ) {
+				throw new IllegalArgumentException("Code list '"+listName+"' not defined");
+			}
+			this.list = newList;
+		}
 		return this.list;
 	}
 
 	protected void setList(CodeList list) {
+		this.listName = list == null ? null : list.getName();
 		this.list = list;
 	}
 	
-	@Attribute(name = "list")
+	@Attribute(name = "list", required=false)
 	public String getListName() {
-		return list == null ? null : list.getName();
+		return this.listName;
 	}
 	
-	protected void setListName(String name) {
-		Survey survey = getSurvey();
-		if ( survey == null ) {
-			throw new DetachedNodeDefinitionException(CodeAttributeDefinition.class, Survey.class);
-		}
-		CodeList newList = survey.getCodeList(name);
-		if ( newList == null ) {
-			throw new IllegalArgumentException("Code list '"+name+"' not defined");
-		}
-		this.list = newList;
+	@SuppressWarnings("unused")
+	@Attribute(name = "list", required=false)
+	private void setListName(String name) {
+		this.listName = name;
+		this.list = null;
 	}
 	
 	public boolean isKey() {

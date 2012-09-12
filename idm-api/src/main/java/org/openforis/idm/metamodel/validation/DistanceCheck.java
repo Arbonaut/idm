@@ -31,7 +31,6 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order
 public class DistanceCheck extends Check<CoordinateAttribute> {
 
 	private static final long serialVersionUID = 1L;

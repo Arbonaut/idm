@@ -27,8 +27,8 @@ import org.openforis.idm.model.Value;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-		"type", "labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
+@Order(attributes = {"id", "name", "type", "relevant","required", "requiredIf", "multiple", "minCount", "maxCount", "since", "deprecated"},
+	   elements = {"label", "prompt", "description", "default", "precision"})
 public class RangeAttributeDefinition extends NumericAttributeDefinition {
 
 	private static final long serialVersionUID = 1L;

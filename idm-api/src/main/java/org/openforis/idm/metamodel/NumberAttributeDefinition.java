@@ -28,13 +28,13 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "type", "key", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
-		"labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
+@Order(attributes = {"id", "name", "type", "key", "relevant","required", "requiredIf", "multiple", "minCount", "maxCount", "since", "deprecated"}, 
+	   elements = {"label", "prompt", "description", "default", "precision"})
 public class NumberAttributeDefinition extends NumericAttributeDefinition implements KeyAttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Attribute(name = "key")
+	@Attribute(name = "key", required = false)
 	private Boolean key;
 
 	@Override

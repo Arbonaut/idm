@@ -25,7 +25,7 @@ public class Prompt extends LanguageSpecificText {
 		INTERVIEW, PAPER, HANDHELD, PC;
 	}
 
-	@Attribute(name = "type")
+	@Attribute(name = "type", required = false)
 	@Convert(PromptTypeAdapter.class)
 	private Type type;
 

@@ -28,8 +28,8 @@ import org.openforis.idm.util.CollectionUtil;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "maxSize", "extensions", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", 
-		"sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
+@Order(attributes = {"id", "name", "maxSize", "extensions", "relevant","required", "requiredIf", "multiple", "minCount", "maxCount", 
+		"since", "deprecated"}, elements = {"label", "prompt", "description", "default"})
 public class FileAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
@@ -41,10 +41,10 @@ public class FileAttributeDefinition extends AttributeDefinition {
 	};
 	
 	
-	@Attribute(name = "maxSize")
+	@Attribute(name = "maxSize", required = false)
 	private Integer maxSize;
 
-	@Attribute(name = "extensions")
+	@Attribute(name = "extensions", required = false)
 	private List<String> extensions;
 
 	public Integer getMaxSize() {

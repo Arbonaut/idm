@@ -22,7 +22,6 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order
 public class CustomCheck extends Check<Attribute<?,?>> {
 
 	private static final long serialVersionUID = 1L;

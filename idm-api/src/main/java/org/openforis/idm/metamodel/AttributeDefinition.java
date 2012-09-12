@@ -6,14 +6,6 @@ package org.openforis.idm.metamodel;
 import java.util.List;
 import java.util.Set;
 
-/*import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlTransient;*/
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.ElementUnion;
-import org.simpleframework.xml.Transient;
-
 import org.openforis.idm.metamodel.validation.Check;
 import org.openforis.idm.metamodel.validation.ComparisonCheck;
 import org.openforis.idm.metamodel.validation.CustomCheck;
@@ -23,6 +15,9 @@ import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.model.Value;
 import org.openforis.idm.util.CollectionUtil;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementListUnion;
+import org.simpleframework.xml.Transient;
 
 /**
  * @author G. Miceli
@@ -45,18 +40,18 @@ public abstract class AttributeDefinition extends NodeDefinition {
 			})
 	private List<Check<?>> checks;*/
 	
-	@ElementUnion({
-	    @Element(name="distance", type=DistanceCheck.class),
-	    @Element(name="pattern", type=PatternCheck.class),
-	    @Element(name="compare", type=ComparisonCheck.class),
-	    @Element(name="check", type=CustomCheck.class),
-	    @Element(name="unique", type=UniquenessCheck.class)
+	@ElementListUnion({
+	    @ElementList(name="distance", type=DistanceCheck.class, required=false, inline=true),
+	    @ElementList(name="pattern", type=PatternCheck.class, required=false, inline=true),
+	    @ElementList(name="compare", type=ComparisonCheck.class, required=false, inline=true),
+	    @ElementList(name="check", type=CustomCheck.class, required=false, inline=true),
+	    @ElementList(name="unique", type=UniquenessCheck.class, required=false, inline=true)
 	})
 	private List<Check<?>> checks;
 	
 	/*@XmlElement(name = "default", type = AttributeDefault.class)
 	private List<AttributeDefault> attributeDefaults;*/
-	@ElementList(inline=true, entry="default", type=AttributeDefault.class)
+	@ElementList(inline=true, entry="default", type=AttributeDefault.class, required=false)
 	private List<AttributeDefault> attributeDefaults;
 
 	public List<Check<?>> getChecks() {

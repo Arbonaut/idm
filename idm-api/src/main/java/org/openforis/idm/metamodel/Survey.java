@@ -35,7 +35,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(elements = { "project", "uri", "cycle", "description", "configuration", "modelVersions",
+@Order(elements = { "project", "uri", "cycle", "description", "configuration", "versioning",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
 @Root(name = "survey")
 public class Survey implements Serializable {
@@ -48,7 +48,7 @@ public class Survey implements Serializable {
 	@Transient
 	private String name;
 	
-	@ElementList(entry = "project", inline = true, type = LanguageSpecificText.class)
+	@ElementList(entry = "project", inline = true, type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> projectNames;
 	
 	@Element(name = "uri")
@@ -57,7 +57,7 @@ public class Survey implements Serializable {
 	@Element(name = "cycle")
 	private Integer cycle;
 
-	@ElementList(entry = "description", inline = true, type = LanguageSpecificText.class)
+	@ElementList(entry = "description", inline = true, type = LanguageSpecificText.class, required=false)
 	private List<LanguageSpecificText> descriptions;
 
 	@Element(name = "configuration", required = false)
@@ -66,7 +66,7 @@ public class Survey implements Serializable {
 	/*@XmlElement(name = "version", type = ModelVersion.class)
 	@XmlElementWrapper(name = "versioning")
 	private List<ModelVersion> modelVersions;*/
-	@ElementList(name = "modelVersions", entry = "version", type = ModelVersion.class, required=false)
+	@ElementList(name = "versioning", entry = "version", type = ModelVersion.class, required=false)
 	private List<ModelVersion> modelVersions;
 
 	/*@XmlElement(name = "list", type = CodeList.class)
@@ -417,7 +417,6 @@ public class Survey implements Serializable {
 	 * wouldn't play nice together
 	 */
 	//@XmlAccessorType(XmlAccessType.FIELD)
-	//@Order
 	private static class ConfigurationWrapper implements Serializable {
 
 		private static final long serialVersionUID = 1L;

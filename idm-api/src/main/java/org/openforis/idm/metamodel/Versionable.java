@@ -16,42 +16,56 @@ public abstract class Versionable {
 
 	@Transient
 	private ModelVersion deprecatedVersion;
+
+	private String sinceVersionName;
+
+	private String deprecatedVersionName;
 	
 	public abstract Survey getSurvey();
 	
 	@Attribute(name = "since", required = false)
 	public String getSinceVersionName() {
-		return sinceVersion == null ? null : sinceVersion.getName();
+		return sinceVersionName;
 	}
 	
 	@Attribute(name = "since", required = false)
 	public void setSinceVersionName(String name) {
-		this.sinceVersion = findVersion(name);
+		this.sinceVersionName = name;
+		this.sinceVersion = null;
 	}
 
 	@Attribute(name = "deprecated", required = false)
 	public String getDeprecatedVersionName() {
-		return deprecatedVersion == null ? null : deprecatedVersion.getName();
+		return deprecatedVersionName;
 	}
 	
 	@Attribute(name = "deprecated", required = false)
 	public void setDeprecatedVersionName(String name) {
-		this.deprecatedVersion = findVersion(name);
+		this.deprecatedVersionName = name;
+		this.deprecatedVersion = null;
 	}
 
 	public ModelVersion getSinceVersion() {
+		if ( sinceVersion == null ) {
+			this.sinceVersion = findVersion(sinceVersionName);
+		}
 		return this.sinceVersion;
 	}
 
 	public void setSinceVersion(ModelVersion since) {
+		this.sinceVersionName = since == null ? null : since.getName();
 		this.sinceVersion = since;
 	}
 
 	public ModelVersion getDeprecatedVersion() {
+		if ( deprecatedVersion == null ) {
+			this.deprecatedVersion = findVersion(deprecatedVersionName);
+		}
 		return this.deprecatedVersion;
 	}
 
 	public void setDeprecatedVersion(ModelVersion deprecated) {
+		this.deprecatedVersionName = deprecated == null ? null : deprecated.getName();
 		this.deprecatedVersion = deprecated;
 	}
 
@@ -66,7 +80,7 @@ public abstract class Versionable {
 			ModelVersion v = survey.getVersion(name);
 			if ( v == null ) {
 				throw new IllegalArgumentException("Undefined version '"+name+"' in "+toString());
-			} 
+			}
 			return v;
 		}
 	}

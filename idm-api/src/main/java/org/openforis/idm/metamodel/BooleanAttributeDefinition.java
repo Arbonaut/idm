@@ -28,8 +28,8 @@ import org.openforis.idm.model.Value;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes={"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "affirmativeOnly"}, 
-	elements = {"label", "prompt", "description", "default", "checks" })
+@Order(attributes={"id", "name", "relevant","required", "requiredIf", "multiple", "minCount", "maxCount", "since", "deprecated", "affirmativeOnly"}, 
+	   elements = {"label", "prompt", "description", "default"})
 public class BooleanAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;

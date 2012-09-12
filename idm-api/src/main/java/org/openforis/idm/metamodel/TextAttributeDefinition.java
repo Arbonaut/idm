@@ -30,8 +30,8 @@ import org.openforis.idm.model.Value;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "type", "key","required", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
+@Order(attributes = {"id", "name", "type", "key", "required", "relevant", "requiredIf", "multiple", "minCount", "maxCount", "since", "deprecated"},
+	   elements = {"label", "prompt", "description", "default"})
 public class TextAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition {
 
 	@Transient
@@ -45,11 +45,11 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 
 	private static final long serialVersionUID = 1L;
 	
-	@Attribute(name = "type")
+	@Attribute(name = "type", required = false)
 	@Convert(TextAttributeDefinitionTypeAdapter.class)
 	private Type type;
 
-	@Attribute(name = "key")
+	@Attribute(name = "key", required = false)
 	private Boolean key;
 
 	public Type getType() {

@@ -44,7 +44,7 @@ public class CodeList extends Versionable implements Serializable {
 
 	/*@XmlElement(name = "label", type = CodeListLabel.class)
 	private List<CodeListLabel> labels;*/
-	@ElementList(inline=true, entry="label", type=CodeListLabel.class)
+	@ElementList(inline=true, entry="label", type=CodeListLabel.class, required=false)
 	private List<CodeListLabel> labels;
 
 	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
@@ -70,7 +70,7 @@ public class CodeList extends Versionable implements Serializable {
 	@XmlElementWrapper(name = "items")
 	private List<CodeListItem> items;*/
 	@ElementList(name="items", entry="item", type = CodeListItem.class, required=false)
-	private List<CodeListItem> items;
+	private ArrayList<CodeListItem> items;
 
 	@Transient
 	private int nextItemId;

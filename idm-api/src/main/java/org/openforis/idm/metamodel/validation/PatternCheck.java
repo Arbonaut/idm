@@ -24,7 +24,6 @@ import org.openforis.idm.model.TextValue;
  * @author K. Waga
  */
 //@XmlAccessorType(XmlAccessType.FIELD)
-@Order
 public class PatternCheck extends Check<Attribute<?,?>> {
 
 	private static final long serialVersionUID = 1L;

@@ -4,6 +4,7 @@
 package org.openforis.idm.metamodel.validation;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openforis.idm.metamodel.LanguageSpecificText;
@@ -37,7 +38,7 @@ public abstract class Check<T extends Attribute<?, ?>> implements Serializable, 
 	private String condition;
 
 	@ElementList(entry = "message", inline = true, type = LanguageSpecificText.class, required=false)
-	private List<LanguageSpecificText> messages;
+	private ArrayList<LanguageSpecificText> messages;
 
 	public Flag getFlag() {
 		return flag == null ? Flag.ERROR : flag;

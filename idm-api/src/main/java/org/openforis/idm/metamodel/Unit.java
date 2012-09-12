@@ -39,12 +39,12 @@ public class Unit implements Serializable {
 	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> labels;*/
 	@ElementList(inline=true, entry="label", type = LanguageSpecificText.class, required=false)
-	private List<LanguageSpecificText> labels;
+	private ArrayList<LanguageSpecificText> labels;
 
 	/*@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> abbreviations;*/
 	@ElementList(inline=true, entry="abbreviation", type = LanguageSpecificText.class, required=false)
-	private List<LanguageSpecificText> abbreviations;
+	private ArrayList<LanguageSpecificText> abbreviations;
 
 	public int getId() {
 		return id;

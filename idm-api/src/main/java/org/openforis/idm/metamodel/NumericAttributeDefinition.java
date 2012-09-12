@@ -40,7 +40,7 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	/*@XmlElement(name = "precision", type = Precision.class)
 	private List<Precision> precisionDefinitions;*/
 	@ElementList(inline=true, entry="precision", type=Precision.class, required=false)
-	private List<Precision> precisionDefinitions;
+	private ArrayList<Precision> precisionDefinitions;
 
 	@Attribute(name = "type", required = true)
 	@Convert(NumberAttributeDefinitionTypeAdapter.class) Type type;

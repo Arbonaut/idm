@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -52,7 +53,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	/*@XmlElement(name = "default", type = AttributeDefault.class)
 	private List<AttributeDefault> attributeDefaults;*/
 	@ElementList(inline=true, entry="default", type=AttributeDefault.class, required=false)
-	private List<AttributeDefault> attributeDefaults;
+	private ArrayList<AttributeDefault> attributeDefaults;
 
 	public List<Check<?>> getChecks() {
 		return CollectionUtil.unmodifiableList(this.checks);

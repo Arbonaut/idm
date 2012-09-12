@@ -55,17 +55,17 @@ public class CodeListItem extends Versionable implements Serializable {
 	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> labels;*/
 	@ElementList(inline = true, entry="label", type = LanguageSpecificText.class, required=false)
-	private List<LanguageSpecificText> labels;
+	private ArrayList<LanguageSpecificText> labels;
 
 	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;*/
 	@ElementList(inline = true, entry="description", type = LanguageSpecificText.class, required=false)
-	private List<LanguageSpecificText> descriptions;
+	private ArrayList<LanguageSpecificText> descriptions;
 
 	/*@XmlElement(name = "item", type = CodeListItem.class)
 	private List<CodeListItem> childItems;*/
 	@ElementList(inline = true, entry="item", type = CodeListItem.class, required=false)
-	private List<CodeListItem> childItems;
+	private ArrayList<CodeListItem> childItems;
 
 	@Transient
 	@XmlInherited("list")

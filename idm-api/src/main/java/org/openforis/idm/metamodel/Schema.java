@@ -39,7 +39,7 @@ public class Schema implements Serializable {
 	/*@XmlElement(name = "entity", type = EntityDefinition.class)
 	private List<EntityDefinition> rootEntityDefinitions;*/
 	@ElementList(inline=true, entry="entity", type=EntityDefinition.class, required=true)
-	private List<EntityDefinition> rootEntityDefinitions;
+	private ArrayList<EntityDefinition> rootEntityDefinitions;
 
 	@Transient
 	private Map<String, NodeDefinition> definitionsByPath;

@@ -68,17 +68,17 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	/*@XmlElement(name = "label", type = NodeLabel.class)
 	private List<NodeLabel> labels;*/
 	@ElementList(inline=true, entry="label", type=NodeLabel.class, required=false)
-	private List<NodeLabel> labels;
+	private ArrayList<NodeLabel> labels;
 
 	/*@XmlElement(name = "prompt", type = Prompt.class)
 	private List<Prompt> prompts;*/
 	@ElementList(inline=true, entry="prompt", type=Prompt.class, required=false)
-	private List<Prompt> prompts;
+	private ArrayList<Prompt> prompts;
 
 	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;*/
 	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class, required=false)
-	private List<LanguageSpecificText> descriptions;
+	private ArrayList<LanguageSpecificText> descriptions;
 
 //	@ElementMap(name="annotations",key="annotations", keyType=QName.class, 
 //				valueType=String.class, attribute=true, inline=false)

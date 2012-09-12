@@ -38,12 +38,12 @@ public class CodeListLevel implements Serializable {
 	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> labels;*/
 	@ElementList(entry="label", type = LanguageSpecificText.class, inline=true, required=false)
-	private List<LanguageSpecificText> labels;
+	private ArrayList<LanguageSpecificText> labels;
 
 	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;*/
 	@ElementList(entry="description", type = LanguageSpecificText.class, inline=true, required=false)
-	private List<LanguageSpecificText> descriptions;
+	private ArrayList<LanguageSpecificText> descriptions;
 
 	public int getId() {
 		return id;

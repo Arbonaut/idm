@@ -49,7 +49,7 @@ public class Survey implements Serializable {
 	private String name;
 	
 	@ElementList(entry = "project", inline = true, type = LanguageSpecificText.class, required=false)
-	private List<LanguageSpecificText> projectNames;
+	private ArrayList<LanguageSpecificText> projectNames;
 	
 	@Element(name = "uri")
 	private String uri;
@@ -58,7 +58,7 @@ public class Survey implements Serializable {
 	private Integer cycle;
 
 	@ElementList(entry = "description", inline = true, type = LanguageSpecificText.class, required=false)
-	private List<LanguageSpecificText> descriptions;
+	private ArrayList<LanguageSpecificText> descriptions;
 
 	@Element(name = "configuration", required = false)
 	private ConfigurationWrapper configuration;
@@ -67,25 +67,25 @@ public class Survey implements Serializable {
 	@XmlElementWrapper(name = "versioning")
 	private List<ModelVersion> modelVersions;*/
 	@ElementList(name = "versioning", entry = "version", type = ModelVersion.class, required=false)
-	private List<ModelVersion> modelVersions;
+	private ArrayList<ModelVersion> modelVersions;
 
 	/*@XmlElement(name = "list", type = CodeList.class)
 	@XmlElementWrapper(name = "codeLists")
 	private List<CodeList> codeLists;*/
 	@ElementList(name = "codeLists", entry = "list", type = CodeList.class, required=false)
-	private List<CodeList> codeLists;;
+	private ArrayList<CodeList> codeLists;;
 
 	/*@XmlElement(name = "unit", type = Unit.class)
 	@XmlElementWrapper(name = "units")
 	private List<Unit> units;*/
 	@ElementList(name = "units", entry = "unit", type = Unit.class, required=false)
-	private List<Unit> units;
+	private ArrayList<Unit> units;
 
 	/*@XmlElement(name = "spatialReferenceSystem", type = SpatialReferenceSystem.class)
 	@XmlElementWrapper(name = "spatialReferenceSystems")
 	private List<SpatialReferenceSystem> spatialReferenceSystems;*/
 	@ElementList(name = "spatialReferenceSystems", entry = "spatialReferenceSystem", type = SpatialReferenceSystem.class, required=false)
-	private List<SpatialReferenceSystem> spatialReferenceSystems;
+	private ArrayList<SpatialReferenceSystem> spatialReferenceSystems;
 
 	@Element(name = "schema", type = Schema.class)
 	private Schema schema;

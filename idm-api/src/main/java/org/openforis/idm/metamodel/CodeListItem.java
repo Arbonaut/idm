@@ -61,10 +61,10 @@ public class CodeListItem extends Versionable implements Serializable {
 	private CodeListItem parentItem;
 	
 	@XmlTransient
-	private int nextChildId;
+	private int lastItemId;
 	
 	public CodeListItem() {
-		nextChildId = 1;
+		lastItemId = 0;
 	}
 	
 	public int getId() {
@@ -159,11 +159,7 @@ public class CodeListItem extends Versionable implements Serializable {
 		if ( childItems == null ) {
 			childItems = new ArrayList<CodeListItem>();
 		}
-		if ( item.getId() == 0 ) {
-			item.setId(nextChildId ++);
-		} else {
-			nextChildId = Math.max(nextChildId, item.getId() + 1);
-		}
+		item.setId(nextItemId());
 		childItems.add(item);
 		item.setParentItem(this);
 	}
@@ -178,6 +174,22 @@ public class CodeListItem extends Versionable implements Serializable {
 				}
 			}
 		}
+	}
+
+	protected int nextItemId() {
+		if ( lastItemId == 0 ) {
+			lastItemId = calculateLastUsedItemId();
+		}
+		return lastItemId++;
+	}
+
+	protected int calculateLastUsedItemId() {
+		int result = 0;
+		List<CodeListItem> items = getChildItems();
+		for (CodeListItem item : items) {
+			result = Math.max(result, item.getId());	
+		}
+		return result;
 	}
 	
 	public CodeListItem getParentItem() {

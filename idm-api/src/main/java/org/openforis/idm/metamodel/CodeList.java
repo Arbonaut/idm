@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -64,7 +65,10 @@ public class CodeList extends Versionable implements Serializable {
 	private List<CodeListItem> items;
 
 	@XmlTransient
-	private int nextItemId;
+	private int lastItemId;
+	
+	@XmlTransient
+	private int lastLevelId;
 	
 	public int getId() {
 		return id;
@@ -187,9 +191,37 @@ public class CodeList extends Versionable implements Serializable {
 		if ( this.hierarchy == null ) {
 			this.hierarchy = new ArrayList<CodeListLevel>();
 		}
+		level.setId(nextLevelId());
 		this.hierarchy.add(level);
 	}
+	
+	public void removeLevel(int id) {
+		Iterator<CodeListLevel> it = hierarchy.iterator();
+		while (it.hasNext()) {
+			CodeListLevel level = (CodeListLevel) it.next();
+			if ( level.getId() == id ) {
+				it.remove();
+				break;
+			}
+		}
+	}
+	
+	protected int nextLevelId() {
+		if ( lastLevelId == 0 ) {
+			lastLevelId = calculateLastUsedLevelId();
+		}
+		return lastLevelId++;
+	}
 
+	protected int calculateLastUsedLevelId() {
+		int result = 0;
+		List<CodeListLevel> levels = getHierarchy();
+		for (CodeListLevel level : levels) {
+			result = Math.max(result, level.getId());
+		}
+		return result;
+	}
+	
 	public List<CodeListItem> getItems() {
 		return CollectionUtil.unmodifiableList(this.items);
 	}
@@ -198,11 +230,7 @@ public class CodeList extends Versionable implements Serializable {
 		if ( items == null ) {
 			items = new ArrayList<CodeListItem>();
 		}
-		if ( item.getId() == 0 ) {
-			item.setId(nextItemId ++);
-		} else {
-			nextItemId = Math.max(nextItemId, item.getId() + 1);
-		}
+		item.setId(nextItemId());
 		items.add(item);
 	}
 	
@@ -216,6 +244,22 @@ public class CodeList extends Versionable implements Serializable {
 				}
 			}
 		}
+	}
+	
+	protected int nextItemId() {
+		if ( lastItemId == 0 ) {
+			lastItemId = calculateLastUsedItemId();
+		}
+		return lastItemId++;
+	}
+
+	protected int calculateLastUsedItemId() {
+		int result = 0;
+		List<CodeListItem> items = getItems();
+		for (CodeListItem item : items) {
+			result = Math.max(result, item.getId());	
+		}
+		return result;
 	}
 	
 	public CodeScope getCodeScope() {

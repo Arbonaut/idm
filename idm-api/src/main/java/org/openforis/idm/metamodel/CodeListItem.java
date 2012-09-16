@@ -71,6 +71,16 @@ public class CodeListItem extends Versionable implements Serializable {
 		return ! ( childItems == null || childItems.isEmpty() );
 	}
 	
+	public int getDepth() {
+		int depth = 1;
+		CodeListItem parent = parentItem;
+		while ( parent != null ) {
+			parent = parent.getParentItem();
+			depth++;
+		}
+		return depth;
+	}
+	
 	public int getId() {
 		return id;
 	}

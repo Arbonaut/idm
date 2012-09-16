@@ -2,9 +2,9 @@ package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -196,16 +196,58 @@ public class CodeList extends Versionable implements Serializable {
 	}
 	
 	public void removeLevel(int id) {
-		Iterator<CodeListLevel> it = hierarchy.iterator();
-		while (it.hasNext()) {
-			CodeListLevel level = (CodeListLevel) it.next();
-			if ( level.getId() == id ) {
-				it.remove();
-				break;
+		int index = getLevelIndex(id);
+		if ( index >= 0 ) {
+			hierarchy.remove(index);
+			if ( index > 0 ) {
+				removeItemsInLevel(index);
 			}
 		}
 	}
+
+	private int getLevelIndex(int id) {
+		for (int i = 0; i < hierarchy.size(); i++) {
+			CodeListLevel level = hierarchy.get(i);
+			if ( level.getId() == id ) {
+				return i;
+			}
+		}
+		return -1;
+	}
 	
+	public boolean hasItemsInLevel(int levelIndex) {
+		List<CodeListItem> itemsInLevel = getItemsInLevel(levelIndex);
+		return ! itemsInLevel.isEmpty();
+	}
+	
+	protected List<CodeListItem> getItemsInLevel(int levelIndex) {
+		List<CodeListItem> itemsInLevel = getItems();
+		for (int depth = 0; ! itemsInLevel.isEmpty() && depth < levelIndex; depth ++ ) {
+			List<CodeListItem> itemsInNextLevel = new ArrayList<CodeListItem>();
+			for (CodeListItem item : itemsInLevel) {
+				List<CodeListItem> childItems = item.getChildItems();
+				if ( ! childItems.isEmpty() ) {
+					itemsInNextLevel.addAll(childItems);
+				}
+			}
+			itemsInLevel = itemsInNextLevel;
+		}
+		return itemsInLevel;
+	}
+	
+	protected void removeItemsInLevel(int levelIndex) {
+		List<CodeListItem> itemsInLevel = getItemsInLevel(levelIndex);
+		for (CodeListItem item : itemsInLevel) {
+			CodeListItem parent = item.getParentItem();
+			int itemId = item.getId();
+			if ( parent != null ) {
+				parent.removeChildItem(itemId);
+			} else {
+				this.removeItem(itemId);
+			}
+		}
+	}
+
 	protected int nextLevelId() {
 		if ( lastLevelId == 0 ) {
 			lastLevelId = calculateLastUsedLevelId();

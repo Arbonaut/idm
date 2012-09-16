@@ -67,6 +67,10 @@ public class CodeListItem extends Versionable implements Serializable {
 		lastItemId = 0;
 	}
 	
+	public boolean hasChildItems() {
+		return ! ( childItems == null || childItems.isEmpty() );
+	}
+	
 	public int getId() {
 		return id;
 	}

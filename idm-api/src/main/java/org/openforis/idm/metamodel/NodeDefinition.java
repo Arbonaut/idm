@@ -336,10 +336,29 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	public NodeDefinition getParentDefinition() {
 		return this.parentDefinition;
 	}
-
+	
 	protected void setParentDefinition(NodeDefinition parentDefinition) {
 		this.parentDefinition = parentDefinition;
 		this.schema = parentDefinition.getSchema();
+	}
+	
+	public EntityDefinition getRootEntity() {
+		if ( parentDefinition == null) {
+			if ( this instanceof EntityDefinition) {
+				return (EntityDefinition) this;
+			} else {
+				//detached node
+				return null;
+			}
+		} else {
+			EntityDefinition result = (EntityDefinition) parentDefinition;
+			EntityDefinition currentParentDefn = (EntityDefinition) result.getParentDefinition();
+			while ( currentParentDefn != null ) {
+				result = currentParentDefn;
+				currentParentDefn = (EntityDefinition) currentParentDefn.getParentDefinition();
+			}
+			return result;
+		}
 	}
 	
 	@Override

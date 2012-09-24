@@ -51,6 +51,10 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 		return this.type;
 	}
 	
+	public void setType(Type type) {
+		this.type = type;
+	}
+	
 	@Override
 	public boolean isKey() {
 		return this.key == null ? false : key;

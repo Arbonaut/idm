@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -47,8 +48,45 @@ public class FileAttributeDefinition extends AttributeDefinition {
 		return this.maxSize;
 	}
 
+	public void setMaxSize(Integer maxSize) {
+		this.maxSize = maxSize;
+	}
+	
 	public List<String> getExtensions() {
 		return CollectionUtil.unmodifiableList(extensions);
+	}
+	
+	public void addExtension(String extension) {
+		if ( extensions == null )  {
+			extensions = new ArrayList<String>();
+		}
+		extensions.add(extension);
+	}
+
+	public void addExtensions(List<String> extensions) {
+		if ( extensions != null ) {
+			for (String extension : extensions) {
+				addExtension(extension);
+			}
+		}
+	}
+	
+	public void removeExtension(String extension) {
+		extensions.remove(extension);
+	}
+	
+	public void removeExtensions(List<String> extensions) {
+		if (extensions != null ) {
+			extensions.removeAll(extensions);
+		}
+	}
+	
+	public void removeAllExtensions() {
+		if ( extensions == null ) {
+			extensions = new ArrayList<String>();
+		} else {
+			extensions.clear();
+		}
 	}
 
 	@Override

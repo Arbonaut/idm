@@ -210,6 +210,14 @@
           </xs:annotation>
         </xs:element>
 
+		<xs:element name="published" type="xs:boolean" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              If true, the survey is in use by some systems and cannot be entirely modified
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
         <xs:element name="cycle" type="unformattedText" minOccurs="0" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">

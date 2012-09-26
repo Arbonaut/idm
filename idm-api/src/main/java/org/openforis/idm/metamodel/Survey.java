@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,6 +48,9 @@ public class Survey implements Serializable {
 	@XmlElement(name = "uri")
 	private String uri;
 
+	@XmlAttribute(name = "published", required = false)
+	private Boolean published;
+	
 	@XmlElement(name = "cycle")
 	private Integer cycle;
 
@@ -97,6 +101,14 @@ public class Survey implements Serializable {
 		this.uri = uri;
 	}
 	
+	public boolean isPublished() {
+		return published != null && published.booleanValue();
+	}
+
+	public void setPublished(Boolean published) {
+		this.published = published;
+	}
+
 	public String getName() {
 		return name;
 	}

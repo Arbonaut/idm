@@ -56,7 +56,18 @@ public class EntityDefinition extends NodeDefinition {
 		}
 		throw new IllegalArgumentException("Child definition " + name + " not found in " + getPath());
 	}
-	
+
+	public NodeDefinition getChildDefinition(int id) {
+		if (childDefinitions != null) {
+			for (NodeDefinition childDefinition : childDefinitions) {
+				if (childDefinition.getId().equals(id)) {
+					return childDefinition;
+				}
+			}
+		}
+		throw new IllegalArgumentException("Child definition with id " + id + " not found in " + getPath());
+	}
+
 	/**
 	 * Get child definition and cast to requested type
 	 * 
@@ -83,6 +94,15 @@ public class EntityDefinition extends NodeDefinition {
 		defn.setParentDefinition(this);
 	}
 
+	public void removeChildDefinition(int id) {
+		NodeDefinition childDefn = getChildDefinition(id);
+		removeChildDefinition(childDefn);
+	}
+	
+	public void removeChildDefinition(NodeDefinition defn) {
+		childDefinitions.remove(defn);
+	}
+	
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {
 		ArrayList<AttributeDefinition> result = new ArrayList<AttributeDefinition>();
 		for (NodeDefinition nodeDefinition : childDefinitions) {

@@ -146,12 +146,30 @@ public class Schema  implements Serializable {
 
 	public void removeRootEntityDefinition(String name) {
 		EntityDefinition defn = getRootEntityDefinition(name);
+		removeRootEntityDefinition(defn);
+	}
+
+	public void removeRootEntityDefinition(int id) {
+		EntityDefinition defn = getRootEntityDefinition(id);
+		removeRootEntityDefinition(defn);
+	}
+	
+	protected void removeRootEntityDefinition(EntityDefinition defn) {
 		rootEntityDefinitions.remove(defn);
 		reindexDefinitions();
 	}
 	
 	public EntityDefinition getRootEntityDefinition(String name) {
 		return (EntityDefinition) getByPath("/"+name);
+	}
+	
+	public EntityDefinition getRootEntityDefinition(int id) {
+		for (EntityDefinition node : rootEntityDefinitions) {
+			if ( node.getId().equals(id) ) {
+				return node;
+			}
+		}
+		throw new IllegalArgumentException("Root entity definition with id " + id + " not found");
 	}
 
 	@Override

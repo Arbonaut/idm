@@ -17,7 +17,6 @@ import org.openforis.idm.metamodel.validation.CustomCheck;
 import org.openforis.idm.metamodel.validation.DistanceCheck;
 import org.openforis.idm.metamodel.validation.PatternCheck;
 import org.openforis.idm.metamodel.validation.UniquenessCheck;
-import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.model.Value;
 import org.openforis.idm.util.CollectionUtil;

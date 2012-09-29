@@ -383,7 +383,15 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 
 	public void setName(String name) {
 		checkLockState();
+		String oldName = this.name;
+		boolean changed = ! StringUtils.equals(oldName, name);
+		if ( schema != null && changed && oldName != null ) {
+			schema.removeIndexByPath(this, true);
+		}
 		this.name = name;
+		if ( schema != null && changed && name != null ) {
+			schema.indexByPath(this, true);
+		}
 	}
 	
 	public void setRelevantExpression(String relevantExpression) {

@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.util.CollectionUtil;
@@ -49,14 +50,14 @@ public class EntityDefinition extends NodeDefinition {
 	public NodeDefinition getChildDefinition(String name) {
 		if (childDefinitions != null) {
 			for (NodeDefinition childDefinition : childDefinitions) {
-				if (childDefinition.getName().equals(name)) {
+				if ( StringUtils.equals(childDefinition.getName(), name) ) {
 					return childDefinition;
 				}
 			}
 		}
 		throw new IllegalArgumentException("Child definition " + name + " not found in " + getPath());
 	}
-
+	
 	public NodeDefinition getChildDefinition(int id) {
 		if (childDefinitions != null) {
 			for (NodeDefinition childDefinition : childDefinitions) {

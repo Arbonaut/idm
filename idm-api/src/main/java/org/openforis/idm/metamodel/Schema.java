@@ -87,8 +87,37 @@ public class Schema  implements Serializable {
 	}
 
 	void indexByPath(NodeDefinition definition) {
+		indexByPath(definition, false);
+	}
+	
+	void indexByPath(NodeDefinition definition, boolean indexChildren) {
+		if ( definition.getName() != null ) {
+			String path = definition.getPath();
+			definitionsByPath.put(path, definition);
+			if ( indexChildren && definition instanceof EntityDefinition ) {
+				((EntityDefinition) definition).traverse(new NodeDefinitionVisitor() {
+					@Override
+					public void visit(NodeDefinition descendant) {
+						String path = descendant.getPath();
+						definitionsByPath.put(path, descendant);
+					}
+				});
+			}
+		}
+	}
+
+	void removeIndexByPath(NodeDefinition definition, boolean removeChildrenIndex) {
 		String path = definition.getPath();
-		definitionsByPath.put(path, definition);
+		definitionsByPath.remove(path);
+		if ( removeChildrenIndex && definition instanceof EntityDefinition ) {
+			((EntityDefinition) definition).traverse(new NodeDefinitionVisitor() {
+				@Override
+				public void visit(NodeDefinition defn) {
+					String path = defn.getPath();
+					definitionsByPath.remove(path);
+				}
+			});
+		}
 	}
 
 	void indexById(NodeDefinition definition) {
@@ -196,6 +225,5 @@ public class Schema  implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
 }

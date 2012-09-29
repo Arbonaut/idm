@@ -86,7 +86,9 @@ public final class Time implements Value {
 	public String toXmlTime() {
 		Formatter formatter = new Formatter();
 		formatter.format("%02d:%02d:00", hour, minute);
-		return formatter.toString();
+		String result = formatter.toString();
+		formatter.close();
+		return result;
 	}
 	
 	public static Time parseTime(String string) {

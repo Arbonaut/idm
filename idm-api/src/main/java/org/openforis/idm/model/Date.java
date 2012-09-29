@@ -72,7 +72,9 @@ public final class Date implements Value {
 	public String toXmlDate() {
 		Formatter formatter = new Formatter();
 		formatter.format("%04d-%02d-%02d", year, month, day);
-		return formatter.toString();
+		String result = formatter.toString();
+		formatter.close();
+		return result;
 	}
 	
 	@Override

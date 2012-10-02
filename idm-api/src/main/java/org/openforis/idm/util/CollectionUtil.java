@@ -38,4 +38,18 @@ public class CollectionUtil {
 			return Collections.unmodifiableSet(set);
 		}
 	}
+	
+	public static <T> void moveItem(List<T> list, T item, int toIndex) {
+		int oldIndex = list.indexOf(item);
+		if ( oldIndex < 0 ) {
+			throw new IllegalArgumentException("Item not found");
+		}
+		if ( toIndex >= 0 && toIndex < list.size() ) {
+			list.remove(oldIndex);
+			list.add(toIndex, item);
+		} else {
+			throw new IndexOutOfBoundsException("Index out of bounds: " + toIndex + " (list size = " + list.size() + ")");
+		}
+	}
+	
 }

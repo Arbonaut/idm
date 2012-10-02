@@ -83,6 +83,18 @@ public class EntityDefinition extends NodeDefinition {
 		}
 		return (T) childDefinition;
 	}
+	
+	public int getChildIndex(NodeDefinition defn) {
+		if ( childDefinitions != null ) {
+			int result = childDefinitions.indexOf(defn);
+			if ( result < 0 ) {
+				throw new IllegalArgumentException(this.getPath() + "- child not found:" + defn.getName());
+			}
+			return result;
+		} else {
+			throw new IllegalArgumentException(this.getPath() + " has no children");
+		}
+	}
 
 	public void addChildDefinition(NodeDefinition defn) {
 		checkLockState();
@@ -102,6 +114,15 @@ public class EntityDefinition extends NodeDefinition {
 	
 	public void removeChildDefinition(NodeDefinition defn) {
 		childDefinitions.remove(defn);
+	}
+	
+	public void moveChildDefinition(int id, int index) {
+		NodeDefinition defn = getChildDefinition(id);
+		moveChildDefinition(defn, index);
+	}
+
+	public void moveChildDefinition(NodeDefinition defn, int newIndex) {
+		CollectionUtil.moveItem(childDefinitions, defn, newIndex);
 	}
 	
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {

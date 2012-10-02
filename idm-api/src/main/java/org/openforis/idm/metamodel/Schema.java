@@ -201,6 +201,22 @@ public class Schema  implements Serializable {
 		throw new IllegalArgumentException("Root entity definition with id " + id + " not found");
 	}
 
+	public int getRootEntityIndex(EntityDefinition rootEntity) {
+		if ( rootEntityDefinitions != null ) {
+			int result = rootEntityDefinitions.indexOf(rootEntity);
+			if ( result < 0 ) {
+				throw new IllegalArgumentException("Root entity not found:" + rootEntity.getName());
+			}
+			return result;
+		} else {
+			throw new IllegalArgumentException("Schema has no root entities");
+		}
+	}
+	
+	public void moveRootEntityDefinition(EntityDefinition rootEntity, int newIndex) {
+		CollectionUtil.moveItem(rootEntityDefinitions, rootEntity, newIndex);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

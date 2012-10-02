@@ -49,10 +49,10 @@ public class Survey implements Serializable {
 	private String uri;
 
 	@XmlAttribute(name = "published", required = false)
-	private Boolean published;
+	private boolean published;
 	
 	@XmlElement(name = "cycle")
-	private Integer cycle;
+	private String cycle;
 
 	@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
@@ -79,12 +79,26 @@ public class Survey implements Serializable {
 	@XmlElement(name = "schema", type = Schema.class)
 	private Schema schema;
 
+	private int lastId;
+	
 	//@XmlTransient
 	private transient SurveyContext surveyContext;
 	
 	//@XmlTransient
 	private transient SurveyDependencies surveyDependencies;
 	
+	// TODO create in SurveyContext
+	public Survey(SurveyContext surveyContext, int lastId) {
+		this.surveyContext = surveyContext;
+		this.schema = new Schema(this);
+		this.lastId = lastId;
+	}
+
+	public Survey(SurveyContext surveyContext) {
+		this(surveyContext, 1);
+	}
+	
+	// TODO does survey ID go here or in Collect?
 	public Integer getId() {
 		return id;
 	}
@@ -102,10 +116,10 @@ public class Survey implements Serializable {
 	}
 	
 	public boolean isPublished() {
-		return published != null && published.booleanValue();
+		return published;
 	}
 
-	public void setPublished(Boolean published) {
+	public void setPublished(boolean published) {
 		this.published = published;
 	}
 
@@ -149,11 +163,11 @@ public class Survey implements Serializable {
 		}
 	}
 	
-	public Integer getCycle() {
+	public String getCycle() {
 		return this.cycle;
 	}
 	
-	public void setCycle(Integer cycle) {
+	public void setCycle(String cycle) {
 		this.cycle = cycle;
 	}
 
@@ -230,6 +244,13 @@ public class Survey implements Serializable {
 	}
 	
 	public void addCodeList(CodeList codeList) {
+		// TODO check survey in other methods as well
+		// TODO check that code list id is not already in survey; same in other add methods as well
+		// TODO check that code list id is <= lastId; same other add methods as well
+		if ( codeList.getSurvey() != this ) {
+			throw new IllegalArgumentException("Code list belongs to another survey");
+		}
+		
 		if ( codeLists == null ) {
 			codeLists = new ArrayList<CodeList>();
 		}
@@ -340,11 +361,6 @@ public class Survey implements Serializable {
 		return this.schema;
 	}
 	
-	public void setSchema(Schema schema) {
-		this.schema = schema;
-		schema.setSurvey(this);
-	}
-	
 	public ModelVersion getVersion(String name) {
 		if ( modelVersions != null ) {
 			for (ModelVersion v : modelVersions) {
@@ -401,9 +417,9 @@ public class Survey implements Serializable {
 		return surveyContext;
 	}
 	
-	public void setSurveyContext(SurveyContext surveyContext) {
-		this.surveyContext = surveyContext;
-	}
+//	public void setSurveyContext(SurveyContext surveyContext) {
+//		this.surveyContext = surveyContext;
+//	}
 	
 	public Set<NodePathPointer> getCheckDependencies(NodeDefinition definition) {
 		return getSurveyDependencies().getCheckDependencies(definition);
@@ -571,4 +587,22 @@ public class Survey implements Serializable {
 		return true;
 	}
 
+	// TODO use everywhere a unique id is required
+	synchronized 
+	private int nextId() {
+		return ++lastId;
+	}
+	
+	synchronized 
+	public int getLastId() {
+		return lastId;
+	}
+	
+	public CodeList createCodeList(int id) {
+		return new CodeList(this, id);
+	}
+
+	public CodeList createCodeList() {
+		return new CodeList(this, nextId());
+	}
 }

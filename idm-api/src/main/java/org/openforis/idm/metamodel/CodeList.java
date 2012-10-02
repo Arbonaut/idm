@@ -1,6 +1,5 @@
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,7 +21,7 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "id", "name", "lookupTable", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
-public class CodeList extends Versionable implements Serializable {
+public class CodeList extends VersionableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,9 +32,6 @@ public class CodeList extends Versionable implements Serializable {
 	@XmlTransient
 	@XmlParent
 	private Survey survey;
-
-	@XmlAttribute(name = "id")
-	private int id;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -69,14 +65,11 @@ public class CodeList extends Versionable implements Serializable {
 	@XmlTransient
 	private int lastLevelId;
 	
-	public int getId() {
-		return id;
+	CodeList(Survey survey, int id) {
+		super(survey);
+		setId(id);
 	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+
 	public String getName() {
 		return this.name;
 	}
@@ -311,14 +304,6 @@ public class CodeList extends Versionable implements Serializable {
 		}
 	}
 
-	public Survey getSurvey() {
-		return survey;
-	}
-
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
-	}
-
 	public boolean isQualifiable() {
 		for (CodeListItem item : getItems()) {
 			if ( item.isQualifiableRecursive() ) {
@@ -335,7 +320,7 @@ public class CodeList extends Versionable implements Serializable {
 		result = prime * result + ((codingScheme == null) ? 0 : codingScheme.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
 		result = prime * result + ((hierarchy == null) ? 0 : hierarchy.hashCode());
-		result = prime * result + id;
+		result = prime * result + getId();
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((lookupTable == null) ? 0 : lookupTable.hashCode());
@@ -367,7 +352,7 @@ public class CodeList extends Versionable implements Serializable {
 				return false;
 		} else if (!hierarchy.equals(other.hierarchy))
 			return false;
-		if (id != other.id)
+		if (getId() != other.getId())
 			return false;
 		if (items == null) {
 			if (other.items != null)

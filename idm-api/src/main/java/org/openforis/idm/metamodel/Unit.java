@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "id", "name", "dimension", "conversionFactor", "labels", "abbreviations" })
-public class Unit implements Serializable {
+public class Unit extends SurveyObject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,14 +43,10 @@ public class Unit implements Serializable {
 	@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> abbreviations;
 
-	public int getId() {
-		return id;
+	public Unit(Survey survey) {
+		super(survey);
 	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+
 	public String getName() {
 		return this.name;
 	}

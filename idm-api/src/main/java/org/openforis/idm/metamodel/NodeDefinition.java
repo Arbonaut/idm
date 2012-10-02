@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,7 +29,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlTransient
-public abstract class NodeDefinition extends Versionable implements Annotatable, Serializable {
+public abstract class NodeDefinition extends VersionableSurveyObject implements Annotatable {
 	private static final long serialVersionUID = 1L;
 //	private static final transient Log LOG = LogFactory.getLog(NodeDefinition.class);
 
@@ -79,6 +78,10 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	@XmlAnyAttribute
 	private Map<QName,String> annotations;
 	
+	public NodeDefinition(Survey survey) {
+		super(survey);
+	}
+
 	public abstract Node<?> createNode();
 	
 	public String getAnnotation(QName qname) {
@@ -99,25 +102,14 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	public Set<QName> getAnnotationNames() {
 		return CollectionUtil.unmodifiableSet(annotations.keySet());
 	}
-	
-	public Integer getId() {
-		return id;
-	}
 
 	// TODO Encapsulate this better (e.g. using reflection or subclass)
-	public void setId(Integer id) {
-		this.id = id;
-		if ( schema != null ) {
-			schema.indexById(this);
+	protected void setId(Integer id) {
+		if ( getId() != null ) { 
+			throw new IllegalStateException("Id already assigned");
 		}
-	}
-	
-	public Schema getSchema() {
-		return schema;
-	}
-
-	public void setSchema(Schema schema) {
-		this.schema = schema;
+		super.setId(id);
+		getSchema().indexById(this);
 	}
 	
 	public NodeDefinition getDefinitionByRelativePath(String path) {
@@ -359,11 +351,6 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 			}
 			return result;
 		}
-	}
-	
-	@Override
-	public Survey getSurvey() {
-		return schema == null ? null : schema.getSurvey();
 	}
 	
 	@Override

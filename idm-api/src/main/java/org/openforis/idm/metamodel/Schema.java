@@ -3,8 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +27,7 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "rootEntityDefinitions" })
-public class Schema  implements Serializable {
+public class Schema extends SurveyObject {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -49,18 +47,11 @@ public class Schema  implements Serializable {
 	@XmlTransient
 	private int lastDefinitionId;
 	
-	public Schema() {
+	public Schema(Survey survey) {
+		super(survey);
 		definitionsByPath = new HashMap<String, NodeDefinition>(); 
 		definitionsById = new HashMap<Integer, NodeDefinition>();
 		lastDefinitionId = 0;
-	}
-	
-	public Survey getSurvey() {
-		return survey;
-	}
-	
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
 	}
 	
 	public NodeDefinition getByPath(String absolutePath) {
@@ -139,16 +130,16 @@ public class Schema  implements Serializable {
 		return CollectionUtil.unmodifiableList(rootEntityDefinitions);
 	}
 
-	public void addRootEntityDefinition(EntityDefinition defn) {
-		defn.setId(nextNodeDefinitionId());
-		if ( rootEntityDefinitions == null) {
-			rootEntityDefinitions = new ArrayList<EntityDefinition>();
-		}
-		rootEntityDefinitions.add(defn);
-		defn.setSchema(this);
-		indexById(defn);
-		indexByPath(defn);
-	}
+//	public void addRootEntityDefinition(EntityDefinition defn) {
+//		defn.setId(nextNodeDefinitionId());
+//		if ( rootEntityDefinitions == null) {
+//			rootEntityDefinitions = new ArrayList<EntityDefinition>();
+//		}
+//		rootEntityDefinitions.add(defn);
+//		defn.setSchema(this);
+//		indexById(defn);
+//		indexByPath(defn);
+//	}
 	
 	protected int nextNodeDefinitionId() {
 		if ( lastDefinitionId == 0 ) {

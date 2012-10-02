@@ -38,6 +38,10 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	@XmlAttribute(name = "affirmativeOnly")
 	private Boolean affirmativeOnly;
 
+	BooleanAttributeDefinition(Survey survey) {
+		super(survey);
+	}
+
 	public boolean isAffirmativeOnly() {
 		return affirmativeOnly == null ? false : affirmativeOnly;
 	}

@@ -126,7 +126,7 @@ public class ModelVersion implements Serializable {
 		this.date = date;
 	}
 
-	public boolean isApplicable(Versionable versionable) {
+	public boolean isApplicable(VersionableSurveyObject versionable) {
 		ModelVersion since = versionable.getSinceVersion();
 		ModelVersion deprecated = versionable.getDeprecatedVersion();
 		if (since == null && deprecated == null) {

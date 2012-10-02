@@ -37,7 +37,7 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		new FieldDefinition<String>("code", "c", null, String.class, this), 
 		new FieldDefinition<String>("qualifier", "q", "other", String.class, this)
 	};
-	
+
 	@XmlAttribute(name = "key")
 	private Boolean key;
 
@@ -54,6 +54,10 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	@XmlTransient
 	private CodeAttributeDefinition parentCodeAttributeDefinition; 
 	
+	CodeAttributeDefinition(Survey survey) {
+		super(survey);
+	}
+
 	public CodeList getList() {
 		return this.list;
 	}

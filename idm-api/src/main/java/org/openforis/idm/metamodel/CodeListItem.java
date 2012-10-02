@@ -28,12 +28,9 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "id", "qualifiable", "sinceVersionName", "deprecatedVersionName", "code", "labels", "descriptions", "childItems" })
-public class CodeListItem extends Versionable implements Serializable {
+public class CodeListItem extends VersionableSurveyObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	@XmlAttribute(name = "id")
-	private int id;
 
 	@XmlAttribute(name = "qualifiable")
 	private Boolean qualifiable;
@@ -62,11 +59,12 @@ public class CodeListItem extends Versionable implements Serializable {
 	
 	@XmlTransient
 	private int lastItemId;
-	
-	public CodeListItem() {
+
+	CodeListItem(Survey survey) {
+		super(survey);
 		lastItemId = 0;
 	}
-	
+
 	public boolean hasChildItems() {
 		return ! ( childItems == null || childItems.isEmpty() );
 	}
@@ -79,14 +77,6 @@ public class CodeListItem extends Versionable implements Serializable {
 			depth++;
 		}
 		return depth;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
 	}
 	
 	public boolean isQualifiable() {
@@ -222,11 +212,6 @@ public class CodeListItem extends Versionable implements Serializable {
 		this.list = list;
 	}
 	
-	@Override
-	public Survey getSurvey() {
-		return list == null ? null : list.getSurvey();
-	}
-
 	boolean isQualifiableRecursive() {
 		if ( isQualifiable() ) {
 			return true;
@@ -246,7 +231,7 @@ public class CodeListItem extends Versionable implements Serializable {
 		result = prime * result + ((childItems == null) ? 0 : childItems.hashCode());
 		result = prime * result + ((code == null) ? 0 : code.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
-		result = prime * result + id;
+		result = prime * result + getId();
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((qualifiable == null) ? 0 : qualifiable.hashCode());
 		return result;
@@ -276,7 +261,7 @@ public class CodeListItem extends Versionable implements Serializable {
 				return false;
 		} else if (!descriptions.equals(other.descriptions))
 			return false;
-		if (id != other.id)
+		if (getId() != other.getId())
 			return false;
 		if (labels == null) {
 			if (other.labels != null)

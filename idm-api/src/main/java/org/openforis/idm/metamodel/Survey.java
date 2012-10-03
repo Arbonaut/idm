@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,7 +28,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author E. Suprapto Wibowo
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "projectNames", "uri", "cycle", "descriptions", "configuration", "modelVersions",
+@XmlType(name = "", propOrder = { "projectNames", "uri", "published", "cycle", "descriptions", "configuration", "modelVersions",
 		"codeLists", "units", "spatialReferenceSystems", "schema" })
 @XmlRootElement(name = "survey")
 public class Survey implements Serializable {
@@ -48,7 +47,7 @@ public class Survey implements Serializable {
 	@XmlElement(name = "uri")
 	private String uri;
 
-	@XmlAttribute(name = "published", required = false)
+	@XmlElement(name = "published", required = false)
 	private Boolean published;
 	
 	@XmlElement(name = "cycle")
@@ -374,7 +373,7 @@ public class Survey implements Serializable {
 		return null;
 	}
 
-	public List<Configuration> getConfiguration() {
+	public List<Configuration> getConfigurations() {
 		if ( configuration == null ) {
 			return Collections.emptyList();
 		} else {

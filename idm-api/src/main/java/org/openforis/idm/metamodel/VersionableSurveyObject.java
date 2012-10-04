@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author M. Togna
  */
 @XmlTransient
-public abstract class VersionableSurveyObject extends SurveyObject {
+public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -18,8 +18,8 @@ public abstract class VersionableSurveyObject extends SurveyObject {
 	@XmlTransient
 	private ModelVersion deprecatedVersion;
 
-	public VersionableSurveyObject(Survey survey) {
-		super(survey);
+	protected VersionableSurveyObject(Survey survey, int id) {
+		super(survey, id);
 	}
 
 	public String getSinceVersionName() {

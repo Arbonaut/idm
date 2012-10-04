@@ -143,10 +143,10 @@
             <label type="list">Administrative Units</label>
             <codingScheme scope="local"/>
             <hierarchy>
-                <level id="1" name="region">
+                <level name="region">
                     <label>Region</label>
                 </level>
-                <level id="2" name="district">
+                <level name="district">
                     <label>Locality</label>
                 </level>
             </hierarchy>
@@ -3443,10 +3443,10 @@
             <label type="item">Sample Ids</label>
             <codingScheme scope="local"/>
             <hierarchy>
-                <level id="1" name="cluster">
+                <level name="cluster">
                     <label>Cluster Id</label>
                 </level>
-                <level id="2" name="plot">
+                <level name="plot">
                     <label>Plot Id</label>
                 </level>
             </hierarchy>

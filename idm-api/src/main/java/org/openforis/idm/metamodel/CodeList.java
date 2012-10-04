@@ -45,9 +45,6 @@ public class CodeList extends VersionableSurveyObject {
 	@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-//	@XmlElement(name = "codingScheme", type = CodingScheme.class)
-//	private List<CodingScheme> codingSchemes;
-
 	@XmlElement(name = "codingScheme", type = CodingScheme.class)
 	private CodingScheme codingScheme;
 
@@ -59,15 +56,8 @@ public class CodeList extends VersionableSurveyObject {
 	@XmlElementWrapper(name = "items")
 	private List<CodeListItem> items;
 
-	@XmlTransient
-	private int lastItemId;
-	
-	@XmlTransient
-	private int lastLevelId;
-	
 	CodeList(Survey survey, int id) {
-		super(survey);
-		setId(id);
+		super(survey, id);
 	}
 
 	public String getName() {
@@ -183,12 +173,10 @@ public class CodeList extends VersionableSurveyObject {
 		if ( this.hierarchy == null ) {
 			this.hierarchy = new ArrayList<CodeListLevel>();
 		}
-		level.setId(nextLevelId());
 		this.hierarchy.add(level);
 	}
 	
-	public void removeLevel(int id) {
-		int index = getLevelIndex(id);
+	public void removeLevel(int index) {
 		if ( index >= 0 ) {
 			hierarchy.remove(index);
 			if ( index > 0 ) {
@@ -197,16 +185,6 @@ public class CodeList extends VersionableSurveyObject {
 		}
 	}
 
-	private int getLevelIndex(int id) {
-		for (int i = 0; i < hierarchy.size(); i++) {
-			CodeListLevel level = hierarchy.get(i);
-			if ( level.getId() == id ) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
 	public boolean hasItemsInLevel(int levelIndex) {
 		List<CodeListItem> itemsInLevel = getItemsInLevel(levelIndex);
 		return ! itemsInLevel.isEmpty();
@@ -239,22 +217,6 @@ public class CodeList extends VersionableSurveyObject {
 			}
 		}
 	}
-
-	protected int nextLevelId() {
-		if ( lastLevelId == 0 ) {
-			lastLevelId = calculateLastUsedLevelId();
-		}
-		return lastLevelId++;
-	}
-
-	protected int calculateLastUsedLevelId() {
-		int result = 0;
-		List<CodeListLevel> levels = getHierarchy();
-		for (CodeListLevel level : levels) {
-			result = Math.max(result, level.getId());
-		}
-		return result;
-	}
 	
 	public List<CodeListItem> getItems() {
 		return CollectionUtil.unmodifiableList(this.items);
@@ -264,7 +226,7 @@ public class CodeList extends VersionableSurveyObject {
 		if ( items == null ) {
 			items = new ArrayList<CodeListItem>();
 		}
-		item.setId(nextItemId());
+		// TODO check id
 		items.add(item);
 	}
 	
@@ -278,13 +240,6 @@ public class CodeList extends VersionableSurveyObject {
 				}
 			}
 		}
-	}
-	
-	protected int nextItemId() {
-		if ( lastItemId == 0 ) {
-			lastItemId = calculateLastUsedItemId();
-		}
-		return lastItemId++;
 	}
 
 	protected int calculateLastUsedItemId() {
@@ -304,6 +259,13 @@ public class CodeList extends VersionableSurveyObject {
 		}
 	}
 
+	public void setCodeScope(CodeScope scope) {
+		if ( codingScheme == null ) {
+			this.codingScheme = new CodingScheme();
+		}
+		codingScheme.setCodeScope(scope); 
+	}
+	
 	public boolean isQualifiable() {
 		for (CodeListItem item : getItems()) {
 			if ( item.isQualifiableRecursive() ) {
@@ -375,6 +337,15 @@ public class CodeList extends VersionableSurveyObject {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public CodeListItem createItem(int id) {
+		return new CodeListItem(this, id);
+	}
+
+	public CodeListItem createItem() {
+		int id = getSurvey().nextId();
+		return createItem(id);
 	}
 
 }

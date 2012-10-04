@@ -21,12 +21,9 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "id", "name", "dimension", "conversionFactor", "labels", "abbreviations" })
-public class Unit extends SurveyObject {
+public class Unit extends IdentifiableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
-
-	@XmlAttribute(name = "id")
-	private int id;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -43,8 +40,9 @@ public class Unit extends SurveyObject {
 	@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> abbreviations;
 
-	public Unit(Survey survey) {
-		super(survey);
+	// TODO why are some model classes SurveyObjects and other not?
+	Unit(Survey survey, int id) {
+		super(survey, id);
 	}
 
 	public String getName() {
@@ -145,7 +143,6 @@ public class Unit extends SurveyObject {
 		result = prime * result + ((abbreviations == null) ? 0 : abbreviations.hashCode());
 		result = prime * result + ((conversionFactor == null) ? 0 : conversionFactor.hashCode());
 		result = prime * result + ((dimension == null) ? 0 : dimension.hashCode());
-		result = prime * result + id;
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -174,8 +171,6 @@ public class Unit extends SurveyObject {
 			if (other.dimension != null)
 				return false;
 		} else if (!dimension.equals(other.dimension))
-			return false;
-		if (id != other.id)
 			return false;
 		if (labels == null) {
 			if (other.labels != null)

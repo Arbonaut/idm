@@ -57,12 +57,12 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	@XmlParent
 	private CodeListItem parentItem;
 	
-	@XmlTransient
-	private int lastItemId;
+//	@XmlTransient
+//	private int lastItemId;
 
-	CodeListItem(Survey survey) {
-		super(survey);
-		lastItemId = 0;
+	CodeListItem(CodeList codeList, int id) {
+		super(codeList.getSurvey(), id);
+		this.list = codeList;
 	}
 
 	public boolean hasChildItems() {
@@ -163,7 +163,8 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 		if ( childItems == null ) {
 			childItems = new ArrayList<CodeListItem>();
 		}
-		item.setId(nextItemId());
+		// TODO check id is unique and don't exceed max
+//		item.setId(nextItemId());
 		childItems.add(item);
 		item.setParentItem(this);
 	}
@@ -180,12 +181,12 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 		}
 	}
 
-	protected int nextItemId() {
-		if ( lastItemId == 0 ) {
-			lastItemId = calculateLastUsedItemId();
-		}
-		return lastItemId++;
-	}
+//	protected int nextItemId() {
+//		if ( lastItemId == 0 ) {
+//			lastItemId = calculateLastUsedItemId();
+//		}
+//		return lastItemId++;
+//	}
 
 	protected int calculateLastUsedItemId() {
 		int result = 0;

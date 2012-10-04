@@ -18,7 +18,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.xml.internal.XmlInit;
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -30,7 +29,7 @@ import org.openforis.idm.util.CollectionUtil;
 public class Schema extends SurveyObject {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@XmlElement(name = "entity", type = EntityDefinition.class)
 	private List<EntityDefinition> rootEntityDefinitions;
 
@@ -40,10 +39,6 @@ public class Schema extends SurveyObject {
 	@XmlTransient
 	private Map<Integer, NodeDefinition> definitionsById;
 	
-	@XmlTransient
-	@XmlParent
-	private Survey survey;
-
 	@XmlTransient
 	private int lastDefinitionId;
 	
@@ -185,7 +180,7 @@ public class Schema extends SurveyObject {
 	
 	public EntityDefinition getRootEntityDefinition(int id) {
 		for (EntityDefinition node : rootEntityDefinitions) {
-			if ( node.getId().equals(id) ) {
+			if ( node.getId() == id ) {
 				return node;
 			}
 		}

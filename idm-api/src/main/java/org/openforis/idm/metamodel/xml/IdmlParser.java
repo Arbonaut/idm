@@ -2,6 +2,7 @@ package org.openforis.idm.metamodel.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.openforis.idm.metamodel.DefaultSurveyContext;
@@ -37,14 +38,15 @@ public class IdmlParser {
 	}
 
 	synchronized
-	private Survey parse(InputStream is) throws XmlParseException {
+	private Survey parse(InputStream is) throws XmlParseException, IOException {
 		try {
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 			XmlPullParser parser = factory.newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
 			parser.setInput(is, null);
-			SurveyTagReader tagReader = new SurveyTagReader(surveyContext);
-			tagReader.readTag(parser);
+			SurveyPullReader tagReader = new SurveyPullReader(surveyContext);
+			parser.nextTag();
+			tagReader.parseElement(parser);
 			
 			return tagReader.getSurvey();
 		} catch (XmlPullParserException e) {

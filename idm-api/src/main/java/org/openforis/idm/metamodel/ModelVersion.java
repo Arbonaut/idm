@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,12 +21,9 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "id", "name", "labels", "descriptions", "date" })
-public class ModelVersion implements Serializable {
+public class ModelVersion extends IdentifiableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
-
-	@XmlAttribute(name = "id")
-	private int id;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -41,14 +37,10 @@ public class ModelVersion implements Serializable {
 	@XmlElement(name = "date")
 	private String date;
 
-	public int getId() {
-		return id;
+	ModelVersion(Survey survey, int id) {
+		super(survey, id);
 	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+
 	public String getName() {
 		return this.name;
 	}
@@ -161,7 +153,7 @@ public class ModelVersion implements Serializable {
 		int result = 1;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
-		result = prime * result + id;
+		result = prime * result + getId();
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -186,7 +178,7 @@ public class ModelVersion implements Serializable {
 				return false;
 		} else if (!descriptions.equals(other.descriptions))
 			return false;
-		if (id != other.id)
+		if (getId() != other.getId())
 			return false;
 		if (labels == null) {
 			if (other.labels != null)

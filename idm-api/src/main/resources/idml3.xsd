@@ -18,6 +18,13 @@
 		© Copyright 2012 Food and Agriculture Organization of the United Nations
 		      
 		G. Miceli, M. Togna, A. Pekkarinen, S. Ricci
+		
+		
+		3.1 Release Notes
+		
+		Changes from 3.0:
+		* Code list hierarchy levels no longer contain id attribute; their natural order
+		  determines hierarchy rank 
     </xs:documentation>
   </xs:annotation>
 
@@ -121,6 +128,7 @@
             A code used to refer to this item (e.g. 100, a).  By default, codes within a given code list must be unique.  Special behavior may be defined using the <codingScheme/> element.  
           </xs:documentation>
         </xs:annotation>
+        <!-- 
         <xs:complexType>
           <xs:simpleContent>
             <xs:extension base="xs:normalizedString">
@@ -134,6 +142,7 @@
             </xs:extension>
           </xs:simpleContent>
         </xs:complexType>
+         -->
       </xs:element>
       <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText">
         <xs:annotation>
@@ -531,8 +540,7 @@
                                     </xs:documentation>
                                   </xs:annotation>
                                 </xs:element>
-                              </xs:sequence>
-                              <xs:attribute name="id" type="xs:integer" use="required" />
+                              </xs:sequence
                               <xs:attribute name="name" type="internalName" use="required">
                                 <xs:annotation>
                                   <xs:documentation xml:lang="en">

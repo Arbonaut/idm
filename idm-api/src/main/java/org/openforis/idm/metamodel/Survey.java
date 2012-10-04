@@ -589,13 +589,21 @@ public class Survey implements Serializable {
 
 	// TODO use everywhere a unique id is required
 	synchronized 
-	private int nextId() {
+	public int nextId() {
 		return ++lastId;
 	}
 	
 	synchronized 
 	public int getLastId() {
 		return lastId;
+	}
+	
+	public ModelVersion createModelVersion(int id) {
+		return new ModelVersion(this, id);
+	}
+
+	public ModelVersion createModelVersion() {
+		return new ModelVersion(this, nextId());
 	}
 	
 	public CodeList createCodeList(int id) {
@@ -605,4 +613,13 @@ public class Survey implements Serializable {
 	public CodeList createCodeList() {
 		return new CodeList(this, nextId());
 	}
+	
+	public Unit createUnit(int id) {
+		return new Unit(this, id);
+	}
+
+	public Unit createUnit() {
+		return new Unit(this, nextId());
+	}
+	
 }

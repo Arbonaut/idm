@@ -434,9 +434,7 @@ public class Entity extends Node<EntityDefinition> {
 					RelevanceExpression relevanceExpr = expressionFactory.createRelevanceExpression(expr);
 					return relevanceExpr.evaluate(this, null);
 				} catch (InvalidExpressionException e) {
-					throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
-				} catch(Exception e){
-					throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
+					throw new IdmInterpretationError(defn.getPath() + " - Unable to evaluate expression: " + expr, e);
 				}
 			}
 		} else {

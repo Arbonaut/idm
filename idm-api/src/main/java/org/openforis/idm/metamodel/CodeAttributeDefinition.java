@@ -54,8 +54,8 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	@XmlTransient
 	private CodeAttributeDefinition parentCodeAttributeDefinition; 
 	
-	CodeAttributeDefinition(Survey survey) {
-		super(survey);
+	CodeAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
 	}
 
 	public CodeList getList() {

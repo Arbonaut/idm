@@ -4,6 +4,7 @@
 package org.openforis.idm.metamodel.validation;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -57,7 +58,18 @@ public abstract class Check<T extends Attribute<?, ?>> implements Serializable, 
 	public List<LanguageSpecificText> getMessages() {
 		return CollectionUtil.unmodifiableList(this.messages);
 	}
+	
+	public void addMessage(LanguageSpecificText message) {
+		if ( messages == null ) {
+			this.messages = new ArrayList<LanguageSpecificText>();
+		}
+		messages.add(message);
+	}
 
+	public void setCondition(String condition) {
+		this.condition = condition;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

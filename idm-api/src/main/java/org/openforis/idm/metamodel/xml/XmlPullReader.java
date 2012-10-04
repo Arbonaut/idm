@@ -19,7 +19,8 @@ public abstract class XmlPullReader {
 	private int lastChildPullReaderIdx;
 	private int count;
 	private Integer maxCount;
-
+	private boolean unordered;
+	
 	public XmlPullReader(String namespace, String tagName) {
 		this(namespace, tagName, null);
 	}
@@ -28,6 +29,7 @@ public abstract class XmlPullReader {
 		this.namespace = namespace;
 		this.tagName = tagName;
 		this.maxCount = maxCount;
+		this.unordered = true;
 		reset();
 	}
 
@@ -146,11 +148,21 @@ public abstract class XmlPullReader {
 			for (int i = lastChildPullReaderIdx; i < childPullReaders.length; i++) {
 				XmlPullReader tagReader = childPullReaders[i];
 				if ( tagReader.isTagSupported(parser) ) {
-					this.lastChildPullReaderIdx = i;
+					if ( !unordered ) {
+						this.lastChildPullReaderIdx = i;
+					}
 					return tagReader;
 				} 
 			}
 		}
 		throw new XmlParseException(parser);
+	}
+
+	protected boolean isUnordered() {
+		return unordered;
+	}
+
+	protected void setUnordered(boolean unordered) {
+		this.unordered = unordered;
 	}
 }

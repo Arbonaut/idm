@@ -38,8 +38,8 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	@XmlAttribute(name = "type")
 	@XmlJavaTypeAdapter(NumberAttributeDefinitionTypeAdapter.class) Type type;
 
-	public NumericAttributeDefinition() {
-		super();
+	protected NumericAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
 	}
 
 	public Type getType() {

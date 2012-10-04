@@ -47,6 +47,10 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 	@XmlAttribute(name = "key")
 	private Boolean key;
 
+	protected TextAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	public Type getType() {
 		return this.type;
 	}

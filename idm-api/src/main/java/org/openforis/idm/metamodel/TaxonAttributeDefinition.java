@@ -48,6 +48,10 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	@XmlAttribute(name = "highestRank")
 	private String highestRank;
+	
+	protected TaxonAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
 
 	@Override
 	public Node<?> createNode() {

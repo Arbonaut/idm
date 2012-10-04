@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -125,16 +126,15 @@ public class Schema extends SurveyObject {
 		return CollectionUtil.unmodifiableList(rootEntityDefinitions);
 	}
 
-//	public void addRootEntityDefinition(EntityDefinition defn) {
-//		defn.setId(nextNodeDefinitionId());
-//		if ( rootEntityDefinitions == null) {
-//			rootEntityDefinitions = new ArrayList<EntityDefinition>();
-//		}
-//		rootEntityDefinitions.add(defn);
-//		defn.setSchema(this);
-//		indexById(defn);
-//		indexByPath(defn);
-//	}
+	public void addRootEntityDefinition(EntityDefinition defn) {
+		if ( rootEntityDefinitions == null) {
+			rootEntityDefinitions = new ArrayList<EntityDefinition>();
+		}
+		// TODO check validity of defn, schema, parent is null, id is valid 
+		rootEntityDefinitions.add(defn);
+		indexById(defn);
+		indexByPath(defn);
+	}
 	
 	protected int nextNodeDefinitionId() {
 		if ( lastDefinitionId == 0 ) {
@@ -212,4 +212,97 @@ public class Schema extends SurveyObject {
 		return true;
 	}
 
+	private int nextId() {
+		return getSurvey().nextId();
+	}
+
+	public EntityDefinition createEntityDefinition(int id) {
+		return new EntityDefinition(getSurvey(), id);
+	}
+
+	public EntityDefinition createEntityDefinition() {
+		return createEntityDefinition(nextId());
+	}
+
+	public CodeAttributeDefinition createCodeAttributeDefinition(int id) {
+		return new CodeAttributeDefinition(getSurvey(), id);
+	}
+
+	public CodeAttributeDefinition createCodeAttributeDefinition() {
+		return createCodeAttributeDefinition(nextId());
+	}
+
+	public TextAttributeDefinition createTextAttributeDefinition(int id) {
+		return new TextAttributeDefinition(getSurvey(), id);
+	}
+
+	public TextAttributeDefinition createTextAttributeDefinition() {
+		return createTextAttributeDefinition(nextId());
+	}
+
+	public FileAttributeDefinition createFileAttributeDefinition(int id) {
+		return new FileAttributeDefinition(getSurvey(), id);
+	}
+
+	public FileAttributeDefinition createFileAttributeDefinition() {
+		return createFileAttributeDefinition(nextId());
+	}
+
+	public NumberAttributeDefinition createNumberAttributeDefinition(int id) {
+		return new NumberAttributeDefinition(getSurvey(), id);
+	}
+
+	public NumberAttributeDefinition createNumberAttributeDefinition() {
+		return createNumberAttributeDefinition(nextId());
+	}
+
+	public RangeAttributeDefinition createRangeAttributeDefinition(int id) {
+		return new RangeAttributeDefinition(getSurvey(), id);
+	}
+
+	public RangeAttributeDefinition createRangeAttributeDefinition() {
+		return createRangeAttributeDefinition(nextId());
+	}
+
+	public TimeAttributeDefinition createTimeAttributeDefinition(int id) {
+		return new TimeAttributeDefinition(getSurvey(), id);
+	}
+
+	public TimeAttributeDefinition createTimeAttributeDefinition() {
+		return createTimeAttributeDefinition(nextId());
+	}
+
+	public DateAttributeDefinition createDateAttributeDefinition(int id) {
+		return new DateAttributeDefinition(getSurvey(), id);
+	}
+
+	public DateAttributeDefinition createDateAttributeDefinition() {
+		return createDateAttributeDefinition(nextId());
+	}
+	
+
+	public TaxonAttributeDefinition createTaxonAttributeDefinition(int id) {
+		return new TaxonAttributeDefinition(getSurvey(), id);
+	}
+
+	public TaxonAttributeDefinition createTaxonAttributeDefinition() {
+		return createTaxonAttributeDefinition(nextId());
+	}
+
+
+	public BooleanAttributeDefinition createBooleanAttributeDefinition(int id) {
+		return new BooleanAttributeDefinition(getSurvey(), id);
+	}
+
+	public BooleanAttributeDefinition createBooleanAttributeDefinition() {
+		return createBooleanAttributeDefinition(nextId());
+	}
+
+	public CoordinateAttributeDefinition createCoordinateAttributeDefinition(int id) {
+		return new CoordinateAttributeDefinition(getSurvey(), id);
+	}
+
+	public CoordinateAttributeDefinition createCoordinateAttributeDefinition() {
+		return createCoordinateAttributeDefinition(nextId());
+	}
 }

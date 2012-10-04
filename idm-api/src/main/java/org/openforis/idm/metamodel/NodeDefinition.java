@@ -42,23 +42,17 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	@XmlInherited("schema")
 	private Schema schema;
 	
-	@XmlAttribute(name = "id")
-	private Integer id;
-	
 	@XmlAttribute(name = "name")
 	private String name;
 
 	@XmlAttribute(name = "relevant")
 	private String relevantExpression;
 
-	@XmlAttribute(name = "required")
-	private Boolean required;
-	
 	@XmlAttribute(name = "requiredIf")
 	private String requiredExpression;
 
 	@XmlAttribute(name = "multiple")
-	private Boolean multiple;
+	private boolean multiple;
 
 	@XmlAttribute(name = "minCount")
 	private Integer minCount;
@@ -78,8 +72,8 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	@XmlAnyAttribute
 	private Map<QName,String> annotations;
 	
-	public NodeDefinition(Survey survey) {
-		super(survey);
+	NodeDefinition(Survey survey, int id) {
+		super(survey, id);
 	}
 
 	public abstract Node<?> createNode();
@@ -103,15 +97,6 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		return CollectionUtil.unmodifiableSet(annotations.keySet());
 	}
 
-	// TODO Encapsulate this better (e.g. using reflection or subclass)
-	protected void setId(Integer id) {
-		if ( getId() != null ) { 
-			throw new IllegalStateException("Id already assigned");
-		}
-		super.setId(id);
-		getSchema().indexById(this);
-	}
-	
 	public NodeDefinition getDefinitionByRelativePath(String path) {
 		SchemaPathExpression expression = new SchemaPathExpression(path);
 		Object object = expression.evaluate(this);
@@ -144,28 +129,15 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	}
 
 	public boolean isMultiple() {
-		if ( multiple == null ) {
-			if ( parentDefinition == null && schema != null ) {
-				// Root entity is always multiple
-				return true;
-			} else {
-				return (minCount != null && minCount > 1) || (maxCount != null && maxCount > 1);
-			}
-		} else {
-			return multiple;
-		}
+		return multiple;
 	}
 
 	public Integer getMinCount() {
-		if (minCount == null) {
-			return required == Boolean.TRUE ? 1 : null;
-		} else {
-			return minCount;
-		}
+		return minCount;
 	}
 
 	public Integer getMaxCount() {
-		if ( maxCount == null && !isMultiple() ) {
+		if ( !multiple ) {
 			return 1;
 		} else {
 			return maxCount;
@@ -331,7 +303,6 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	
 	protected void setParentDefinition(NodeDefinition parentDefinition) {
 		this.parentDefinition = parentDefinition;
-		this.schema = parentDefinition.getSchema();
 	}
 	
 	public EntityDefinition getRootEntity() {
@@ -386,17 +357,12 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		this.relevantExpression = relevantExpression;
 	}
 
-	public void setRequired(Boolean required) {
-		checkLockState();
-		this.required = required;
-	}
-
 	public void setRequiredExpression(String requiredExpression) {
 		checkLockState();
 		this.requiredExpression = requiredExpression;
 	}
 
-	public void setMultiple(Boolean multiple) {
+	public void setMultiple(boolean multiple) {
 		checkLockState();
 		this.multiple = multiple;
 	}
@@ -416,7 +382,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	 * associated with one or more records or nodes (i.e. locked)
 	 */
 	protected void checkLockState() {
-		// TODO
+		// TODO remove??
 	}
 
 	@Override
@@ -425,15 +391,14 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		int result = super.hashCode();
 		result = prime * result + ((annotations == null) ? 0 : annotations.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + getId();
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((maxCount == null) ? 0 : maxCount.hashCode());
 		result = prime * result + ((minCount == null) ? 0 : minCount.hashCode());
-		result = prime * result + ((multiple == null) ? 0 : multiple.hashCode());
+		result = prime * result + (multiple ? 1231 : 1237);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((prompts == null) ? 0 : prompts.hashCode());
 		result = prime * result + ((relevantExpression == null) ? 0 : relevantExpression.hashCode());
-		result = prime * result + ((required == null) ? 0 : required.hashCode());
 		result = prime * result + ((requiredExpression == null) ? 0 : requiredExpression.hashCode());
 		return result;
 	}
@@ -457,10 +422,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 				return false;
 		} else if (!descriptions.equals(other.descriptions))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (getId() != other.getId())
 			return false;
 		if (labels == null) {
 			if (other.labels != null)
@@ -477,10 +439,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 				return false;
 		} else if (!minCount.equals(other.minCount))
 			return false;
-		if (multiple == null) {
-			if (other.multiple != null)
-				return false;
-		} else if (!multiple.equals(other.multiple))
+		if (multiple!=other.multiple)
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -496,11 +455,6 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 			if (other.relevantExpression != null)
 				return false;
 		} else if (!relevantExpression.equals(other.relevantExpression))
-			return false;
-		if (required == null) {
-			if (other.required != null)
-				return false;
-		} else if (!required.equals(other.required))
 			return false;
 		if (requiredExpression == null) {
 			if (other.requiredExpression != null)

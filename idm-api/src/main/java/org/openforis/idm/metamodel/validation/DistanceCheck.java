@@ -63,6 +63,22 @@ public class DistanceCheck extends Check<CoordinateAttribute> {
 		return sourcePointExpression;
 	}
 
+	public void setDestinationPointExpression(String destinationPointExpression) {
+		this.destinationPointExpression = destinationPointExpression;
+	}
+
+	public void setMinDistanceExpression(String minDistanceExpression) {
+		this.minDistanceExpression = minDistanceExpression;
+	}
+
+	public void setMaxDistanceExpression(String maxDistanceExpression) {
+		this.maxDistanceExpression = maxDistanceExpression;
+	}
+
+	public void setSourcePointExpression(String sourcePointExpression) {
+		this.sourcePointExpression = sourcePointExpression;
+	}
+
 	@Override
 	public ValidationResultFlag evaluate(CoordinateAttribute coordinateAttr) {
 		try {

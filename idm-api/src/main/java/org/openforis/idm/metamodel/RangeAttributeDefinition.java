@@ -31,6 +31,10 @@ public class RangeAttributeDefinition extends NumericAttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
+	RangeAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	@Override
 	public Node<?> createNode() {
 		Type effectiveType = getType();

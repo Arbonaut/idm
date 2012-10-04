@@ -2,17 +2,26 @@ package org.openforis.idm.metamodel.xml;
 
 import java.io.IOException;
 
+import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.CodeList;
 import org.openforis.idm.metamodel.CodeList.CodeScope;
 import org.openforis.idm.metamodel.CodeListItem;
 import org.openforis.idm.metamodel.CodeListLabel;
 import org.openforis.idm.metamodel.CodeListLevel;
+import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.ModelVersion;
+import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.NodeLabel;
+import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.SpatialReferenceSystem;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.Unit;
+import org.openforis.idm.metamodel.validation.Check;
+import org.openforis.idm.metamodel.validation.ComparisonCheck;
+import org.openforis.idm.metamodel.validation.DistanceCheck;
+import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -20,6 +29,7 @@ public class SurveyPullReader extends IdmlPullReader {
 	
 	private SurveyContext surveyContext;
 	private Survey survey;
+	private Schema schema;
 	 
 	protected SurveyPullReader(SurveyContext surveyContext) {
 		super("survey");
@@ -33,7 +43,8 @@ public class SurveyPullReader extends IdmlPullReader {
 			new VersioningPR(), 
 			new CodeListsPR(),
 			new UnitsPR(),
-			new SrsesPR());
+			new SrsesPR(),
+			new SchemaPR());
 	}
 
 	// TODO wrap exceptions with own class
@@ -42,6 +53,7 @@ public class SurveyPullReader extends IdmlPullReader {
 		// TODO update test IDML so that ids are unique within file and that lastId is correct
 		String lastId = getAttribute(parser, "lastId", true);
 		this.survey = new Survey(surveyContext, Integer.valueOf(lastId));
+		this.schema = survey.getSchema();
 		return false;
 	}
 	
@@ -505,5 +517,374 @@ public class SurveyPullReader extends IdmlPullReader {
 			}
 		}
 	}
-}
 
+	private class SchemaPR extends IdmlPullReader {
+		
+		public SchemaPR() {
+			super("schema");
+			setChildPullReaders(new EntityDefinitionPR());
+		}
+
+		private abstract class NodeDefinitionPR extends IdmlPullReader {
+			protected NodeDefinition defn;
+			protected NodeDefinition parentDefn;
+			
+			public NodeDefinitionPR(String tagName) {
+				super(tagName);
+				setUnordered(true);
+			}
+			
+			
+			@Override
+			protected boolean onStartTag(XmlPullParser parser)
+					throws XmlParseException, XmlPullParserException,
+					IOException {
+				
+				int id = getIntegerAttribute(parser, "id", true);
+				this.defn = createDefinition(id);
+				
+				String name = getAttribute(parser, "name", true);
+				String since = getAttribute(parser, "since", false);
+				String deprecated = getAttribute(parser, "deprecated", false);
+				Boolean required = getBooleanAttribute(parser, "required", false);
+				String requiredIf = getAttribute(parser, "requiredIf", false);
+				String relevant = getAttribute(parser, "relevant", false);
+				Integer minCount = getIntegerAttribute(parser, "minCount", false);
+				Boolean multiple = getBooleanAttribute(parser, "multiple", false);
+				multiple = multiple==null ? false : multiple;
+				Integer maxCount = getIntegerAttribute(parser, "maxCount", multiple && defn instanceof AttributeDefinition);
+				// TODO parse "other" attributes (annotations)
+				this.parentDefn = this.defn;
+				defn.setMultiple(multiple);
+				defn.setName(name);
+				defn.setSinceVersionByName(since);
+				defn.setDeprecatedVersionByName(deprecated);
+				if ( minCount == null && required != null && required ) {
+					defn.setMinCount(1);
+				} else {
+					defn.setMinCount(minCount);
+				}
+				defn.setMaxCount(maxCount);
+				defn.setRequiredExpression(requiredIf);
+				defn.setRelevantExpression(relevant);
+				return false;
+			}
+			
+			protected abstract NodeDefinition createDefinition(int id);
+			
+			@Override
+			protected void onEndTag(XmlPullParser parser)
+					throws XmlParseException {
+				this.defn = parentDefn;
+				this.parentDefn = defn.getParentDefinition();
+			}
+			
+			protected class LabelPR extends LanguageSpecificTextPullReader {
+				public LabelPR() {
+					super("label");
+				}
+				
+				@Override
+				public void processText(String lang, String typeStr, String text) {
+					// TODO throw Exception if typeStr is empty
+					NodeLabel.Type type = typeStr == null ? NodeLabel.Type.INSTANCE : NodeLabel.Type.valueOf(typeStr.toUpperCase()); 
+					NodeLabel label = new NodeLabel(type, lang, text);
+					defn.addLabel(label);
+				}
+			}
+
+			protected class DescriptionPR extends LanguageSpecificTextPullReader {
+				public DescriptionPR() {
+					super("description");
+				}
+				
+				@Override
+				public void processText(LanguageSpecificText lst) {
+					defn.addDescription(lst);
+				}
+			}
+		}
+		
+		private class EntityDefinitionPR extends NodeDefinitionPR {
+			public EntityDefinitionPR() {
+				super("entity");
+				setChildPullReaders(
+						new LabelPR(), 
+						new DescriptionPR(),
+						this,
+						new BooleanAttributeDefinitionPR(), 
+						new CodeAttributeDefinitionPR(),
+						new CoordinateAttributeDefinitionPR(),
+						new DateAttributeDefinitionPR(),
+						new TimeAttributeDefinitionPR(),
+						new FileAttributeDefinitionPR(),
+						new NumberAttributeDefinitionPR(),
+						new RangeAttributeDefinitionPR(),
+						new TaxonAttributeDefinitionPR(),
+						new TextAttributeDefinitionPR());
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createEntityDefinition(id);
+			}
+			
+			@Override
+			protected void onEndTag(XmlPullParser parser)
+					throws XmlParseException {
+				if ( parentDefn == null ) {
+					schema.addRootEntityDefinition((EntityDefinition) defn);
+				} else {
+					EntityDefinition parentEntity = (EntityDefinition) parentDefn;
+					parentEntity.addChildDefinition(defn);
+				}
+				super.onEndTag(parser);
+			}
+		}
+
+		private abstract class AttributeDefinitionPR extends NodeDefinitionPR {
+
+			public AttributeDefinitionPR(String tagName) {
+				super(tagName);
+				setChildPullReaders(
+						new LabelPR(), 
+						new DescriptionPR(),
+						new CompareCheckPR(),
+						new UniquenessCheckPR(),
+						new DistanceCheckPR()
+				);
+			}
+
+			protected abstract class CheckPR extends IdmlPullReader {
+				protected Check<?> check;
+				
+				protected CheckPR(String tagName) {
+					super(tagName);
+					setChildPullReaders(new MessagesPR());
+				}
+				
+				@Override
+				protected boolean onStartTag(XmlPullParser parser)
+						throws XmlParseException, XmlPullParserException,
+						IOException {
+					this.check = createCheck(parser);
+					String flagStr = getAttribute(parser, "flag", true);
+					// check that flag is value
+					Check.Flag flag = Check.Flag.valueOf(flagStr.toUpperCase());
+					String condition = getAttribute(parser, "if", false);
+					check.setFlag(flag);
+					check.setCondition(condition);
+					return false;
+				}
+				
+				protected abstract Check<?> createCheck(XmlPullParser parser);
+				
+				private class MessagesPR extends LanguageSpecificTextPullReader {
+					public MessagesPR() {
+						super("message");
+					}
+					@Override
+					public void processText(LanguageSpecificText lst) {
+						check.addMessage(lst);
+					}
+				}
+				
+				@Override
+				protected void onEndTag(XmlPullParser parser)
+						throws XmlParseException {
+					((AttributeDefinition) defn).addCheck(check);
+				}
+			}
+			
+			private class CompareCheckPR extends CheckPR {
+
+				protected CompareCheckPR() {
+					super("compare");
+				}
+				
+				@Override
+				protected boolean onStartTag(XmlPullParser parser)
+						throws XmlParseException, XmlPullParserException, IOException {
+					super.onStartTag(parser);
+					ComparisonCheck chk = (ComparisonCheck) check;
+					chk.setEqualsExpression(getAttribute(parser, "eq", false));
+					chk.setLessThanExpression(getAttribute(parser, "lt", false));
+					chk.setLessThanOrEqualsExpression(getAttribute(parser, "lte", false));
+					chk.setGreaterThanExpression(getAttribute(parser, "gt", false));
+					chk.setGreaterThanOrEqualsExpression(getAttribute(parser, "gte", false));
+					return false;
+				}
+
+				@Override
+				protected Check<?> createCheck(XmlPullParser parser) {
+					return new ComparisonCheck();
+				}
+			}
+			
+			private class DistanceCheckPR extends CheckPR {
+
+				protected DistanceCheckPR() {
+					super("distance");
+				}
+				
+				@Override
+				protected boolean onStartTag(XmlPullParser parser)
+						throws XmlParseException, XmlPullParserException, IOException {
+					super.onStartTag(parser);
+					DistanceCheck chk = (DistanceCheck) check;
+					chk.setMinDistanceExpression(getAttribute(parser, "min", false));
+					chk.setMaxDistanceExpression(getAttribute(parser, "max", false));
+					chk.setSourcePointExpression(getAttribute(parser, "from", false));
+					chk.setDestinationPointExpression(getAttribute(parser, "to", false));
+					
+					return false;
+				}
+
+				@Override
+				protected Check<?> createCheck(XmlPullParser parser) {
+					return new DistanceCheck();
+				}
+			}
+			
+			private class UniquenessCheckPR extends CheckPR {
+
+				protected UniquenessCheckPR() {
+					super("unique");
+				}
+				
+				@Override
+				protected boolean onStartTag(XmlPullParser parser)
+						throws XmlParseException, XmlPullParserException, IOException {
+					super.onStartTag(parser);
+					UniquenessCheck chk = (UniquenessCheck) check;
+					chk.setExpression(getAttribute(parser, "expr", true));
+					return false;
+				}
+
+				@Override
+				protected Check<?> createCheck(XmlPullParser parser) {
+					return new UniquenessCheck();
+				}
+			}
+		}
+		
+		private class BooleanAttributeDefinitionPR extends AttributeDefinitionPR {
+
+			public BooleanAttributeDefinitionPR() {
+				super("boolean");
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createBooleanAttributeDefinition(id);
+			}
+		}
+
+		private class CodeAttributeDefinitionPR extends AttributeDefinitionPR {
+
+			public CodeAttributeDefinitionPR() {
+				super("code");
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createCodeAttributeDefinition(id);
+			}
+		}
+		
+		private class CoordinateAttributeDefinitionPR extends AttributeDefinitionPR {
+
+			public CoordinateAttributeDefinitionPR() {
+				super("coordinate");
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createCoordinateAttributeDefinition(id);
+			}
+		}
+		
+		private class DateAttributeDefinitionPR extends AttributeDefinitionPR {
+
+			public DateAttributeDefinitionPR() {
+				super("date");
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createCoordinateAttributeDefinition(id);
+			}
+		}
+		
+		private class TimeAttributeDefinitionPR extends AttributeDefinitionPR {
+
+			public TimeAttributeDefinitionPR() {
+				super("time");
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createTimeAttributeDefinition(id);
+			}
+		}
+		
+		private class FileAttributeDefinitionPR extends AttributeDefinitionPR {
+
+			public FileAttributeDefinitionPR() {
+				super("file");
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createFileAttributeDefinition(id);
+			}
+		}
+		private class NumberAttributeDefinitionPR extends AttributeDefinitionPR {
+
+			public NumberAttributeDefinitionPR() {
+				super("number");
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createNumberAttributeDefinition(id);
+			}
+		}
+		
+		private class RangeAttributeDefinitionPR extends AttributeDefinitionPR {
+
+			public RangeAttributeDefinitionPR() {
+				super("range");
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createRangeAttributeDefinition(id);
+			}
+		}
+		
+		private class TaxonAttributeDefinitionPR extends AttributeDefinitionPR {
+
+			public TaxonAttributeDefinitionPR() {
+				super("taxon");
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createTaxonAttributeDefinition(id);
+			}
+		}
+
+		private class TextAttributeDefinitionPR extends AttributeDefinitionPR {
+
+			public TextAttributeDefinitionPR() {
+				super("text");
+			}
+
+			@Override
+			protected NodeDefinition createDefinition(int id) {
+				return schema.createTextAttributeDefinition(id);
+			}
+		}
+	}
+}

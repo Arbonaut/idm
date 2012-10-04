@@ -27,19 +27,14 @@ public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
 	}
 	
 	@XmlAttribute(name = "since")
-	public void setSinceVersionName(String name) {
-		this.sinceVersion = findVersion(name);
+	public void setSinceVersionByName(String name) {
+		this.sinceVersion = name == null ? null : findVersion(name);
 	}
 
-	public String getDeprecatedVersionName() {
-		return deprecatedVersion == null ? null : deprecatedVersion.getName();
-	}
-	
 	@XmlAttribute(name = "deprecated")
-	public void setDeprecatedVersionName(String name) {
-		this.deprecatedVersion = findVersion(name);
+	public void setDeprecatedVersionByName(String name) {
+		this.deprecatedVersion = name == null ? null : findVersion(name);
 	}
-
 
 	public ModelVersion getSinceVersion() {
 		return this.sinceVersion;

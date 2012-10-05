@@ -2,18 +2,31 @@ package org.openforis.idm.metamodel.xml;
 
 import static org.openforis.idm.metamodel.xml.IdmlParser.IDML3_NS_URI;
 
+import org.openforis.idm.metamodel.Survey;
 import org.xmlpull.v1.XmlPullParser;
 
 /**
  * @author G. Miceli
  */
 public abstract class IdmlPullReader extends XmlPullReader {
+	
 	public IdmlPullReader(String tagName) {
 		super(IDML3_NS_URI, tagName);
 	}
 	
 	public IdmlPullReader(String tagName, Integer maxCount) {
 		super(IDML3_NS_URI, tagName, maxCount);
+	}
+
+	public Survey getSurvey() {
+		XmlPullReader parent = getParentReader();
+		while ( parent != null ) {
+			if ( parent instanceof SurveyPullReader ) {
+				return ((SurveyPullReader) parent).getSurvey();
+			}
+			parent = parent.getParentReader();
+		}
+		return null;
 	}
 	
 	// HELPER METHODS

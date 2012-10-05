@@ -255,7 +255,14 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 			prompts.remove(oldPrompt);
 		}
 	}
-	
+
+	public void addPrompt(Prompt prompt) {
+		if (prompts == null) {
+			prompts = new ArrayList<Prompt>();
+		}
+		prompts.add(prompt);
+	}
+
 	public List<LanguageSpecificText> getDescriptions() {
 		return CollectionUtil.unmodifiableList(descriptions);
 	}

@@ -32,6 +32,7 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		}
 	}
 
+	// TODO rename to precisions?
 	@XmlElement(name = "precision", type = Precision.class)
 	private List<Precision> precisionDefinitions;
 

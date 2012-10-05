@@ -28,6 +28,7 @@ public class Precision implements Serializable {
 
 	@XmlTransient
 	@XmlParent
+	// TODO is this reference necessary??
 	private NodeDefinition definition;
 	
 	@XmlAttribute(name = "decimalDigits")
@@ -44,6 +45,8 @@ public class Precision implements Serializable {
 		this.unit = unit;
 	}
 	
+	// TODO remove?
+	@Deprecated
 	@XmlAttribute(name = "unit")
 	public String getUnitName() {
 		return unit == null ? null : unit.getName();

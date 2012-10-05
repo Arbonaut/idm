@@ -20,7 +20,8 @@ public abstract class XmlPullReader {
 	private int count;
 	private Integer maxCount;
 	private boolean unordered;
-	
+	private XmlPullReader parentReader;
+
 	public XmlPullReader(String namespace, String tagName) {
 		this(namespace, tagName, null);
 	}
@@ -35,8 +36,20 @@ public abstract class XmlPullReader {
 
 	protected void setChildPullReaders(XmlPullReader... childTagReaders) {
 		this.childPullReaders = childTagReaders;
+		for (XmlPullReader reader : childTagReaders) {
+			reader.setParentReader(this);
+		}
+
 	}
 	
+	protected XmlPullReader getParentReader() {
+		return parentReader;
+	}
+	
+	private void setParentReader(XmlPullReader xmlPullReader) {
+		this.parentReader = xmlPullReader;
+	}
+
 	public void parseElement(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
 		if ( !isTagSupported(parser) ) {
 		    try {

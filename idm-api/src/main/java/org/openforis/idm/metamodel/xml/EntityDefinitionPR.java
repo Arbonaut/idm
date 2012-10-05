@@ -13,6 +13,7 @@ class EntityDefinitionPR extends NodeDefinitionPR {
 		setChildPullReaders(
 				new LabelPR(), 
 				new DescriptionPR(),
+				new PromptPR(),
 				this,
 				new BooleanAttributeDefinitionPR(), 
 				new CodeAttributeDefinitionPR(),

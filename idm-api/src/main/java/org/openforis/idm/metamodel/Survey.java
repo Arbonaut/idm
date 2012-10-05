@@ -205,8 +205,7 @@ public class Survey implements Serializable {
 	}
 	
 	public void moveVersion(ModelVersion version, int index) {
-		modelVersions.remove(version);
-		modelVersions.add(index, version);
+		CollectionUtil.moveItem(modelVersions, version, index);
 	}
 	
 	public void updateVersion(ModelVersion version) {
@@ -243,8 +242,7 @@ public class Survey implements Serializable {
 	}
 	
 	public void moveCodeList(CodeList codeList, int index) {
-		codeLists.remove(codeList);
-		codeLists.add(index, codeList);
+		CollectionUtil.moveItem(codeLists, codeList, index);
 	}
 	
 	public void updateCodeList(CodeList codeList) {
@@ -281,8 +279,7 @@ public class Survey implements Serializable {
 	}
 	
 	public void moveUnit(Unit unit, int index) {
-		units.remove(unit);
-		units.add(index, unit);
+		CollectionUtil.moveItem(units, unit, index);
 	}
 	
 	public void updateUnit(Unit unit) {
@@ -304,6 +301,17 @@ public class Survey implements Serializable {
 		return CollectionUtil.unmodifiableList(this.spatialReferenceSystems);
 	}
 	
+	public SpatialReferenceSystem getSpatialReferenceSystem(String id) {
+		if ( spatialReferenceSystems != null ) {
+			for (SpatialReferenceSystem s : spatialReferenceSystems) {
+				if ( id.equals(s.getId()) ) {
+					return s;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public void addSpatialReferenceSystem(SpatialReferenceSystem srs) {
 		if ( spatialReferenceSystems == null ) {
 			spatialReferenceSystems = new ArrayList<SpatialReferenceSystem>();
@@ -316,8 +324,7 @@ public class Survey implements Serializable {
 	}
 	
 	public void moveSpatialReferenceSystem(SpatialReferenceSystem srs, int index) {
-		spatialReferenceSystems.remove(srs);
-		spatialReferenceSystems.add(index, srs);
+		CollectionUtil.moveItem(spatialReferenceSystems, srs, index);
 	}
 	
 	public void updateSpatialReferenceSystem(SpatialReferenceSystem srs) {

@@ -81,24 +81,23 @@ public class Survey implements Serializable {
 
 	private int lastId;
 	
-	//@XmlTransient
 	private transient SurveyContext surveyContext;
 	
-	//@XmlTransient
 	private transient SurveyDependencies surveyDependencies;
 	
-	// TODO create in SurveyContext
-	public Survey(SurveyContext surveyContext, int lastId) {
+	Survey(SurveyContext surveyContext) {
 		this.surveyContext = surveyContext;
 		this.schema = new Schema(this);
-		this.lastId = lastId;
+		this.lastId = 1;
 	}
 
-	public Survey(SurveyContext surveyContext) {
-		this(surveyContext, 1);
+	public void setLastId(int lastId) {
+		if ( lastId < this.lastId ) {
+			throw new IllegalArgumentException("lastId cannot be decreased");
+		}
+		this.lastId = lastId;
 	}
 	
-	// TODO does survey ID go here or in Collect?
 	public Integer getId() {
 		return id;
 	}

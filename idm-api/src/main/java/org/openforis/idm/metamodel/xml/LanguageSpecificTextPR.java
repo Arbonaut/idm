@@ -9,16 +9,23 @@ import org.xmlpull.v1.XmlPullParserException;
 /**
  * @author G. Miceli
  */
-public abstract class LanguageSpecificTextPullReader extends IdmlPullReader {
-	public LanguageSpecificTextPullReader(String tagName) {
+abstract class LanguageSpecificTextPR extends IdmlPullReader {
+	private boolean requireType;
+	
+	public LanguageSpecificTextPR(String tagName, boolean requireType) {
 		super(tagName);
+		this.requireType = requireType;
+	}
+	
+	public LanguageSpecificTextPR(String tagName) {
+		this(tagName, false);
 	}
 
 	@Override
-	public boolean onStartTag(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
+	protected boolean onStartTag() throws XmlParseException, XmlPullParserException, IOException {
+		XmlPullParser parser = getParser();
 		String lang = parser.getAttributeValue(XML_NS_URI, "lang");
-		// TODO use correct namespace with other parsers?
-		String type = parser.getAttributeValue(null, "type");
+		String type = getAttribute("type", requireType);
 		String text = parser.nextText();
 		processText(lang, type, text);
 		return true;
@@ -29,13 +36,14 @@ public abstract class LanguageSpecificTextPullReader extends IdmlPullReader {
 	 * @param lang
 	 * @param type
 	 * @param text
+	 * @throws XmlParseException 
 	 */
-	protected void processText(String lang, String type, String text) {
+	protected void processText(String lang, String type, String text) throws XmlParseException {
 		LanguageSpecificText lst = new LanguageSpecificText(lang, text.trim());
 		processText(lst);
 	}
 	
-	public void processText(LanguageSpecificText lst) {
+	protected void processText(LanguageSpecificText lst) {
 		// no-op
 	}
 }

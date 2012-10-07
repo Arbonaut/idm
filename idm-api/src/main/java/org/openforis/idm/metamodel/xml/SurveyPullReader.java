@@ -4,7 +4,6 @@ package org.openforis.idm.metamodel.xml;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
-import org.xmlpull.v1.XmlPullParser;
 
 public class SurveyPullReader extends IdmlPullReader {
 
@@ -14,7 +13,7 @@ public class SurveyPullReader extends IdmlPullReader {
 	protected SurveyPullReader(SurveyContext surveyContext) {
 		super("survey");
 		this.surveyContext = surveyContext;
-		setChildPullReaders(
+		addChildPullReaders(
 			new ProjectPR(), 
 			new UriPR(), 
 			new CyclePR(),
@@ -34,22 +33,23 @@ public class SurveyPullReader extends IdmlPullReader {
 
 	// TODO wrap exceptions with own class
 	@Override
-	public boolean onStartTag(XmlPullParser parser) throws XmlParseException {
+	public boolean onStartTag() throws XmlParseException {
 		// TODO update test IDML so that ids are unique within file and that lastId is correct
-		String lastId = getAttribute(parser, "lastId", true);
-		this.survey = new Survey(surveyContext, Integer.valueOf(lastId));
+		String lastId = getAttribute("lastId", true);
+		this.survey = surveyContext.createSurvey();
+		survey.setLastId(Integer.valueOf(lastId));
 		return false;
 	}
 
 	// TAG READERS
 	
-	private class ProjectPR extends LanguageSpecificTextPullReader {
+	private class ProjectPR extends LanguageSpecificTextPR {
 		public ProjectPR() {
 			super("project");
 		}
 		
 		@Override
-		public void processText(LanguageSpecificText lst) {
+		protected void processText(LanguageSpecificText lst) {
 			survey.addProjectName(lst);
 		}
 	}
@@ -60,7 +60,7 @@ public class SurveyPullReader extends IdmlPullReader {
 		}
 		
 		@Override
-		public void processText(String text) {
+		protected void processText(String text) {
 			survey.setUri(text);
 		}
 	}
@@ -71,18 +71,18 @@ public class SurveyPullReader extends IdmlPullReader {
 		}
 		
 		@Override
-		public void processText(String text) {
+		protected void processText(String text) {
 			survey.setCycle(text);
 		}
 	}
 	
-	private class DescriptionPR extends LanguageSpecificTextPullReader {
+	private class DescriptionPR extends LanguageSpecificTextPR {
 		public DescriptionPR() {
 			super("description");
 		}
 		
 		@Override
-		public void processText(LanguageSpecificText lst) {
+		protected void processText(LanguageSpecificText lst) {
 			survey.addDescription(lst);
 		}
 	}

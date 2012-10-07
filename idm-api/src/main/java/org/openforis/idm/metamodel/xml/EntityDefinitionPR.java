@@ -1,8 +1,7 @@
 package org.openforis.idm.metamodel.xml;
 
-import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
-import org.xmlpull.v1.XmlPullParser;
+import org.openforis.idm.metamodel.Schema;
 
 /**
  * @author G. Miceli
@@ -10,10 +9,7 @@ import org.xmlpull.v1.XmlPullParser;
 class EntityDefinitionPR extends NodeDefinitionPR {
 	public EntityDefinitionPR() {
 		super("entity");
-		setChildPullReaders(
-				new LabelPR(), 
-				new DescriptionPR(),
-				new PromptPR(),
+		addChildPullReaders(
 				this,
 				new BooleanAttributeDefinitionPR(), 
 				new CodeAttributeDefinitionPR(),
@@ -29,18 +25,7 @@ class EntityDefinitionPR extends NodeDefinitionPR {
 
 	@Override
 	protected NodeDefinition createDefinition(int id) {
+		Schema schema = getSchema();
 		return schema.createEntityDefinition(id);
-	}
-	
-	@Override
-	protected void onEndTag(XmlPullParser parser)
-			throws XmlParseException {
-		if ( parentDefn == null ) {
-			schema.addRootEntityDefinition((EntityDefinition) defn);
-		} else {
-			EntityDefinition parentEntity = (EntityDefinition) parentDefn;
-			parentEntity.addChildDefinition(defn);
-		}
-		super.onEndTag(parser);
 	}
 }

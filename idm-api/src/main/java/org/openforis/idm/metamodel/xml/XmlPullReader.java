@@ -3,6 +3,8 @@ package org.openforis.idm.metamodel.xml;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -10,23 +12,24 @@ import org.xmlpull.v1.XmlPullParserException;
 /**
  * @author G. Miceli
  */
-public abstract class XmlPullReader {
+abstract class XmlPullReader {
 	public static final String XML_NS_URI = "http://www.w3.org/XML/1998/namespace";
 	
 	private String tagName;
 	private String namespace;
-	private XmlPullReader[] childPullReaders;
+	private List<XmlPullReader> childPullReaders;
 	private int lastChildPullReaderIdx;
 	private int count;
 	private Integer maxCount;
 	private boolean unordered;
 	private XmlPullReader parentReader;
-
-	public XmlPullReader(String namespace, String tagName) {
+	private XmlPullParser parser; 
+	
+	XmlPullReader(String namespace, String tagName) {
 		this(namespace, tagName, null);
 	}
 	
-	public XmlPullReader(String namespace, String tagName, Integer maxCount) {
+	XmlPullReader(String namespace, String tagName, Integer maxCount) {
 		this.namespace = namespace;
 		this.tagName = tagName;
 		this.maxCount = maxCount;
@@ -34,9 +37,12 @@ public abstract class XmlPullReader {
 		reset();
 	}
 
-	protected void setChildPullReaders(XmlPullReader... childTagReaders) {
-		this.childPullReaders = childTagReaders;
+	protected void addChildPullReaders(XmlPullReader... childTagReaders) {
+		if ( childPullReaders == null ) {
+			this.childPullReaders = new ArrayList<XmlPullReader>();
+		}
 		for (XmlPullReader reader : childTagReaders) {
+			childPullReaders.add(reader);
 			reader.setParentReader(this);
 		}
 
@@ -50,57 +56,59 @@ public abstract class XmlPullReader {
 		this.parentReader = xmlPullReader;
 	}
 
+	protected XmlPullParser getParser() {
+		return parser;
+	}
+	
+	synchronized
 	public void parseElement(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
-		if ( !isTagSupported(parser) ) {
-		    try {
-				if (parser.getEventType() != XmlPullParser.START_TAG) {
-				    throw new IllegalStateException("Invalid tag for this reader");
-				}
-			} catch (XmlPullParserException e) {
-				throw new XmlParseException(e);
-			}
+		
+		if ( !isTagSupported(parser.getName(), parser.getNamespace()) ) {
+		    throw new IllegalStateException("Invalid tag for this reader");
 		}
+		
+		this.parser = parser;
 		
 		this.count++;
 
 		if ( maxCount != null && count > maxCount ) {
-			throw new XmlParseException(parser, "Maximum number of instances exceeded");
+			throw new XmlParseException(parser, "Too many elements; max "+maxCount);
 		}
-		
-		boolean done = onStartTag(parser);
+
+		boolean done = onStartTag();
 		
 		if ( !done ) {
-			handleTagContents(parser);
+			while ( parser.nextTag() != END_TAG ) {
+				XmlPullReader childTagReader = getChildTagReader();
+				handleTagContents(childTagReader);
+			}
 		}
 		
-		onEndTag(parser);
+		onEndTag();
 		
 		this.lastChildPullReaderIdx = 0;
 		resetChildReaders();
 	}
 
-	protected void onEndTag(XmlPullParser parser) throws XmlParseException {
+	protected void onEndTag() throws XmlParseException {
 		// no-op
 	}
 	
-	protected void handleTagContents(XmlPullParser parser)
+	protected void handleTagContents(XmlPullReader childTagReader)
 			throws XmlPullParserException, IOException, XmlParseException {
-		while ( parser.nextTag() != END_TAG ) {
-			XmlPullReader childTagReader = getChildTagReader(parser);
-			if ( childTagReader == this ) {
-				// When recursing, store state and reset the 0
-				int tmpLastChildPullReaderIdx = lastChildPullReaderIdx;
-				this.lastChildPullReaderIdx = 0;
-				int tmpCount = count;
-				this.count = 0;
-				// Recurse child node
-				childTagReader.parseElement(parser);
-				// Restore state from before iteration
-				this.lastChildPullReaderIdx = tmpLastChildPullReaderIdx;
-				this.count = tmpCount;
-			} else {
-				childTagReader.parseElement(parser);
-			}
+		if ( childTagReader == this ) {
+			// When recursing, store state and reset the 0
+			int tmpLastChildPullReaderIdx = lastChildPullReaderIdx;
+			int tmpCount = count;
+			this.lastChildPullReaderIdx = 0;
+			this.count = 0;
+			// Recurse child node
+			childTagReader.parseElement(parser);
+			// Restore state from before iteration
+			this.lastChildPullReaderIdx = tmpLastChildPullReaderIdx;
+			this.count = tmpCount;
+		} else {
+			childTagReader.parseElement(parser);
 		}
 	}
 
@@ -115,29 +123,29 @@ public abstract class XmlPullReader {
 	/**
 	 * @return number of times element is repeated
 	 */
-	public int getCount() {
+	int getCount() {
 		return count;
 	}
 	
-	public Integer getMaxCount() {
+	Integer getMaxCount() {
 		return maxCount;
 	}
 	
-	public void reset() {
+	void reset() {
 		this.lastChildPullReaderIdx = 0;
 		this.count = 0;
 	}
 	
-	protected boolean onStartTag(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
+	protected boolean onStartTag() throws XmlParseException, XmlPullParserException, IOException {
 		// no-op
 		return false;
 	}
 	
-	public boolean isTagSupported(XmlPullParser parser) {
-		return tagName.equals(parser.getName()) && namespace.equals(parser.getNamespace()); 
+	public boolean isTagSupported(String tag, String ns) {
+		return tagName.equals(tag) && namespace.equals(ns); 
 	}
 	
-	protected void skip(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
+	protected void skip() throws XmlParseException, XmlPullParserException, IOException {
 		if (parser.getEventType() != XmlPullParser.START_TAG) {
 		    throw new XmlParseException(parser, "start tag expected");
 		}
@@ -156,11 +164,11 @@ public abstract class XmlPullReader {
 	    }
 	}
 	
-	protected XmlPullReader getChildTagReader(XmlPullParser parser) throws XmlParseException {
+	protected XmlPullReader getChildTagReader() throws XmlParseException {
 		if ( childPullReaders != null ) {
-			for (int i = lastChildPullReaderIdx; i < childPullReaders.length; i++) {
-				XmlPullReader tagReader = childPullReaders[i];
-				if ( tagReader.isTagSupported(parser) ) {
+			for (int i = lastChildPullReaderIdx; i < childPullReaders.size(); i++) {
+				XmlPullReader tagReader = childPullReaders.get(i);
+				if ( tagReader.isTagSupported(parser.getName(), parser.getNamespace()) ) {
 					if ( !unordered ) {
 						this.lastChildPullReaderIdx = i;
 					}
@@ -168,9 +176,9 @@ public abstract class XmlPullReader {
 				} 
 			}
 		}
-		throw new XmlParseException(parser);
+		throw new XmlParseException(parser, "unsupported tag");
 	}
-
+	
 	protected boolean isUnordered() {
 		return unordered;
 	}

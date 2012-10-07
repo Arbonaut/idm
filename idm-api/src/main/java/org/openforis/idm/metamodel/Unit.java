@@ -40,7 +40,6 @@ public class Unit extends IdentifiableSurveyObject {
 	@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> abbreviations;
 
-	// TODO why are some model classes SurveyObjects and other not?
 	Unit(Survey survey, int id) {
 		super(survey, id);
 	}

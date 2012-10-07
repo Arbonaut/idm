@@ -82,6 +82,14 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 		return highestRank;
 	}
 	
+	public void setTaxonomy(String taxonomy) {
+		this.taxonomy = taxonomy;
+	}
+
+	public void setHighestRank(String highestRank) {
+		this.highestRank = highestRank;
+	}
+
 	public List<String> getQualifiers() {
 		if ( qualifiers != null ) {
 			String[] exprs = qualifiers.split(",");

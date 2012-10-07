@@ -44,7 +44,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	@XmlElement(name = "default", type = AttributeDefault.class)
 	private List<AttributeDefault> attributeDefaults;
 
-	 AttributeDefinition(Survey survey, int id) {
+	protected AttributeDefinition(Survey survey, int id) {
 		super(survey, id);
 	}
 

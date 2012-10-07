@@ -9,10 +9,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -28,10 +26,6 @@ public class CodeList extends VersionableSurveyObject {
 	public enum CodeScope {
 		SCHEME, LOCAL
 	}
-
-	@XmlTransient
-	@XmlParent
-	private Survey survey;
 
 	@XmlAttribute(name = "name")
 	private String name;

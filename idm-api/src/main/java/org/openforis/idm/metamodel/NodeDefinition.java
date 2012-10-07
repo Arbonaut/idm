@@ -18,7 +18,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.expression.SchemaPathExpression;
-import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.NodePathPointer;
@@ -36,11 +35,6 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	@XmlTransient
 	@XmlParent
 	private NodeDefinition parentDefinition;
-	
-	@XmlTransient
-	@XmlParent
-	@XmlInherited("schema")
-	private Schema schema;
 	
 	@XmlAttribute(name = "name")
 	private String name;
@@ -114,20 +108,14 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		return this.relevantExpression;
 	}
 
-	/*
-	public boolean isRequired() {
-		if (required == null) {
-			return minCount != null && minCount >= 1;
-		} else {
-			return required;
-		}
-	}
-	*/
-	
 	public String getRequiredExpression() {
 		return requiredExpression;
 	}
 
+	/**
+	 * This property is meaningless for root entities
+	 * @return 
+	 */
 	public boolean isMultiple() {
 		return multiple;
 	}
@@ -313,22 +301,11 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	}
 	
 	public EntityDefinition getRootEntity() {
-		if ( parentDefinition == null) {
-			if ( this instanceof EntityDefinition) {
-				return (EntityDefinition) this;
-			} else {
-				//detached node
-				return null;
-			}
-		} else {
-			EntityDefinition result = (EntityDefinition) parentDefinition;
-			EntityDefinition currentParentDefn = (EntityDefinition) result.getParentDefinition();
-			while ( currentParentDefn != null ) {
-				result = currentParentDefn;
-				currentParentDefn = (EntityDefinition) currentParentDefn.getParentDefinition();
-			}
-			return result;
+		NodeDefinition ptr = this;
+		while ( ptr.getParentDefinition() != null ) {
+			ptr = ptr.getParentDefinition();
 		}
+		return (EntityDefinition) ptr;
 	}
 	
 	@Override
@@ -348,6 +325,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 
 	public void setName(String name) {
 		checkLockState();
+		Schema schema = getSchema();
 		String oldName = this.name;
 		boolean changed = ! StringUtils.equals(oldName, name);
 		if ( schema != null && changed && oldName != null ) {
@@ -369,6 +347,11 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		this.requiredExpression = requiredExpression;
 	}
 
+
+	/**
+	 * This property is meaningless for root entities
+	 * @param multiple 
+	 */
 	public void setMultiple(boolean multiple) {
 		checkLockState();
 		this.multiple = multiple;

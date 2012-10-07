@@ -8,16 +8,16 @@ import org.xmlpull.v1.XmlPullParserException;
 /**
  * @author G. Miceli
  */
-public abstract class TextPullReader extends IdmlPullReader {
+abstract class TextPullReader extends IdmlPullReader {
 	private boolean trimWhitespace;
 
-	public TextPullReader(String tagName) {
-		super(tagName);
-		this.trimWhitespace = true;
+	protected TextPullReader(String tagName) {
+		this(tagName, null);
 	}
 
-	public TextPullReader(String tagName, Integer maxCount) {
+	protected TextPullReader(String tagName, Integer maxCount) {
 		super(tagName, maxCount);
+		this.trimWhitespace = true;
 	}
 	
 	protected boolean isTrim() {
@@ -29,11 +29,12 @@ public abstract class TextPullReader extends IdmlPullReader {
 	}
 
 	@Override
-	public boolean onStartTag(XmlPullParser parser) throws XmlPullParserException, IOException {
+	protected boolean onStartTag() throws XmlPullParserException, IOException {
+		XmlPullParser parser = getParser();
 		String text = parser.nextText();
 		processText(trimWhitespace ? text.trim() : text);
 		return true;
 	}
 	
-	public abstract void processText(String text);
+	protected abstract void processText(String text);
 }

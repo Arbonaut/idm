@@ -10,25 +10,28 @@ import org.openforis.idm.metamodel.Precision;
 import org.openforis.idm.metamodel.Unit;
 import org.openforis.idm.metamodel.validation.Check;
 import org.openforis.idm.metamodel.validation.ComparisonCheck;
+import org.openforis.idm.metamodel.validation.CustomCheck;
 import org.openforis.idm.metamodel.validation.DistanceCheck;
 import org.openforis.idm.metamodel.validation.PatternCheck;
 import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+/**
+ * @author G. Miceli
+ */
 abstract class AttributeDefinitionPR extends NodeDefinitionPR {
-
+	
 	public AttributeDefinitionPR(String tagName) {
 		super(tagName);
-		setChildPullReaders(
-				new LabelPR(), 
-				new DescriptionPR(),
+		addChildPullReaders(
 				new DefaultPR(),
 				new PrecisionPR(),
 				new CompareCheckPR(),
 				new UniquenessCheckPR(),
 				new DistanceCheckPR(), 
-				new PatternCheckPR()
+				new PatternCheckPR(),
+				new CustomCheckPR()
 		);
 	}
 
@@ -40,17 +43,19 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 
 		@Override
-		protected boolean onStartTag(XmlPullParser parser)
+		protected boolean onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
+			super.onStartTag();
 			this.attributeDefault = new AttributeDefault();
-			attributeDefault.setCondition(getAttribute(parser, "if", false));
-			attributeDefault.setExpression(getAttribute(parser, "expr", false));
-			attributeDefault.setValue(getAttribute(parser, "value", false));
+			attributeDefault.setCondition(getAttribute("if", false));
+			attributeDefault.setExpression(getAttribute("expr", false));
+			attributeDefault.setValue(getAttribute("value", false));
 			return false;
 		}
 		
-		protected void onEndTag(XmlPullParser parser) throws XmlParseException {
-			((AttributeDefinition) defn).addAttributeDefault(attributeDefault);
+		@Override
+		protected void onEndTag() throws XmlParseException {
+			((AttributeDefinition) getDefinition()).addAttributeDefault(attributeDefault);
 		}
 	}
 
@@ -62,12 +67,12 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 
 		@Override
-		protected boolean onStartTag(XmlPullParser parser)
+		protected boolean onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
 			this.precision = new Precision();
-			Boolean isDefault = getBooleanAttribute(parser, "value", false);
-			Integer decimalDigits = getIntegerAttribute(parser, "decimalDigits", false);
-			String unitName = getAttribute(parser, "unit", false);
+			Boolean isDefault = getBooleanAttribute("value", false);
+			Integer decimalDigits = getIntegerAttribute( "decimalDigits", false);
+			String unitName = getAttribute("unit", false);
 			Unit unit = getSurvey().getUnit(unitName);
 			
 			precision.setDecimalDigits(decimalDigits);
@@ -76,8 +81,9 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 			return false;
 		}
 		
-		protected void onEndTag(XmlPullParser parser) throws XmlParseException {
-			((NumericAttributeDefinition) defn).addPrecisionDefinition(precision);
+		@Override
+		protected void onEndTag() throws XmlParseException {
+			((NumericAttributeDefinition) getDefinition()).addPrecisionDefinition(precision);
 		}
 	}
 
@@ -86,18 +92,22 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		
 		protected CheckPR(String tagName) {
 			super(tagName);
-			setChildPullReaders(new MessagesPR());
+			addChildPullReaders(new MessagesPR());
 		}
 		
 		@Override
-		protected boolean onStartTag(XmlPullParser parser)
-				throws XmlParseException, XmlPullParserException,
-				IOException {
+		protected boolean onStartTag()
+				throws XmlParseException, XmlPullParserException, IOException {
+			XmlPullParser parser = getParser();
 			this.check = createCheck(parser);
-			String flagStr = getAttribute(parser, "flag", true);
-			// check that flag is value
-			Check.Flag flag = Check.Flag.valueOf(flagStr.toUpperCase());
-			String condition = getAttribute(parser, "if", false);
+			String flagStr = getAttribute("flag", true);
+			Check.Flag flag;
+			try {
+				flag = Check.Flag.valueOf(flagStr.toUpperCase());
+			} catch ( IllegalArgumentException e ) {
+				throw new XmlParseException(getParser(), "invalid flag "+flagStr);
+			}
+			String condition = getAttribute("if", false);
 			check.setFlag(flag);
 			check.setCondition(condition);
 			return false;
@@ -105,20 +115,20 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		
 		protected abstract Check<?> createCheck(XmlPullParser parser);
 		
-		private class MessagesPR extends LanguageSpecificTextPullReader {
+		private class MessagesPR extends LanguageSpecificTextPR {
 			public MessagesPR() {
 				super("message");
 			}
+			
 			@Override
-			public void processText(LanguageSpecificText lst) {
+			protected void processText(LanguageSpecificText lst) {
 				check.addMessage(lst);
 			}
 		}
 		
 		@Override
-		protected void onEndTag(XmlPullParser parser)
-				throws XmlParseException {
-			((AttributeDefinition) defn).addCheck(check);
+		protected void onEndTag() throws XmlParseException {
+			((AttributeDefinition) getDefinition()).addCheck(check);
 		}
 	}
 	
@@ -129,15 +139,15 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 		
 		@Override
-		protected boolean onStartTag(XmlPullParser parser)
+		protected boolean onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
-			super.onStartTag(parser);
+			super.onStartTag();
 			ComparisonCheck chk = (ComparisonCheck) check;
-			chk.setEqualsExpression(getAttribute(parser, "eq", false));
-			chk.setLessThanExpression(getAttribute(parser, "lt", false));
-			chk.setLessThanOrEqualsExpression(getAttribute(parser, "lte", false));
-			chk.setGreaterThanExpression(getAttribute(parser, "gt", false));
-			chk.setGreaterThanOrEqualsExpression(getAttribute(parser, "gte", false));
+			chk.setEqualsExpression(getAttribute("eq", false));
+			chk.setLessThanExpression(getAttribute("lt", false));
+			chk.setLessThanOrEqualsExpression(getAttribute("lte", false));
+			chk.setGreaterThanExpression(getAttribute("gt", false));
+			chk.setGreaterThanOrEqualsExpression(getAttribute("gte", false));
 			return false;
 		}
 
@@ -154,14 +164,14 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 		
 		@Override
-		protected boolean onStartTag(XmlPullParser parser)
+		protected boolean onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
-			super.onStartTag(parser);
+			super.onStartTag();
 			DistanceCheck chk = (DistanceCheck) check;
-			chk.setMinDistanceExpression(getAttribute(parser, "min", false));
-			chk.setMaxDistanceExpression(getAttribute(parser, "max", false));
-			chk.setSourcePointExpression(getAttribute(parser, "from", false));
-			chk.setDestinationPointExpression(getAttribute(parser, "to", false));
+			chk.setMinDistanceExpression(getAttribute("min", false));
+			chk.setMaxDistanceExpression(getAttribute("max", false));
+			chk.setSourcePointExpression(getAttribute("from", false));
+			chk.setDestinationPointExpression(getAttribute("to", false));
 			
 			return false;
 		}
@@ -179,11 +189,11 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 		
 		@Override
-		protected boolean onStartTag(XmlPullParser parser)
+		protected boolean onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
-			super.onStartTag(parser);
+			super.onStartTag();
 			UniquenessCheck chk = (UniquenessCheck) check;
-			chk.setExpression(getAttribute(parser, "expr", true));
+			chk.setExpression(getAttribute("expr", true));
 			return false;
 		}
 
@@ -200,17 +210,38 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 		
 		@Override
-		protected boolean onStartTag(XmlPullParser parser)
+		protected boolean onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
-			super.onStartTag(parser);
+			super.onStartTag();
 			PatternCheck chk = (PatternCheck) check;
-			chk.setRegularExpression(getAttribute(parser, "regex", true));
+			chk.setRegularExpression(getAttribute("regex", true));
 			return false;
 		}
 
 		@Override
 		protected Check<?> createCheck(XmlPullParser parser) {
 			return new PatternCheck();
+		}
+	}
+	
+	private class CustomCheckPR extends CheckPR {
+
+		protected CustomCheckPR() {
+			super("check");
+		}
+		
+		@Override
+		protected boolean onStartTag()
+				throws XmlParseException, XmlPullParserException, IOException {
+			super.onStartTag();
+			CustomCheck chk = (CustomCheck) check;
+			chk.setExpression(getAttribute("expr", true));
+			return false;
+		}
+
+		@Override
+		protected Check<?> createCheck(XmlPullParser parser) {
+			return new CustomCheck();
 		}
 	}
 }

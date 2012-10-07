@@ -2,110 +2,167 @@ package org.openforis.idm.metamodel.xml;
 
 import java.io.IOException;
 
-import org.openforis.idm.metamodel.AttributeDefinition;
+import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.NodeLabel;
 import org.openforis.idm.metamodel.Prompt;
 import org.openforis.idm.metamodel.Schema;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * @author G. Miceli
  */
 abstract class NodeDefinitionPR extends IdmlPullReader {
-	protected NodeDefinition defn;
-	protected NodeDefinition parentDefn;
-	protected Schema schema;
+	private NodeDefinition definition;
+	private EntityDefinition parentDefinition;
+	private Schema schema;
 	
 	public NodeDefinitionPR(String tagName) {
 		super(tagName);
 		setUnordered(true);
+		addChildPullReaders(
+				new LabelPR(), 
+				new DescriptionPR(),
+				new PromptPR()
+			);
 	}
 	
+	protected NodeDefinition getDefinition() {
+		return definition;
+	}
+	
+	protected EntityDefinition getParentDefinition() {
+		return parentDefinition;
+	}
+
+	public Schema getSchema() {
+		return schema;
+	}
 	
 	@Override
-	protected boolean onStartTag(XmlPullParser parser)
+	protected final boolean onStartTag()
 			throws XmlParseException, XmlPullParserException,
 			IOException {				
 		schema = getSurvey().getSchema(); 
-		int id = getIntegerAttribute(parser, "id", true);
-		this.defn = createDefinition(id);
+		int id = getIntegerAttribute("id", true);
+		this.definition = createDefinition(id);
 		
-		String name = getAttribute(parser, "name", true);
-		String since = getAttribute(parser, "since", false);
-		String deprecated = getAttribute(parser, "deprecated", false);
-		Boolean required = getBooleanAttribute(parser, "required", false);
-		String requiredIf = getAttribute(parser, "requiredIf", false);
-		String relevant = getAttribute(parser, "relevant", false);
-		Integer minCount = getIntegerAttribute(parser, "minCount", false);
-		Boolean multiple = getBooleanAttribute(parser, "multiple", false);
-		multiple = multiple==null ? false : multiple;
-		Integer maxCount = getIntegerAttribute(parser, "maxCount", multiple && defn instanceof AttributeDefinition);
-		// TODO parse "other" attributes (annotations)
-		this.parentDefn = this.defn;
-		defn.setMultiple(multiple);
-		defn.setName(name);
-		defn.setSinceVersionByName(since);
-		defn.setDeprecatedVersionByName(deprecated);
-		if ( minCount == null && required != null && required ) {
-			defn.setMinCount(1);
+		String name = getAttribute("name", true);
+		String since = getAttribute("since", false);
+		String deprecated = getAttribute("deprecated", false);
+		Boolean required = getBooleanAttribute("required", false);
+		String requiredIf = getAttribute("requiredIf", false);
+		String relevant = getAttribute("relevant", false);
+		Integer minCount = getIntegerAttribute("minCount", false);
+		Boolean multiple = getBooleanAttribute("multiple", false);
+		if ( parentDefinition == null ) {
+			if ( multiple != null ) {
+				throw new XmlParseException(getParser(), "attribute 'multiple' not allowed for root entity");
+			}
+			multiple = true;
 		} else {
-			defn.setMinCount(minCount);
+			multiple = multiple==null ? false : multiple;
 		}
-		defn.setMaxCount(maxCount);
-		defn.setRequiredExpression(requiredIf);
-		defn.setRelevantExpression(relevant);
+		// TODO maxCount should be required for multiple attributes
+//		Integer maxCount = getIntegerAttribute("maxCount", multiple && defn instanceof AttributeDefinition);
+		Integer maxCount = getIntegerAttribute("maxCount", false);
+		// TODO parse "other" attributes (annotations)
+		definition.setMultiple(multiple);
+		definition.setName(name);
+		definition.setSinceVersionByName(since);
+		definition.setDeprecatedVersionByName(deprecated);
+		if ( minCount == null && required != null && required ) {
+			definition.setMinCount(1);
+		} else {
+			definition.setMinCount(minCount);
+		}
+		definition.setMaxCount(maxCount);
+		definition.setRequiredExpression(requiredIf);
+		definition.setRelevantExpression(relevant);
+		
+		onStartDefinition();
 		
 		return false;
+	}
+	
+	protected void onStartDefinition() throws XmlParseException, XmlPullParserException, IOException {
+		// no-op
+	}
+	
+	@Override
+	protected void handleTagContents(XmlPullReader pr)
+			throws XmlPullParserException, IOException, XmlParseException {
+		
+		if ( pr instanceof NodeDefinitionPR ) {
+			NodeDefinitionPR npr = (NodeDefinitionPR) pr;
+			EntityDefinition tmpParent = npr.parentDefinition;
+			npr.parentDefinition = (EntityDefinition) this.definition;
+			
+			super.handleTagContents(pr);
+			
+			npr.parentDefinition = tmpParent;
+		} else {
+			super.handleTagContents(pr);
+		}
 	}
 	
 	protected abstract NodeDefinition createDefinition(int id);
 	
 	@Override
-	protected void onEndTag(XmlPullParser parser)
+	protected void onEndTag()
 			throws XmlParseException {
-		this.defn = parentDefn;
-		this.parentDefn = defn.getParentDefinition();
+		EntityDefinition parentDefinition = getParentDefinition();
+		NodeDefinition definition = getDefinition();
+		if ( parentDefinition == null ) {
+			Schema schema = getSchema();
+			schema.addRootEntityDefinition((EntityDefinition) definition);
+		} else {			
+			parentDefinition.addChildDefinition(definition);
+		}
 	}
-	
-	protected class LabelPR extends LanguageSpecificTextPullReader {
+	protected class LabelPR extends LanguageSpecificTextPR {
 		public LabelPR() {
 			super("label");
 		}
 		
 		@Override
-		public void processText(String lang, String typeStr, String text) {
-			// TODO throw Exception if typeStr is empty
-			NodeLabel.Type type = typeStr == null ? NodeLabel.Type.INSTANCE : NodeLabel.Type.valueOf(typeStr.toUpperCase()); 
-			NodeLabel label = new NodeLabel(type, lang, text);
-			defn.addLabel(label);
+		protected void processText(String lang, String typeStr, String text) throws XmlParseException {
+			try { 
+				NodeLabel.Type type = typeStr == null ? NodeLabel.Type.INSTANCE : NodeLabel.Type.valueOf(typeStr.toUpperCase()); 
+				NodeLabel label = new NodeLabel(type, lang, text);
+				definition.addLabel(label);
+			} catch (IllegalArgumentException e) {
+				throw new XmlParseException(getParser(), "invalid type "+typeStr);
+			}
 		}
 	}
 	
-	protected class PromptPR extends LanguageSpecificTextPullReader {
+	protected class PromptPR extends LanguageSpecificTextPR {
 		public PromptPR() {
-			super("prompt");
+			super("prompt", true);
 		}
 		
 		@Override
-		public void processText(String lang, String typeStr, String text) {
-			// TODO throw Exception if typeStr is empty
-			Prompt.Type type = Prompt.Type.valueOf(typeStr.toUpperCase()); 
-			Prompt p = new Prompt(type, lang, text);
-			defn.addPrompt(p);
+		protected void processText(String lang, String typeStr, String text) throws XmlParseException {
+			try {
+				Prompt.Type type = Prompt.Type.valueOf(typeStr.toUpperCase()); 
+				Prompt p = new Prompt(type, lang, text);
+				definition.addPrompt(p);
+			} catch (IllegalArgumentException e) {
+				throw new XmlParseException(getParser(), "invalid type "+typeStr);
+			}
 		}
 	}
 
-	protected class DescriptionPR extends LanguageSpecificTextPullReader {
+	protected class DescriptionPR extends LanguageSpecificTextPR {
 		public DescriptionPR() {
 			super("description");
 		}
 		
 		@Override
-		public void processText(LanguageSpecificText lst) {
-			defn.addDescription(lst);
+		protected void processText(LanguageSpecificText lst) {
+			definition.addDescription(lst);
 		}
 	}
 }

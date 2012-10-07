@@ -10,11 +10,11 @@ import org.xmlpull.v1.XmlPullParser;
  */
 public abstract class IdmlPullReader extends XmlPullReader {
 	
-	public IdmlPullReader(String tagName) {
+	IdmlPullReader(String tagName) {
 		super(IDML3_NS_URI, tagName);
 	}
 	
-	public IdmlPullReader(String tagName, Integer maxCount) {
+	IdmlPullReader(String tagName, Integer maxCount) {
 		super(IDML3_NS_URI, tagName, maxCount);
 	}
 
@@ -31,24 +31,25 @@ public abstract class IdmlPullReader extends XmlPullReader {
 	
 	// HELPER METHODS
 
-	protected Boolean getBooleanAttribute(XmlPullParser parser, String attr, boolean required) throws XmlParseException {
-		String val = getAttribute(parser, attr, required);
+	protected Boolean getBooleanAttribute(String attr, boolean required) throws XmlParseException {
+		String val = getAttribute(attr, required);
 		return val == null ? null : Boolean.valueOf(val);
 	}
 
-	protected Integer getIntegerAttribute(XmlPullParser parser, String attr, boolean required) throws XmlParseException {
-		String val = getAttribute(parser, attr, required);
+	protected Integer getIntegerAttribute(String attr, boolean required) throws XmlParseException {
+		String val = getAttribute(attr, required);
 		return val == null ? null : Integer.valueOf(val);
 	}
 
-	protected Float getFloatAttribute(XmlPullParser parser, String attr, boolean required) throws XmlParseException {
-		String val = getAttribute(parser, attr, required);
+	protected Float getFloatAttribute(String attr, boolean required) throws XmlParseException {
+		String val = getAttribute(attr, required);
 		return val == null ? null : Float.valueOf(val);
 	}
 
 	// TODO namespace in kXML must be null for this to work, even though the attributes 
-	// are in IDML namespace.  how does this behave with other xmlpull implementation  
-	protected String getAttribute(XmlPullParser parser, String attr, boolean required) throws XmlParseException {
+	// are in IDML namespace.  how does this behave with other xmlpull implementations?
+	protected String getAttribute(String attr, boolean required) throws XmlParseException {
+		XmlPullParser parser = getParser();
 		String value = parser.getAttributeValue(null, attr);
 		if ( required && (value == null || value.isEmpty())  ) {
 			throw new XmlParseException(parser, "missing required attribute "+attr);

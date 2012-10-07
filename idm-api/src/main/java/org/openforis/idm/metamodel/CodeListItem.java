@@ -168,6 +168,17 @@ public class CodeListItem extends Versionable implements Serializable {
 	public List<CodeListItem> getChildItems() {
 		return CollectionUtil.unmodifiableList(childItems);
 	}
+	
+	public CodeListItem getChildItem(String code) {
+		if ( childItems != null) {
+			for (CodeListItem item : childItems) {
+				if ( item.getCode().equals(code) ) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
 
 	public void addChildItem(CodeListItem item) {
 		if ( childItems == null ) {

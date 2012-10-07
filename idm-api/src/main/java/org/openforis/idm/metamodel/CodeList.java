@@ -267,6 +267,17 @@ public class CodeList extends Versionable implements Serializable {
 		return CollectionUtil.unmodifiableList(this.items);
 	}
 	
+	public CodeListItem getItem(String code) {
+		if ( items != null ) {
+			for (CodeListItem item : items) {
+				if ( item.getCode().equals(code) ) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
+
 	public void addItem(CodeListItem item) {
 		if ( items == null ) {
 			items = new ArrayList<CodeListItem>();

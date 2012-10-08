@@ -42,7 +42,7 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 		return affirmativeOnly == null ? false : affirmativeOnly;
 	}
 	
-	protected void setAffirmativeOnly(boolean affirmativeOnly) {
+	public void setAffirmativeOnly(boolean affirmativeOnly) {
 		this.affirmativeOnly = affirmativeOnly ? true : null;
 	}
 

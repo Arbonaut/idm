@@ -43,14 +43,13 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 
 		@Override
-		protected boolean onStartTag()
+		protected void onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
 			super.onStartTag();
 			this.attributeDefault = new AttributeDefault();
 			attributeDefault.setCondition(getAttribute("if", false));
 			attributeDefault.setExpression(getAttribute("expr", false));
 			attributeDefault.setValue(getAttribute("value", false));
-			return false;
 		}
 		
 		@Override
@@ -67,7 +66,7 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 
 		@Override
-		protected boolean onStartTag()
+		protected void onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
 			this.precision = new Precision();
 			Boolean isDefault = getBooleanAttribute("value", false);
@@ -78,7 +77,6 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 			precision.setDecimalDigits(decimalDigits);
 			precision.setUnit(unit);
 			precision.setDefaultPrecision(isDefault == null ? false : isDefault);
-			return false;
 		}
 		
 		@Override
@@ -96,7 +94,7 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 		
 		@Override
-		protected boolean onStartTag()
+		protected void onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
 			XmlPullParser parser = getParser();
 			this.check = createCheck(parser);
@@ -110,7 +108,6 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 			String condition = getAttribute("if", false);
 			check.setFlag(flag);
 			check.setCondition(condition);
-			return false;
 		}
 		
 		protected abstract Check<?> createCheck(XmlPullParser parser);
@@ -139,7 +136,7 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 		
 		@Override
-		protected boolean onStartTag()
+		protected void onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
 			super.onStartTag();
 			ComparisonCheck chk = (ComparisonCheck) check;
@@ -148,7 +145,6 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 			chk.setLessThanOrEqualsExpression(getAttribute("lte", false));
 			chk.setGreaterThanExpression(getAttribute("gt", false));
 			chk.setGreaterThanOrEqualsExpression(getAttribute("gte", false));
-			return false;
 		}
 
 		@Override
@@ -164,7 +160,7 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 		
 		@Override
-		protected boolean onStartTag()
+		protected void onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
 			super.onStartTag();
 			DistanceCheck chk = (DistanceCheck) check;
@@ -172,8 +168,6 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 			chk.setMaxDistanceExpression(getAttribute("max", false));
 			chk.setSourcePointExpression(getAttribute("from", false));
 			chk.setDestinationPointExpression(getAttribute("to", false));
-			
-			return false;
 		}
 
 		@Override
@@ -189,12 +183,11 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 		
 		@Override
-		protected boolean onStartTag()
+		protected void onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
 			super.onStartTag();
 			UniquenessCheck chk = (UniquenessCheck) check;
 			chk.setExpression(getAttribute("expr", true));
-			return false;
 		}
 
 		@Override
@@ -210,12 +203,11 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 		
 		@Override
-		protected boolean onStartTag()
+		protected void onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
 			super.onStartTag();
 			PatternCheck chk = (PatternCheck) check;
 			chk.setRegularExpression(getAttribute("regex", true));
-			return false;
 		}
 
 		@Override
@@ -231,12 +223,11 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		}
 		
 		@Override
-		protected boolean onStartTag()
+		protected void onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
 			super.onStartTag();
 			CustomCheck chk = (CustomCheck) check;
 			chk.setExpression(getAttribute("expr", true));
-			return false;
 		}
 
 		@Override

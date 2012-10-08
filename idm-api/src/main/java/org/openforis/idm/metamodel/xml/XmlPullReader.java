@@ -45,7 +45,6 @@ abstract class XmlPullReader {
 			childPullReaders.add(reader);
 			reader.setParentReader(this);
 		}
-
 	}
 	
 	protected XmlPullReader getParentReader() {
@@ -58,6 +57,11 @@ abstract class XmlPullReader {
 
 	protected XmlPullParser getParser() {
 		return parser;
+	}
+	
+	public void parse(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
+		parser.nextTag();
+		parseElement(parser);
 	}
 	
 	synchronized
@@ -75,14 +79,9 @@ abstract class XmlPullReader {
 			throw new XmlParseException(parser, "Too many elements; max "+maxCount);
 		}
 
-		boolean done = onStartTag();
+		onStartTag();
 		
-		if ( !done ) {
-			while ( parser.nextTag() != END_TAG ) {
-				XmlPullReader childTagReader = getChildTagReader();
-				handleTagContents(childTagReader);
-			}
-		}
+		parseTagBody();
 		
 		onEndTag();
 		
@@ -90,26 +89,32 @@ abstract class XmlPullReader {
 		resetChildReaders();
 	}
 
-	protected void onEndTag() throws XmlParseException {
-		// no-op
+	protected void parseTagBody()
+			throws XmlPullParserException, IOException, XmlParseException {
+		if ( parser.getEventType() != END_TAG ) {
+			while ( parser.nextTag() != END_TAG ) {
+				XmlPullReader childTagReader = getChildTagReader();
+				handleChildTag(childTagReader);
+			}
+		}
 	}
 	
-	protected void handleTagContents(XmlPullReader childTagReader)
+	protected void handleChildTag(XmlPullReader childTagReader)
 			throws XmlPullParserException, IOException, XmlParseException {
-		if ( childTagReader == this ) {
-			// When recursing, store state and reset the 0
-			int tmpLastChildPullReaderIdx = lastChildPullReaderIdx;
-			int tmpCount = count;
-			this.lastChildPullReaderIdx = 0;
-			this.count = 0;
-			// Recurse child node
-			childTagReader.parseElement(parser);
-			// Restore state from before iteration
-			this.lastChildPullReaderIdx = tmpLastChildPullReaderIdx;
-			this.count = tmpCount;
-		} else {
-			childTagReader.parseElement(parser);
-		}
+		// When recursing, store state and reset the 0
+		int tmpLastChildPullReaderIdx = lastChildPullReaderIdx;
+		int tmpCount = count;
+		this.lastChildPullReaderIdx = 0;
+		this.count = 0;
+		// Recurse child node
+		childTagReader.parseElement(parser);
+		// Restore state from before iteration
+		this.lastChildPullReaderIdx = tmpLastChildPullReaderIdx;
+		this.count = tmpCount;
+	}
+
+	protected void onEndTag() throws XmlParseException {
+		// no-op
 	}
 
 	protected void resetChildReaders() {
@@ -136,32 +141,12 @@ abstract class XmlPullReader {
 		this.count = 0;
 	}
 	
-	protected boolean onStartTag() throws XmlParseException, XmlPullParserException, IOException {
+	protected void onStartTag() throws XmlParseException, XmlPullParserException, IOException {
 		// no-op
-		return false;
 	}
 	
 	public boolean isTagSupported(String tag, String ns) {
 		return tagName.equals(tag) && namespace.equals(ns); 
-	}
-	
-	protected void skip() throws XmlParseException, XmlPullParserException, IOException {
-		if (parser.getEventType() != XmlPullParser.START_TAG) {
-		    throw new XmlParseException(parser, "start tag expected");
-		}
-	    int depth = 1;
-	    while (depth != 0) {
-	        switch (parser.next()) {
-	        case XmlPullParser.END_TAG:
-//	        	System.out.println("end "+parser.getName());
-	            depth--;
-	            break;
-	        case XmlPullParser.START_TAG:
-//	        	System.out.println("start "+parser.getName());
-	            depth++;
-	            break;
-	        }
-	    }
 	}
 	
 	protected XmlPullReader getChildTagReader() throws XmlParseException {

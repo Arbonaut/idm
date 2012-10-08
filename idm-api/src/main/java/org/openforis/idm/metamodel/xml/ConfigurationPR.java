@@ -14,9 +14,9 @@ class ConfigurationPR extends IdmlPullReader {
 
 	// TODO Config adapter
 	@Override
-	protected boolean onStartTag()
+	protected void onStartTag()
 			throws XmlParseException, XmlPullParserException, IOException {
-		skip();
-		return true;
+		String config = readEntireTag();
+		System.out.println(config);
 	}
 }

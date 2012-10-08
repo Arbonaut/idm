@@ -27,7 +27,7 @@ public class UnitsPR extends IdmlPullReader {
 		}
 
 		@Override
-		protected boolean onStartTag() throws XmlParseException, XmlPullParserException, IOException {
+		protected void onStartTag() throws XmlParseException, XmlPullParserException, IOException {
 			int id = getIntegerAttribute("id", true);
 			String name = getAttribute("name", true);
 			String dimension = getAttribute("dimension", true);
@@ -37,7 +37,6 @@ public class UnitsPR extends IdmlPullReader {
 			unit.setName(name);
 			unit.setDimension(dimension);
 			unit.setConversionFactor(conversionFactor);
-			return false;
 		}
 		
 		private class LabelPR extends LanguageSpecificTextPR {

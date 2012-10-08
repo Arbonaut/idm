@@ -29,11 +29,10 @@ abstract class TextPullReader extends IdmlPullReader {
 	}
 
 	@Override
-	protected boolean onStartTag() throws XmlPullParserException, IOException {
+	protected void onStartTag() throws XmlPullParserException, IOException {
 		XmlPullParser parser = getParser();
 		String text = parser.nextText();
 		processText(trimWhitespace ? text.trim() : text);
-		return true;
 	}
 	
 	protected abstract void processText(String text);

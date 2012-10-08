@@ -32,7 +32,7 @@ class CodeListsPR extends IdmlPullReader {
 		}
 		
 		@Override
-		protected boolean onStartTag() throws XmlParseException {
+		protected void onStartTag() throws XmlParseException {
 			int id = getIntegerAttribute("id", true);
 			String name = getAttribute("name", false);
 			String lookupTable = getAttribute("lookup", false);
@@ -40,7 +40,6 @@ class CodeListsPR extends IdmlPullReader {
 			list = survey.createCodeList(id);
 			list.setName(name);
 			list.setLookupTable(lookupTable);
-			return false;
 		}
 
 		private class CodingSchemePR extends IdmlPullReader {
@@ -49,13 +48,12 @@ class CodeListsPR extends IdmlPullReader {
 			}
 			
 			@Override
-			protected boolean onStartTag()
+			protected void onStartTag()
 					throws XmlParseException, XmlPullParserException, IOException {
 				String scopeStr = getAttribute("scope", true);
 				try {
 					CodeScope scope = CodeList.CodeScope.valueOf(scopeStr.toUpperCase());
 					list.setCodeScope(scope);
-					return false;
 				} catch ( IllegalArgumentException ex ) {
 					throw new XmlParseException(getParser(), "invalid scope "+scopeStr);
 				}
@@ -77,12 +75,11 @@ class CodeListsPR extends IdmlPullReader {
 				}
 				
 				@Override
-				protected boolean onStartTag()
+				protected void onStartTag()
 						throws XmlParseException, XmlPullParserException, IOException {
 					this.level = new CodeListLevel();
 					String name = getAttribute("name", true);
 					level.setName(name);
-					return false;
 				}
 
 				private class LabelPR extends LanguageSpecificTextPR {
@@ -165,13 +162,12 @@ class CodeListsPR extends IdmlPullReader {
 				}
 
 				@Override
-				protected boolean onStartTag()
+				protected void onStartTag()
 						throws XmlParseException, XmlPullParserException, IOException {
 					int id = getIntegerAttribute("id", true);
 					Boolean q = getBooleanAttribute("qualifiable", false);
 					this.item = list.createItem(id);
 					item.setQualifiable(q==null ? false : q);
-					return false;
 				}
 				
 				private class CodePR extends TextPullReader {

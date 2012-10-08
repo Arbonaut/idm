@@ -11,8 +11,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
-
 /**
  * @author G. Miceli
  * @author M. Togna
@@ -26,11 +24,6 @@ public class Precision implements Serializable {
 	@XmlTransient
 	private Unit unit;
 
-	@XmlTransient
-	@XmlParent
-	// TODO is this reference necessary??
-	private NodeDefinition definition;
-	
 	@XmlAttribute(name = "decimalDigits")
 	private Integer decimalDigits;
 
@@ -43,29 +36,6 @@ public class Precision implements Serializable {
 
 	public void setUnit(Unit unit) {
 		this.unit = unit;
-	}
-	
-	// TODO remove?
-	@Deprecated
-	@XmlAttribute(name = "unit")
-	public String getUnitName() {
-		return unit == null ? null : unit.getName();
-	}
-	
-	public void setUnitName(String name) {
-		Survey survey = getSurvey();
-		if ( survey == null ) {
-			throw new DetachedNodeDefinitionException(Precision.class, Survey.class);
-		}
-		Unit newUnit = survey.getUnit(name);
-		if ( newUnit == null ) {
-			throw new IllegalArgumentException("Unit '"+name+"' not defined in survey");
-		}
-		this.unit = newUnit;
-	}
-	
-	private Survey getSurvey() {
-		return definition == null ? null : definition.getSurvey();
 	}
 	
 	public Integer getDecimalDigits() {
@@ -82,14 +52,6 @@ public class Precision implements Serializable {
 	
 	public void setDefaultPrecision(boolean defaultPrecision) {
 		this.defaultPrecision = defaultPrecision;
-	}
-
-	public NodeDefinition getDefinition() {
-		return definition;
-	}
-
-	public void setDefinition(NodeDefinition definition) {
-		this.definition = definition;
 	}
 
 	@Override

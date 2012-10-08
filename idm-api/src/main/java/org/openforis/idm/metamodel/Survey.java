@@ -76,6 +76,8 @@ public class Survey implements Serializable {
 	@XmlElementWrapper(name = "spatialReferenceSystems")
 	private List<SpatialReferenceSystem> spatialReferenceSystems;
 
+	private List<String> languages;
+	
 	@XmlElement(name = "schema", type = Schema.class)
 	private Schema schema;
 
@@ -85,7 +87,7 @@ public class Survey implements Serializable {
 	
 	private transient SurveyDependencies surveyDependencies;
 	
-	Survey(SurveyContext surveyContext) {
+	protected Survey(SurveyContext surveyContext) {
 		this.surveyContext = surveyContext;
 		this.schema = new Schema(this);
 		this.lastId = 1;
@@ -412,22 +414,34 @@ public class Survey implements Serializable {
 		configuration.removeConfiguration(config);
 	}
 	
+	public void addLanguage(String lang) {
+		if ( languages == null ) {
+			this.languages = new ArrayList<String>();  
+		}
+		languages.add(lang);
+	}
+	
+	public void removeLanguage(String lang) {
+		if ( languages == null ) {
+			return;
+		}
+		languages.remove(lang);
+	}
+	
 	public SurveyContext getContext() {
 		return surveyContext;
 	}
-	
-//	public void setSurveyContext(SurveyContext surveyContext) {
-//		this.surveyContext = surveyContext;
-//	}
 	
 	public Set<NodePathPointer> getCheckDependencies(NodeDefinition definition) {
 		return getSurveyDependencies().getCheckDependencies(definition);
 	}
 	
+	// TODO move to ??
 	public Set<NodePathPointer> getRelevanceDependencies(NodeDefinition definition) {
 		return getSurveyDependencies().getRelevanceDependencies(definition);
 	}
-	
+
+	// TODO move to ??
 	public Set<NodePathPointer> getRequiredDependencies(NodeDefinition definition) {
 		return getSurveyDependencies().getRequiredDependencies(definition);
 	}
@@ -586,7 +600,6 @@ public class Survey implements Serializable {
 		return true;
 	}
 
-	// TODO use everywhere a unique id is required
 	synchronized 
 	public int nextId() {
 		return ++lastId;

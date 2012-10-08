@@ -2,6 +2,8 @@ package org.openforis.idm.metamodel.xml;
 
 import java.io.IOException;
 
+import javax.xml.namespace.QName;
+
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.NodeDefinition;
@@ -41,7 +43,7 @@ abstract class NodeDefinitionPR extends IdmlPullReader {
 	}
 	
 	@Override
-	protected final boolean onStartTag()
+	protected final void onStartTag()
 			throws XmlParseException, XmlPullParserException,
 			IOException {				
 		schema = getSurvey().getSchema(); 
@@ -82,8 +84,6 @@ abstract class NodeDefinitionPR extends IdmlPullReader {
 		definition.setRelevantExpression(relevant);
 		
 		onStartDefinition();
-		
-		return false;
 	}
 	
 	protected void onStartDefinition() throws XmlParseException, XmlPullParserException, IOException {
@@ -91,7 +91,12 @@ abstract class NodeDefinitionPR extends IdmlPullReader {
 	}
 	
 	@Override
-	protected void handleTagContents(XmlPullReader pr)
+	protected void handleAnnotation(QName qName, String value) {
+		definition.setAnnotation(qName, value);
+	}
+	
+	@Override
+	protected void handleChildTag(XmlPullReader pr)
 			throws XmlPullParserException, IOException, XmlParseException {
 		
 		if ( pr instanceof NodeDefinitionPR ) {
@@ -99,11 +104,11 @@ abstract class NodeDefinitionPR extends IdmlPullReader {
 			EntityDefinition tmpParent = npr.parentDefinition;
 			npr.parentDefinition = (EntityDefinition) this.definition;
 			
-			super.handleTagContents(pr);
+			super.handleChildTag(pr);
 			
 			npr.parentDefinition = tmpParent;
 		} else {
-			super.handleTagContents(pr);
+			super.handleChildTag(pr);
 		}
 	}
 	

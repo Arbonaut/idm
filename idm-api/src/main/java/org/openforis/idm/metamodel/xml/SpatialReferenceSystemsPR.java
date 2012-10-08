@@ -7,9 +7,9 @@ import org.openforis.idm.metamodel.Survey;
 /**
  * @author G. Miceli
  */
-class SrsesPR extends IdmlPullReader {
+class SpatialReferenceSystemsPR extends IdmlPullReader {
 	
-	public SrsesPR() {
+	public SpatialReferenceSystemsPR() {
 		super("spatialReferenceSystems", 1);
 		addChildPullReaders(new SrsPR());
 	}
@@ -24,11 +24,10 @@ class SrsesPR extends IdmlPullReader {
 		}
 		
 		@Override
-		protected boolean onStartTag() throws XmlParseException {
+		protected void onStartTag() throws XmlParseException {
 			String id = getAttribute("srid", true);
 			this.srs = new SpatialReferenceSystem();
 			srs.setId(id);
-			return false;
 		}
 
 		private class LabelPR extends LanguageSpecificTextPR {

@@ -24,13 +24,12 @@ class VersioningPR extends IdmlPullReader {
 		}
 		
 		@Override
-		protected boolean onStartTag() throws XmlParseException {
+		protected void onStartTag() throws XmlParseException {
 			int id = getIntegerAttribute("id", true);
 			String name = getAttribute("name", false);
 			Survey survey = getSurvey();
 			version = survey.createModelVersion(id);
 			version.setName(name);
-			return false;
 		}
 
 		private class LabelPR extends LanguageSpecificTextPR {

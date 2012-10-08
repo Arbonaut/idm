@@ -22,13 +22,12 @@ abstract class LanguageSpecificTextPR extends IdmlPullReader {
 	}
 
 	@Override
-	protected boolean onStartTag() throws XmlParseException, XmlPullParserException, IOException {
+	protected void onStartTag() throws XmlParseException, XmlPullParserException, IOException {
 		XmlPullParser parser = getParser();
 		String lang = parser.getAttributeValue(XML_NS_URI, "lang");
 		String type = getAttribute("type", requireType);
 		String text = parser.nextText();
 		processText(lang, type, text);
-		return true;
 	}
 
 	/** 

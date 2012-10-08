@@ -4,7 +4,6 @@
 package org.openforis.idm.metamodel;
 
 import org.openforis.idm.metamodel.validation.Validator;
-import org.openforis.idm.metamodel.xml.IdmlParser;
 import org.openforis.idm.model.expression.ExpressionFactory;
 
 /**

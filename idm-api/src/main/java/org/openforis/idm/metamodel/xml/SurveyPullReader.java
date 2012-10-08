@@ -8,21 +8,22 @@ import org.openforis.idm.metamodel.SurveyContext;
 public class SurveyPullReader extends IdmlPullReader {
 
 	private Survey survey;
-	private SurveyContext surveyContext;
+//	private SurveyContext surveyContext;
 	 
-	protected SurveyPullReader(SurveyContext surveyContext) {
+	protected SurveyPullReader(IdmlParser parser) {
 		super("survey");
-		this.surveyContext = surveyContext;
+		setIdmlParser(parser);
 		addChildPullReaders(
 			new ProjectPR(), 
 			new UriPR(), 
 			new CyclePR(),
-			new DescriptionPR(), 
+			new DescriptionPR(),
+			new LanguagePR(),
 			new ConfigurationPR(),
 			new VersioningPR(), 
 			new CodeListsPR(),
 			new UnitsPR(),
-			new SrsesPR(),
+			new SpatialReferenceSystemsPR(),
 			new SchemaPR());
 	}
 	
@@ -31,14 +32,13 @@ public class SurveyPullReader extends IdmlPullReader {
 		return survey;
 	}
 
-	// TODO wrap exceptions with own class
 	@Override
-	public boolean onStartTag() throws XmlParseException {
+	public void onStartTag() throws XmlParseException {
 		// TODO update test IDML so that ids are unique within file and that lastId is correct
 		String lastId = getAttribute("lastId", true);
+		SurveyContext surveyContext = getIdmlParser().getSurveyContext(); 
 		this.survey = surveyContext.createSurvey();
 		survey.setLastId(Integer.valueOf(lastId));
-		return false;
 	}
 
 	// TAG READERS
@@ -84,6 +84,17 @@ public class SurveyPullReader extends IdmlPullReader {
 		@Override
 		protected void processText(LanguageSpecificText lst) {
 			survey.addDescription(lst);
+		}
+	}
+	
+	private class LanguagePR extends TextPullReader {
+		public LanguagePR() {
+			super("language");
+		}
+
+		@Override
+		protected void processText(String text) {
+			survey.addLanguage(text);
 		}
 	}
 }

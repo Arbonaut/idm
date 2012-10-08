@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -170,9 +172,24 @@ public class CodeListItem extends Versionable implements Serializable {
 	}
 	
 	public CodeListItem getChildItem(String code) {
-		if ( childItems != null) {
+		if ( childItems != null && code != null) {
 			for (CodeListItem item : childItems) {
-				if ( item.getCode().equals(code) ) {
+				if ( code.equals(item.getCode()) ) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public CodeListItem findChildItem(String code) {
+		if ( childItems != null && code != null ) {
+			String adaptedCode = Pattern.quote(code);
+			Pattern pattern = Pattern.compile("^" + adaptedCode + "$", Pattern.CASE_INSENSITIVE);
+			for (CodeListItem item : childItems) {
+				String itemCode = item.getCode();
+				Matcher matcher = pattern.matcher(itemCode);
+				if(matcher.find()) {
 					return item;
 				}
 			}

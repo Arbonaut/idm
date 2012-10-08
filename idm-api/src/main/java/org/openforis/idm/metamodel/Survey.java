@@ -352,7 +352,7 @@ public class Survey implements Serializable {
 	}
 	
 	public ModelVersion getVersion(String name) {
-		if ( modelVersions != null ) {
+		if ( modelVersions != null && name != null ) {
 			for (ModelVersion v : modelVersions) {
 				if ( name.equals(v.getName()) ) {
 					return v;
@@ -363,18 +363,22 @@ public class Survey implements Serializable {
 	}
 
 	public CodeList getCodeList(String name) {
-		for (CodeList codeList : codeLists) {
-			if (codeList.getName().equals(name)) {
-				return codeList;
+		if ( codeLists != null && name != null ) {
+			for (CodeList codeList : codeLists) {
+				if (name.equals(codeList.getName())) {
+					return codeList;
+				}
 			}
 		}
 		return null;
 	}
 
 	public Unit getUnit(String name) {
-		for (Unit unit : units) {
-			if (unit.getName().equals(name)) {
-				return unit;
+		if ( units != null && name != null ) {
+			for (Unit unit : units) {
+				if (name.equals(unit.getName())) {
+					return unit;
+				}
 			}
 		}
 		return null;

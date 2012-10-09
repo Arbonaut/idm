@@ -96,36 +96,44 @@ abstract class NodeDefinitionPR extends IdmlPullReader {
 	}
 	
 	@Override
-	protected void handleChildTag(XmlPullReader pr)
+	protected final void handleChildTag(XmlPullReader childPR)
 			throws XmlPullParserException, IOException, XmlParseException {
 		
-		if ( pr instanceof NodeDefinitionPR ) {
-			NodeDefinitionPR npr = (NodeDefinitionPR) pr;
+		if ( childPR instanceof NodeDefinitionPR ) {
+			NodeDefinitionPR npr = (NodeDefinitionPR) childPR;
+			// Store child state in case reused recursively
 			EntityDefinition tmpParent = npr.parentDefinition;
+			NodeDefinition tmpDefn = npr.definition;
 			npr.parentDefinition = (EntityDefinition) this.definition;
 			
-			super.handleChildTag(pr);
+//			System.out.println(npr.getTagName()+" parent = "+this.definition);
+			super.handleChildTag(childPR);
+//			System.out.println(npr.getTagName()+" parent = "+tmpParent);
 			
 			npr.parentDefinition = tmpParent;
+			npr.definition = tmpDefn;
 		} else {
-			super.handleChildTag(pr);
+			super.handleChildTag(childPR);
 		}
 	}
 	
 	protected abstract NodeDefinition createDefinition(int id);
 	
 	@Override
-	protected void onEndTag()
+	protected final void onEndTag()
 			throws XmlParseException {
 		EntityDefinition parentDefinition = getParentDefinition();
 		NodeDefinition definition = getDefinition();
 		if ( parentDefinition == null ) {
+//			System.out.println("Adding "+definition);
 			Schema schema = getSchema();
 			schema.addRootEntityDefinition((EntityDefinition) definition);
 		} else {			
+//			System.out.println("Adding "+definition+" to "+parentDefinition);
 			parentDefinition.addChildDefinition(definition);
 		}
 	}
+	
 	protected class LabelPR extends LanguageSpecificTextPR {
 		public LabelPR() {
 			super("label");

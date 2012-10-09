@@ -40,7 +40,6 @@ public abstract class IdmlPullReader extends XmlPullReader {
 	
 	protected String nextElement(boolean includeOuterTag) throws XmlParseException, XmlPullParserException, IOException {
 		XmlPullParser in = getParser();
-		System.out.println(in.getName());
 		if (in.getEventType() != START_TAG) {
 		    throw new XmlParseException(in, "start tag expected");
 		}
@@ -99,8 +98,13 @@ public abstract class IdmlPullReader extends XmlPullReader {
 	}
 
 	@Override
-	protected final void parseTagBody() throws XmlPullParserException, IOException,
+	protected final void parseTag() throws XmlPullParserException, IOException,
 			XmlParseException {
+		super.parseTag();
+		parseAnnotations();
+	}
+
+	private void parseAnnotations() {
 		XmlPullParser parser = getParser();
 		for (int i=0; i < parser.getAttributeCount(); i++) {
 			String ns = parser.getAttributeNamespace(i);
@@ -111,7 +115,6 @@ public abstract class IdmlPullReader extends XmlPullReader {
 				handleAnnotation(new QName(ns, name, prefix), value);
 			}
 		}
-		super.parseTagBody();
 	}
 	
 	// HELPER METHODS

@@ -8,16 +8,13 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.util.CollectionUtil;
 
@@ -58,7 +55,7 @@ public class Survey implements Serializable {
 	private List<LanguageSpecificText> descriptions;
 
 	@XmlElement(name = "configuration")
-	private ConfigurationWrapper configuration;
+	private List<Configuration> configuration;
 	
 	@XmlElement(name = "version", type = ModelVersion.class)
 	@XmlElementWrapper(name = "versioning")
@@ -395,23 +392,23 @@ public class Survey implements Serializable {
 		if ( configuration == null ) {
 			return Collections.emptyList();
 		} else {
-			return CollectionUtil.unmodifiableList(configuration.list);
+			return CollectionUtil.unmodifiableList(configuration);
 		}
 	}
 
 	public void addConfiguration(Configuration config) {
 		if ( configuration == null ) {
-			configuration = new ConfigurationWrapper();
+			configuration = new ArrayList<Configuration>();
 		}
-		configuration.addConfiguration(config);
+		configuration.add(config);
 	}
 	
 	public void setConfiguration(int index, Configuration config) {
-		configuration.setConfiguration(index, config);
+		configuration.set(index, config);
 	}
 	
 	public void removeConfiguration(Configuration config) {
-		configuration.removeConfiguration(config);
+		configuration.remove(config);
 	}
 	
 	public void addLanguage(String lang) {
@@ -453,62 +450,6 @@ public class Survey implements Serializable {
 		return surveyDependencies;
 	}
 	
-	/**
-	 * Workaround for JAXB since @XmlAnyElement, @XmlElementWrapper and @XmlJavaTypeAdapter 
-	 * wouldn't play nice together
-	 */
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlType
-	private static class ConfigurationWrapper implements Serializable {
-
-		private static final long serialVersionUID = 1L;
-		
-		@XmlAnyElement
-		@XmlJavaTypeAdapter(ConfigurationXmlAdapter.class)
-		List<Configuration> list;
-
-		void addConfiguration(Configuration config) {
-			if ( list == null ) {
-				list = new ArrayList<Configuration>();
-			}
-			list.add(config);
-		}
-		
-		void setConfiguration(int index, Configuration config) {
-			list.set(index, config);
-		}
-		
-		void removeConfiguration(Configuration config) {
-			list.remove(config);
-		}
-		
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((list == null) ? 0 : list.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			ConfigurationWrapper other = (ConfigurationWrapper) obj;
-			if (list == null) {
-				if (other.list != null)
-					return false;
-			} else if (!list.equals(other.list))
-				return false;
-			return true;
-		}
-		
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

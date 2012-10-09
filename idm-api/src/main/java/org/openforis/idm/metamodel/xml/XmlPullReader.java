@@ -59,6 +59,10 @@ abstract class XmlPullReader {
 		return parser;
 	}
 	
+	public String getTagName() {
+		return tagName;
+	}
+	
 	public void parse(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
 		parser.nextTag();
 		parseElement(parser);
@@ -79,14 +83,18 @@ abstract class XmlPullReader {
 			throw new XmlParseException(parser, "Too many elements; max "+maxCount);
 		}
 
+		parseTag();
+		
+		this.lastChildPullReaderIdx = 0;
+		resetChildReaders();
+	}
+
+	protected void parseTag() throws XmlParseException, XmlPullParserException, IOException {
 		onStartTag();
 		
 		parseTagBody();
 		
 		onEndTag();
-		
-		this.lastChildPullReaderIdx = 0;
-		resetChildReaders();
 	}
 
 	protected void parseTagBody()

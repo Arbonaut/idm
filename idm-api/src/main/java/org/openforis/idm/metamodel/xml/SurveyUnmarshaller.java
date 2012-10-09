@@ -38,7 +38,7 @@ public class SurveyUnmarshaller {
 			SurveyContext ctx = new DefaultSurveyContext();
 			
 			SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(ctx); 
-			unmarshaller.parse(is);
+			unmarshaller.unmarshal(is);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -56,7 +56,7 @@ public class SurveyUnmarshaller {
 	}
 	
 	synchronized
-	public Survey parse(InputStream is) throws XmlParseException, IOException {
+	public Survey unmarshal(InputStream is) throws XmlParseException, IOException {
 		XmlPullParser parser = null;
 		try {
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();

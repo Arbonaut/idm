@@ -20,7 +20,7 @@ public class SurveyMarshaller {
 	private boolean indent;
 	private Marshaller marshaller;
 
-	SurveyMarshaller(Marshaller marshaller) {
+	public SurveyMarshaller(Marshaller marshaller) {
 		super();
 		this.marshaller = marshaller;
 	}

@@ -218,6 +218,10 @@ public class CodeListItem extends Versionable implements Serializable {
 		}
 	}
 
+	public void moveChildItem(CodeListItem item, int indexTo) {
+		CollectionUtil.moveItem(childItems, item, indexTo);
+	}
+
 	protected int nextItemId() {
 		if ( lastItemId == 0 ) {
 			lastItemId = calculateLastUsedItemId();

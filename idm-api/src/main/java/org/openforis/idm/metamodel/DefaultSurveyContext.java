@@ -1,15 +1,11 @@
 package org.openforis.idm.metamodel;
 
-import org.openforis.idm.metamodel.ExternalCodeListProvider;
-import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.validation.LookupProvider;
 import org.openforis.idm.metamodel.validation.Validator;
 import org.openforis.idm.model.expression.ExpressionFactory;
 
 /**
- * 
- * @author gino
- *
+ * @author G. Miceli
  */
 public class DefaultSurveyContext implements SurveyContext {
 
@@ -34,6 +30,11 @@ public class DefaultSurveyContext implements SurveyContext {
 	@Override
 	public ExternalCodeListProvider getExternalCodeListProvider() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Survey createSurvey() {
+		return new Survey(this);
 	}
 	
 	public class UnspecifiedLookupProvider implements LookupProvider {

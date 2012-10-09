@@ -35,7 +35,11 @@ public class CoordinateAttributeDefinition extends AttributeDefinition  {
 		new FieldDefinition<Double>("y", "y", "y", Double.class, this),
 		new FieldDefinition<String>("srs", "srs", "srs", String.class, this)
 	};
-	
+
+	protected CoordinateAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	@Override
 	public Node<?> createNode() {
 		return new CoordinateAttribute(this);

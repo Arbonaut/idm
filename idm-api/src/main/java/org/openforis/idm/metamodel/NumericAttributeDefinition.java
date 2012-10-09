@@ -32,14 +32,15 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		}
 	}
 
+	// TODO rename to precisions?
 	@XmlElement(name = "precision", type = Precision.class)
 	private List<Precision> precisionDefinitions;
 
 	@XmlAttribute(name = "type")
 	@XmlJavaTypeAdapter(NumberAttributeDefinitionTypeAdapter.class) Type type;
 
-	public NumericAttributeDefinition() {
-		super();
+	protected NumericAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
 	}
 
 	public Type getType() {

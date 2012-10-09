@@ -8,34 +8,33 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author M. Togna
  */
 @XmlTransient
-public abstract class Versionable {
+public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
+
+	private static final long serialVersionUID = 1L;
 
 	@XmlTransient
 	private ModelVersion sinceVersion;
 
 	@XmlTransient
 	private ModelVersion deprecatedVersion;
-	
-	public abstract Survey getSurvey();
-	
+
+	protected VersionableSurveyObject(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	public String getSinceVersionName() {
 		return sinceVersion == null ? null : sinceVersion.getName();
 	}
 	
 	@XmlAttribute(name = "since")
-	public void setSinceVersionName(String name) {
-		this.sinceVersion = findVersion(name);
+	public void setSinceVersionByName(String name) {
+		this.sinceVersion = name == null ? null : findVersion(name);
 	}
 
-	public String getDeprecatedVersionName() {
-		return deprecatedVersion == null ? null : deprecatedVersion.getName();
-	}
-	
 	@XmlAttribute(name = "deprecated")
-	public void setDeprecatedVersionName(String name) {
-		this.deprecatedVersion = findVersion(name);
+	public void setDeprecatedVersionByName(String name) {
+		this.deprecatedVersion = name == null ? null : findVersion(name);
 	}
-
 
 	public ModelVersion getSinceVersion() {
 		return this.sinceVersion;
@@ -86,7 +85,7 @@ public abstract class Versionable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Versionable other = (Versionable) obj;
+		VersionableSurveyObject other = (VersionableSurveyObject) obj;
 		if (deprecatedVersion == null) {
 			if (other.deprecatedVersion != null)
 				return false;

@@ -11,6 +11,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openforis.idm.metamodel.CodeList.CodeScope;
 import org.openforis.idm.metamodel.xml.internal.CodeScopeAdapter;
 
+/**
+ * Defines the coding schemes used by a code list
+ * 
+ * @author G. Miceli
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {  "codeScope" }) 
 class CodingScheme implements Serializable {
@@ -24,7 +29,11 @@ class CodingScheme implements Serializable {
 	public CodeScope getCodeScope() {
 		return this.codeScope;
 	}
-
+	
+	public void setCodeScope(CodeScope codeScope) {
+		this.codeScope = codeScope;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

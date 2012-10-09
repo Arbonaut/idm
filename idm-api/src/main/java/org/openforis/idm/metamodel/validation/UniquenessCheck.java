@@ -35,7 +35,11 @@ public class UniquenessCheck extends Check<Attribute<?, ?>> {
 	public String getExpression() {
 		return this.expression;
 	}
-
+	
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+	
 	@Override
 	public ValidationResultFlag evaluate(Attribute<?, ?> attribute) {
 		try {

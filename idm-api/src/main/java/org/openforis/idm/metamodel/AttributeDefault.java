@@ -38,6 +38,9 @@ public class AttributeDefault implements Serializable {
 	@XmlAttribute(name = "if")
 	private String condition;
 
+	public AttributeDefault() {
+	}
+	
 	public String getValue() {
 		return value;
 	}

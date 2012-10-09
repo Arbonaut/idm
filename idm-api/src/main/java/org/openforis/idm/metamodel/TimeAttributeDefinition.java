@@ -35,6 +35,10 @@ public class TimeAttributeDefinition extends AttributeDefinition {
 			new FieldDefinition<Integer>("minute", "m", "m", Integer.class, this)
 	};
 	
+	protected TimeAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	@Override
 	public Node<?> createNode() {
 		return new TimeAttribute(this);

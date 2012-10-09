@@ -3,7 +3,7 @@ package org.openforis.idm.metamodel.xml.internal;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.openforis.idm.metamodel.Configuration;
-import org.openforis.idm.metamodel.xml.ConfigurationAdapter;
+import org.openforis.idm.metamodel.xml.ConfigurationMarshaller;
 import org.w3c.dom.Element;
 
 
@@ -13,12 +13,12 @@ import org.w3c.dom.Element;
 public class ConfigurationXmlAdapter extends XmlAdapter<Element, Configuration> {
 
 	@SuppressWarnings("rawtypes")
-	private ConfigurationAdapter configurationAdapter;
+	private ConfigurationMarshaller configurationAdapter;
 	
 	public ConfigurationXmlAdapter() {
 	}
 	
-	public ConfigurationXmlAdapter(ConfigurationAdapter<? extends Configuration> configurationAdapter) {
+	public ConfigurationXmlAdapter(ConfigurationMarshaller<? extends Configuration> configurationAdapter) {
 		this.configurationAdapter = configurationAdapter;
 	}
 

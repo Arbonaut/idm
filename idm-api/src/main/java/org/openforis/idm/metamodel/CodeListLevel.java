@@ -25,9 +25,6 @@ public class CodeListLevel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "id")
-	private int id;
-
 	@XmlAttribute(name = "name")
 	private String name;
 
@@ -37,14 +34,6 @@ public class CodeListLevel implements Serializable {
 	@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
 	public List<LanguageSpecificText> getLabels() {
 		return CollectionUtil.unmodifiableList(labels);
 	}
@@ -118,7 +107,6 @@ public class CodeListLevel implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
-		result = prime * result + id;
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -137,8 +125,6 @@ public class CodeListLevel implements Serializable {
 			if (other.descriptions != null)
 				return false;
 		} else if (!descriptions.equals(other.descriptions))
-			return false;
-		if (id != other.id)
 			return false;
 		if (labels == null) {
 			if (other.labels != null)

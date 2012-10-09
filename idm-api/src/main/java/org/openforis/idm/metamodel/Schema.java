@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,7 +19,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.openforis.idm.metamodel.xml.internal.XmlInit;
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -29,10 +27,10 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "rootEntityDefinitions" })
-public class Schema  implements Serializable {
+public class Schema extends SurveyObject {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@XmlElement(name = "entity", type = EntityDefinition.class)
 	private List<EntityDefinition> rootEntityDefinitions;
 
@@ -43,24 +41,13 @@ public class Schema  implements Serializable {
 	private Map<Integer, NodeDefinition> definitionsById;
 	
 	@XmlTransient
-	@XmlParent
-	private Survey survey;
-
-	@XmlTransient
 	private int lastDefinitionId;
 	
-	public Schema() {
+	public Schema(Survey survey) {
+		super(survey);
 		definitionsByPath = new HashMap<String, NodeDefinition>(); 
 		definitionsById = new HashMap<Integer, NodeDefinition>();
 		lastDefinitionId = 0;
-	}
-	
-	public Survey getSurvey() {
-		return survey;
-	}
-	
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
 	}
 	
 	public NodeDefinition getByPath(String absolutePath) {
@@ -140,12 +127,11 @@ public class Schema  implements Serializable {
 	}
 
 	public void addRootEntityDefinition(EntityDefinition defn) {
-		defn.setId(nextNodeDefinitionId());
 		if ( rootEntityDefinitions == null) {
 			rootEntityDefinitions = new ArrayList<EntityDefinition>();
 		}
+		// TODO check validity of defn, schema, parent is null, id is valid 
 		rootEntityDefinitions.add(defn);
-		defn.setSchema(this);
 		indexById(defn);
 		indexByPath(defn);
 	}
@@ -194,7 +180,7 @@ public class Schema  implements Serializable {
 	
 	public EntityDefinition getRootEntityDefinition(int id) {
 		for (EntityDefinition node : rootEntityDefinitions) {
-			if ( node.getId().equals(id) ) {
+			if ( node.getId() == id ) {
 				return node;
 			}
 		}
@@ -242,4 +228,97 @@ public class Schema  implements Serializable {
 		return true;
 	}
 
+	private int nextId() {
+		return getSurvey().nextId();
+	}
+
+	public EntityDefinition createEntityDefinition(int id) {
+		return new EntityDefinition(getSurvey(), id);
+	}
+
+	public EntityDefinition createEntityDefinition() {
+		return createEntityDefinition(nextId());
+	}
+
+	public CodeAttributeDefinition createCodeAttributeDefinition(int id) {
+		return new CodeAttributeDefinition(getSurvey(), id);
+	}
+
+	public CodeAttributeDefinition createCodeAttributeDefinition() {
+		return createCodeAttributeDefinition(nextId());
+	}
+
+	public TextAttributeDefinition createTextAttributeDefinition(int id) {
+		return new TextAttributeDefinition(getSurvey(), id);
+	}
+
+	public TextAttributeDefinition createTextAttributeDefinition() {
+		return createTextAttributeDefinition(nextId());
+	}
+
+	public FileAttributeDefinition createFileAttributeDefinition(int id) {
+		return new FileAttributeDefinition(getSurvey(), id);
+	}
+
+	public FileAttributeDefinition createFileAttributeDefinition() {
+		return createFileAttributeDefinition(nextId());
+	}
+
+	public NumberAttributeDefinition createNumberAttributeDefinition(int id) {
+		return new NumberAttributeDefinition(getSurvey(), id);
+	}
+
+	public NumberAttributeDefinition createNumberAttributeDefinition() {
+		return createNumberAttributeDefinition(nextId());
+	}
+
+	public RangeAttributeDefinition createRangeAttributeDefinition(int id) {
+		return new RangeAttributeDefinition(getSurvey(), id);
+	}
+
+	public RangeAttributeDefinition createRangeAttributeDefinition() {
+		return createRangeAttributeDefinition(nextId());
+	}
+
+	public TimeAttributeDefinition createTimeAttributeDefinition(int id) {
+		return new TimeAttributeDefinition(getSurvey(), id);
+	}
+
+	public TimeAttributeDefinition createTimeAttributeDefinition() {
+		return createTimeAttributeDefinition(nextId());
+	}
+
+	public DateAttributeDefinition createDateAttributeDefinition(int id) {
+		return new DateAttributeDefinition(getSurvey(), id);
+	}
+
+	public DateAttributeDefinition createDateAttributeDefinition() {
+		return createDateAttributeDefinition(nextId());
+	}
+	
+
+	public TaxonAttributeDefinition createTaxonAttributeDefinition(int id) {
+		return new TaxonAttributeDefinition(getSurvey(), id);
+	}
+
+	public TaxonAttributeDefinition createTaxonAttributeDefinition() {
+		return createTaxonAttributeDefinition(nextId());
+	}
+
+
+	public BooleanAttributeDefinition createBooleanAttributeDefinition(int id) {
+		return new BooleanAttributeDefinition(getSurvey(), id);
+	}
+
+	public BooleanAttributeDefinition createBooleanAttributeDefinition() {
+		return createBooleanAttributeDefinition(nextId());
+	}
+
+	public CoordinateAttributeDefinition createCoordinateAttributeDefinition(int id) {
+		return new CoordinateAttributeDefinition(getSurvey(), id);
+	}
+
+	public CoordinateAttributeDefinition createCoordinateAttributeDefinition() {
+		return createCoordinateAttributeDefinition(nextId());
+	}
 }

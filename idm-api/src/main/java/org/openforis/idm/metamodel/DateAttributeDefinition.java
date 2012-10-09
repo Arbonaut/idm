@@ -36,6 +36,11 @@ public class DateAttributeDefinition extends AttributeDefinition {
 			new FieldDefinition<Integer>("day", "d", "d", Integer.class, this)
 	};
 	
+	
+	protected DateAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	@Override
 	public Node<?> createNode() {
 		return new DateAttribute(this);

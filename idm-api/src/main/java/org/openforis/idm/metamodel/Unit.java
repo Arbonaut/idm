@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +21,9 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "id", "name", "dimension", "conversionFactor", "labels", "abbreviations" })
-public class Unit implements Serializable {
+public class Unit extends IdentifiableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
-
-	@XmlAttribute(name = "id")
-	private int id;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -44,14 +40,10 @@ public class Unit implements Serializable {
 	@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> abbreviations;
 
-	public int getId() {
-		return id;
+	Unit(Survey survey, int id) {
+		super(survey, id);
 	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+
 	public String getName() {
 		return this.name;
 	}
@@ -150,7 +142,6 @@ public class Unit implements Serializable {
 		result = prime * result + ((abbreviations == null) ? 0 : abbreviations.hashCode());
 		result = prime * result + ((conversionFactor == null) ? 0 : conversionFactor.hashCode());
 		result = prime * result + ((dimension == null) ? 0 : dimension.hashCode());
-		result = prime * result + id;
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -179,8 +170,6 @@ public class Unit implements Serializable {
 			if (other.dimension != null)
 				return false;
 		} else if (!dimension.equals(other.dimension))
-			return false;
-		if (id != other.id)
 			return false;
 		if (labels == null) {
 			if (other.labels != null)

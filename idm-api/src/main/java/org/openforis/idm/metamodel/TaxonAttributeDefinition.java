@@ -48,6 +48,10 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 
 	@XmlAttribute(name = "highestRank")
 	private String highestRank;
+	
+	protected TaxonAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
 
 	@Override
 	public Node<?> createNode() {
@@ -78,6 +82,14 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 		return highestRank;
 	}
 	
+	public void setTaxonomy(String taxonomy) {
+		this.taxonomy = taxonomy;
+	}
+
+	public void setHighestRank(String highestRank) {
+		this.highestRank = highestRank;
+	}
+
 	public List<String> getQualifiers() {
 		if ( qualifiers != null ) {
 			String[] exprs = qualifiers.split(",");

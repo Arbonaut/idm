@@ -43,6 +43,10 @@ public class EntityDefinition extends NodeDefinition {
 		@XmlElement(name = "text",       type = TextAttributeDefinition.class) })
 	private List<NodeDefinition> childDefinitions;
 
+	EntityDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	public List<NodeDefinition> getChildDefinitions() {
 		return CollectionUtil.unmodifiableList(childDefinitions);
 	}
@@ -61,7 +65,7 @@ public class EntityDefinition extends NodeDefinition {
 	public NodeDefinition getChildDefinition(int id) {
 		if (childDefinitions != null) {
 			for (NodeDefinition childDefinition : childDefinitions) {
-				if (childDefinition.getId().equals(id)) {
+				if (childDefinition.getId() == id) {
 					return childDefinition;
 				}
 			}
@@ -101,8 +105,6 @@ public class EntityDefinition extends NodeDefinition {
 		if (childDefinitions == null) {
 			childDefinitions = new ArrayList<NodeDefinition>();
 		}
-		Schema schema = getSchema();
-		defn.setId(schema.nextNodeDefinitionId());
 		childDefinitions.add(defn);
 		defn.setParentDefinition(this);
 	}

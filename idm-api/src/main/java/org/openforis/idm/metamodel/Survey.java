@@ -48,10 +48,10 @@ public class Survey implements Serializable {
 	private String uri;
 
 	@XmlElement(name = "published", required = false)
-	private Boolean published;
+	private boolean published;
 	
 	@XmlElement(name = "cycle")
-	private Integer cycle;
+	private String cycle;
 
 	@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
@@ -75,14 +75,29 @@ public class Survey implements Serializable {
 	@XmlElementWrapper(name = "spatialReferenceSystems")
 	private List<SpatialReferenceSystem> spatialReferenceSystems;
 
+	private List<String> languages;
+	
 	@XmlElement(name = "schema", type = Schema.class)
 	private Schema schema;
 
-	//@XmlTransient
+	private int lastId;
+	
 	private transient SurveyContext surveyContext;
 	
-	//@XmlTransient
 	private transient SurveyDependencies surveyDependencies;
+	
+	protected Survey(SurveyContext surveyContext) {
+		this.surveyContext = surveyContext;
+		this.schema = new Schema(this);
+		this.lastId = 1;
+	}
+
+	public void setLastId(int lastId) {
+		if ( lastId < this.lastId ) {
+			throw new IllegalArgumentException("lastId cannot be decreased");
+		}
+		this.lastId = lastId;
+	}
 	
 	public Integer getId() {
 		return id;
@@ -101,10 +116,10 @@ public class Survey implements Serializable {
 	}
 	
 	public boolean isPublished() {
-		return published != null && published.booleanValue();
+		return published;
 	}
 
-	public void setPublished(Boolean published) {
+	public void setPublished(boolean published) {
 		this.published = published;
 	}
 
@@ -148,11 +163,11 @@ public class Survey implements Serializable {
 		}
 	}
 	
-	public Integer getCycle() {
+	public String getCycle() {
 		return this.cycle;
 	}
 	
-	public void setCycle(Integer cycle) {
+	public void setCycle(String cycle) {
 		this.cycle = cycle;
 	}
 
@@ -228,6 +243,13 @@ public class Survey implements Serializable {
 	}
 	
 	public void addCodeList(CodeList codeList) {
+		// TODO check survey in other methods as well
+		// TODO check that code list id is not already in survey; same in other add methods as well
+		// TODO check that code list id is <= lastId; same other add methods as well
+		if ( codeList.getSurvey() != this ) {
+			throw new IllegalArgumentException("Code list belongs to another survey");
+		}
+		
 		if ( codeLists == null ) {
 			codeLists = new ArrayList<CodeList>();
 		}
@@ -346,11 +368,6 @@ public class Survey implements Serializable {
 		return this.schema;
 	}
 	
-	public void setSchema(Schema schema) {
-		this.schema = schema;
-		schema.setSurvey(this);
-	}
-	
 	public ModelVersion getVersion(String name) {
 		if ( modelVersions != null && name != null ) {
 			for (ModelVersion v : modelVersions) {
@@ -407,22 +424,34 @@ public class Survey implements Serializable {
 		configuration.removeConfiguration(config);
 	}
 	
-	public SurveyContext getContext() {
-		return surveyContext;
+	public void addLanguage(String lang) {
+		if ( languages == null ) {
+			this.languages = new ArrayList<String>();  
+		}
+		languages.add(lang);
 	}
 	
-	public void setSurveyContext(SurveyContext surveyContext) {
-		this.surveyContext = surveyContext;
+	public void removeLanguage(String lang) {
+		if ( languages == null ) {
+			return;
+		}
+		languages.remove(lang);
+	}
+	
+	public SurveyContext getContext() {
+		return surveyContext;
 	}
 	
 	public Set<NodePathPointer> getCheckDependencies(NodeDefinition definition) {
 		return getSurveyDependencies().getCheckDependencies(definition);
 	}
 	
+	// TODO move to ??
 	public Set<NodePathPointer> getRelevanceDependencies(NodeDefinition definition) {
 		return getSurveyDependencies().getRelevanceDependencies(definition);
 	}
-	
+
+	// TODO move to ??
 	public Set<NodePathPointer> getRequiredDependencies(NodeDefinition definition) {
 		return getSurveyDependencies().getRequiredDependencies(definition);
 	}
@@ -581,4 +610,38 @@ public class Survey implements Serializable {
 		return true;
 	}
 
+	synchronized 
+	public int nextId() {
+		return ++lastId;
+	}
+	
+	synchronized 
+	public int getLastId() {
+		return lastId;
+	}
+	
+	public ModelVersion createModelVersion(int id) {
+		return new ModelVersion(this, id);
+	}
+
+	public ModelVersion createModelVersion() {
+		return new ModelVersion(this, nextId());
+	}
+	
+	public CodeList createCodeList(int id) {
+		return new CodeList(this, id);
+	}
+
+	public CodeList createCodeList() {
+		return new CodeList(this, nextId());
+	}
+	
+	public Unit createUnit(int id) {
+		return new Unit(this, id);
+	}
+
+	public Unit createUnit() {
+		return new Unit(this, nextId());
+	}
+	
 }

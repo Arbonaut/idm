@@ -6,13 +6,16 @@ import java.net.URL;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.xml.IdmlBindingContext;
-import org.openforis.idm.metamodel.xml.InvalidIdmlException;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
+import org.openforis.idm.metamodel.xml.InvalidIdmlException;
+import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.TestSurveyContext;
 
 /**
  * @author G. Miceli
@@ -26,12 +29,12 @@ public abstract class AbstractTest {
 	protected Record record;
 
 	@BeforeClass
-	public static void setUp() throws IOException, InvalidIdmlException {
+	public static void setUp() throws Exception {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
-		IdmlBindingContext idmlBindingContext = new IdmlBindingContext(new TestSurveyContext());
-		SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
-		survey = su.unmarshal(is);
+		SurveyContext surveyContext = new DefaultSurveyContext();
+		SurveyUnmarshaller parser = new SurveyUnmarshaller(surveyContext);
+		survey = parser.parse(is);
 	}
 
 	@Before

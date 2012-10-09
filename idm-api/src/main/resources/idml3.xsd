@@ -6,7 +6,8 @@
   xmlns="http://www.openforis.org/idml/3.0">
   <xs:annotation>
     <xs:documentation xml:lang="en">
-		Inventory Data Modeling Language 3.0
+		Inventory Data Modeling Language 3.1
+		October 2012
 		
 		Inventory Data Modeling Language (IDML) is an XML implementation of the Inventory Data Metamodel (IDMM), providing a formal language for defining and describing inventory data models.  It is an abstraction which enables the creation of software that is flexible and reuseable in a wider range of scenarios.  The IDMM also allows tools to interoperate on the same field data, regardless of platform or implementation.  For example, mobile or personal data recorder (PDR) software, web or desktop-based data management software and data modeling tools that are designed to work with the IDMM would all be able work together and exchange data, regardless of vendor or inventory-specific details or functionality.
 		      
@@ -17,6 +18,12 @@
 		© Copyright 2012 Food and Agriculture Organization of the United Nations
 		      
 		G. Miceli, M. Togna, A. Pekkarinen, S. Ricci
+		
+		3.1 Release Notes
+		Changes from 3.0:
+			* Code list hierarchy levels no longer contain id attribute; their natural order
+			  determines hierarchy rank
+			* Languages in Survey 
     </xs:documentation>
   </xs:annotation>
 
@@ -120,6 +127,7 @@
             A code used to refer to this item (e.g. 100, a).  By default, codes within a given code list must be unique.  Special behavior may be defined using the <codingScheme/> element.  
           </xs:documentation>
         </xs:annotation>
+        <!-- 
         <xs:complexType>
           <xs:simpleContent>
             <xs:extension base="xs:normalizedString">
@@ -133,6 +141,7 @@
             </xs:extension>
           </xs:simpleContent>
         </xs:complexType>
+         -->
       </xs:element>
       <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText">
         <xs:annotation>
@@ -230,6 +239,18 @@
           <xs:annotation>
             <xs:documentation xml:lang="en">
               Any other descriptive text describing the survey project.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="language" type="unformattedText" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              Codes of languages used by this survey model.  The code consists of the
+              two-letter ISO 639 language code (lower-case), optionally followed by
+              the two-letter ISO-3166 country code (upper-case) and the implementation specific 
+              language variant.  Each of these are to be separated by an underscore ("_").
+              Examples: "en", "de_DE", "en_US_WIN", "de__POSIX", "fr__MAC" 
             </xs:documentation>
           </xs:annotation>
         </xs:element>
@@ -531,7 +552,6 @@
                                   </xs:annotation>
                                 </xs:element>
                               </xs:sequence>
-                              <xs:attribute name="id" type="xs:integer" use="required" />
                               <xs:attribute name="name" type="internalName" use="required">
                                 <xs:annotation>
                                   <xs:documentation xml:lang="en">
@@ -783,8 +803,19 @@
           </xs:unique>
         </xs:element>
       </xs:sequence>
+      <xs:attribute name="lastId" use="required">
+	      <xs:annotation>
+	      	<xs:documentation>
+	      		Contains the last id used for uniquely identifying objects in this survey model.  
+	      		To avoid conflicts between instances and uses of the model, ids should not be 
+	      		reused (i.e. lastId must increase each time a new object is added to the IDM)
+	      	</xs:documentation>
+	      </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
+
+
 
   <xs:complexType name="schemaObject">
     <xs:annotation>

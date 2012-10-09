@@ -35,6 +35,10 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 	@XmlAttribute(name = "key")
 	private Boolean key;
 
+	protected NumberAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	@Override
 	public boolean isKey() {
 		return this.key == null ? false : key;

@@ -36,14 +36,19 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	};
 	
 	@XmlAttribute(name = "affirmativeOnly")
-	private Boolean affirmativeOnly;
+	private boolean affirmativeOnly;
+
+
+	BooleanAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
 
 	public boolean isAffirmativeOnly() {
-		return affirmativeOnly == null ? false : affirmativeOnly;
+		return affirmativeOnly;
 	}
 	
 	public void setAffirmativeOnly(boolean affirmativeOnly) {
-		this.affirmativeOnly = affirmativeOnly ? true : null;
+		this.affirmativeOnly = affirmativeOnly;
 	}
 
 	@Override
@@ -71,7 +76,7 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((affirmativeOnly == null) ? 0 : affirmativeOnly.hashCode());
+		result = prime * result + (affirmativeOnly ? 1231 : 1237);
 		return result;
 	}
 
@@ -84,12 +89,8 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 		if (getClass() != obj.getClass())
 			return false;
 		BooleanAttributeDefinition other = (BooleanAttributeDefinition) obj;
-		if (affirmativeOnly == null) {
-			if (other.affirmativeOnly != null)
-				return false;
-		} else if (!affirmativeOnly.equals(other.affirmativeOnly))
+		if (affirmativeOnly != other.affirmativeOnly)
 			return false;
 		return true;
 	}
-	
 }

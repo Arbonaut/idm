@@ -1,6 +1,5 @@
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,10 +11,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -24,20 +21,13 @@ import org.openforis.idm.util.CollectionUtil;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "id", "name", "lookupTable", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
-public class CodeList extends Versionable implements Serializable {
+public class CodeList extends VersionableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
 
 	public enum CodeScope {
 		SCHEME, LOCAL
 	}
-
-	@XmlTransient
-	@XmlParent
-	private Survey survey;
-
-	@XmlAttribute(name = "id")
-	private int id;
 
 	@XmlAttribute(name = "name")
 	private String name;
@@ -51,9 +41,6 @@ public class CodeList extends Versionable implements Serializable {
 	@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-//	@XmlElement(name = "codingScheme", type = CodingScheme.class)
-//	private List<CodingScheme> codingSchemes;
-
 	@XmlElement(name = "codingScheme", type = CodingScheme.class)
 	private CodingScheme codingScheme;
 
@@ -65,20 +52,10 @@ public class CodeList extends Versionable implements Serializable {
 	@XmlElementWrapper(name = "items")
 	private List<CodeListItem> items;
 
-	@XmlTransient
-	private int lastItemId;
-	
-	@XmlTransient
-	private int lastLevelId;
-	
-	public int getId() {
-		return id;
+	CodeList(Survey survey, int id) {
+		super(survey, id);
 	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+
 	public String getName() {
 		return this.name;
 	}
@@ -192,12 +169,10 @@ public class CodeList extends Versionable implements Serializable {
 		if ( this.hierarchy == null ) {
 			this.hierarchy = new ArrayList<CodeListLevel>();
 		}
-		level.setId(nextLevelId());
 		this.hierarchy.add(level);
 	}
 	
-	public void removeLevel(int id) {
-		int index = getLevelIndex(id);
+	public void removeLevel(int index) {
 		if ( index >= 0 ) {
 			hierarchy.remove(index);
 			if ( index > 0 ) {
@@ -206,16 +181,6 @@ public class CodeList extends Versionable implements Serializable {
 		}
 	}
 
-	private int getLevelIndex(int id) {
-		for (int i = 0; i < hierarchy.size(); i++) {
-			CodeListLevel level = hierarchy.get(i);
-			if ( level.getId() == id ) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
 	public boolean hasItemsInLevel(int levelIndex) {
 		List<CodeListItem> itemsInLevel = getItemsInLevel(levelIndex);
 		return ! itemsInLevel.isEmpty();
@@ -247,22 +212,6 @@ public class CodeList extends Versionable implements Serializable {
 				this.removeItem(itemId);
 			}
 		}
-	}
-
-	protected int nextLevelId() {
-		if ( lastLevelId == 0 ) {
-			lastLevelId = calculateLastUsedLevelId();
-		}
-		return lastLevelId++;
-	}
-
-	protected int calculateLastUsedLevelId() {
-		int result = 0;
-		List<CodeListLevel> levels = getHierarchy();
-		for (CodeListLevel level : levels) {
-			result = Math.max(result, level.getId());
-		}
-		return result;
 	}
 	
 	public List<CodeListItem> getItems() {
@@ -299,7 +248,7 @@ public class CodeList extends Versionable implements Serializable {
 		if ( items == null ) {
 			items = new ArrayList<CodeListItem>();
 		}
-		item.setId(nextItemId());
+		// TODO check id
 		items.add(item);
 	}
 	
@@ -313,13 +262,6 @@ public class CodeList extends Versionable implements Serializable {
 				}
 			}
 		}
-	}
-	
-	protected int nextItemId() {
-		if ( lastItemId == 0 ) {
-			lastItemId = calculateLastUsedItemId();
-		}
-		return lastItemId++;
 	}
 
 	protected int calculateLastUsedItemId() {
@@ -339,14 +281,13 @@ public class CodeList extends Versionable implements Serializable {
 		}
 	}
 
-	public Survey getSurvey() {
-		return survey;
+	public void setCodeScope(CodeScope scope) {
+		if ( codingScheme == null ) {
+			this.codingScheme = new CodingScheme();
+		}
+		codingScheme.setCodeScope(scope); 
 	}
-
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
-	}
-
+	
 	public boolean isQualifiable() {
 		for (CodeListItem item : getItems()) {
 			if ( item.isQualifiableRecursive() ) {
@@ -363,7 +304,7 @@ public class CodeList extends Versionable implements Serializable {
 		result = prime * result + ((codingScheme == null) ? 0 : codingScheme.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
 		result = prime * result + ((hierarchy == null) ? 0 : hierarchy.hashCode());
-		result = prime * result + id;
+		result = prime * result + getId();
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((lookupTable == null) ? 0 : lookupTable.hashCode());
@@ -395,7 +336,7 @@ public class CodeList extends Versionable implements Serializable {
 				return false;
 		} else if (!hierarchy.equals(other.hierarchy))
 			return false;
-		if (id != other.id)
+		if (getId() != other.getId())
 			return false;
 		if (items == null) {
 			if (other.items != null)
@@ -418,6 +359,15 @@ public class CodeList extends Versionable implements Serializable {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public CodeListItem createItem(int id) {
+		return new CodeListItem(this, id);
+	}
+
+	public CodeListItem createItem() {
+		int id = getSurvey().nextId();
+		return createItem(id);
 	}
 
 }

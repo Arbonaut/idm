@@ -14,7 +14,7 @@ import org.xml.sax.ContentHandler;
 /**
  * @author G. Miceli
  */
-@SuppressWarnings("deprecation")
+@Deprecated
 public class SurveyMarshaller {
 
 	private boolean indent;

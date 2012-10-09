@@ -32,6 +32,10 @@ public class CustomCheck extends Check<Attribute<?,?>> {
 		return this.expression;
 	}
 
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+	
 	@Override
 	public ValidationResultFlag evaluate(Attribute<?,?> node) {
 		String expr = getExpression();

@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.expression.SchemaPathExpression;
-import org.openforis.idm.metamodel.xml.internal.XmlInherited;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.NodePathPointer;
@@ -30,7 +28,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  */
 @XmlTransient
-public abstract class NodeDefinition extends Versionable implements Annotatable, Serializable {
+public abstract class NodeDefinition extends VersionableSurveyObject implements Annotatable {
 	private static final long serialVersionUID = 1L;
 //	private static final transient Log LOG = LogFactory.getLog(NodeDefinition.class);
 
@@ -38,28 +36,17 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	@XmlParent
 	private NodeDefinition parentDefinition;
 	
-	@XmlTransient
-	@XmlParent
-	@XmlInherited("schema")
-	private Schema schema;
-	
-	@XmlAttribute(name = "id")
-	private Integer id;
-	
 	@XmlAttribute(name = "name")
 	private String name;
 
 	@XmlAttribute(name = "relevant")
 	private String relevantExpression;
 
-	@XmlAttribute(name = "required")
-	private Boolean required;
-	
 	@XmlAttribute(name = "requiredIf")
 	private String requiredExpression;
 
 	@XmlAttribute(name = "multiple")
-	private Boolean multiple;
+	private boolean multiple;
 
 	@XmlAttribute(name = "minCount")
 	private Integer minCount;
@@ -79,6 +66,10 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	@XmlAnyAttribute
 	private Map<QName,String> annotations;
 	
+	NodeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	public abstract Node<?> createNode();
 	
 	public String getAnnotation(QName qname) {
@@ -99,27 +90,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	public Set<QName> getAnnotationNames() {
 		return CollectionUtil.unmodifiableSet(annotations.keySet());
 	}
-	
-	public Integer getId() {
-		return id;
-	}
 
-	// TODO Encapsulate this better (e.g. using reflection or subclass)
-	public void setId(Integer id) {
-		this.id = id;
-		if ( schema != null ) {
-			schema.indexById(this);
-		}
-	}
-	
-	public Schema getSchema() {
-		return schema;
-	}
-
-	public void setSchema(Schema schema) {
-		this.schema = schema;
-	}
-	
 	public NodeDefinition getDefinitionByRelativePath(String path) {
 		SchemaPathExpression expression = new SchemaPathExpression(path);
 		Object object = expression.evaluate(this);
@@ -137,43 +108,24 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return this.relevantExpression;
 	}
 
-	/*
-	public boolean isRequired() {
-		if (required == null) {
-			return minCount != null && minCount >= 1;
-		} else {
-			return required;
-		}
-	}
-	*/
-	
 	public String getRequiredExpression() {
 		return requiredExpression;
 	}
 
+	/**
+	 * This property is meaningless for root entities
+	 * @return 
+	 */
 	public boolean isMultiple() {
-		if ( multiple == null ) {
-			if ( parentDefinition == null && schema != null ) {
-				// Root entity is always multiple
-				return true;
-			} else {
-				return (minCount != null && minCount > 1) || (maxCount != null && maxCount > 1);
-			}
-		} else {
-			return multiple;
-		}
+		return multiple;
 	}
 
 	public Integer getMinCount() {
-		if (minCount == null) {
-			return required == Boolean.TRUE ? 1 : null;
-		} else {
-			return minCount;
-		}
+		return minCount;
 	}
 
 	public Integer getMaxCount() {
-		if ( maxCount == null && !isMultiple() ) {
+		if ( !multiple ) {
 			return 1;
 		} else {
 			return maxCount;
@@ -291,7 +243,14 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 			prompts.remove(oldPrompt);
 		}
 	}
-	
+
+	public void addPrompt(Prompt prompt) {
+		if (prompts == null) {
+			prompts = new ArrayList<Prompt>();
+		}
+		prompts.add(prompt);
+	}
+
 	public List<LanguageSpecificText> getDescriptions() {
 		return CollectionUtil.unmodifiableList(descriptions);
 	}
@@ -339,31 +298,14 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	
 	protected void setParentDefinition(NodeDefinition parentDefinition) {
 		this.parentDefinition = parentDefinition;
-		this.schema = parentDefinition.getSchema();
 	}
 	
 	public EntityDefinition getRootEntity() {
-		if ( parentDefinition == null) {
-			if ( this instanceof EntityDefinition) {
-				return (EntityDefinition) this;
-			} else {
-				//detached node
-				return null;
-			}
-		} else {
-			EntityDefinition result = (EntityDefinition) parentDefinition;
-			EntityDefinition currentParentDefn = (EntityDefinition) result.getParentDefinition();
-			while ( currentParentDefn != null ) {
-				result = currentParentDefn;
-				currentParentDefn = (EntityDefinition) currentParentDefn.getParentDefinition();
-			}
-			return result;
+		NodeDefinition ptr = this;
+		while ( ptr.getParentDefinition() != null ) {
+			ptr = ptr.getParentDefinition();
 		}
-	}
-	
-	@Override
-	public Survey getSurvey() {
-		return schema == null ? null : schema.getSurvey();
+		return (EntityDefinition) ptr;
 	}
 	
 	@Override
@@ -383,6 +325,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 
 	public void setName(String name) {
 		checkLockState();
+		Schema schema = getSchema();
 		String oldName = this.name;
 		boolean changed = ! StringUtils.equals(oldName, name);
 		if ( schema != null && changed && oldName != null ) {
@@ -399,17 +342,17 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		this.relevantExpression = relevantExpression;
 	}
 
-	public void setRequired(Boolean required) {
-		checkLockState();
-		this.required = required;
-	}
-
 	public void setRequiredExpression(String requiredExpression) {
 		checkLockState();
 		this.requiredExpression = requiredExpression;
 	}
 
-	public void setMultiple(Boolean multiple) {
+
+	/**
+	 * This property is meaningless for root entities
+	 * @param multiple 
+	 */
+	public void setMultiple(boolean multiple) {
 		checkLockState();
 		this.multiple = multiple;
 	}
@@ -429,7 +372,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	 * associated with one or more records or nodes (i.e. locked)
 	 */
 	protected void checkLockState() {
-		// TODO
+		// TODO remove??
 	}
 
 	@Override
@@ -438,15 +381,14 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		int result = super.hashCode();
 		result = prime * result + ((annotations == null) ? 0 : annotations.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + getId();
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((maxCount == null) ? 0 : maxCount.hashCode());
 		result = prime * result + ((minCount == null) ? 0 : minCount.hashCode());
-		result = prime * result + ((multiple == null) ? 0 : multiple.hashCode());
+		result = prime * result + (multiple ? 1231 : 1237);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((prompts == null) ? 0 : prompts.hashCode());
 		result = prime * result + ((relevantExpression == null) ? 0 : relevantExpression.hashCode());
-		result = prime * result + ((required == null) ? 0 : required.hashCode());
 		result = prime * result + ((requiredExpression == null) ? 0 : requiredExpression.hashCode());
 		return result;
 	}
@@ -470,10 +412,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 				return false;
 		} else if (!descriptions.equals(other.descriptions))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (getId() != other.getId())
 			return false;
 		if (labels == null) {
 			if (other.labels != null)
@@ -490,10 +429,7 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 				return false;
 		} else if (!minCount.equals(other.minCount))
 			return false;
-		if (multiple == null) {
-			if (other.multiple != null)
-				return false;
-		} else if (!multiple.equals(other.multiple))
+		if (multiple!=other.multiple)
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -509,11 +445,6 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 			if (other.relevantExpression != null)
 				return false;
 		} else if (!relevantExpression.equals(other.relevantExpression))
-			return false;
-		if (required == null) {
-			if (other.required != null)
-				return false;
-		} else if (!required.equals(other.required))
 			return false;
 		if (requiredExpression == null) {
 			if (other.requiredExpression != null)

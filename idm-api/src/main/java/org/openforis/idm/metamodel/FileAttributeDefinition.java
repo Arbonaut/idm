@@ -43,6 +43,10 @@ public class FileAttributeDefinition extends AttributeDefinition {
 
 	@XmlAttribute(name = "extensions")
 	private List<String> extensions;
+	
+	protected FileAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
 
 	public Integer getMaxSize() {
 		return this.maxSize;

@@ -19,7 +19,8 @@ public final class FieldDefinition<T> extends NodeDefinition {
 	private String suffix;
 	private Class<T> valueType;
 	
-	public FieldDefinition(String name, String alias, String suffix, Class<T> valueType, AttributeDefinition parentDefinition) {
+	FieldDefinition(String name, String alias, String suffix, Class<T> valueType, AttributeDefinition parentDefinition) {
+		super(parentDefinition.getSurvey(), 0);
 		setName(name);
 		setParentDefinition(parentDefinition);
 		this.alias = alias;

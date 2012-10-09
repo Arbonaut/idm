@@ -1,6 +1,7 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.DefaultSurveyContext;
+import org.openforis.idm.model.expression.ExpressionFactory;
 
 /**
  * @author G. Miceli
@@ -8,6 +9,8 @@ import org.openforis.idm.metamodel.DefaultSurveyContext;
 public class TestSurveyContext extends DefaultSurveyContext {
 	public TestSurveyContext() {
 		super();
-		getExpressionFactory().setLookupProvider(new TestLookupProviderImpl());
+		ExpressionFactory expressionFactory = getExpressionFactory();
+		TestLookupProviderImpl testLookupProvider = new TestLookupProviderImpl();
+		expressionFactory.setLookupProvider(testLookupProvider);
 	}
 }

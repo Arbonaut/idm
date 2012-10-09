@@ -7,14 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import javax.xml.bind.ValidationEvent;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-import org.openforis.idm.metamodel.xml.IdmlValidator;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
-import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
+import org.openforis.idm.metamodel.xml.SurveyBinder;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 
 /**
@@ -30,7 +27,7 @@ public class XmlBindingIntegrationTest {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
 		SurveyContext ctx = new DefaultSurveyContext();
-		SurveyUnmarshaller su = new SurveyUnmarshaller(ctx); 
+		SurveyBinder su = new SurveyBinder(ctx); 
 		Survey survey = su.unmarshal(is);
 
 // TODO			

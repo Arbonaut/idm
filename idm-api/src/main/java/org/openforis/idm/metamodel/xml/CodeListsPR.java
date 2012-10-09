@@ -204,13 +204,13 @@ class CodeListsPR extends IdmlPullReader {
 				}
 
 				@Override
-				protected XmlPullReader getChildTagReader() throws XmlParseException {
+				protected XmlPullReader getChildPullReader() throws XmlParseException {
 					XmlPullParser parser = getParser();
 					String name = parser.getName();
 					if ( name.equals("item") ) {
 						return new ItemPR(item);
 					} else {
-						return super.getChildTagReader();
+						return super.getChildPullReader();
 					}
 				}
 				@Override

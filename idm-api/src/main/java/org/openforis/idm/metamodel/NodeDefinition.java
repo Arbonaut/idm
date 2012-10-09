@@ -365,6 +365,9 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	public void setMaxCount(Integer maxCount) {
 		checkLockState();
 		this.maxCount = maxCount;
+		if ( maxCount != null && maxCount > 1 ) {
+			this.multiple = true;
+		}
 	}
 
 	/**

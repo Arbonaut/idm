@@ -3,7 +3,9 @@ package org.openforis.idm.metamodel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -53,8 +55,7 @@ public class Survey implements Serializable {
 	@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-	@XmlElement(name = "configuration")
-	private List<Configuration> configuration;
+	private Map<String, ApplicationOptions> applicationOptionsMap;
 	
 	@XmlElement(name = "version", type = ModelVersion.class)
 	@XmlElementWrapper(name = "versioning")
@@ -398,27 +399,25 @@ public class Survey implements Serializable {
 		return null;
 	}
 
-	public List<Configuration> getConfigurations() {
-		if ( configuration == null ) {
-			return Collections.emptyList();
+	public ApplicationOptions getApplicationOptions(String type) {
+		if ( applicationOptionsMap == null ) {
+			return null;
 		} else {
-			return CollectionUtil.unmodifiableList(configuration);
+			return applicationOptionsMap.get(type);
 		}
 	}
 
-	public void addConfiguration(Configuration config) {
-		if ( configuration == null ) {
-			configuration = new ArrayList<Configuration>();
+	public void setApplicationOptions(ApplicationOptions options) {
+		if ( applicationOptionsMap == null ) {
+			this.applicationOptionsMap = new HashMap<String, ApplicationOptions>();
 		}
-		configuration.add(config);
+		applicationOptionsMap.put(options.getType(), options);
 	}
 	
-	public void setConfiguration(int index, Configuration config) {
-		configuration.set(index, config);
-	}
-	
-	public void removeConfiguration(Configuration config) {
-		configuration.remove(config);
+	public void removeApplicationOptions(String type) {
+		if ( applicationOptionsMap != null ) {
+			applicationOptionsMap.remove(type);
+		}
 	}
 	
 	public void addLanguage(String lang) {
@@ -465,7 +464,7 @@ public class Survey implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((codeLists == null) ? 0 : codeLists.hashCode());
-		result = prime * result + ((configuration == null) ? 0 : configuration.hashCode());
+		result = prime * result + ((applicationOptionsMap == null) ? 0 : applicationOptionsMap.hashCode());
 		result = prime * result + ((cycle == null) ? 0 : cycle.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -493,10 +492,10 @@ public class Survey implements Serializable {
 				return false;
 		} else if (!codeLists.equals(other.codeLists))
 			return false;
-		if (configuration == null) {
-			if (other.configuration != null)
+		if (applicationOptionsMap == null) {
+			if (other.applicationOptionsMap != null)
 				return false;
-		} else if (!configuration.equals(other.configuration))
+		} else if (!applicationOptionsMap.equals(other.applicationOptionsMap))
 			return false;
 		if (cycle == null) {
 			if (other.cycle != null)

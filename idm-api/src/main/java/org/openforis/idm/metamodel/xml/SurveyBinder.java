@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.openforis.idm.metamodel.Configuration;
 import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
-import org.openforis.idm.metamodel.xml.internal.DefaultConfigurationUnmarshaller;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -19,15 +19,13 @@ import org.xmlpull.v1.XmlPullParserFactory;
  * 
  * @author G. Miceli
  */
-public class SurveyUnmarshaller {
+public class SurveyBinder {
 	private SurveyContext surveyContext;
-	private ConfigurationUnmarshaller<? extends Configuration> configUnmarshaller;
-	private SurveyPullReader surveyReader;
+	private List<ApplicationOptionsBinder<?>> optionsBinders;
 
-	public SurveyUnmarshaller(SurveyContext surveyContext) {
+	public SurveyBinder(SurveyContext surveyContext) {
 		this.surveyContext = surveyContext;
-		this.configUnmarshaller = DefaultConfigurationUnmarshaller.getInstance();
-		this.surveyReader = new SurveyPullReader(this);
+		this.optionsBinders = new ArrayList<ApplicationOptionsBinder<?>>();
 	}
 
 	// TODO Remove
@@ -37,28 +35,46 @@ public class SurveyUnmarshaller {
 			InputStream is = new FileInputStream(f);
 			SurveyContext ctx = new DefaultSurveyContext();
 			
-			SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(ctx); 
+			SurveyBinder unmarshaller = new SurveyBinder(ctx); 
 			unmarshaller.unmarshal(is);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void setConfigurationUnmarshaller(ConfigurationUnmarshaller<? extends Configuration> configUnmarshaller) {
-		this.configUnmarshaller = configUnmarshaller;
+	public void addApplicationOptionsBinder(ApplicationOptionsBinder<?> binder) {
+		optionsBinders.add(binder);
 	}
 
-	public ConfigurationUnmarshaller<? extends Configuration> getConfigurationUnmarshaller() {
-		return configUnmarshaller;
+	/**
+	 * 
+	 * @param type
+	 * @return the first binder which supports the specified type, or null
+	 * if none found
+	 */
+	ApplicationOptionsBinder<?> getApplicationOptionsBinder(String type) {
+		for (ApplicationOptionsBinder<?> binder : optionsBinders) {
+			if ( binder.isSupported(type) ) {
+				return binder;
+			}
+		}
+		return null;
 	}
 	public SurveyContext getSurveyContext() {
 		return surveyContext;
 	}
 	
 	synchronized
+	public void marshal(InputStream is, Survey survey) throws XmlParseException, IOException {
+		// TODO implement
+		throw new UnsupportedOperationException();
+	}
+		
+	synchronized
 	public Survey unmarshal(InputStream is) throws XmlParseException, IOException {
 		XmlPullParser parser = null;
 		try {
+			SurveyPullReader surveyReader = new SurveyPullReader(this);
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 			parser = factory.newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);

@@ -18,7 +18,7 @@ import org.xmlpull.v1.XmlSerializer;
  */
 public abstract class IdmlPullReader extends XmlPullReader {
 
-	private IdmlParser idmlParser;
+	private SurveyUnmarshaller unmarshaller;
 
 	public static final String IDML3_NS_URI = "http://www.openforis.org/idml/3.0";
 
@@ -30,16 +30,16 @@ public abstract class IdmlPullReader extends XmlPullReader {
 		super(IDML3_NS_URI, tagName, maxCount);
 	}
 	
-	IdmlParser getIdmlParser() {
-		return idmlParser;
+	SurveyUnmarshaller getSurveyUnmarshaller() {
+		return unmarshaller;
 	}
 	
-	void setIdmlParser(IdmlParser parser) {
-		this.idmlParser = parser;
+	void setSurveyUnmarshaller(SurveyUnmarshaller unmarshaller) {
+		this.unmarshaller = unmarshaller;
 	}
 	
-	protected String readEntireTag() throws XmlParseException, XmlPullParserException, IOException {
-		XmlPullParser in = getParser();		
+	protected String nextElement(boolean includeOuterTag) throws XmlParseException, XmlPullParserException, IOException {
+		XmlPullParser in = getParser();
 		System.out.println(in.getName());
 		if (in.getEventType() != START_TAG) {
 		    throw new XmlParseException(in, "start tag expected");
@@ -48,7 +48,9 @@ public abstract class IdmlPullReader extends XmlPullReader {
 		XmlSerializer out = new KXmlSerializer();
 		out.setOutput(sw);
 		out.startDocument("UTF-8", true);
-		out.startTag(in.getNamespace(), in.getName());
+		if ( includeOuterTag ) {
+			out.startTag(in.getNamespace(), in.getName());
+		}
 	    int depth = 1;
 	    while (depth != 0) {
 	        switch (in.next()) {
@@ -60,7 +62,9 @@ public abstract class IdmlPullReader extends XmlPullReader {
 	            depth++;
 	            break;
 	        case END_TAG:
-	        	out.endTag(in.getNamespace(), in.getName());
+	        	if ( includeOuterTag || depth > 1 ) {
+	        		out.endTag(in.getNamespace(), in.getName());
+	        	}
 	            depth--;
 	            break;
 	        case TEXT:
@@ -142,7 +146,7 @@ public abstract class IdmlPullReader extends XmlPullReader {
 	protected void addChildPullReaders(XmlPullReader... childTagReaders) {
 		super.addChildPullReaders(childTagReaders);
 		for (XmlPullReader reader : childTagReaders) {
-			((IdmlPullReader) reader).setIdmlParser(idmlParser);
+			((IdmlPullReader) reader).setSurveyUnmarshaller(unmarshaller);
 		}
 
 	}

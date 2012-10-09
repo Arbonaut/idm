@@ -5,21 +5,29 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.openforis.idm.metamodel.Configuration;
 import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
+import org.openforis.idm.metamodel.xml.internal.DefaultConfigurationUnmarshaller;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
+ * Load a Survey object from IDML
+ * 
  * @author G. Miceli
  */
-public class IdmlParser {
+public class SurveyUnmarshaller {
 	private SurveyContext surveyContext;
-	
-	public IdmlParser(SurveyContext surveyContext) {
+	private ConfigurationUnmarshaller<? extends Configuration> configUnmarshaller;
+	private SurveyPullReader surveyReader;
+
+	public SurveyUnmarshaller(SurveyContext surveyContext) {
 		this.surveyContext = surveyContext;
+		this.configUnmarshaller = DefaultConfigurationUnmarshaller.getInstance();
+		this.surveyReader = new SurveyPullReader(this);
 	}
 
 	// TODO Remove
@@ -28,13 +36,21 @@ public class IdmlParser {
 			File f = new File("../idm-test/src/main/resources/test.idm.xml");
 			InputStream is = new FileInputStream(f);
 			SurveyContext ctx = new DefaultSurveyContext();
-			IdmlParser unmarshaller = new IdmlParser(ctx); 
+			
+			SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(ctx); 
 			unmarshaller.parse(is);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void setConfigurationUnmarshaller(ConfigurationUnmarshaller<? extends Configuration> configUnmarshaller) {
+		this.configUnmarshaller = configUnmarshaller;
+	}
+
+	public ConfigurationUnmarshaller<? extends Configuration> getConfigurationUnmarshaller() {
+		return configUnmarshaller;
+	}
 	public SurveyContext getSurveyContext() {
 		return surveyContext;
 	}
@@ -46,8 +62,7 @@ public class IdmlParser {
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 			parser = factory.newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
-			parser.setInput(is, "UTF-8");
-			SurveyPullReader surveyReader = new SurveyPullReader(this);
+			parser.setInput(is, "UTF-8");			
 			surveyReader.parse(parser);
 			
 			return surveyReader.getSurvey();

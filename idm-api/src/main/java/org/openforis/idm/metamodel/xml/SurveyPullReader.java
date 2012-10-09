@@ -8,11 +8,12 @@ import org.openforis.idm.metamodel.SurveyContext;
 public class SurveyPullReader extends IdmlPullReader {
 
 	private Survey survey;
-//	private SurveyContext surveyContext;
 	 
-	protected SurveyPullReader(IdmlParser parser) {
+	protected SurveyPullReader(SurveyUnmarshaller unmarshaller) {
 		super("survey");
-		setIdmlParser(parser);
+		
+		setSurveyUnmarshaller(unmarshaller);
+		
 		addChildPullReaders(
 			new ProjectPR(), 
 			new UriPR(), 
@@ -36,7 +37,7 @@ public class SurveyPullReader extends IdmlPullReader {
 	public void onStartTag() throws XmlParseException {
 		// TODO update test IDML so that ids are unique within file and that lastId is correct
 		String lastId = getAttribute("lastId", true);
-		SurveyContext surveyContext = getIdmlParser().getSurveyContext(); 
+		SurveyContext surveyContext = getSurveyUnmarshaller().getSurveyContext(); 
 		this.survey = surveyContext.createSurvey();
 		survey.setLastId(Integer.valueOf(lastId));
 	}

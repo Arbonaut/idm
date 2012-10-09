@@ -14,7 +14,6 @@ class ConfigurationPR extends IdmlPullReader {
 		super("configuration");
 	}
 
-	// TODO Config adapter
 	@Override
 	protected void onStartTag()
 			throws XmlParseException, XmlPullParserException, IOException {
@@ -24,6 +23,5 @@ class ConfigurationPR extends IdmlPullReader {
 		Configuration config = configUnmarshaller.unmarshal(body);
 		Survey survey = getSurvey();
 		survey.addConfiguration(config);
-		System.out.println(survey.getConfiguration());
 	}
 }

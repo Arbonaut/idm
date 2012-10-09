@@ -1,19 +1,14 @@
 package org.openforis.idm;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
-import org.openforis.idm.metamodel.xml.InvalidIdmlException;
-import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
 
@@ -34,7 +29,7 @@ public abstract class AbstractTest {
 		InputStream is = idm.openStream();
 		SurveyContext surveyContext = new DefaultSurveyContext();
 		SurveyUnmarshaller parser = new SurveyUnmarshaller(surveyContext);
-		survey = parser.parse(is);
+		survey = parser.unmarshal(is);
 	}
 
 	@Before

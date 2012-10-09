@@ -101,7 +101,7 @@ abstract class XmlPullReader {
 			throws XmlPullParserException, IOException, XmlParseException {
 		if ( parser.getEventType() != END_TAG ) {
 			while ( parser.nextTag() != END_TAG ) {
-				XmlPullReader childTagReader = getChildTagReader();
+				XmlPullReader childTagReader = getChildPullReader();
 				handleChildTag(childTagReader);
 			}
 		}
@@ -157,7 +157,11 @@ abstract class XmlPullReader {
 		return tagName.equals(tag) && namespace.equals(ns); 
 	}
 	
-	protected XmlPullReader getChildTagReader() throws XmlParseException {
+	protected List<XmlPullReader> getChildPullReaders() {
+		return childPullReaders;
+	}
+	
+	protected XmlPullReader getChildPullReader() throws XmlParseException {
 		if ( childPullReaders != null ) {
 			for (int i = lastChildPullReaderIdx; i < childPullReaders.size(); i++) {
 				XmlPullReader tagReader = childPullReaders.get(i);

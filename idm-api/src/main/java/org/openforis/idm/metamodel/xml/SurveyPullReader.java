@@ -5,14 +5,16 @@ import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
 
-public class SurveyPullReader extends IdmlPullReader {
+class SurveyPullReader extends IdmlPullReader {
 
 	private Survey survey;
 	 
-	protected SurveyPullReader(SurveyUnmarshaller unmarshaller) {
+	SurveyPullReader(SurveyBinder binder) {
 		super("survey");
 		
-		setSurveyUnmarshaller(unmarshaller);
+		if ( binder == null ) {
+			throw new NullPointerException("binder");
+		}
 		
 		addChildPullReaders(
 			new ProjectPR(), 
@@ -20,12 +22,14 @@ public class SurveyPullReader extends IdmlPullReader {
 			new CyclePR(),
 			new DescriptionPR(),
 			new LanguagePR(),
-			new ConfigurationPR(),
+			new ApplicationOptionsPR(),
 			new VersioningPR(), 
 			new CodeListsPR(),
 			new UnitsPR(),
 			new SpatialReferenceSystemsPR(),
 			new SchemaPR());
+
+		setSurveyBinder(binder);
 	}
 	
 	@Override
@@ -37,7 +41,7 @@ public class SurveyPullReader extends IdmlPullReader {
 	public void onStartTag() throws XmlParseException {
 		// TODO update test IDML so that ids are unique within file and that lastId is correct
 		String lastId = getAttribute("lastId", true);
-		SurveyContext surveyContext = getSurveyUnmarshaller().getSurveyContext(); 
+		SurveyContext surveyContext = getSurveyBinder().getSurveyContext(); 
 		this.survey = surveyContext.createSurvey();
 		survey.setLastId(Integer.valueOf(lastId));
 	}

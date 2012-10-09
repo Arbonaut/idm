@@ -4,6 +4,7 @@ import static org.xmlpull.v1.XmlPullParser.*;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
@@ -16,9 +17,9 @@ import org.xmlpull.v1.XmlSerializer;
 /**
  * @author G. Miceli
  */
-public abstract class IdmlPullReader extends XmlPullReader {
+abstract class IdmlPullReader extends XmlPullReader {
 
-	private SurveyUnmarshaller unmarshaller;
+	private SurveyBinder binder;
 
 	public static final String IDML3_NS_URI = "http://www.openforis.org/idml/3.0";
 
@@ -30,12 +31,21 @@ public abstract class IdmlPullReader extends XmlPullReader {
 		super(IDML3_NS_URI, tagName, maxCount);
 	}
 	
-	SurveyUnmarshaller getSurveyUnmarshaller() {
-		return unmarshaller;
+	SurveyBinder getSurveyBinder() {
+		return binder;
 	}
 	
-	void setSurveyUnmarshaller(SurveyUnmarshaller unmarshaller) {
-		this.unmarshaller = unmarshaller;
+	void setSurveyBinder(SurveyBinder binder) {
+		this.binder = binder;
+		List<XmlPullReader> childPullReaders = getChildPullReaders();
+		if ( childPullReaders != null ) {
+			for (XmlPullReader reader : childPullReaders) {
+				IdmlPullReader idmlPullReader = (IdmlPullReader) reader;
+				if ( idmlPullReader.binder == null ) {
+					idmlPullReader.setSurveyBinder(binder);
+				}
+			}
+		}
 	}
 	
 	protected String nextElement(boolean includeOuterTag) throws XmlParseException, XmlPullParserException, IOException {
@@ -143,14 +153,5 @@ public abstract class IdmlPullReader extends XmlPullReader {
 			throw new XmlParseException(parser, "missing required attribute "+attr);
 		}
 		return value;
-	}
-	
-	@Override
-	protected void addChildPullReaders(XmlPullReader... childTagReaders) {
-		super.addChildPullReaders(childTagReaders);
-		for (XmlPullReader reader : childTagReaders) {
-			((IdmlPullReader) reader).setSurveyUnmarshaller(unmarshaller);
-		}
-
 	}
 }

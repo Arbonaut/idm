@@ -209,12 +209,9 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 		}
 	}
 
-//	protected int nextItemId() {
-//		if ( lastItemId == 0 ) {
-//			lastItemId = calculateLastUsedItemId();
-//		}
-//		return lastItemId++;
-//	}
+	public void moveChildItem(CodeListItem item, int indexTo) {
+		CollectionUtil.moveItem(childItems, item, indexTo);
+	}
 
 	protected int calculateLastUsedItemId() {
 		int result = 0;

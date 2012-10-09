@@ -263,16 +263,11 @@ public class CodeList extends VersionableSurveyObject {
 			}
 		}
 	}
-
-	protected int calculateLastUsedItemId() {
-		int result = 0;
-		List<CodeListItem> items = getItems();
-		for (CodeListItem item : items) {
-			result = Math.max(result, item.getId());	
-		}
-		return result;
-	}
 	
+	public void moveItem(CodeListItem item, int indexTo) {
+		CollectionUtil.moveItem(items, item, indexTo);
+	}
+
 	public CodeScope getCodeScope() {
 		if ( codingScheme == null || codingScheme.getCodeScope() == null ) {
 			return CodeScope.LOCAL;

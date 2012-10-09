@@ -19,6 +19,7 @@ class NumberAttributeDefinitionPR extends NumericAttributeDefinitionPR {
 
 	@Override
 	protected void onStartDefinition() throws XmlParseException, XmlPullParserException, IOException {
+		super.onStartDefinition();
 		Boolean key = getBooleanAttribute("key", false);
 		NumberAttributeDefinition defn = (NumberAttributeDefinition) getDefinition();
 		defn.setKey(key == null ? false : key);

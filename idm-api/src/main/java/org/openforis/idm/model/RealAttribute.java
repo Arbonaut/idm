@@ -14,7 +14,7 @@ public class RealAttribute extends NumberAttribute<Double, RealValue> {
 	public RealAttribute(NumberAttributeDefinition definition) {
 		super(definition);
 		if (!definition.isReal()) {
-			throw new IllegalArgumentException("Attempted to create RealAttribute with integer NumberDefinition");
+			throw new IllegalArgumentException("RangeAttributeDefinition with type real required");
 		}
 	}
 

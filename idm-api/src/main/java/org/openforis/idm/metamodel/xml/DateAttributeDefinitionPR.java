@@ -15,6 +15,6 @@ class DateAttributeDefinitionPR extends AttributeDefinitionPR {
 	@Override
 	protected NodeDefinition createDefinition(int id) {
 		Schema schema = getSchema();
-		return schema.createCoordinateAttributeDefinition(id);
+		return schema.createDateAttributeDefinition(id);
 	}
 }

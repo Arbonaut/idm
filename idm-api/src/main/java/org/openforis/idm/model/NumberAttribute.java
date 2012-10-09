@@ -14,6 +14,7 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 	protected NumberAttribute(NumberAttributeDefinition definition) {
 		super(definition);
 	}
+	
 	public String getUnitName() {
 		return getUnitField().getValue();
 	}

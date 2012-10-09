@@ -13,6 +13,9 @@ public abstract class SurveyObject implements Serializable {
 	private Survey survey;
 
 	protected SurveyObject(Survey survey) {
+		if ( survey == null ) {
+			throw new NullPointerException("survey");
+		}
 		this.survey = survey;
 	}
 
@@ -22,5 +25,13 @@ public abstract class SurveyObject implements Serializable {
 
 	public final Schema getSchema() {
 		return survey == null ? null : survey.getSchema();
+	}
+	
+	void detach() {
+		this.survey = null;
+	}
+	
+	public boolean isDetached() {
+		return survey == null;
 	}
 }

@@ -15,12 +15,12 @@ import org.openforis.idm.model.TimeAttribute;
 /**
  * @author G. Miceli
  */
-public class FieldColumnProviderTest {
+public class FieldColumnProviderTest extends AbstractColumnProviderTest {
 
 	@Test
 	public void testTimeAtRoot() throws Exception {
 		// Model
-		TimeAttributeDefinition timeDefn = new TimeAttributeDefinition();
+		TimeAttributeDefinition timeDefn = schema.createTimeAttributeDefinition();
 		timeDefn.setName("time");
 		timeDefn.setMultiple(false);
 		

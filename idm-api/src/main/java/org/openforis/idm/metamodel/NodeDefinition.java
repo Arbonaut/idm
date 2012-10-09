@@ -17,10 +17,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.metamodel.expression.SchemaPathExpression;
 import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.NodePathPointer;
+import org.openforis.idm.path.InvalidPathException;
+import org.openforis.idm.path.Path;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -91,13 +92,9 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		return CollectionUtil.unmodifiableSet(annotations.keySet());
 	}
 
-	public NodeDefinition getDefinitionByRelativePath(String path) {
-		SchemaPathExpression expression = new SchemaPathExpression(path);
-		Object object = expression.evaluate(this);
-		if (object instanceof NodeDefinition) {
-			return (NodeDefinition) object;
-		}
-		return null;
+	public NodeDefinition getDefinitionByPath(String path) throws InvalidPathException {
+		Path p = Path.parsePath(path);
+		return p.evaluate(this);
 	}
 
 	public String getName() {
@@ -324,26 +321,14 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	}
 
 	public void setName(String name) {
-		checkLockState();
-		Schema schema = getSchema();
-		String oldName = this.name;
-		boolean changed = ! StringUtils.equals(oldName, name);
-		if ( schema != null && changed && oldName != null ) {
-			schema.removeIndexByPath(this, true);
-		}
 		this.name = name;
-		if ( schema != null && changed && name != null ) {
-			schema.indexByPath(this, true);
-		}
 	}
 	
 	public void setRelevantExpression(String relevantExpression) {
-		checkLockState();
 		this.relevantExpression = relevantExpression;
 	}
 
 	public void setRequiredExpression(String requiredExpression) {
-		checkLockState();
 		this.requiredExpression = requiredExpression;
 	}
 
@@ -353,29 +338,18 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	 * @param multiple 
 	 */
 	public void setMultiple(boolean multiple) {
-		checkLockState();
 		this.multiple = multiple;
 	}
 
 	public void setMinCount(Integer minCount) {
-		checkLockState();
 		this.minCount = minCount;
 	}
 
 	public void setMaxCount(Integer maxCount) {
-		checkLockState();
 		this.maxCount = maxCount;
 		if ( maxCount != null && maxCount > 1 ) {
 			this.multiple = true;
 		}
-	}
-
-	/**
-	 * @throws IllegalStateException when the survey is already 
-	 * associated with one or more records or nodes (i.e. locked)
-	 */
-	protected void checkLockState() {
-		// TODO remove??
 	}
 
 	@Override

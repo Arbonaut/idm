@@ -20,6 +20,7 @@ import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Value;
+import org.openforis.idm.path.InvalidPathException;
 
 /**
  * @author G. Miceli
@@ -116,7 +117,11 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	public CodeAttributeDefinition getParentCodeAttributeDefinition() {
 		if (StringUtils.isNotBlank(parentExpression) && parentCodeAttributeDefinition == null) {
 			NodeDefinition parentDefinition = getParentDefinition();
-			parentCodeAttributeDefinition = (CodeAttributeDefinition) parentDefinition.getDefinitionByRelativePath(parentExpression);
+			try {
+				parentCodeAttributeDefinition = (CodeAttributeDefinition) parentDefinition.getDefinitionByPath(parentExpression);
+			} catch (InvalidPathException e) {
+				throw new IllegalStateException("Invalid parent paths should not be allowed");
+			}
 		}
 		return parentCodeAttributeDefinition;
 	}

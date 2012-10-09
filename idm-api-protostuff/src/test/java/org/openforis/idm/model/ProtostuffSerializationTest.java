@@ -8,10 +8,12 @@ import java.net.URL;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.xml.IdmlBindingContext;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
-import org.openforis.idm.metamodel.xml.IdmlValidator;
+import org.openforis.idm.metamodel.xml.SurveyBinder;
+import org.openforis.idm.metamodel.xml.XmlParseException;
 
 /**
  * 
@@ -41,12 +43,12 @@ public class ProtostuffSerializationTest  {
 		Assert.assertTrue(record1.getRootEntity().equals(record2.getRootEntity()));
 	}
 
-	private Survey getTestSurvey() throws IOException, InvalidIdmlException {
+	private Survey getTestSurvey() throws IOException, InvalidIdmlException, XmlParseException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
-		IdmlBindingContext idmlBindingContext = new IdmlBindingContext(new TestSurveyContext());
-		IdmlValidator su = idmlBindingContext.createSurveyUnmarshaller();
-		return su.unmarshal(is);		
+		SurveyContext surveyContext = new DefaultSurveyContext();
+		SurveyBinder parser = new SurveyBinder(surveyContext);
+		return parser.unmarshal(is);
 	}
 	
 	private Record createTestRecord(Survey survey) {

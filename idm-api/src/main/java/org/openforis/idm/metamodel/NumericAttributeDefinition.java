@@ -48,7 +48,6 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	}
 
 	public void setType(Type type) {
-		checkLockState();
 		this.type = type;
 	}
 	
@@ -65,7 +64,6 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	}
 
 	public void addPrecisionDefinition(Precision precision) {
-		checkLockState();
 		if ( precisionDefinitions == null ) {
 			precisionDefinitions = new ArrayList<Precision>();
 		}

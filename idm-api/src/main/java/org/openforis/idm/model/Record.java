@@ -62,7 +62,7 @@ public class Record {
 			throw new IllegalStateException("Record already has an associated root entity");
 		}
 		Schema schema = survey.getSchema();
-		NodeDefinition def = schema.getById(id);
+		NodeDefinition def = schema.getDefinitionById(id);
 		if ( def == null || !(def instanceof EntityDefinition) || def.getParentDefinition() != null) {
 			throw new IllegalArgumentException("Invalid root entity id");			
 		}

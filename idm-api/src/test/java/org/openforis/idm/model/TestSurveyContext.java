@@ -10,7 +10,7 @@ public class TestSurveyContext extends DefaultSurveyContext {
 	public TestSurveyContext() {
 		super();
 		ExpressionFactory expressionFactory = getExpressionFactory();
-		TestLookupProviderImpl testLookupProvider = new TestLookupProviderImpl();
+		TestLookupProvider testLookupProvider = new TestLookupProvider();
 		expressionFactory.setLookupProvider(testLookupProvider);
 	}
 }

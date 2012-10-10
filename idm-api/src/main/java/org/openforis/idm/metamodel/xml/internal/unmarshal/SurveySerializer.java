@@ -18,7 +18,7 @@ public class SurveySerializer {
 	public SurveySerializer(SurveyIdmlBinder binder) {
 		this.binder = binder;
 	}
-	
+	/*
 	public static void main(String[] args) {
 	    XmlSerializer serializer = new KXmlSerializer();
 	    StringWriter writer = new StringWriter();
@@ -28,7 +28,7 @@ public class SurveySerializer {
 	        serializer.startTag("", "survey");
 	        serializer.attribute("", "number", String.valueOf(messages.size()));
 	        for (Message msg: messages){
-	            serializer.startTag("", "message");
+	            serialize	r.startTag("", "message");
 	            serializer.attribute("", "date", msg.getDate());
 	            serializer.startTag("", "title");
 	            serializer.text(msg.getTitle());
@@ -48,4 +48,5 @@ public class SurveySerializer {
 	        throw new RuntimeException(e);
 	    } 
 	}
+	*/
 }

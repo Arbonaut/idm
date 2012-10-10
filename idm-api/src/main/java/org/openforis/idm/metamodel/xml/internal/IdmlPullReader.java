@@ -1,7 +1,6 @@
 package org.openforis.idm.metamodel.xml.internal;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -11,7 +10,6 @@ import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
  * @author G. Miceli

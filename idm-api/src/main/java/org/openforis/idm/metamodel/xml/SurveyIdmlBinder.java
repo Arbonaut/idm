@@ -11,9 +11,6 @@ import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.internal.SurveyPullReader;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
  * Load a Survey object from IDML
@@ -68,25 +65,15 @@ public class SurveyIdmlBinder {
 	
 	synchronized
 	public void marshal(InputStream is, Survey survey) throws XmlParseException, IOException {
-		SurveySerializer ser = new SurveySerializer(this);
+//		SurveySerializer ser = new SurveySerializer(this);
 		// TODO implement
 		throw new UnsupportedOperationException();
 	}
 		
 	synchronized
 	public Survey unmarshal(InputStream is) throws XmlParseException, IOException {
-		XmlPullParser parser = null;
-		try {
-			SurveyPullReader surveyReader = new SurveyPullReader(this);
-			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-			parser = factory.newPullParser();
-			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
-			parser.setInput(is, "UTF-8");			
-			surveyReader.parse(parser);
-			
-			return surveyReader.getSurvey();
-		} catch (XmlPullParserException e) {
-			throw new XmlParseException(parser, e.getMessage(), e);
-		}
+		SurveyPullReader surveyReader = new SurveyPullReader(this);
+		surveyReader.parse(is, "UTF-8");
+		return surveyReader.getSurvey();
 	}	
 }

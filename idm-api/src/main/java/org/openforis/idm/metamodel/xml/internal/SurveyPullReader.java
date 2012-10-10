@@ -41,11 +41,12 @@ public class SurveyPullReader extends IdmlPullReader {
 
 	@Override
 	public void onStartTag() throws XmlParseException {
-		// TODO update test IDML so that ids are unique within file and that lastId is correct
 		String lastId = getAttribute("lastId", true);
+		Boolean published = getBooleanAttribute("published", false);
 		SurveyContext surveyContext = getSurveyBinder().getSurveyContext(); 
 		this.survey = surveyContext.createSurvey();
 		survey.setLastId(Integer.valueOf(lastId));
+		survey.setPublished(published == null ? false : published);
 	}
 
 	// TAG READERS

@@ -232,14 +232,6 @@
           </xs:annotation>
         </xs:element>
 
-        <xs:element name="published" type="xs:boolean" minOccurs="0" maxOccurs="1">
-          <xs:annotation>
-            <xs:documentation xml:lang="en">
-              If true, the survey is in use by some systems and cannot be entirely modified
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        
         <xs:element name="cycle" type="unformattedText" minOccurs="0" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
@@ -842,6 +834,13 @@
                   reused (i.e. lastId must increase each time a new object is added to the IDM)
               </xs:documentation>
           </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="published" type="xs:boolean" use="optional" default="false">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            If true, the survey is in use by some systems and cannot be entirely modified
+          </xs:documentation>
+        </xs:annotation>
       </xs:attribute>
     </xs:complexType>
   </xs:element>

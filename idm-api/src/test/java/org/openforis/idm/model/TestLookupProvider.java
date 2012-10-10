@@ -10,7 +10,7 @@ import org.openforis.idm.model.expression.LookupFunctionTest;
  * @author M. Togna
  * 
  */
-public class TestLookupProviderImpl implements LookupProvider {
+public class TestLookupProvider implements LookupProvider {
 
 	@Override
 	public Object lookup(String name, String attribute, Object... keys) {

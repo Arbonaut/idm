@@ -4,13 +4,9 @@
 package org.openforis.idm.metamodel;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -18,7 +14,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.openforis.idm.metamodel.xml.internal.XmlInit;
+import org.openforis.idm.path.InvalidPathException;
+import org.openforis.idm.path.Path;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -35,147 +32,67 @@ public class Schema extends SurveyObject {
 	private List<EntityDefinition> rootEntityDefinitions;
 
 	@XmlTransient
-	private Map<String, NodeDefinition> definitionsByPath;
-
-	@XmlTransient
 	private Map<Integer, NodeDefinition> definitionsById;
-	
-	@XmlTransient
-	private int lastDefinitionId;
 	
 	public Schema(Survey survey) {
 		super(survey);
-		definitionsByPath = new HashMap<String, NodeDefinition>(); 
 		definitionsById = new HashMap<Integer, NodeDefinition>();
-		lastDefinitionId = 0;
 	}
 	
-	public NodeDefinition getByPath(String absolutePath) {
-		return definitionsByPath.get(absolutePath);
+	public NodeDefinition getDefinitionByPath(String absolutePath) throws InvalidPathException {
+		Path path = Path.parsePath(absolutePath);
+		return path.evaluate(this);
 	}
 	
-	public NodeDefinition getById(int id) {
+	public NodeDefinition getDefinitionById(int id) {
 		return definitionsById.get(id);
 	}
-	
-	@XmlInit
-	void reindexDefinitions() {
-		 definitionsById.clear();
-		 definitionsByPath.clear();
-		 for (EntityDefinition entityDefn : getRootEntityDefinitions()) {
-			entityDefn.traverse(new NodeDefinitionVisitor() {
-				@Override
-				public void visit(NodeDefinition definition) {
-					indexByPath(definition);
-					indexById(definition);
-				}
-			});
-		}
-	}
 
-	void indexByPath(NodeDefinition definition) {
-		indexByPath(definition, false);
-	}
-	
-	void indexByPath(NodeDefinition definition, boolean indexChildren) {
-		if ( definition.getName() != null ) {
-			String path = definition.getPath();
-			definitionsByPath.put(path, definition);
-			if ( indexChildren && definition instanceof EntityDefinition ) {
-				((EntityDefinition) definition).traverse(new NodeDefinitionVisitor() {
-					@Override
-					public void visit(NodeDefinition descendant) {
-						String path = descendant.getPath();
-						definitionsByPath.put(path, descendant);
-					}
-				});
-			}
-		}
-	}
-
-	void removeIndexByPath(NodeDefinition definition, boolean removeChildrenIndex) {
-		String path = definition.getPath();
-		definitionsByPath.remove(path);
-		if ( removeChildrenIndex && definition instanceof EntityDefinition ) {
-			((EntityDefinition) definition).traverse(new NodeDefinitionVisitor() {
-				@Override
-				public void visit(NodeDefinition defn) {
-					String path = defn.getPath();
-					definitionsByPath.remove(path);
-				}
-			});
-		}
-	}
-
-	void indexById(NodeDefinition definition) {
-		Integer id = definition.getId();
-		if ( id != null ) {
-			definitionsById.put(id, definition);
-		}
-	}
-
-	public Set<String> getDefinedPaths() {
-		return Collections.unmodifiableSet(definitionsByPath.keySet());
-	}
-
-	public Collection<NodeDefinition> getAllDefinitions() {
-		return Collections.unmodifiableCollection(definitionsByPath.values());
-	}
-	
 	public List<EntityDefinition> getRootEntityDefinitions() {
 		return CollectionUtil.unmodifiableList(rootEntityDefinitions);
 	}
 
 	public void addRootEntityDefinition(EntityDefinition defn) {
+		if ( defn.isDetached() ) {
+			throw new IllegalArgumentException("Detached definitions cannot be added");
+		}
+		
+		if ( defn.getSchema() != this ) {
+			throw new IllegalArgumentException("Definition does not belong to this schema");
+		}
+		
+		if ( defn.getParentDefinition() != null ) {
+			throw new IllegalArgumentException("Parent of root definition must be null");
+		}
+		
+		int id = defn.getId();
+		if ( id < 1 || id > getLastId() ) {
+			throw new IllegalArgumentException("Invalid definition id " + id);
+		}
+		
 		if ( rootEntityDefinitions == null) {
 			rootEntityDefinitions = new ArrayList<EntityDefinition>();
 		}
-		// TODO check validity of defn, schema, parent is null, id is valid 
-		rootEntityDefinitions.add(defn);
-		indexById(defn);
-		indexByPath(defn);
-	}
-	
-	protected int nextNodeDefinitionId() {
-		if ( lastDefinitionId == 0 ) {
-			lastDefinitionId = calculateLastUsedDefinitionId();
-		}
-		return lastDefinitionId++;
-	}
-	
-	protected int calculateLastUsedDefinitionId() {
-		int result = 0;
-		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
-		List<EntityDefinition> rootEntityDefinitions = getRootEntityDefinitions();
-		stack.addAll(rootEntityDefinitions);
-		while ( ! stack.isEmpty() ) {
-			NodeDefinition nodeDefn = stack.pop();
-			result = Math.max(result, nodeDefn.getId());
-			if ( nodeDefn instanceof EntityDefinition ) {
-				List<NodeDefinition> childDefinitions = ((EntityDefinition) nodeDefn).getChildDefinitions();
-				stack.addAll(childDefinitions);
-			}
-		}
-		return result;
-	}
 
+		rootEntityDefinitions.add(defn);
+	}
+	
 	public void removeRootEntityDefinition(String name) {
 		EntityDefinition defn = getRootEntityDefinition(name);
 		removeRootEntityDefinition(defn);
 	}
 
-	public void removeRootEntityDefinition(int id) {
-		EntityDefinition defn = getRootEntityDefinition(id);
-		removeRootEntityDefinition(defn);
-	}
-	
 	protected void removeRootEntityDefinition(EntityDefinition defn) {
 		rootEntityDefinitions.remove(defn);
-		reindexDefinitions();
 	}
 	
 	public EntityDefinition getRootEntityDefinition(String name) {
-		return (EntityDefinition) getByPath("/"+name);
+		for (EntityDefinition defn : rootEntityDefinitions) {
+			if ( defn.getName().equals(name) ) {
+				return defn;
+			}
+		}
+		return null;
 	}
 	
 	public EntityDefinition getRootEntityDefinition(int id) {
@@ -232,93 +149,109 @@ public class Schema extends SurveyObject {
 		return getSurvey().nextId();
 	}
 
+	private int getLastId() {
+		return getSurvey().getLastId();
+	}
+	
+	private <T extends NodeDefinition> T index(T defn) {
+		int id = defn.getId();
+		definitionsById.put(id, defn);
+		return defn;
+	}
+
 	public EntityDefinition createEntityDefinition(int id) {
-		return new EntityDefinition(getSurvey(), id);
+		return index(new EntityDefinition(getSurvey(), id));
 	}
 
 	public EntityDefinition createEntityDefinition() {
-		return createEntityDefinition(nextId());
+		return index(createEntityDefinition(nextId()));
 	}
 
 	public CodeAttributeDefinition createCodeAttributeDefinition(int id) {
-		return new CodeAttributeDefinition(getSurvey(), id);
+		return index(new CodeAttributeDefinition(getSurvey(), id));
 	}
 
 	public CodeAttributeDefinition createCodeAttributeDefinition() {
-		return createCodeAttributeDefinition(nextId());
+		return index(createCodeAttributeDefinition(nextId()));
 	}
 
 	public TextAttributeDefinition createTextAttributeDefinition(int id) {
-		return new TextAttributeDefinition(getSurvey(), id);
+		return index(new TextAttributeDefinition(getSurvey(), id));
 	}
 
 	public TextAttributeDefinition createTextAttributeDefinition() {
-		return createTextAttributeDefinition(nextId());
+		return index(createTextAttributeDefinition(nextId()));
 	}
 
 	public FileAttributeDefinition createFileAttributeDefinition(int id) {
-		return new FileAttributeDefinition(getSurvey(), id);
+		return index(new FileAttributeDefinition(getSurvey(), id));
 	}
 
 	public FileAttributeDefinition createFileAttributeDefinition() {
-		return createFileAttributeDefinition(nextId());
+		return index(createFileAttributeDefinition(nextId()));
 	}
 
 	public NumberAttributeDefinition createNumberAttributeDefinition(int id) {
-		return new NumberAttributeDefinition(getSurvey(), id);
+		return index(new NumberAttributeDefinition(getSurvey(), id));
 	}
 
 	public NumberAttributeDefinition createNumberAttributeDefinition() {
-		return createNumberAttributeDefinition(nextId());
+		return index(createNumberAttributeDefinition(nextId()));
 	}
 
 	public RangeAttributeDefinition createRangeAttributeDefinition(int id) {
-		return new RangeAttributeDefinition(getSurvey(), id);
+		return index(new RangeAttributeDefinition(getSurvey(), id));
 	}
 
 	public RangeAttributeDefinition createRangeAttributeDefinition() {
-		return createRangeAttributeDefinition(nextId());
+		return index(createRangeAttributeDefinition(nextId()));
 	}
 
 	public TimeAttributeDefinition createTimeAttributeDefinition(int id) {
-		return new TimeAttributeDefinition(getSurvey(), id);
+		return index(new TimeAttributeDefinition(getSurvey(), id));
 	}
 
 	public TimeAttributeDefinition createTimeAttributeDefinition() {
-		return createTimeAttributeDefinition(nextId());
+		return index(createTimeAttributeDefinition(nextId()));
 	}
 
 	public DateAttributeDefinition createDateAttributeDefinition(int id) {
-		return new DateAttributeDefinition(getSurvey(), id);
+		return index(new DateAttributeDefinition(getSurvey(), id));
 	}
 
 	public DateAttributeDefinition createDateAttributeDefinition() {
-		return createDateAttributeDefinition(nextId());
+		return index(createDateAttributeDefinition(nextId()));
 	}
 	
 
 	public TaxonAttributeDefinition createTaxonAttributeDefinition(int id) {
-		return new TaxonAttributeDefinition(getSurvey(), id);
+		return index(new TaxonAttributeDefinition(getSurvey(), id));
 	}
 
 	public TaxonAttributeDefinition createTaxonAttributeDefinition() {
-		return createTaxonAttributeDefinition(nextId());
+		return index(createTaxonAttributeDefinition(nextId()));
 	}
 
 
 	public BooleanAttributeDefinition createBooleanAttributeDefinition(int id) {
-		return new BooleanAttributeDefinition(getSurvey(), id);
+		return index(new BooleanAttributeDefinition(getSurvey(), id));
 	}
 
 	public BooleanAttributeDefinition createBooleanAttributeDefinition() {
-		return createBooleanAttributeDefinition(nextId());
+		return index(createBooleanAttributeDefinition(nextId()));
 	}
 
 	public CoordinateAttributeDefinition createCoordinateAttributeDefinition(int id) {
-		return new CoordinateAttributeDefinition(getSurvey(), id);
+		return index(new CoordinateAttributeDefinition(getSurvey(), id));
 	}
 
 	public CoordinateAttributeDefinition createCoordinateAttributeDefinition() {
-		return createCoordinateAttributeDefinition(nextId());
+		return index(createCoordinateAttributeDefinition(nextId()));
+	}
+	
+	public void detach(NodeDefinition defn) {
+		int id = defn.getId();
+		definitionsById.remove(id);	
+		defn.detach();
 	}
 }

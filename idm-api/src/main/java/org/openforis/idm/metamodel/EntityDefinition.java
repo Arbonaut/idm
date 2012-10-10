@@ -103,7 +103,14 @@ public class EntityDefinition extends NodeDefinition {
 	}
 
 	public void addChildDefinition(NodeDefinition defn) {
-		checkLockState();
+		if ( defn.getName() == null ) {
+			throw new NullPointerException("name");
+		}
+
+		if ( defn.isDetached() ) {
+			throw new IllegalArgumentException("Detached definitions cannot be added");
+		}
+		
 		if (childDefinitions == null) {
 			childDefinitions = new ArrayList<NodeDefinition>();
 		}
@@ -219,5 +226,11 @@ public class EntityDefinition extends NodeDefinition {
 		return true;
 	}
 	
-	
+	@Override
+	public void detach() {
+		for (NodeDefinition child : childDefinitions) {
+			child.detach();
+		}
+		super.detach();
+	}
 }

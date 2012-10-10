@@ -7,6 +7,8 @@ import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import static org.xmlpull.v1.XmlPullParser.TEXT;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import org.kxml2.io.KXmlSerializer;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
 /**
@@ -71,11 +74,42 @@ public abstract class XmlPullReader {
 		return tagName;
 	}
 	
-	public void parse(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
-		parser.nextTag();
-		parseElement(parser);
+	public void parse(XmlPullParser parser) throws XmlParseException, IOException {
+		try {
+			parser.nextTag();
+			parseElement(parser);
+		} catch (XmlPullParserException e) {
+			throw new XmlParseException(getParser(), e.getMessage());
+		}
 	}
 	
+	public void parse(InputStream is, String enc) throws XmlParseException, IOException {
+		try {
+			XmlPullParser parser = createParser();
+			parser.setInput(is, enc);			
+			parse(parser);
+		} catch (XmlPullParserException e) {
+			throw new XmlParseException(getParser(), e.getMessage());
+		}
+	}
+	
+	public void parse(Reader reader) throws XmlParseException, IOException {
+		try {
+			XmlPullParser parser = createParser();
+			parser.setInput(reader);
+			parse(parser);
+		} catch (XmlPullParserException e) {
+			throw new XmlParseException(getParser(), e.getMessage());
+		}
+	}
+
+	private XmlPullParser createParser() throws XmlPullParserException {
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		XmlPullParser parser = factory.newPullParser();
+		parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
+		return parser;
+	}
+
 	synchronized
 	public void parseElement(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
 		

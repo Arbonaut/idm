@@ -68,6 +68,7 @@ public class SurveyIdmlBinder {
 	
 	synchronized
 	public void marshal(InputStream is, Survey survey) throws XmlParseException, IOException {
+		SurveySerializer ser = new SurveySerializer(this);
 		// TODO implement
 		throw new UnsupportedOperationException();
 	}

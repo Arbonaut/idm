@@ -61,10 +61,10 @@ abstract class IdmlPullReader extends XmlPullReader {
 	}
 
 	@Override
-	protected final void parseTag() throws XmlPullParserException, IOException,
+	protected final void parseTagBody() throws XmlPullParserException, IOException,
 			XmlParseException {
-		super.parseTag();
 		parseAnnotations();
+		super.parseTagBody();
 	}
 
 	private void parseAnnotations() {

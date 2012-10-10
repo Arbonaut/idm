@@ -12,10 +12,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.metamodel.xml.internal.marshal.InvertBooleanAdapter;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Node;
@@ -43,7 +41,6 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	private Boolean key;
 
 	@XmlAttribute(name = "strict")
-	@XmlJavaTypeAdapter(value = InvertBooleanAdapter.class)
 	private Boolean allowUnlisted;
 
 	@XmlAttribute(name = "parent")

@@ -7,6 +7,7 @@ import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.Unit;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParserException;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
@@ -14,7 +15,7 @@ import org.xmlpull.v1.XmlPullParserException;
 public class UnitsPR extends IdmlPullReader {
 
 	public UnitsPR() {
-		super("units", 1);
+		super(UNITS, 1);
 		addChildPullReaders(new UnitPR());
 	}
 	
@@ -23,16 +24,16 @@ public class UnitsPR extends IdmlPullReader {
 		private Unit unit;
 		
 		public UnitPR() {
-			super("unit");
+			super(UNIT);
 			addChildPullReaders(new LabelPR(), new AbbreviationPR());
 		}
 
 		@Override
 		protected void onStartTag() throws XmlParseException, XmlPullParserException, IOException {
-			int id = getIntegerAttribute("id", true);
-			String name = getAttribute("name", true);
-			String dimension = getAttribute("dimension", true);
-			Float conversionFactor = getFloatAttribute("conversionFactor", false);
+			int id = getIntegerAttribute(ID, true);
+			String name = getAttribute(NAME, true);
+			String dimension = getAttribute(DIMENSION, true);
+			Float conversionFactor = getFloatAttribute(CONVERSION_FACTOR, false);
 			Survey survey = getSurvey();
 			this.unit = survey.createUnit(id);
 			unit.setName(name);
@@ -42,7 +43,7 @@ public class UnitsPR extends IdmlPullReader {
 		
 		private class LabelPR extends LanguageSpecificTextPR {
 			public LabelPR() {
-				super("label");
+				super(LABEL);
 			}
 			
 			@Override
@@ -53,7 +54,7 @@ public class UnitsPR extends IdmlPullReader {
 
 		private class AbbreviationPR extends LanguageSpecificTextPR {
 			public AbbreviationPR() {
-				super("abbreviation");
+				super(ABBREVIATION);
 			}
 			
 			@Override

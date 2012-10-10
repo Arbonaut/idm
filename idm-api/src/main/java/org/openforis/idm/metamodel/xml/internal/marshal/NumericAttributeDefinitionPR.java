@@ -6,6 +6,7 @@ import org.openforis.idm.metamodel.NumericAttributeDefinition;
 import org.openforis.idm.metamodel.NumericAttributeDefinition.Type;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParserException;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
@@ -18,7 +19,7 @@ abstract class NumericAttributeDefinitionPR extends AttributeDefinitionPR {
 
 	@Override
 	protected void onStartDefinition() throws XmlParseException, XmlPullParserException, IOException {
-		String typeStr = getAttribute("type", false);
+		String typeStr = getAttribute(TYPE, false);
 		NumericAttributeDefinition defn = (NumericAttributeDefinition) getDefinition();
 		try {
 			Type type = typeStr == null ? Type.REAL : Type.valueOf(typeStr.toUpperCase());

@@ -12,6 +12,7 @@ import org.openforis.idm.metamodel.Prompt;
 import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParserException;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
@@ -48,17 +49,17 @@ abstract class NodeDefinitionPR extends IdmlPullReader {
 			throws XmlParseException, XmlPullParserException,
 			IOException {				
 		schema = getSurvey().getSchema(); 
-		int id = getIntegerAttribute("id", true);
+		int id = getIntegerAttribute(ID, true);
 		this.definition = createDefinition(id);
 		
-		String name = getAttribute("name", true);
-		String since = getAttribute("since", false);
-		String deprecated = getAttribute("deprecated", false);
-		Boolean required = getBooleanAttribute("required", false);
-		String requiredIf = getAttribute("requiredIf", false);
-		String relevant = getAttribute("relevant", false);
-		Integer minCount = getIntegerAttribute("minCount", false);
-		Boolean multiple = getBooleanAttribute("multiple", false);
+		String name = getAttribute(NAME, true);
+		String since = getAttribute(SINCE, false);
+		String deprecated = getAttribute(DEPRECATED, false);
+		Boolean required = getBooleanAttribute(REQUIRED, false);
+		String requiredIf = getAttribute(REQUIRED_IF, false);
+		String relevant = getAttribute(RELEVANT, false);
+		Integer minCount = getIntegerAttribute(MIN_COUNT, false);
+		Boolean multiple = getBooleanAttribute(MULTIPLE, false);
 		if ( parentDefinition == null ) {
 			if ( multiple != null ) {
 				throw new XmlParseException(getParser(), "attribute 'multiple' not allowed for root entity");
@@ -69,8 +70,7 @@ abstract class NodeDefinitionPR extends IdmlPullReader {
 		}
 		// TODO maxCount should be required for multiple attributes
 //		Integer maxCount = getIntegerAttribute("maxCount", multiple && defn instanceof AttributeDefinition);
-		Integer maxCount = getIntegerAttribute("maxCount", false);
-		// TODO parse "other" attributes (annotations)
+		Integer maxCount = getIntegerAttribute(MAX_COUNT, false);
 		definition.setMultiple(multiple);
 		definition.setName(name);
 		definition.setSinceVersionByName(since);

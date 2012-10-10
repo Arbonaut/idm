@@ -4,14 +4,15 @@ import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.ModelVersion;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.xml.XmlParseException;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
  */
 class VersioningPR extends IdmlPullReader {
 	
-	public VersioningPR() {
-		super("versioning", 1);
+public VersioningPR() {
+		super(VERSIONING, 1);
 		addChildPullReaders(new VersionPR());
 	}
 
@@ -20,14 +21,14 @@ class VersioningPR extends IdmlPullReader {
 		private ModelVersion version;
 		
 		public VersionPR() {
-			super("version");
+			super(VERSION);
 			addChildPullReaders(new LabelPR(), new DescriptionPR(), new DatePR());
 		}
 		
 		@Override
 		protected void onStartTag() throws XmlParseException {
-			int id = getIntegerAttribute("id", true);
-			String name = getAttribute("name", false);
+			int id = getIntegerAttribute(ID, true);
+			String name = getAttribute(NAME, false);
 			Survey survey = getSurvey();
 			version = survey.createModelVersion(id);
 			version.setName(name);
@@ -46,7 +47,7 @@ class VersioningPR extends IdmlPullReader {
 
 		private class DescriptionPR extends LanguageSpecificTextPR {
 			public DescriptionPR() {
-				super("description");
+				super(DESCRIPTION);
 			}
 			
 			@Override
@@ -57,7 +58,7 @@ class VersioningPR extends IdmlPullReader {
 
 		private class DatePR extends TextPullReader {
 			public DatePR() {
-				super("date", 1);
+				super(DATE, 1);
 			}
 			
 			@Override

@@ -1,6 +1,7 @@
 package org.openforis.idm.metamodel.xml.internal.marshal;
 
 import org.openforis.idm.metamodel.xml.ApplicationOptionsBinder;
+import org.openforis.idm.metamodel.xml.PlainTextApplicationOptions;
 
 /**
  * @author G. Miceli

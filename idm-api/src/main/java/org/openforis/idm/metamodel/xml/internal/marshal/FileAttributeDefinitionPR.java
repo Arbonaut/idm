@@ -1,5 +1,7 @@
 package org.openforis.idm.metamodel.xml.internal.marshal;
 
+import static org.openforis.idm.metamodel.xml.IdmlConstants.FILE;
+
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
 
@@ -9,7 +11,7 @@ import org.openforis.idm.metamodel.Schema;
 class FileAttributeDefinitionPR extends AttributeDefinitionPR {
 
 	public FileAttributeDefinitionPR() {
-		super("file");
+		super(FILE);
 	}
 
 	@Override

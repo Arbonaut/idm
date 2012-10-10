@@ -2,6 +2,7 @@ package org.openforis.idm.metamodel.xml.internal.marshal;
 
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
@@ -9,7 +10,7 @@ import org.openforis.idm.metamodel.Schema;
 class CoordinateAttributeDefinitionPR extends AttributeDefinitionPR {
 
 	public CoordinateAttributeDefinitionPR() {
-		super("coordinate");
+		super(COORDINATE);
 	}
 
 	@Override

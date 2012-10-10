@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml.internal.marshal;
+package org.openforis.idm.metamodel.xml;
 
 import org.openforis.idm.metamodel.ApplicationOptions;
 
@@ -12,7 +12,7 @@ public class PlainTextApplicationOptions implements ApplicationOptions {
 	public PlainTextApplicationOptions() {
 	}
 
-	protected PlainTextApplicationOptions(String text, String type) {
+	public PlainTextApplicationOptions(String text, String type) {
 		this.text = text;
 		this.type = type;
 	}

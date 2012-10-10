@@ -1,11 +1,11 @@
 package org.openforis.idm.metamodel.xml.internal.marshal;
 
-
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 import org.openforis.idm.metamodel.xml.XmlParseException;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
@@ -15,7 +15,7 @@ public class SurveyPullReader extends IdmlPullReader {
 	private Survey survey;
 	 
 	public SurveyPullReader(SurveyIdmlBinder binder) {
-		super("survey");
+		super(SURVEY);
 		
 		if ( binder == null ) {
 			throw new NullPointerException("binder");
@@ -44,8 +44,8 @@ public class SurveyPullReader extends IdmlPullReader {
 
 	@Override
 	public void onStartTag() throws XmlParseException {
-		String lastId = getAttribute("lastId", true);
-		Boolean published = getBooleanAttribute("published", false);
+		String lastId = getAttribute(LAST_ID, true);
+		Boolean published = getBooleanAttribute(PUBLISHED, false);
 		SurveyContext surveyContext = getSurveyBinder().getSurveyContext(); 
 		this.survey = surveyContext.createSurvey();
 		survey.setLastId(Integer.valueOf(lastId));
@@ -66,8 +66,9 @@ public class SurveyPullReader extends IdmlPullReader {
 	}
 	
 	private class UriPR extends TextPullReader {
+
 		public UriPR() {
-			super("uri", 1);
+			super(URI, 1);
 		}
 		
 		@Override
@@ -77,8 +78,9 @@ public class SurveyPullReader extends IdmlPullReader {
 	}
 	
 	private class CyclePR extends TextPullReader {
+
 		public CyclePR() {
-			super("cycle", 1);
+			super(CYCLE, 1);
 		}
 		
 		@Override
@@ -88,8 +90,9 @@ public class SurveyPullReader extends IdmlPullReader {
 	}
 	
 	private class DescriptionPR extends LanguageSpecificTextPR {
+
 		public DescriptionPR() {
-			super("description");
+			super(DESCRIPTION);
 		}
 		
 		@Override
@@ -99,8 +102,9 @@ public class SurveyPullReader extends IdmlPullReader {
 	}
 	
 	private class LanguagePR extends TextPullReader {
+
 		public LanguagePR() {
-			super("language");
+			super(LANGUAGE);
 		}
 
 		@Override

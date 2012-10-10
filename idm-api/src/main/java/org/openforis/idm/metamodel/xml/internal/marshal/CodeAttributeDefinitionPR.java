@@ -7,6 +7,7 @@ import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParserException;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
@@ -14,13 +15,13 @@ import org.xmlpull.v1.XmlPullParserException;
 class CodeAttributeDefinitionPR extends AttributeDefinitionPR {
 
 	public CodeAttributeDefinitionPR() {
-		super("code");
+		super(CODE);
 	}
 	@Override
 	protected void onStartDefinition() throws XmlParseException, XmlPullParserException, IOException {
-		Boolean key = getBooleanAttribute("key", false);
-		String parent = getAttribute("parent", false);
-		Boolean strict = getBooleanAttribute("strict", false);
+		Boolean key = getBooleanAttribute(KEY, false);
+		String parent = getAttribute(PARENT, false);
+		Boolean strict = getBooleanAttribute(STRICT, false);
 		CodeAttributeDefinition defn = (CodeAttributeDefinition) getDefinition();
 		defn.setKey(key == null ? false : key);
 		defn.setParentExpression(parent);

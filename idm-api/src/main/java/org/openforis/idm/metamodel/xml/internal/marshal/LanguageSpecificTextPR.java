@@ -6,6 +6,7 @@ import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
@@ -25,8 +26,8 @@ abstract class LanguageSpecificTextPR extends IdmlPullReader {
 	@Override
 	protected void onStartTag() throws XmlParseException, XmlPullParserException, IOException {
 		XmlPullParser parser = getParser();
-		String lang = parser.getAttributeValue(XML_NS_URI, "lang");
-		String type = getAttribute("type", requireType);
+		String lang = parser.getAttributeValue(XML_NS_URI, XML_LANG_ATTRIBUTE);
+		String type = getAttribute(TYPE, requireType);
 		String text = parser.nextText();
 		processText(lang, type, text);
 	}

@@ -17,7 +17,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.metamodel.xml.internal.marshal.XmlParent;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.path.InvalidPathException;
@@ -34,7 +33,6 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 //	private static final transient Log LOG = LogFactory.getLog(NodeDefinition.class);
 
 	@XmlTransient
-	@XmlParent
 	private NodeDefinition parentDefinition;
 	
 	@XmlAttribute(name = "name")

@@ -8,20 +8,22 @@ import org.openforis.idm.metamodel.TextAttributeDefinition;
 import org.openforis.idm.metamodel.TextAttributeDefinition.Type;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParserException;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
  */
 class TextAttributeDefinitionPR extends AttributeDefinitionPR {
 
+
 	public TextAttributeDefinitionPR() {
-		super("text");
+		super(TEXT);
 	}
 
 	@Override
 	protected void onStartDefinition() throws XmlParseException, XmlPullParserException, IOException {
-		Boolean key = getBooleanAttribute("key", false);
-		String typeStr = getAttribute("type", false); 
+		Boolean key = getBooleanAttribute(KEY, false);
+		String typeStr = getAttribute(TYPE, false); 
 		TextAttributeDefinition defn = (TextAttributeDefinition) getDefinition();
 		defn.setKey(key == null ? false : key);
 		try {

@@ -2,13 +2,15 @@ package org.openforis.idm.metamodel.xml.internal.marshal;
 
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
  */
 class EntityDefinitionPR extends NodeDefinitionPR {
+
 	public EntityDefinitionPR() {
-		super("entity");
+		super(ENTITY);
 		addChildPullReaders(
 				this,
 				new BooleanAttributeDefinitionPR(), 

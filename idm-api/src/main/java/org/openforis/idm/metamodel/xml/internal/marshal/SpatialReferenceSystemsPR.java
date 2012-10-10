@@ -4,6 +4,7 @@ import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.SpatialReferenceSystem;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.xml.XmlParseException;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
@@ -11,7 +12,7 @@ import org.openforis.idm.metamodel.xml.XmlParseException;
 class SpatialReferenceSystemsPR extends IdmlPullReader {
 	
 	public SpatialReferenceSystemsPR() {
-		super("spatialReferenceSystems", 1);
+		super(SPATIAL_REFERENCE_SYSTEMS, 1);
 		addChildPullReaders(new SrsPR());
 	}
 
@@ -20,20 +21,20 @@ class SpatialReferenceSystemsPR extends IdmlPullReader {
 		private SpatialReferenceSystem srs;
 		
 		public SrsPR() {
-			super("spatialReferenceSystem");
+			super(SPATIAL_REFERENCE_SYSTEM);
 			addChildPullReaders(new LabelPR(), new DescriptionPR(), new WktPR());
 		}
 		
 		@Override
 		protected void onStartTag() throws XmlParseException {
-			String id = getAttribute("srid", true);
+			String id = getAttribute(SRID, true);
 			this.srs = new SpatialReferenceSystem();
 			srs.setId(id);
 		}
 
 		private class LabelPR extends LanguageSpecificTextPR {
 			public LabelPR() {
-				super("label");
+				super(LABEL);
 			}
 			
 			@Override
@@ -44,7 +45,7 @@ class SpatialReferenceSystemsPR extends IdmlPullReader {
 
 		private class DescriptionPR extends LanguageSpecificTextPR {
 			public DescriptionPR() {
-				super("description");
+				super(DESCRIPTION);
 			}
 			
 			@Override
@@ -54,8 +55,9 @@ class SpatialReferenceSystemsPR extends IdmlPullReader {
 		}
 
 		private class WktPR extends TextPullReader {
+
 			public WktPR() {
-				super("wkt", 1);
+				super(WKT, 1);
 				setTrimWhitespace(false);
 			}
 

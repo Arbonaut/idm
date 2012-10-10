@@ -24,7 +24,6 @@ import org.xmlpull.v1.XmlSerializer;
  * @author G. Miceli
  */
 public abstract class XmlPullReader {
-	public static final String XML_NS_URI = "http://www.w3.org/XML/1998/namespace";
 	
 	private String tagName;
 	private String namespace;

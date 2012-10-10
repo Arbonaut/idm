@@ -10,6 +10,7 @@ import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * @author G. Miceli
@@ -17,8 +18,6 @@ import org.xmlpull.v1.XmlPullParserException;
 abstract class IdmlPullReader extends XmlPullReader {
 
 	private SurveyIdmlBinder binder;
-
-	public static final String IDML3_NS_URI = "http://www.openforis.org/idml/3.0";
 
 	IdmlPullReader(String tagName) {
 		super(IDML3_NS_URI, tagName);

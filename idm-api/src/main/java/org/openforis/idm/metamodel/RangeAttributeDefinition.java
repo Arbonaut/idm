@@ -60,7 +60,7 @@ public class RangeAttributeDefinition extends NumericAttributeDefinition {
 		} else if (isReal()) {
 			return RealRange.parseRealRange(string, unit);
 		}
-		throw new RuntimeException("Invalid range type " + type);
+		throw new RuntimeException("Invalid range type " + getType());
 	}
 	
 	@Override

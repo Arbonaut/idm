@@ -1,0 +1,14 @@
+package org.openforis.idm.metamodel.xml.internal.marshal;
+
+import org.openforis.idm.metamodel.validation.Check.Flag;
+
+/**
+ * @author G. Miceli
+ * @author M. Togna
+ */
+public class CheckFlagAdapter extends EnumAdapter<Flag> {
+
+	public CheckFlagAdapter() {
+		super(Flag.class);
+	}
+}

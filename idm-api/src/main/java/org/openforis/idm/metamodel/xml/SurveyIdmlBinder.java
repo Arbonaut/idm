@@ -10,7 +10,8 @@ import java.util.List;
 import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
-import org.openforis.idm.metamodel.xml.internal.SurveyPullReader;
+import org.openforis.idm.metamodel.xml.internal.marshal.SurveyPullReader;
+import org.openforis.idm.metamodel.xml.internal.unmarshal.SurveySerializer;
 
 /**
  * Load a Survey object from IDML
@@ -65,7 +66,7 @@ public class SurveyIdmlBinder {
 	
 	synchronized
 	public void marshal(InputStream is, Survey survey) throws XmlParseException, IOException {
-//		SurveySerializer ser = new SurveySerializer(this);
+		SurveySerializer ser = new SurveySerializer(this);
 		// TODO implement
 		throw new UnsupportedOperationException();
 	}

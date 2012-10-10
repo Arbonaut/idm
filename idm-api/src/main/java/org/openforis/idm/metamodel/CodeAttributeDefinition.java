@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
+import org.openforis.idm.metamodel.xml.internal.marshal.InvertBooleanAdapter;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Node;

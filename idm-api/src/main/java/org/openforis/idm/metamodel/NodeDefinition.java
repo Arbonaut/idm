@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
+import org.openforis.idm.metamodel.xml.internal.marshal.XmlParent;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.path.InvalidPathException;

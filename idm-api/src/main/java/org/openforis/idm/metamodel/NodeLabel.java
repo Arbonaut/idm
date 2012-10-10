@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.internal.NodeLabelTypeAdapter;
+import org.openforis.idm.metamodel.xml.internal.marshal.NodeLabelTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NodeLabel extends LanguageSpecificText {

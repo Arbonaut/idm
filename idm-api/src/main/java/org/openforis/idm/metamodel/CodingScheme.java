@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openforis.idm.metamodel.CodeList.CodeScope;
-import org.openforis.idm.metamodel.xml.internal.CodeScopeAdapter;
+import org.openforis.idm.metamodel.xml.internal.marshal.CodeScopeAdapter;
 
 /**
  * Defines the coding schemes used by a code list

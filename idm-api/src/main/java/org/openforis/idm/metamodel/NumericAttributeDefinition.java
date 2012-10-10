@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.internal.NumberAttributeDefinitionTypeAdapter;
+import org.openforis.idm.metamodel.xml.internal.marshal.NumberAttributeDefinitionTypeAdapter;
 import org.openforis.idm.util.CollectionUtil;
 
 /**

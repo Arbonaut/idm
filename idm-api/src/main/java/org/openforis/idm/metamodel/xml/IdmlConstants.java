@@ -14,12 +14,13 @@ public interface IdmlConstants {
 	static String XML_LANG_ATTRIBUTE = "lang";
 
 	// Survey
-	static String PUBLISHED = "published";
-	static String LAST_ID = "lastId";
 	static String SURVEY = "survey";
+	static String LAST_ID = "lastId";
+	static String PUBLISHED = "published";
 	static String LANGUAGE = "language";
 	static String URI = "uri";
 	static String CYCLE = "cycle";
+	static String PROJECT = "project";
 
 	// Application Options
 	static String APPLICATION_OPTIONS = "applicationOptions";
@@ -112,6 +113,7 @@ public interface IdmlConstants {
 	static String ID = "id";
 	static String LABEL = "label";
 	static String DESCRIPTION = "description";
+	static String PROMPT = "prompt";
 	static String VALUE = "value";
 	static String EXPR = "expr";
 	static String IF = "if";

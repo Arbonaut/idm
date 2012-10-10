@@ -56,7 +56,7 @@ public class SurveyPullReader extends IdmlPullReader {
 	
 	private class ProjectPR extends LanguageSpecificTextPR {
 		public ProjectPR() {
-			super("project");
+			super(PROJECT);
 		}
 		
 		@Override

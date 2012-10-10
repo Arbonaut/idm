@@ -36,7 +36,7 @@ public VersioningPR() {
 
 		private class LabelPR extends LanguageSpecificTextPR {
 			public LabelPR() {
-				super("label");
+				super(LABEL);
 			}
 			
 			@Override

@@ -137,7 +137,7 @@ abstract class NodeDefinitionPR extends IdmlPullReader {
 	
 	protected class LabelPR extends LanguageSpecificTextPR {
 		public LabelPR() {
-			super("label");
+			super(LABEL);
 		}
 		
 		@Override
@@ -154,7 +154,7 @@ abstract class NodeDefinitionPR extends IdmlPullReader {
 	
 	protected class PromptPR extends LanguageSpecificTextPR {
 		public PromptPR() {
-			super("prompt", true);
+			super(PROMPT, true);
 		}
 		
 		@Override
@@ -171,7 +171,7 @@ abstract class NodeDefinitionPR extends IdmlPullReader {
 
 	protected class DescriptionPR extends LanguageSpecificTextPR {
 		public DescriptionPR() {
-			super("description");
+			super(DESCRIPTION);
 		}
 		
 		@Override

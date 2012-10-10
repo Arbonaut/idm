@@ -14,13 +14,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.internal.XmlInherited;
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -38,7 +33,6 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	private Boolean qualifiable;
 
 	@XmlElement(name = "code")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	private String code;
 
 	@XmlElement(name = "label", type = LanguageSpecificText.class)
@@ -50,13 +44,8 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	@XmlElement(name = "item", type = CodeListItem.class)
 	private List<CodeListItem> childItems;
 
-	@XmlTransient
-	@XmlInherited("list")
-	@XmlParent
 	private CodeList list;
 
-	@XmlTransient
-	@XmlParent
 	private CodeListItem parentItem;
 	
 //	@XmlTransient

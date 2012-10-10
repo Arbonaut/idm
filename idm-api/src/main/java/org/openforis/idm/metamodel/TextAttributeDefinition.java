@@ -12,9 +12,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openforis.idm.metamodel.xml.internal.TextAttributeDefinitionTypeAdapter;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TextAttribute;
 import org.openforis.idm.model.TextValue;
@@ -41,7 +39,6 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 	private static final long serialVersionUID = 1L;
 	
 	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(TextAttributeDefinitionTypeAdapter.class)
 	private Type type;
 
 	@XmlAttribute(name = "key")

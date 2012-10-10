@@ -12,7 +12,7 @@ import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
-import org.openforis.idm.metamodel.xml.SurveyBinder;
+import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 
 /**
@@ -47,7 +47,7 @@ public class ProtostuffSerializationTest  {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
 		SurveyContext surveyContext = new DefaultSurveyContext();
-		SurveyBinder parser = new SurveyBinder(surveyContext);
+		SurveyIdmlBinder parser = new SurveyIdmlBinder(surveyContext);
 		return parser.unmarshal(is);
 	}
 	

@@ -6,9 +6,6 @@ package org.openforis.idm.metamodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.openforis.idm.metamodel.xml.internal.PromptTypeAdapter;
 
 /**
  * @author G. Miceli
@@ -24,7 +21,6 @@ public class Prompt extends LanguageSpecificText {
 	}
 
 	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(PromptTypeAdapter.class)
 	private Type type;
 
 	public Prompt() {

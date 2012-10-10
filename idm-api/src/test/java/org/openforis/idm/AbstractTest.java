@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
-import org.openforis.idm.metamodel.xml.SurveyBinder;
+import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.TestSurveyContext;
@@ -28,7 +28,7 @@ public abstract class AbstractTest {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
 		SurveyContext surveyContext = new TestSurveyContext();
-		SurveyBinder parser = new SurveyBinder(surveyContext);
+		SurveyIdmlBinder parser = new SurveyIdmlBinder(surveyContext);
 		survey = parser.unmarshal(is);
 	}
 

@@ -11,8 +11,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author G. Miceli
@@ -28,7 +26,6 @@ public class LanguageSpecificText implements Serializable {
 	private String language;
 
 	@XmlValue
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	private String text;
 
 	public LanguageSpecificText() {

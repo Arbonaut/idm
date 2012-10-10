@@ -74,7 +74,7 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 		} else if(isReal()) {
 			return new RealValue(Double.valueOf(string), unit);
 		}
-		throw new RuntimeException("Invalid type " + type);
+		throw new RuntimeException("Invalid type " + getType());
 	}
 	
 	@Override

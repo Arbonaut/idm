@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel.xml.internal;
 
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;

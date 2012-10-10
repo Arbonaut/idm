@@ -1,15 +1,17 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel.xml.internal;
 
 
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
+import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
+import org.openforis.idm.metamodel.xml.XmlParseException;
 
-class SurveyPullReader extends IdmlPullReader {
+public class SurveyPullReader extends IdmlPullReader {
 
 	private Survey survey;
 	 
-	SurveyPullReader(SurveyBinder binder) {
+	public SurveyPullReader(SurveyIdmlBinder binder) {
 		super("survey");
 		
 		if ( binder == null ) {

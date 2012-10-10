@@ -11,7 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.openforis.idm.metamodel.xml.InvalidIdmlException;
-import org.openforis.idm.metamodel.xml.SurveyBinder;
+import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 
 /**
@@ -27,7 +27,7 @@ public class XmlBindingIntegrationTest {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
 		SurveyContext ctx = new DefaultSurveyContext();
-		SurveyBinder su = new SurveyBinder(ctx); 
+		SurveyIdmlBinder su = new SurveyIdmlBinder(ctx); 
 		Survey survey = su.unmarshal(is);
 
 // TODO			

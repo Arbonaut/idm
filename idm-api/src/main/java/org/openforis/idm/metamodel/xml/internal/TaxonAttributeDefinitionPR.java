@@ -1,10 +1,11 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel.xml.internal;
 
 import java.io.IOException;
 
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
+import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**

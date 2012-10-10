@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel.xml.internal;
 
 import static org.xmlpull.v1.XmlPullParser.CDSECT;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kxml2.io.KXmlSerializer;
+import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;

@@ -1,4 +1,5 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel.xml.internal;
+
 
 
 

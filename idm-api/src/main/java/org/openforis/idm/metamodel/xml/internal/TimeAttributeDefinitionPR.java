@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel.xml.internal;
 
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
@@ -6,15 +6,15 @@ import org.openforis.idm.metamodel.Schema;
 /**
  * @author G. Miceli
  */
-class FileAttributeDefinitionPR extends AttributeDefinitionPR {
+class TimeAttributeDefinitionPR extends AttributeDefinitionPR {
 
-	public FileAttributeDefinitionPR() {
-		super("file");
+	public TimeAttributeDefinitionPR() {
+		super("time");
 	}
 
 	@Override
 	protected NodeDefinition createDefinition(int id) {
 		Schema schema = getSchema();
-		return schema.createFileAttributeDefinition(id);
+		return schema.createTimeAttributeDefinition(id);
 	}
 }

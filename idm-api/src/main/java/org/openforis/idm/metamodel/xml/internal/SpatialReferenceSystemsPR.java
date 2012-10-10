@@ -1,8 +1,9 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel.xml.internal;
 
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.SpatialReferenceSystem;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.xml.XmlParseException;
 
 /**
  * @author G. Miceli

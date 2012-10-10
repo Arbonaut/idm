@@ -10,6 +10,7 @@ import java.util.List;
 import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
+import org.openforis.idm.metamodel.xml.internal.SurveyPullReader;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -19,11 +20,11 @@ import org.xmlpull.v1.XmlPullParserFactory;
  * 
  * @author G. Miceli
  */
-public class SurveyBinder {
+public class SurveyIdmlBinder {
 	private SurveyContext surveyContext;
 	private List<ApplicationOptionsBinder<?>> optionsBinders;
 
-	public SurveyBinder(SurveyContext surveyContext) {
+	public SurveyIdmlBinder(SurveyContext surveyContext) {
 		this.surveyContext = surveyContext;
 		this.optionsBinders = new ArrayList<ApplicationOptionsBinder<?>>();
 	}
@@ -35,7 +36,7 @@ public class SurveyBinder {
 			InputStream is = new FileInputStream(f);
 			SurveyContext ctx = new DefaultSurveyContext();
 			
-			SurveyBinder unmarshaller = new SurveyBinder(ctx); 
+			SurveyIdmlBinder unmarshaller = new SurveyIdmlBinder(ctx); 
 			unmarshaller.unmarshal(is);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -52,7 +53,7 @@ public class SurveyBinder {
 	 * @return the first binder which supports the specified type, or null
 	 * if none found
 	 */
-	ApplicationOptionsBinder<?> getApplicationOptionsBinder(String type) {
+	public ApplicationOptionsBinder<?> getApplicationOptionsBinder(String type) {
 		for (ApplicationOptionsBinder<?> binder : optionsBinders) {
 			if ( binder.isSupported(type) ) {
 				return binder;
@@ -60,6 +61,7 @@ public class SurveyBinder {
 		}
 		return null;
 	}
+	
 	public SurveyContext getSurveyContext() {
 		return surveyContext;
 	}

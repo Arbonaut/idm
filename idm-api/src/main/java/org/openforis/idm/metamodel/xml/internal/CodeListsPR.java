@@ -1,9 +1,10 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel.xml.internal;
 
 import java.io.IOException;
 
 import org.openforis.idm.metamodel.CodeList;
 import org.openforis.idm.metamodel.CodeList.CodeScope;
+import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.openforis.idm.metamodel.CodeListItem;
 import org.openforis.idm.metamodel.CodeListLabel;
 import org.openforis.idm.metamodel.CodeListLevel;

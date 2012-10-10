@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel.xml.internal;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
+import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -14,7 +16,7 @@ import org.xmlpull.v1.XmlPullParserException;
  */
 abstract class IdmlPullReader extends XmlPullReader {
 
-	private SurveyBinder binder;
+	private SurveyIdmlBinder binder;
 
 	public static final String IDML3_NS_URI = "http://www.openforis.org/idml/3.0";
 
@@ -26,11 +28,11 @@ abstract class IdmlPullReader extends XmlPullReader {
 		super(IDML3_NS_URI, tagName, maxCount);
 	}
 	
-	SurveyBinder getSurveyBinder() {
+	SurveyIdmlBinder getSurveyBinder() {
 		return binder;
 	}
 	
-	void setSurveyBinder(SurveyBinder binder) {
+	void setSurveyBinder(SurveyIdmlBinder binder) {
 		this.binder = binder;
 		List<XmlPullReader> childPullReaders = getChildPullReaders();
 		if ( childPullReaders != null ) {

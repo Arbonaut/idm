@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel.xml.internal;
 
 import java.io.IOException;
 
@@ -14,6 +14,7 @@ import org.openforis.idm.metamodel.validation.CustomCheck;
 import org.openforis.idm.metamodel.validation.DistanceCheck;
 import org.openforis.idm.metamodel.validation.PatternCheck;
 import org.openforis.idm.metamodel.validation.UniquenessCheck;
+import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 

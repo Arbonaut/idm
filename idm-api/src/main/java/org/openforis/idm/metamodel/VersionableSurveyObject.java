@@ -22,10 +22,6 @@ public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
 		super(survey, id);
 	}
 
-	public String getSinceVersionName() {
-		return sinceVersion == null ? null : sinceVersion.getName();
-	}
-	
 	@XmlAttribute(name = "since")
 	public void setSinceVersionByName(String name) {
 		this.sinceVersion = name == null ? null : findVersion(name);

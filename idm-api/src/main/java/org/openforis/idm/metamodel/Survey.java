@@ -420,6 +420,10 @@ public class Survey implements Serializable {
 		}
 	}
 	
+	public List<String> getLanguages() {
+		return CollectionUtil.unmodifiableList(languages);
+	}
+	
 	public void addLanguage(String lang) {
 		if ( languages == null ) {
 			this.languages = new ArrayList<String>();  

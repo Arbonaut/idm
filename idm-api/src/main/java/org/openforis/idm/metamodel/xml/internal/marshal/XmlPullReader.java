@@ -13,7 +13,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kxml2.io.KXmlSerializer;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -72,16 +71,18 @@ public abstract class XmlPullReader {
 	public String getTagName() {
 		return tagName;
 	}
-	
-	public void parse(XmlPullParser parser) throws XmlParseException, IOException {
+
+	synchronized
+	private void parse(XmlPullParser parser) throws XmlParseException, IOException {
 		try {
 			parser.nextTag();
 			parseElement(parser);
 		} catch (XmlPullParserException e) {
-			throw new XmlParseException(getParser(), e.getMessage());
+			throw new XmlParseException(parser, e.getMessage());
 		}
 	}
 	
+	synchronized
 	public void parse(InputStream is, String enc) throws XmlParseException, IOException {
 		try {
 			XmlPullParser parser = createParser();
@@ -92,6 +93,7 @@ public abstract class XmlPullReader {
 		}
 	}
 	
+	synchronized
 	public void parse(Reader reader) throws XmlParseException, IOException {
 		try {
 			XmlPullParser parser = createParser();
@@ -109,14 +111,12 @@ public abstract class XmlPullReader {
 		return parser;
 	}
 
-	synchronized
-	public void parseElement(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
+	private void parseElement(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
+		this.parser = parser;
 		
 		if ( !isTagSupported(parser.getName(), parser.getNamespace()) ) {
 		    throw new IllegalStateException("Invalid tag for this reader");
 		}
-		
-		this.parser = parser;
 		
 		this.count++;
 
@@ -231,7 +231,8 @@ public abstract class XmlPullReader {
 		    throw new XmlParseException(in, "start tag expected");
 		}
 		StringWriter sw = new StringWriter(); 
-		XmlSerializer out = new KXmlSerializer();
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		XmlSerializer out = factory.newSerializer();
 		out.setOutput(sw);
 		out.startDocument("UTF-8", true);
 		if ( includeOuterTag ) {

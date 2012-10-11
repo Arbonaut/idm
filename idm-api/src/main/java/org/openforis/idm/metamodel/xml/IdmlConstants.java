@@ -7,10 +7,10 @@ package org.openforis.idm.metamodel.xml;
  *
  */
 public interface IdmlConstants {
-	static String IDML3_NS_URI = "http://www.openforis.org/idml/3.0";
+	static String IDML3_NAMESPACE_URI = "http://www.openforis.org/idml/3.0";
 
 	// Standard Xml 
-	static String XML_NS_URI = "http://www.w3.org/XML/1998/namespace";
+	static String XML_NAMESPACE_URI = "http://www.w3.org/XML/1998/namespace";
 	static String XML_LANG_ATTRIBUTE = "lang";
 
 	// Survey

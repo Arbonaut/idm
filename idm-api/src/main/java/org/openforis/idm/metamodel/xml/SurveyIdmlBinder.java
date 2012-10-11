@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +35,10 @@ public class SurveyIdmlBinder {
 			InputStream is = new FileInputStream(f);
 			SurveyContext ctx = new DefaultSurveyContext();
 			
-			SurveyIdmlBinder unmarshaller = new SurveyIdmlBinder(ctx); 
-			unmarshaller.unmarshal(is);
+			SurveyIdmlBinder binder = new SurveyIdmlBinder(ctx); 
+			Survey survey = binder.unmarshal(is);
+			// Write
+			binder.marshal(survey, System.out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,14 +67,11 @@ public class SurveyIdmlBinder {
 		return surveyContext;
 	}
 	
-	synchronized
-	public void marshal(InputStream is, Survey survey) throws XmlParseException, IOException {
+	public void marshal(Survey survey, OutputStream os) throws IOException {
 		SurveySerializer ser = new SurveySerializer(this);
-		// TODO implement
-		throw new UnsupportedOperationException();
+		ser.serialize(survey, os, "UTF-8");
 	}
 		
-	synchronized
 	public Survey unmarshal(InputStream is) throws XmlParseException, IOException {
 		SurveyPullReader surveyReader = new SurveyPullReader(this);
 		surveyReader.parse(is, "UTF-8");

@@ -20,11 +20,11 @@ abstract class IdmlPullReader extends XmlPullReader {
 	private SurveyIdmlBinder binder;
 
 	IdmlPullReader(String tagName) {
-		super(IDML3_NS_URI, tagName);
+		super(IDML3_NAMESPACE_URI, tagName);
 	}
 	
 	IdmlPullReader(String tagName, Integer maxCount) {
-		super(IDML3_NS_URI, tagName, maxCount);
+		super(IDML3_NAMESPACE_URI, tagName, maxCount);
 	}
 	
 	SurveyIdmlBinder getSurveyBinder() {
@@ -72,7 +72,7 @@ abstract class IdmlPullReader extends XmlPullReader {
 		for (int i=0; i < parser.getAttributeCount(); i++) {
 			String ns = parser.getAttributeNamespace(i);
 			String prefix = parser.getAttributePrefix(i);
-			if ( prefix != null && !IDML3_NS_URI.equals(ns) ) {
+			if ( prefix != null && !IDML3_NAMESPACE_URI.equals(ns) ) {
 				String name = parser.getAttributeName(i);
 				String value = parser.getAttributeValue(i);
 				handleAnnotation(new QName(ns, name, prefix), value);

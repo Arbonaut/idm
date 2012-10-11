@@ -26,7 +26,7 @@ abstract class LanguageSpecificTextPR extends IdmlPullReader {
 	@Override
 	protected void onStartTag() throws XmlParseException, XmlPullParserException, IOException {
 		XmlPullParser parser = getParser();
-		String lang = parser.getAttributeValue(XML_NS_URI, XML_LANG_ATTRIBUTE);
+		String lang = parser.getAttributeValue(XML_NAMESPACE_URI, XML_LANG_ATTRIBUTE);
 		String type = getAttribute(TYPE, requireType);
 		String text = parser.nextText();
 		processText(lang, type, text);

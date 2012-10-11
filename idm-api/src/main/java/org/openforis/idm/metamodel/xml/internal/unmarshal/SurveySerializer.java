@@ -1,52 +1,112 @@
 package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
-import java.io.StringWriter;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
-import org.kxml2.io.KXmlSerializer;
+import java.io.IOException;
+
+import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
-import org.xmlpull.v1.XmlSerializer;
+
 
 /**
  * Load a Survey object from IDML
  * 
  * @author G. Miceli
  */
-public class SurveySerializer {
+public class SurveySerializer extends AbstractXmlSerializer<Survey, Void>{
 
 	private SurveyIdmlBinder binder;
 
+	@SuppressWarnings("unchecked")
 	public SurveySerializer(SurveyIdmlBinder binder) {
+		super(IDML3_NAMESPACE_URI, SURVEY);
 		this.binder = binder;
+		addChildSerializers(
+				new ProjectXS(),
+				new UriXS(), 
+				new CycleXS(),
+				new DescriptionXS(),
+				new LanguageXS() /*,
+				new ApplicationOptionsXS(),
+				new VersioningXS(), 
+				new CodeListsXS(),
+				new UnitsXS(),
+				new SpatialReferenceSystemsXS(),
+				new SchemaXS()*/);
 	}
-	/*
-	public static void main(String[] args) {
-	    XmlSerializer serializer = new KXmlSerializer();
-	    StringWriter writer = new StringWriter();
-	    try {
-	        serializer.setOutput(writer);
-	        serializer.startDocument("UTF-8", true);
-	        serializer.startTag("", "survey");
-	        serializer.attribute("", "number", String.valueOf(messages.size()));
-	        for (Message msg: messages){
-	            serialize	r.startTag("", "message");
-	            serializer.attribute("", "date", msg.getDate());
-	            serializer.startTag("", "title");
-	            serializer.text(msg.getTitle());
-	            serializer.endTag("", "title");
-	            serializer.startTag("", "url");
-	            serializer.text(msg.getLink().toExternalForm());
-	            serializer.endTag("", "url");
-	            serializer.startTag("", "body");
-	            serializer.text(msg.getDescription());
-	            serializer.endTag("", "body");
-	            serializer.endTag("", "message");
-	        }
-	        serializer.endTag("", "messages");
-	        serializer.endDocument();
-	        return writer.toString();
-	    } catch (Exception e) {
-	        throw new RuntimeException(e);
-	    } 
+
+	@Override
+	protected void start() throws IOException {
+		startDocument();
+		setDefaultNamespace(IDML3_NAMESPACE_URI);
+		super.start();
 	}
-	*/
+
+	@Override
+	protected void attributes() throws IOException {
+		Survey survey = getSourceObject();
+		attribute(LAST_ID, survey.getLastId());
+		attribute(PUBLISHED, survey.isPublished() ? true : null);
+	}
+	
+	@Override
+	protected void end() throws IOException {
+		super.end();
+		getSerializer().endDocument();
+	}
+
+	private class ProjectXS extends LanguageSpecificTextXS<Survey> {
+		public ProjectXS() {
+			super(PROJECT);
+		}
+
+		@Override
+		protected void serializeInstances(Survey survey) throws IOException {
+			serialize(survey.getProjectNames());
+		}
+	}
+
+	private class UriXS extends TextXS<Survey> {
+		public UriXS() {
+			super(URI);
+		}
+
+		@Override
+		protected void serializeInstances(Survey survey) throws IOException {
+			serialize(survey.getUri());
+		}
+	}
+
+	private class CycleXS extends TextXS<Survey> {
+		public CycleXS() {
+			super(CYCLE);
+		}
+
+		@Override
+		protected void serializeInstances(Survey survey) throws IOException {
+			serialize(survey.getCycle());
+		}
+	}
+
+	private class DescriptionXS extends LanguageSpecificTextXS<Survey> {
+		public DescriptionXS() {
+			super(DESCRIPTION);
+		}
+
+		@Override
+		protected void serializeInstances(Survey survey) throws IOException {
+			serialize(survey.getDescriptions());
+		}
+	}
+
+	private class LanguageXS extends TextXS<Survey> {
+		public LanguageXS() {
+			super(LANGUAGE);
+		}
+
+		@Override
+		protected void serializeInstances(Survey survey) throws IOException {
+			serialize(survey.getLanguages());
+		}
+	}
 }

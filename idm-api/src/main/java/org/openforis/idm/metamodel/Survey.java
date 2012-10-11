@@ -424,6 +424,10 @@ public class Survey implements Serializable {
 		languages.remove(lang);
 	}
 	
+	public List<String> getLanguages() {
+		return CollectionUtil.unmodifiableList(languages);
+	}
+	
 	public SurveyContext getContext() {
 		return surveyContext;
 	}

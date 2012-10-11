@@ -267,13 +267,8 @@
             </xs:documentation>
           </xs:annotation>
           <xs:complexType>
-<<<<<<< HEAD
-          <xs:sequence>
-              <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded">
-=======
             <xs:sequence>
               <xs:element name="options" minOccurs="1">
->>>>>>> 1d39ed0d9bf106b5a19900c1f739d59a77b21b23
                 <xs:annotation>
                     <xs:documentation>
                         A set of application-specific options, identified by type attribute.

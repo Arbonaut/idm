@@ -78,7 +78,7 @@ public abstract class XmlPullReader {
 			parser.nextTag();
 			parseElement(parser);
 		} catch (XmlPullParserException e) {
-			throw new XmlParseException(getParser(), e.getMessage());
+			throw new XmlParseException(parser, e.getMessage());
 		}
 	}
 	

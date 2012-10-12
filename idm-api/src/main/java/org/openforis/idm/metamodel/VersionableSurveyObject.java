@@ -22,11 +22,19 @@ public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
 		super(survey, id);
 	}
 
+	public String getSinceVersionName() {
+		return sinceVersion == null ? null : sinceVersion.getName();
+	}
+	
 	@XmlAttribute(name = "since")
 	public void setSinceVersionByName(String name) {
 		this.sinceVersion = name == null ? null : findVersion(name);
 	}
 
+	public String getDeprecatedVersionName() {
+		return deprecatedVersion == null ? null : deprecatedVersion.getName();
+	}
+	
 	@XmlAttribute(name = "deprecated")
 	public void setDeprecatedVersionByName(String name) {
 		this.deprecatedVersion = name == null ? null : findVersion(name);

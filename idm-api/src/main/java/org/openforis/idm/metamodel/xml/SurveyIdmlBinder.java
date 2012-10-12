@@ -2,16 +2,19 @@ package org.openforis.idm.metamodel.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
-import org.openforis.idm.metamodel.xml.internal.marshal.SurveyPullReader;
-import org.openforis.idm.metamodel.xml.internal.unmarshal.SurveySerializer;
+import org.openforis.idm.metamodel.xml.internal.marshal.SurveyMarshaller;
+import org.openforis.idm.metamodel.xml.internal.unmarshal.PlainTextApplicationOptionsBinder;
+import org.openforis.idm.metamodel.xml.internal.unmarshal.SurveyUnmarshaller;
 
 /**
  * Load a Survey object from IDML
@@ -19,6 +22,8 @@ import org.openforis.idm.metamodel.xml.internal.unmarshal.SurveySerializer;
  * @author G. Miceli
  */
 public class SurveyIdmlBinder {
+	private static final String UTF8_ENCODING = "UTF-8";
+	
 	private SurveyContext surveyContext;
 	private List<ApplicationOptionsBinder<?>> optionsBinders;
 
@@ -31,11 +36,20 @@ public class SurveyIdmlBinder {
 	public static void main(String[] args) {
 		try {
 			File f = new File("../idm-test/src/main/resources/test.idm.xml");
+//			File f = new File("~/workspace/faofin/tz/naforma-idm/tanzania-naforma.idm.xml");
 			InputStream is = new FileInputStream(f);
 			SurveyContext ctx = new DefaultSurveyContext();
+			SurveyIdmlBinder binder = new SurveyIdmlBinder(ctx);
+			PlainTextApplicationOptionsBinder textAOB = new PlainTextApplicationOptionsBinder("ui");
+			binder.addApplicationOptionsBinder(textAOB);
 			
-			SurveyIdmlBinder unmarshaller = new SurveyIdmlBinder(ctx); 
-			unmarshaller.unmarshal(is);
+			Survey survey = binder.unmarshal(is);
+			
+			FileOutputStream fos = new FileOutputStream("test.idm.out.xml");
+			// Write
+			binder.marshal(survey, fos);
+			fos.flush();
+			fos.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,17 +78,14 @@ public class SurveyIdmlBinder {
 		return surveyContext;
 	}
 	
-	synchronized
-	public void marshal(InputStream is, Survey survey) throws XmlParseException, IOException {
-		SurveySerializer ser = new SurveySerializer(this);
-		// TODO implement
-		throw new UnsupportedOperationException();
+	public void marshal(Survey survey, OutputStream os) throws IOException {
+		SurveyMarshaller ser = new SurveyMarshaller(this);
+		ser.marshal(survey, os, UTF8_ENCODING);
 	}
 		
-	synchronized
 	public Survey unmarshal(InputStream is) throws XmlParseException, IOException {
-		SurveyPullReader surveyReader = new SurveyPullReader(this);
-		surveyReader.parse(is, "UTF-8");
-		return surveyReader.getSurvey();
+		SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this);
+		unmarshaller.parse(is, UTF8_ENCODING);
+		return unmarshaller.getSurvey();
 	}	
 }

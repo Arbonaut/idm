@@ -61,10 +61,12 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	}
 
 	public void setList(CodeList list) {
-		if ( list == null || list.getSurvey() != null && list.getSurvey().equals(this.getSurvey() )) {
-			this.list = list;
-		} else {
+		if ( list == null ) {
+			throw new IllegalArgumentException("Cannot add a null list");
+		} else if ( list.getSurvey() == null || ! list.getSurvey().equals(this.getSurvey() )) {
 			throw new IllegalArgumentException("Cannot add a list from a different survey");
+		} else {
+			this.list = list;
 		}
 	}
 	
@@ -73,7 +75,7 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		return list == null ? null : list.getName();
 	}
 	
-	protected void setListName(String name) {
+	public void setListName(String name) {
 		Survey survey = getSurvey();
 		if ( survey == null ) {
 			throw new DetachedNodeDefinitionException(CodeAttributeDefinition.class, Survey.class);

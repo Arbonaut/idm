@@ -41,7 +41,7 @@ public class Survey implements Serializable {
 	private String name;
 	
 	@XmlElement(name = "project", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> projectNames;
+	private LanguageSpecificTextMap projectNames;
 	
 	@XmlElement(name = "uri")
 	private String uri;
@@ -52,8 +52,8 @@ public class Survey implements Serializable {
 	@XmlElement(name = "cycle")
 	private String cycle;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;
+	@XmlElement(name = "description", type = LanguageSpecificTextMap.class)
+	private LanguageSpecificTextMap descriptions;
 
 	private Map<String, ApplicationOptions> applicationOptionsMap;
 	
@@ -130,35 +130,33 @@ public class Survey implements Serializable {
 	}
 
 	public List<LanguageSpecificText> getProjectNames() {
-		return CollectionUtil.unmodifiableList(this.projectNames);
+		if ( this.projectNames == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.projectNames.getAll();
+		}
+	}
+
+	public String getProjectName(String language) {
+		return projectNames == null ? null: projectNames.getText(language);
 	}
 	
-	public String getProjectName(String language) {
-		if (projectNames != null ) {
-			return LanguageSpecificText.getText(projectNames, language);
-		} else {
-			return null;
+	public void setProjectName(String language, String text) {
+		if ( projectNames == null ) {
+			projectNames = new LanguageSpecificTextMap();
 		}
+		projectNames.setText(language, text);
 	}
 	
 	public void addProjectName(LanguageSpecificText projectName) {
 		if ( projectNames == null ) {
-			projectNames = new ArrayList<LanguageSpecificText>();
+			projectNames = new LanguageSpecificTextMap();
 		}
 		projectNames.add(projectName);
 	}
 
-	public void setProjectName(String language, String name) {
-		if ( projectNames == null ) {
-			projectNames = new ArrayList<LanguageSpecificText>();
-		}
-		LanguageSpecificText.setText(projectNames, language, name);
-	}
-	
 	public void removeProjectName(String language) {
-		if ( projectNames != null ) {
-			LanguageSpecificText.remove(projectNames, language);
-		}
+		projectNames.remove(language);
 	}
 	
 	public String getCycle() {
@@ -170,33 +168,33 @@ public class Survey implements Serializable {
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return Collections.unmodifiableList(this.descriptions);
+		if ( descriptions == null ) {
+			return Collections.emptyList();
+		} else {
+			return descriptions.getAll();
+		}
 	}
 
 	public String getDescription(String language) {
-		if (descriptions != null ) {
-			return LanguageSpecificText.getText(descriptions, language);
-		} else {
-			return null;
-		}
+		return descriptions == null ? null: descriptions.getText(language);
 	}
 	
 	public void setDescription(String language, String description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(descriptions, language, description);
+		descriptions.setText(language, description);
 	}
 	
 	public void addDescription(LanguageSpecificText description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
 		descriptions.add(description);
 	}
 
 	public void removeDescription(String language) {
-		LanguageSpecificText.remove(descriptions, language);
+		descriptions.remove(language);
 	}
 
 	public List<ModelVersion> getVersions() {

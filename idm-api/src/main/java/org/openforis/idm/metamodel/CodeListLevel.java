@@ -4,7 +4,7 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,8 +12,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -28,70 +26,70 @@ public class CodeListLevel implements Serializable {
 	@XmlAttribute(name = "name")
 	private String name;
 
-	@XmlElement(name = "label", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> labels;
+	@XmlElement(name = "label", type = LanguageSpecificTextMap.class)
+	private LanguageSpecificTextMap labels;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;
+	@XmlElement(name = "description", type = LanguageSpecificTextMap.class)
+	private LanguageSpecificTextMap descriptions;
 
 	public List<LanguageSpecificText> getLabels() {
-		return CollectionUtil.unmodifiableList(labels);
+		if ( this.labels == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.labels.getAll();
+		}
 	}
 	
 	public String getLabel(String language) {
-		if (labels != null ) {
-			return LanguageSpecificText.getText(labels, language);
-		} else {
-			return null;
-		}
+		return labels == null ? null: labels.getText(language);
 	}
 	
 	public void addLabel(LanguageSpecificText label) {
 		if ( labels == null ) {
-			labels = new ArrayList<LanguageSpecificText>();
+			labels = new LanguageSpecificTextMap();
 		}
 		labels.add(label);
 	}
 
-	public void setLabel(String language, String description) {
+	public void setLabel(String language, String text) {
 		if ( labels == null ) {
-			labels = new ArrayList<LanguageSpecificText>();
+			labels = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(labels, language, description);
+		labels.setText(language, text);
 	}
 	
 	public void removeLabel(String language) {
-		LanguageSpecificText.remove(labels, language);
+		labels.remove(language);
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return CollectionUtil.unmodifiableList(descriptions);
-	}
-	
-	public String getDescription(String language) {
-		if (descriptions != null ) {
-			return LanguageSpecificText.getText(descriptions, language);
+		if ( this.descriptions == null ) {
+			return Collections.emptyList();
 		} else {
-			return null;
+			return this.descriptions.getAll();
 		}
+	}
+
+	public String getDescription(String language) {
+		return descriptions == null ? null: descriptions.getText(language);
 	}
 	
 	public void setDescription(String language, String description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(descriptions, language, description);
+		descriptions.setText(language, description);
 	}
 	
 	public void addDescription(LanguageSpecificText description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
 		descriptions.add(description);
 	}
 
 	public void removeDescription(String language) {
-		LanguageSpecificText.remove(descriptions, language);
+		descriptions.remove(language);
 	}
 
 	public String getName() {

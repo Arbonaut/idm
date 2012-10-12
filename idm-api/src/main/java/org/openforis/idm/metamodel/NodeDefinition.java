@@ -3,7 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -54,13 +53,13 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	private Integer maxCount;
 
 	@XmlElement(name = "label", type = NodeLabel.class)
-	private List<NodeLabel> labels;
+	private NodeLabelMap labels;
 
 	@XmlElement(name = "prompt", type = Prompt.class)
-	private List<Prompt> prompts;
+	private PromptMap prompts;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;
+	@XmlElement(name = "description", type = LanguageSpecificTextMap.class)
+	private LanguageSpecificTextMap descriptions;
 
 	@XmlAnyAttribute
 	private Map<QName,String> annotations;
@@ -128,152 +127,97 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	}
 
 	public List<NodeLabel> getLabels() {
-		return CollectionUtil.unmodifiableList(labels);
-	}
-
-	public List<NodeLabel> getLabels(NodeLabel.Type type) {
-		List<NodeLabel> list = new ArrayList<NodeLabel>();
-		if (labels != null) {
-			for (NodeLabel label : labels) {
-				if (label.getType().equals(type)) {
-					list.add(label);
-				}
-			}
+		if ( this.labels == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.labels.getAll();
 		}
-		return Collections.unmodifiableList(list);
 	}
 	
 	public String getLabel(NodeLabel.Type type, String language) {
-		NodeLabel label = getNodeLabel(type, language);
-		if ( label != null ) {
-			return label.getText();
-		} else {
-			return null;
-		}
+		return labels == null ? null: labels.getText(type, language);
 	}
 	
 	public void setLabel(NodeLabel.Type type, String language, String text) {
 		if ( labels == null ) {
-			labels = new ArrayList<NodeLabel>();
+			labels = new NodeLabelMap();
 		}
-		NodeLabel oldLabel = getNodeLabel(type, language);
-		if ( oldLabel == null ) {
-			NodeLabel newLabel = new NodeLabel(type, language, text);
-			addLabel(newLabel);
-		} else {
-			oldLabel.setText(text);
-		}
-	}
-
-	protected NodeLabel getNodeLabel(NodeLabel.Type type, String language) {
-		if (labels != null ) {
-			for (NodeLabel label : labels) {
-				String labelLang = label.getLanguage();
-				if ( label.getType()== type && ( language == null && labelLang == null ||
-						language != null && language.equals(labelLang) ) ) {
-					return label;
-				}
-			}
-		}
-		return null;
+		labels.setText(type, language, text);
 	}
 
 	public void addLabel(NodeLabel label) {
-		if (labels == null) {
-			labels = new ArrayList<NodeLabel>();
+		if ( labels == null ) {
+			labels = new NodeLabelMap();
 		}
 		labels.add(label);
 	}
-	
-	public List<Prompt> getPrompts() {
-		return CollectionUtil.unmodifiableList(prompts);
+
+	public void removeLabel(NodeLabel.Type type, String language) {
+		if (labels != null ) {
+			labels.remove(type, language);
+		}
 	}
 
-	public List<Prompt> getPrompts(Prompt.Type type) {
-		List<Prompt> list = new ArrayList<Prompt>();
-		if (prompts != null) {
-			for (Prompt prompt : prompts) {
-				if (prompt.getType().equals(type)) {
-					list.add(prompt);
-				}
-			}
+	public List<Prompt> getPrompts() {
+		if ( this.prompts == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.prompts.getAll();
 		}
-		return Collections.unmodifiableList(list);
 	}
 	
-	protected Prompt getPromptInstance(Prompt.Type type, String languageCode) {
-		if (prompts != null) {
-			for (Prompt prompt : prompts) {
-				if (prompt.getType().equals(type)) {
-					String promptLang = prompt.getLanguage();
-					if ( languageCode == null && promptLang == null ||
-						languageCode != null && languageCode.equals(promptLang) ) {
-						return prompt;
-					}
-				}
-			}
-		}
-		return null;
+	public String getPrompt(Prompt.Type type, String language) {
+		return prompts == null ? null: prompts.getText(type, language);
 	}
 	
-	public String getPrompt(Prompt.Type type, String languageCode) {
-		Prompt prompt = getPromptInstance(type, languageCode);
-		return prompt != null ? prompt.getText(): null;
-	}
-	
-	public void setPrompt(Prompt.Type type, String languageCode, String text) {
-		Prompt oldPrompt = getPromptInstance(type, languageCode);
-		if ( StringUtils.isNotBlank(text)) {
-			Prompt newPrompt = new Prompt(type, languageCode, text);
-			if ( oldPrompt != null ) {
-				int index = prompts.indexOf(oldPrompt);
-				prompts.set(index, newPrompt);
-			} else {
-				if ( prompts == null ) {
-					prompts = new ArrayList<Prompt>();
-				}
-				prompts.add(newPrompt);
-			}
-		} else if ( oldPrompt != null ) {
-			prompts.remove(oldPrompt);
+	public void setPrompt(Prompt.Type type, String language, String text) {
+		if ( prompts == null ) {
+			prompts = new PromptMap();
 		}
+		prompts.setText(type, language, text);
 	}
 
 	public void addPrompt(Prompt prompt) {
-		if (prompts == null) {
-			prompts = new ArrayList<Prompt>();
+		if ( prompts == null ) {
+			prompts = new PromptMap();
 		}
 		prompts.add(prompt);
 	}
 
+	public void removePrompt(Prompt.Type type, String language) {
+		if (prompts != null ) {
+			prompts.remove(type, language);
+		}
+	}
+	
 	public List<LanguageSpecificText> getDescriptions() {
-		return CollectionUtil.unmodifiableList(descriptions);
+		if ( this.descriptions == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.descriptions.getAll();
+		}
 	}
 
 	public String getDescription(String language) {
-		if (descriptions != null ) {
-			return LanguageSpecificText.getText(descriptions, language);
-		} else {
-			return null;
-		}
+		return descriptions == null ? null: descriptions.getText(language);
 	}
 	
 	public void setDescription(String language, String description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(descriptions, language, description);
+		descriptions.setText(language, description);
 	}
 	
 	public void addDescription(LanguageSpecificText description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
 		descriptions.add(description);
 	}
 
 	public void removeDescription(String language) {
-		LanguageSpecificText.remove(descriptions, language);
+		descriptions.remove(language);
 	}
 	
 	public String getPath() {

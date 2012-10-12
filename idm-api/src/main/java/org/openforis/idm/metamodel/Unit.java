@@ -3,7 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -35,10 +34,10 @@ public class Unit extends IdentifiableSurveyObject {
 	private Float conversionFactor;
 
 	@XmlElement(name = "label", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> labels;
+	private LanguageSpecificTextMap labels;
 
 	@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> abbreviations;
+	private LanguageSpecificTextMap abbreviations;
 
 	Unit(Survey survey, int id) {
 		super(survey, id);
@@ -69,63 +68,63 @@ public class Unit extends IdentifiableSurveyObject {
 	}
 	
 	public List<LanguageSpecificText> getLabels() {
-		return CollectionUtil.unmodifiableList(labels);
+		if ( labels == null ) {
+			return Collections.emptyList();
+		} else {
+			return labels.getAll();
+		}
 	}
 	
 	public String getLabel(String language) {
-		if (labels != null ) {
-			return LanguageSpecificText.getText(labels, language);
-		} else {
-			return null;
-		}
+		return labels == null ? null: labels.getText(language);
 	}
 	
 	public void addLabel(LanguageSpecificText label) {
 		if ( labels == null ) {
-			labels = new ArrayList<LanguageSpecificText>();
+			labels = new LanguageSpecificTextMap();
 		}
 		labels.add(label);
 	}
 
-	public void setLabel(String language, String description) {
+	public void setLabel(String language, String text) {
 		if ( labels == null ) {
-			labels = new ArrayList<LanguageSpecificText>();
+			labels = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(labels, language, description);
+		labels.setText(language, text);
 	}
 	
 	public void removeLabel(String language) {
-		LanguageSpecificText.remove(labels, language);
+		labels.remove(language);
 	}
 
 	public List<LanguageSpecificText> getAbbreviations() {
-		return CollectionUtil.unmodifiableList(abbreviations);
-	}
-
-	public String getAbbreviation(String language) {
-		if (abbreviations != null ) {
-			return LanguageSpecificText.getText(abbreviations, language);
+		if ( abbreviations == null ) {
+			return Collections.emptyList();
 		} else {
-			return null;
+			return abbreviations.getAll();
 		}
+	}
+	
+	public String getAbbreviation(String language) {
+		return abbreviations == null ? null: abbreviations.getText(language);
 	}
 	
 	public void addAbbreviation(LanguageSpecificText label) {
 		if ( abbreviations == null ) {
-			abbreviations = new ArrayList<LanguageSpecificText>();
+			abbreviations = new LanguageSpecificTextMap();
 		}
 		abbreviations.add(label);
 	}
 
-	public void setAbbreviation(String language, String description) {
+	public void setAbbreviation(String language, String text) {
 		if ( abbreviations == null ) {
-			abbreviations = new ArrayList<LanguageSpecificText>();
+			abbreviations = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(abbreviations, language, description);
+		abbreviations.setText(language, text);
 	}
 	
 	public void removeAbbreviation(String language) {
-		LanguageSpecificText.remove(abbreviations, language);
+		abbreviations.remove(language);
 	}
 
 	@Override

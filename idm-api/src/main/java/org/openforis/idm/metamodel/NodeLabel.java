@@ -16,9 +16,6 @@ public class NodeLabel extends LanguageSpecificText {
 	@XmlAttribute(name = "type")
 	private NodeLabel.Type type;
 
-	protected NodeLabel() {
-	}
-
 	public NodeLabel(Type type, String language, String text) {
 		super(language, text);
 		this.type = type;

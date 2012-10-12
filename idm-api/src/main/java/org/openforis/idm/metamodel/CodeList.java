@@ -1,6 +1,7 @@
 package org.openforis.idm.metamodel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -36,10 +37,10 @@ public class CodeList extends VersionableSurveyObject {
 	private String lookupTable;
 
 	@XmlElement(name = "label", type = CodeListLabel.class)
-	private List<CodeListLabel> labels;
+	private CodeListLabelMap labels;
 
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;
+	@XmlElement(name = "description", type = LanguageSpecificTextMap.class)
+	private LanguageSpecificTextMap descriptions;
 
 	@XmlElement(name = "codingScheme", type = CodingScheme.class)
 	private CodingScheme codingScheme;
@@ -73,92 +74,65 @@ public class CodeList extends VersionableSurveyObject {
 	}
 
 	public List<CodeListLabel> getLabels() {
-		return CollectionUtil.unmodifiableList(this.labels);
+		if ( labels == null ) {
+			return Collections.emptyList();
+		} else {
+			return labels.getAll();
+		}
 	}
 	
 	public String getLabel(CodeListLabel.Type type, String language) {
-		CodeListLabel label = getCodeListLabel(type, language);
-		if ( label != null ) {
-			return label.getText();
-		} else {
-			return null;
-		}
-	}
-	
-	protected CodeListLabel getCodeListLabel(CodeListLabel.Type type, String language) {
-		if (labels != null ) {
-			for (CodeListLabel label : labels) {
-				String labelLang = label.getLanguage();
-				if ( label.getType()== type && ( language == null && labelLang == null ||
-						language != null && language.equals(labelLang) ) ) {
-					return label;
-				}
-			}
-		}
-		return null;
+		return labels == null ? null: labels.getText(type, language);
 	}
 	
 	public void setLabel(CodeListLabel.Type type, String language, String text) {
 		if ( labels == null ) {
-			labels = new ArrayList<CodeListLabel>();
+			labels = new CodeListLabelMap();
 		}
-		CodeListLabel oldLabel = getCodeListLabel(type, language);
-		if ( oldLabel == null ) {
-			CodeListLabel newLabel = new CodeListLabel(type, language, text);
-			addLabel(newLabel);
-		} else {
-			oldLabel.setText(text);
-		}
+		labels.setText(type, language, text);
 	}
 
 	public void addLabel(CodeListLabel label) {
 		if ( labels == null ) {
-			labels = new ArrayList<CodeListLabel>();
+			labels = new CodeListLabelMap();
 		}
 		labels.add(label);
 	}
 
 	public void removeLabel(CodeListLabel.Type type, String language) {
 		if (labels != null ) {
-			Iterator<CodeListLabel> it = labels.iterator();
-			while ( it.hasNext() ) {
-				CodeListLabel label = it.next();
-				if ( label.getType()== type && label.getLanguage().equals(language)) {
-					it.remove();
-					return;
-				}
-			}
+			labels.remove(type, language);
 		}
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return CollectionUtil.unmodifiableList(this.descriptions);
+		if ( this.descriptions == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.descriptions.getAll();
+		}
 	}
 
 	public String getDescription(String language) {
-		if (descriptions != null ) {
-			return LanguageSpecificText.getText(descriptions, language);
-		} else {
-			return null;
-		}
+		return descriptions == null ? null: descriptions.getText(language);
 	}
 	
 	public void setDescription(String language, String description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(descriptions, language, description);
+		descriptions.setText(language, description);
 	}
 	
 	public void addDescription(LanguageSpecificText description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
 		descriptions.add(description);
 	}
 
 	public void removeDescription(String language) {
-		LanguageSpecificText.remove(descriptions, language);
+		descriptions.remove(language);
 	}
 
 	public List<CodeListLevel> getHierarchy() {

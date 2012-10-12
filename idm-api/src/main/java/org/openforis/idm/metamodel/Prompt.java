@@ -23,9 +23,6 @@ public class Prompt extends LanguageSpecificText {
 	@XmlAttribute(name = "type")
 	private Type type;
 
-	public Prompt() {
-	}
-
 	public Prompt(String language, String text) {
 		super(language, text);
 	}

@@ -4,7 +4,6 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -28,10 +27,6 @@ public class LanguageSpecificText implements Serializable {
 	@XmlValue
 	private String text;
 
-	public LanguageSpecificText() {
-		super();
-	}
-
 	public LanguageSpecificText(String language, String text) {
 		this.language = language;
 		this.text = text;
@@ -41,10 +36,6 @@ public class LanguageSpecificText implements Serializable {
 		return this.language;
 	}
 
-	protected void setLanguage(String language) {
-		this.language = language;
-	}
-	
 	public String getText() {
 		return this.text;
 	}
@@ -53,43 +44,6 @@ public class LanguageSpecificText implements Serializable {
 		this.text = text;
 	}
 	
-	public static LanguageSpecificText getByLanguage(List<? extends LanguageSpecificText> list, String language) {
-		for (LanguageSpecificText lst : list) {
-			if ( lst.getLanguage() != null && lst.getLanguage().equals(language) || 
-					lst.getLanguage() == null && language == null) {
-				return lst;
-			}
-		}
-		return null;
-	}
-	
-	public static String getText(List<? extends LanguageSpecificText> list, String language) {
-		LanguageSpecificText languageSpecificText = getByLanguage(list, language);
-		if ( languageSpecificText != null ) {
-			return languageSpecificText.getText();
-		} else {
-			return null;
-		}
-	}
-	
-	public static void setText(List<LanguageSpecificText> list, String language, String text) {
-		LanguageSpecificText languageSpecificText = new LanguageSpecificText(language, text);
-		LanguageSpecificText oldLanguageSpecificText = getByLanguage(list, language);
-		if ( oldLanguageSpecificText == null ) {
-			list.add(languageSpecificText);
-		} else {
-			int index = list.indexOf(oldLanguageSpecificText);
-			list.set(index, languageSpecificText);
-		}
-	}
-	
-	public static void remove(List<? extends LanguageSpecificText> list, String language) {
-		LanguageSpecificText languageSpecificText = getByLanguage(list, language);
-		if ( languageSpecificText != null ) {
-			list.remove(languageSpecificText);
-		}
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

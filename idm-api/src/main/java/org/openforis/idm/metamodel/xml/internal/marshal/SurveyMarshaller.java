@@ -17,19 +17,18 @@ public class SurveyMarshaller extends AbstractIdmlMarshaller<Survey, Void>{
 
 	public SurveyMarshaller(SurveyIdmlBinder binder) {
 		super(IDML3_NAMESPACE_URI, SURVEY);
-//		this.binder = binder;
 		addChildMarshallers(
-				new ProjectIM(),
-				new UriIM(), 
-				new CycleIM(),
-				new DescriptionIM(),
-				new LanguageIM(),
-				new ApplicationOptionsIM(binder),
-				new VersioningIM(), 
-				new CodeListsIM(),
-				new UnitsIM(),
-				new SpatialReferenceSystemsIM()/*,
-				new SchemaIM()*/);
+//				new ProjectIM(),
+//				new UriIM(), 
+//				new CycleIM(),
+//				new DescriptionIM(),
+//				new LanguageIM(),
+//				new ApplicationOptionsIM(binder),
+//				new VersioningIM(), 
+//				new CodeListsIM(),
+//				new UnitsIM(),
+//				new SpatialReferenceSystemsIM(),
+				new SchemaIM());
 	}
 
 	@Override
@@ -48,7 +47,7 @@ public class SurveyMarshaller extends AbstractIdmlMarshaller<Survey, Void>{
 	@Override
 	protected void end(Survey survey) throws IOException {
 		super.end(survey);
-		getSerializer().endDocument();
+		getXmlSerializer().endDocument();
 	}
 
 	private class ProjectIM extends LanguageSpecificTextIM<Survey> {

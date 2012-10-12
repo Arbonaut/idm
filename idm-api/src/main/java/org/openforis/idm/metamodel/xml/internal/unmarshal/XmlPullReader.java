@@ -73,7 +73,7 @@ public abstract class XmlPullReader {
 	}
 
 	synchronized
-	private void parse(XmlPullParser parser) throws XmlParseException, IOException {
+	protected void parse(XmlPullParser parser) throws XmlParseException, IOException {
 		try {
 			parser.nextTag();
 			parseElement(parser);

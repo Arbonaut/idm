@@ -17,7 +17,7 @@ import org.xmlpull.v1.XmlSerializer;
  *
  * @param <P>
  */
-public abstract class AbstractIdmlMarshaller<T,P> {
+public abstract class AbstractIdmlMarshaller<T, P> {
 
 	private XmlSerializer xmlSerializer;
 	private List<AbstractIdmlMarshaller<?,T>> childMarshallers;
@@ -27,6 +27,10 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 	private boolean includeEmpty;
 	private Writer writer;
 	private String listWrapperTag;
+	
+	protected AbstractIdmlMarshaller() {
+		this(IdmlConstants.IDML3_NAMESPACE_URI, null);
+	}
 	
 	protected AbstractIdmlMarshaller(String tag) {
 		this(IdmlConstants.IDML3_NAMESPACE_URI, tag);
@@ -38,20 +42,8 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 		this.tagName = tagName;
 	}
 
-	protected XmlSerializer getSerializer() {
+	protected XmlSerializer getXmlSerializer() {
 		return xmlSerializer;
-	}
-	
-	protected void setXmlSerializer(XmlSerializer serializer) {
-		this.xmlSerializer = serializer;
-	}
-	
-	protected String getEncoding() {
-		return encoding;
-	}
-
-	protected void setEncoding(String encoding) {
-		this.encoding = encoding;
 	}
 	
 	public boolean isIncludeEmpty() {
@@ -66,17 +58,16 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 		this.listWrapperTag = listWrapperTag;
 	}
 	
-	public String getListWrapperTag() {
-		return listWrapperTag;
-	}
-	
 	synchronized
 	public void marshal(T sourceObject, OutputStream os, String enc) throws IOException {
 		XmlSerializer ser = createXmlSerializer();
 		ser.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
 	    ser.setOutput(os, enc);
 	    Writer writer = new OutputStreamWriter(os, enc);
-	    marshal(ser, enc, writer, sourceObject);
+	    this.xmlSerializer = ser;
+		this.writer = writer;
+		this.encoding = enc;
+		marshal(sourceObject);
 	}
 
 	private static XmlSerializer createXmlSerializer() {
@@ -88,15 +79,12 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 		}
 	}
 
-	synchronized
-	private void marshal(XmlSerializer serializer, String encoding, Writer wr, T sourceObject) throws IOException {
-		this.xmlSerializer = serializer;
-		this.writer = wr;
-	    this.encoding = encoding;
-		marshal(sourceObject);
-	}
-
-	protected final void marshal(T sourceObject) throws IOException {
+	/**
+	 * Main method which calls start, attributes, body and end
+	 * @param sourceObject
+	 * @throws IOException
+	 */
+	protected void marshal(T sourceObject) throws IOException {
 		if ( includeEmpty || sourceObject != null ) {
 			start(sourceObject);
 			attributes(sourceObject);
@@ -122,16 +110,14 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 	protected void marshalChildren(T parentObject) throws IOException {
 		if ( childMarshallers != null ) {
 			for (AbstractIdmlMarshaller<?,T> ser : childMarshallers) {
-				ser.xmlSerializer = this.xmlSerializer;
-				ser.encoding = this.encoding;
-				ser.writer = this.writer;
+				prepareChildMarshaller(ser);
 				ser.marshalInstances(parentObject);
 			}
 		}
 	}
 
 	/**
-	 * Override this method to extract instanced from parent.  
+	 * Override this method to extract instances from parent.  
 	 * Should call marshal() on List or single instances 
 	 * @param parentObject
 	 * @throws IOException
@@ -180,10 +166,15 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 			this.childMarshallers = new ArrayList<AbstractIdmlMarshaller<?,T>>(marshallers.length); 
 		}
 		
-		for (AbstractIdmlMarshaller ser : marshallers) {
-			ser.setXmlSerializer(xmlSerializer);
-			childMarshallers.add(ser);
+		for (AbstractIdmlMarshaller im : marshallers) {
+			childMarshallers.add(im);
 		}
+	}
+
+	protected final void prepareChildMarshaller(AbstractIdmlMarshaller<?,?> im) {
+		im.xmlSerializer = this.xmlSerializer;
+		im.encoding = this.encoding;
+		im.writer = this.writer;
 	}
 
 	
@@ -234,7 +225,7 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 	}
 
 	protected void startDocument() throws IOException {
-		xmlSerializer.startDocument(getEncoding(), true);
+		xmlSerializer.startDocument(encoding, true);
 	}
 
 	protected void startTag(String ns, String name) throws IOException{

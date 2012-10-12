@@ -2,6 +2,7 @@ package org.openforis.idm.metamodel.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,6 +36,7 @@ public class SurveyIdmlBinder {
 	public static void main(String[] args) {
 		try {
 			File f = new File("../idm-test/src/main/resources/test.idm.xml");
+//			File f = new File("~/workspace/faofin/tz/naforma-idm/tanzania-naforma.idm.xml");
 			InputStream is = new FileInputStream(f);
 			SurveyContext ctx = new DefaultSurveyContext();
 			SurveyIdmlBinder binder = new SurveyIdmlBinder(ctx);
@@ -43,8 +45,11 @@ public class SurveyIdmlBinder {
 			
 			Survey survey = binder.unmarshal(is);
 			
+			FileOutputStream fos = new FileOutputStream("test.idm.out.xml");
 			// Write
-			binder.marshal(survey, System.out);
+			binder.marshal(survey, fos);
+			fos.flush();
+			fos.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

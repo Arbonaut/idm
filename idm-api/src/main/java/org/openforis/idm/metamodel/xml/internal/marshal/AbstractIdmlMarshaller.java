@@ -18,7 +18,7 @@ import org.xmlpull.v1.XmlSerializer;
  * @param <P>
  */
 public abstract class AbstractIdmlMarshaller<T,P> {
-	private T sourceObject;
+
 	private XmlSerializer xmlSerializer;
 	private List<AbstractIdmlMarshaller<?,T>> childMarshallers;
 	private String encoding;
@@ -26,27 +26,16 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 	private String tagName;
 	private boolean includeEmpty;
 	private Writer writer;
+	private String listWrapperTag;
 	
-	protected AbstractIdmlMarshaller() {
-		this.includeEmpty = false; 
-	}
-
 	protected AbstractIdmlMarshaller(String tag) {
 		this(IdmlConstants.IDML3_NAMESPACE_URI, tag);
 	}
 
 	protected AbstractIdmlMarshaller(String tagNamespace, String tagName) {
-		this();
+		this.includeEmpty = false; 
 		this.tagNamespace = tagNamespace;
 		this.tagName = tagName;
-	}
-
-	protected T getSourceObject() {
-		return sourceObject;
-	}
-
-	protected void setSourceObject(T sourceObject) {
-		this.sourceObject = sourceObject;
 	}
 
 	protected XmlSerializer getSerializer() {
@@ -73,6 +62,14 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 		this.includeEmpty = includeEmpty;
 	}
 
+	public void setListWrapperTag(String listWrapperTag) {
+		this.listWrapperTag = listWrapperTag;
+	}
+	
+	public String getListWrapperTag() {
+		return listWrapperTag;
+	}
+	
 	synchronized
 	public void marshal(T sourceObject, OutputStream os, String enc) throws IOException {
 		XmlSerializer ser = createXmlSerializer();
@@ -101,38 +98,36 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 
 	protected final void marshal(T sourceObject) throws IOException {
 		if ( includeEmpty || sourceObject != null ) {
-			this.sourceObject = sourceObject;
-			start();
-			attributes();
-			body();
-			end();
+			start(sourceObject);
+			attributes(sourceObject);
+			body(sourceObject);
+			end(sourceObject);
 		}
 	}
 
-	protected void start() throws IOException {
+	protected void start(T sourceObject) throws IOException {
 		if ( tagName != null ) {
 			xmlSerializer.startTag(tagNamespace, tagName);
 		}
 	}
 
-	protected void attributes() throws IOException {
+	protected void attributes(T sourceObject) throws IOException {
 		// no-op
 	}
 
-	protected void body() throws IOException {
-		if ( childMarshallers != null ) {
-			for (AbstractIdmlMarshaller<?,T> ser : childMarshallers) {
-				ser.marshalInstances(this);
-			}
-		}
+	protected void body(T sourceObject) throws IOException {
+		marshalChildren(sourceObject);
 	}
 
-	private void marshalInstances(AbstractIdmlMarshaller<P,?> parentSerializer) throws IOException {
-		this.xmlSerializer = parentSerializer.xmlSerializer;
-	    this.encoding = parentSerializer.encoding;
-	    this.writer = parentSerializer.writer;
-	    P parentObject = parentSerializer.sourceObject;
-		marshalInstances(parentObject);
+	protected void marshalChildren(T parentObject) throws IOException {
+		if ( childMarshallers != null ) {
+			for (AbstractIdmlMarshaller<?,T> ser : childMarshallers) {
+				ser.xmlSerializer = this.xmlSerializer;
+				ser.encoding = this.encoding;
+				ser.writer = this.writer;
+				ser.marshalInstances(parentObject);
+			}
+		}
 	}
 
 	/**
@@ -145,30 +140,47 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 		// TODO Auto-generated method stub
 	}
 
-	protected void marshal(List<T> sourceObjects) throws IOException {
+	protected void marshal(List<? extends T> sourceObjects) throws IOException {
 		if ( sourceObjects == null || sourceObjects.isEmpty() ) {
 			if ( includeEmpty ) {
+				startList();
 				marshal((T) null);
+				endList();
 			}
 		} else {
+			startList();
 			for (T obj : sourceObjects) {
 				marshal(obj);
 			}
+			endList();
 		}
 	}
 
-	protected void end() throws IOException {
+	protected void startList() throws IOException {
+		if ( listWrapperTag != null ) {
+			startTag(listWrapperTag);
+		}
+	}
+	
+	protected void endList() throws IOException {
+		if ( listWrapperTag != null ) {
+			endTag(listWrapperTag);
+		}
+	}
+
+	protected void end(T sourceObject) throws IOException {
 		if ( tagName != null ) {
 			xmlSerializer.endTag(tagNamespace, tagName);
 		}
 	}
 
-	public void addChildMarshallers(AbstractIdmlMarshaller<?,T>... marshallers) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void addChildMarshallers(AbstractIdmlMarshaller<?,?>... marshallers) {
 		if ( childMarshallers == null ) {
 			this.childMarshallers = new ArrayList<AbstractIdmlMarshaller<?,T>>(marshallers.length); 
 		}
 		
-		for (AbstractIdmlMarshaller<?,T> ser : marshallers) {
+		for (AbstractIdmlMarshaller ser : marshallers) {
 			ser.setXmlSerializer(xmlSerializer);
 			childMarshallers.add(ser);
 		}
@@ -183,9 +195,10 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 		setPrefix("", namespaceUri);
 	}
 
-	protected void attribute(String name, String value) 
-				throws IOException {
-		xmlSerializer.attribute("", name, value);
+	protected void attribute(String name, String value) throws IOException {
+		if ( value != null ) {
+			xmlSerializer.attribute("", name, value);
+		}
 	}
 	
 	protected void attribute(String name, Object value) 

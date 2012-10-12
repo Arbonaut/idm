@@ -1,6 +1,5 @@
-package org.openforis.idm.metamodel.xml;
+package org.openforis.idm.metamodel;
 
-import org.openforis.idm.metamodel.ApplicationOptions;
 
 /**
  * @author G. Miceli

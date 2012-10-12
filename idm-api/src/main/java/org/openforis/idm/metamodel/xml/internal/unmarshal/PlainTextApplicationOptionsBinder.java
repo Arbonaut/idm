@@ -1,7 +1,7 @@
 package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
+import org.openforis.idm.metamodel.PlainTextApplicationOptions;
 import org.openforis.idm.metamodel.xml.ApplicationOptionsBinder;
-import org.openforis.idm.metamodel.xml.PlainTextApplicationOptions;
 
 /**
  * @author G. Miceli

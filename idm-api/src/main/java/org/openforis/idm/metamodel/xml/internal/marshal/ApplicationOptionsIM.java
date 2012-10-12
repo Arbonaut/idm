@@ -15,38 +15,34 @@ import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
  * @author G. Miceli
  *
  */
-class ApplicationOptionsIM extends IdmlWrapperTagMarshaller<Survey> {
+class ApplicationOptionsIM extends AbstractIdmlMarshaller<ApplicationOptions, Survey> {
 
 	private SurveyIdmlBinder binder;
 
-	@SuppressWarnings("unchecked")
 	ApplicationOptionsIM(SurveyIdmlBinder binder) {
-		super(APPLICATION_OPTIONS);
+		super(OPTIONS);
+		setListWrapperTag(APPLICATION_OPTIONS);
 		this.binder = binder;
-		addChildMarshallers(new OptionsIM());
 	}
 	
-	private class OptionsIM extends AbstractIdmlMarshaller<ApplicationOptions, Survey> {
-
-		public OptionsIM() {
-			super(OPTIONS);
-		}
-		
-		@Override
-		protected void marshalInstances(Survey survey) throws IOException {
-			List<ApplicationOptions> options = survey.getApplicationOptions();
-			marshal(options);
-		}
-		
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		@Override
-		protected void body() throws IOException {
-			ApplicationOptions options = getSourceObject();
-			String type = options.getType();
-			attribute(TYPE, type);
-			ApplicationOptionsBinder optionsBinder = binder.getApplicationOptionsBinder(type);
-			String xml = optionsBinder.marshal(options);
-			writeXml(xml);
-		}
+	@Override
+	protected void marshalInstances(Survey survey) throws IOException {
+		List<ApplicationOptions> options = survey.getApplicationOptions();
+		marshal(options);
+	}
+	
+	@Override
+	protected void attributes(ApplicationOptions options) throws IOException {
+		String type = options.getType();
+		attribute(TYPE, type);
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	protected void body(ApplicationOptions options) throws IOException {
+		String type = options.getType();
+		ApplicationOptionsBinder optionsBinder = binder.getApplicationOptionsBinder(type);
+		String xml = optionsBinder.marshal(options);
+		writeXml(xml);
 	}
 }

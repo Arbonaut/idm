@@ -15,7 +15,6 @@ import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
  */
 public class SurveyMarshaller extends AbstractIdmlMarshaller<Survey, Void>{
 
-	@SuppressWarnings("unchecked")
 	public SurveyMarshaller(SurveyIdmlBinder binder) {
 		super(IDML3_NAMESPACE_URI, SURVEY);
 //		this.binder = binder;
@@ -25,31 +24,30 @@ public class SurveyMarshaller extends AbstractIdmlMarshaller<Survey, Void>{
 				new CycleIM(),
 				new DescriptionIM(),
 				new LanguageIM(),
-				new ApplicationOptionsIM(binder)/*,
+				new ApplicationOptionsIM(binder),
 				new VersioningIM(), 
 				new CodeListsIM(),
 				new UnitsIM(),
-				new SpatialReferenceSystemsIM(),
+				new SpatialReferenceSystemsIM()/*,
 				new SchemaIM()*/);
 	}
 
 	@Override
-	protected void start() throws IOException {
+	protected void start(Survey survey) throws IOException {
 		startDocument();
 		setDefaultNamespace(IDML3_NAMESPACE_URI);
-		super.start();
+		super.start(survey);
 	}
 
 	@Override
-	protected void attributes() throws IOException {
-		Survey survey = getSourceObject();
+	protected void attributes(Survey survey) throws IOException {
 		attribute(LAST_ID, survey.getLastId());
 		attribute(PUBLISHED, survey.isPublished() ? true : null);
 	}
 	
 	@Override
-	protected void end() throws IOException {
-		super.end();
+	protected void end(Survey survey) throws IOException {
+		super.end(survey);
 		getSerializer().endDocument();
 	}
 

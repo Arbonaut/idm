@@ -31,7 +31,7 @@ class CodeListsPR extends IdmlPullReader {
 		
 		public CodeListPR() {
 			super(LIST);
-			addChildPullReaders(new LabelPR(), new CodingSchemePR(), new HierarchyPR(), new DescriptionPR(), new ItemsPR());
+			addChildPullReaders(new LabelPR(), new DescriptionPR(), new CodingSchemePR(), new HierarchyPR(),new ItemsPR());
 		}
 		
 		@Override

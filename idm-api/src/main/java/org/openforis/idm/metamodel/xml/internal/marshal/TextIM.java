@@ -14,8 +14,7 @@ abstract class TextIM<P> extends AbstractIdmlMarshaller<String, P>{
 	}
 
 	@Override
-	protected void body() throws IOException {
-		String text = getSourceObject();
+	protected void body(String text) throws IOException {
 		text(text);
 	}
 }

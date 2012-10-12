@@ -3,7 +3,7 @@ package org.openforis.idm.metamodel.xml.internal.marshal;
 import java.io.IOException;
 
 import org.openforis.idm.metamodel.LanguageSpecificText;
-import org.openforis.idm.metamodel.xml.IdmlConstants;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * 
@@ -17,18 +17,15 @@ abstract class LanguageSpecificTextIM<P> extends AbstractIdmlMarshaller<Language
 	}
 
 	@Override
-	protected void attributes() throws IOException {
-		LanguageSpecificText lst = getSourceObject();
-		String lang = lst.getLanguage();
+	protected void attributes(LanguageSpecificText txt) throws IOException {
+		String lang = txt.getLanguage();
 		if ( lang != null ) {
-			attribute(IdmlConstants.XML_NAMESPACE_URI, lang);
+			attribute(XML_NAMESPACE_URI, XML_LANG_ATTRIBUTE, lang);
 		}
 	}
 	
 	@Override
-	protected void body() throws IOException {
-		LanguageSpecificText lst = getSourceObject();
-		String text = lst.getText();
-		text(text);
+	protected void body(LanguageSpecificText txt) throws IOException {
+		text(txt.getText());
 	}
 }

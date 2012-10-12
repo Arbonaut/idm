@@ -31,6 +31,10 @@ public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
 		this.sinceVersion = name == null ? null : findVersion(name);
 	}
 
+	public String getDeprecatedVersionName() {
+		return deprecatedVersion == null ? null : deprecatedVersion.getName();
+	}
+	
 	@XmlAttribute(name = "deprecated")
 	public void setDeprecatedVersionByName(String name) {
 		this.deprecatedVersion = name == null ? null : findVersion(name);

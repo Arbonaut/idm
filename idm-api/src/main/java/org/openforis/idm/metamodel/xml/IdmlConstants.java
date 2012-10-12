@@ -11,6 +11,7 @@ public interface IdmlConstants {
 
 	// Standard Xml 
 	static String XML_NAMESPACE_URI = "http://www.w3.org/XML/1998/namespace";
+	static String XML_NAMESPACE_PREFIX = "xml";
 	static String XML_LANG_ATTRIBUTE = "lang";
 
 	// Survey

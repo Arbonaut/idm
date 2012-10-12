@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml.internal.unmarshal;
+package org.openforis.idm.metamodel.xml.internal.marshal;
 
 import java.io.IOException;
 
@@ -7,9 +7,9 @@ import java.io.IOException;
  * @author G. Miceli
  *
  */
-abstract class TextXS<P> extends IdmlSerializer<String, P>{
+abstract class TextIM<P> extends AbstractIdmlMarshaller<String, P>{
 
-	public TextXS(String tag) {
+	public TextIM(String tag) {
 		super(tag);
 	}
 

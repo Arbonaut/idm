@@ -3,9 +3,8 @@ package org.openforis.idm.metamodel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -56,7 +55,7 @@ public class Survey implements Serializable {
 	@XmlElement(name = "description", type = LanguageSpecificText.class)
 	private List<LanguageSpecificText> descriptions;
 
-	private Map<String, ApplicationOptions> applicationOptionsMap;
+	private LinkedHashMap<String, ApplicationOptions> applicationOptionsMap;
 	
 	@XmlElement(name = "version", type = ModelVersion.class)
 	@XmlElementWrapper(name = "versioning")
@@ -397,9 +396,27 @@ public class Survey implements Serializable {
 		}
 	}
 
-	public void setApplicationOptions(ApplicationOptions options) {
+	public List<String> getApplicationOptionTypes() {
 		if ( applicationOptionsMap == null ) {
-			this.applicationOptionsMap = new HashMap<String, ApplicationOptions>();
+			return Collections.emptyList();
+		} else {
+			List<String> types = new ArrayList<String>(applicationOptionsMap.keySet());
+			return Collections.unmodifiableList(types);
+		}		
+	}
+	
+	public List<ApplicationOptions> getApplicationOptions() {
+		if ( applicationOptionsMap == null ) {
+			return Collections.emptyList();
+		} else {
+			List<ApplicationOptions> values = new ArrayList<ApplicationOptions>(applicationOptionsMap.values());
+			return Collections.unmodifiableList(values);
+		}
+	}
+	
+	public void addApplicationOptions(ApplicationOptions options) {
+		if ( applicationOptionsMap == null ) {
+			this.applicationOptionsMap = new LinkedHashMap<String, ApplicationOptions>();
 		}
 		applicationOptionsMap.put(options.getType(), options);
 	}

@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml.internal.marshal;
+package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
 import static org.xmlpull.v1.XmlPullParser.CDSECT;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
@@ -234,7 +234,7 @@ public abstract class XmlPullReader {
 		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 		XmlSerializer out = factory.newSerializer();
 		out.setOutput(sw);
-		out.startDocument("UTF-8", true);
+//		out.startDocument("UTF-8", true);
 		if ( includeOuterTag ) {
 			out.startTag(in.getNamespace(), in.getName());
 		}

@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml.internal.marshal;
+package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
 import java.io.IOException;
 

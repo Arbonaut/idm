@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml.internal.marshal;
+package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.Survey;
@@ -10,11 +10,11 @@ import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 /**
  * @author G. Miceli
  */
-public class SurveyPullReader extends IdmlPullReader {
+public class SurveyUnmarshaller extends IdmlPullReader {
 
 	private Survey survey;
 	 
-	public SurveyPullReader(SurveyIdmlBinder binder) {
+	public SurveyUnmarshaller(SurveyIdmlBinder binder) {
 		super(SURVEY);
 		
 		if ( binder == null ) {

@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml.internal.unmarshal;
+package org.openforis.idm.metamodel.xml.internal.marshal;
 
 import java.io.IOException;
 
@@ -10,9 +10,9 @@ import org.openforis.idm.metamodel.xml.IdmlConstants;
  * @author G. Miceli
  *
  */
-abstract class LanguageSpecificTextXS<P> extends IdmlSerializer<LanguageSpecificText, P>{
+abstract class LanguageSpecificTextIM<P> extends AbstractIdmlMarshaller<LanguageSpecificText, P>{
 
-	public LanguageSpecificTextXS(String tag) {
+	public LanguageSpecificTextIM(String tag) {
 		super(tag);
 	}
 

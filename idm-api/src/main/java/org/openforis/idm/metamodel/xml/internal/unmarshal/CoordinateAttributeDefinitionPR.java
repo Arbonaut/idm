@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml.internal.marshal;
+package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
@@ -7,15 +7,15 @@ import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 /**
  * @author G. Miceli
  */
-class RangeAttributeDefinitionPR extends NumericAttributeDefinitionPR {
+class CoordinateAttributeDefinitionPR extends AttributeDefinitionPR {
 
-	public RangeAttributeDefinitionPR() {
-		super(RANGE);
+	public CoordinateAttributeDefinitionPR() {
+		super(COORDINATE);
 	}
 
 	@Override
 	protected NodeDefinition createDefinition(int id) {
 		Schema schema = getSchema();
-		return schema.createRangeAttributeDefinition(id);
+		return schema.createCoordinateAttributeDefinition(id);
 	}
 }

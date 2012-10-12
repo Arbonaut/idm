@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml.internal.marshal;
+package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
 import java.io.IOException;
 import java.util.List;
@@ -47,8 +47,8 @@ abstract class IdmlPullReader extends XmlPullReader {
 	public Survey getSurvey() {
 		XmlPullReader parent = getParentReader();
 		while ( parent != null ) {
-			if ( parent instanceof SurveyPullReader ) {
-				return ((SurveyPullReader) parent).getSurvey();
+			if ( parent instanceof SurveyUnmarshaller ) {
+				return ((SurveyUnmarshaller) parent).getSurvey();
 			}
 			parent = parent.getParentReader();
 		}

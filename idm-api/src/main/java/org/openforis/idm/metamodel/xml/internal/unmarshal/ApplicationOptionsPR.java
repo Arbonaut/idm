@@ -1,4 +1,4 @@
-package org.openforis.idm.metamodel.xml.internal.marshal;
+package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
 import java.io.IOException;
 
@@ -36,7 +36,7 @@ class ApplicationOptionsPR extends IdmlPullReader {
 			if ( optionsBinder != null ) {
 				ApplicationOptions options = optionsBinder.unmarshal(body);
 				Survey survey = getSurvey();
-				survey.setApplicationOptions(options);
+				survey.addApplicationOptions(options);
 			}
 		}
 	}

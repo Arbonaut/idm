@@ -87,18 +87,22 @@ public class Schema extends SurveyObject {
 	}
 	
 	public EntityDefinition getRootEntityDefinition(String name) {
-		for (EntityDefinition defn : rootEntityDefinitions) {
-			if ( defn.getName().equals(name) ) {
-				return defn;
+		if ( rootEntityDefinitions != null ) {
+			for (EntityDefinition defn : rootEntityDefinitions) {
+				if ( defn.getName().equals(name) ) {
+					return defn;
+				}
 			}
 		}
 		return null;
 	}
 	
 	public EntityDefinition getRootEntityDefinition(int id) {
-		for (EntityDefinition node : rootEntityDefinitions) {
-			if ( node.getId() == id ) {
-				return node;
+		if ( rootEntityDefinitions != null ) {
+			for (EntityDefinition node : rootEntityDefinitions) {
+				if ( node.getId() == id ) {
+					return node;
+				}
 			}
 		}
 		throw new IllegalArgumentException("Root entity definition with id " + id + " not found");

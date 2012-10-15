@@ -109,7 +109,7 @@ public class CodeList extends VersionableSurveyObject {
 		if ( this.descriptions == null ) {
 			return Collections.emptyList();
 		} else {
-			return this.descriptions.getAll();
+			return this.descriptions.values();
 		}
 	}
 

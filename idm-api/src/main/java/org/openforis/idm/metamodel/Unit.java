@@ -71,7 +71,7 @@ public class Unit extends IdentifiableSurveyObject {
 		if ( labels == null ) {
 			return Collections.emptyList();
 		} else {
-			return labels.getAll();
+			return labels.values();
 		}
 	}
 	
@@ -101,7 +101,7 @@ public class Unit extends IdentifiableSurveyObject {
 		if ( abbreviations == null ) {
 			return Collections.emptyList();
 		} else {
-			return abbreviations.getAll();
+			return abbreviations.values();
 		}
 	}
 	

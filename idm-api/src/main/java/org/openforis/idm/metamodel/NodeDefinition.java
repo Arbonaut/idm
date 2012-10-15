@@ -194,7 +194,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		if ( this.descriptions == null ) {
 			return Collections.emptyList();
 		} else {
-			return this.descriptions.getAll();
+			return this.descriptions.values();
 		}
 	}
 

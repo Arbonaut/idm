@@ -36,7 +36,7 @@ public class CodeListLevel implements Serializable {
 		if ( this.labels == null ) {
 			return Collections.emptyList();
 		} else {
-			return this.labels.getAll();
+			return this.labels.values();
 		}
 	}
 	
@@ -66,7 +66,7 @@ public class CodeListLevel implements Serializable {
 		if ( this.descriptions == null ) {
 			return Collections.emptyList();
 		} else {
-			return this.descriptions.getAll();
+			return this.descriptions.values();
 		}
 	}
 

@@ -132,7 +132,7 @@ public class Survey implements Serializable {
 		if ( this.projectNames == null ) {
 			return Collections.emptyList();
 		} else {
-			return this.projectNames.getAll();
+			return this.projectNames.values();
 		}
 	}
 
@@ -170,7 +170,7 @@ public class Survey implements Serializable {
 		if ( descriptions == null ) {
 			return Collections.emptyList();
 		} else {
-			return descriptions.getAll();
+			return descriptions.values();
 		}
 	}
 

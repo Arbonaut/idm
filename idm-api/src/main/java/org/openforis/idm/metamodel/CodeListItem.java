@@ -91,7 +91,7 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 		if ( this.labels == null ) {
 			return Collections.emptyList();
 		} else {
-			return this.labels.getAll();
+			return this.labels.values();
 		}
 	}
 	
@@ -121,7 +121,7 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 		if ( descriptions == null ) {
 			return Collections.emptyList();
 		} else {
-			return descriptions.getAll();
+			return descriptions.values();
 		}
 	}
 

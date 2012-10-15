@@ -42,7 +42,7 @@ public abstract class LanguageSpecificTextAbstractMap<T extends LanguageSpecific
 		return key;
 	}
 	
-	public List<T> getAll() {
+	public List<T> values() {
 		Collection<T> result = map.values();
 		return CollectionUtil.unmodifiableList(new ArrayList<T>(result));
 	}
@@ -53,13 +53,24 @@ public abstract class LanguageSpecificTextAbstractMap<T extends LanguageSpecific
 	}
 	
 	public void setText(String language, String text) {
-		T languageSpecificText = get(language);
+		String key = getMapKey(language);
+		T languageSpecificText = map.get(key);
 		if ( languageSpecificText == null ) {
 			languageSpecificText = createLanguageSpecificTextInstance(language, text);
-			map.put(language, languageSpecificText);
+			map.put(key, languageSpecificText);
 		} else {
 			languageSpecificText.setText(text);
 		}
+	}
+
+	public void add(T languageSpecificText) {
+		String key = getMapKey(languageSpecificText.getLanguage());
+		map.put(key, languageSpecificText);
+	}
+	
+	public void remove(String language) {
+		String key = getMapKey(language);
+		map.remove(key);
 	}
 
 	protected T createLanguageSpecificTextInstance(String language, String text) {
@@ -71,13 +82,4 @@ public abstract class LanguageSpecificTextAbstractMap<T extends LanguageSpecific
 		}
 	}
 	
-	public void add(T languageSpecificText) {
-		map.put(languageSpecificText.getLanguage(), languageSpecificText);
-	}
-	
-	public void remove(String language) {
-		String key = getMapKey(language);
-		map.remove(key);
-	}
-
 }

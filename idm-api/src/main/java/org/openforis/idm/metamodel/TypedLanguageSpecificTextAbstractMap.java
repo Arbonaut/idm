@@ -13,10 +13,12 @@ import java.util.List;
  *
  * @param <L>
  * @param <T>
+ * @param <T>
  */
-public abstract class TypedLanguageSpecificTextAbstractMap<L extends LanguageSpecificText, T extends Enum<T>> {
+public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLanguageSpecificText<T>, T extends Enum<T>> {
 	
-	private final Class<L> genericType;
+	private final Class<L> itemClass;
+	private final Class<T> typeClass;
 	
 	private LinkedHashMap<MapKey<T>, L> map;
 
@@ -24,7 +26,8 @@ public abstract class TypedLanguageSpecificTextAbstractMap<L extends LanguageSpe
 	TypedLanguageSpecificTextAbstractMap() {
 		ParameterizedType parameterizedType = (ParameterizedType)getClass().getGenericSuperclass();
 		Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-		genericType = (Class<L>) actualTypeArguments[0];
+		itemClass = (Class<L>) actualTypeArguments[0];
+		typeClass = (Class<T>) actualTypeArguments[1];
 		map = new LinkedHashMap<MapKey<T>, L>();
 	}
 	
@@ -33,7 +36,7 @@ public abstract class TypedLanguageSpecificTextAbstractMap<L extends LanguageSpe
 		return map.get(key);
 	}
 	
-	public List<L> getAll() {
+	public List<L> values() {
 		Collection<L> result = map.values();
 		return new ArrayList<L>(result);
 	}
@@ -46,23 +49,24 @@ public abstract class TypedLanguageSpecificTextAbstractMap<L extends LanguageSpe
 	public void setText(T type, String language, String text) {
 		L languageSpecificText = get(type, language);
 		if ( languageSpecificText == null ) {
-			languageSpecificText = createLanguageSpecificTextInstance(language, text);
-			add(type, languageSpecificText);
+			languageSpecificText = createLanguageSpecificTextInstance(type, language, text);
+			add(languageSpecificText);
 		} else {
 			languageSpecificText.setText(text);
 		}
 	}
 
-	protected L createLanguageSpecificTextInstance(String language, String text) {
+	protected L createLanguageSpecificTextInstance(T type, String language, String text) {
 		try {
-			L instance = genericType.getConstructor(String.class, String.class).newInstance(language, text);
+			L instance = itemClass.getConstructor(typeClass, String.class, String.class).newInstance(type, language, text);
 			return instance;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	public void add(T type, L languageSpecificText) {
+	public void add(L languageSpecificText) {
+		T type = languageSpecificText.getType();
 		MapKey<T> key = new MapKey<T>(type, languageSpecificText.getLanguage());
 		map.put(key, languageSpecificText);
 	}

@@ -9,8 +9,4 @@ package org.openforis.idm.metamodel;
  */
 public class NodeLabelMap extends TypedLanguageSpecificTextAbstractMap<NodeLabel, NodeLabel.Type> {
 	
-	public void add(NodeLabel label) {
-		super.add(label.getType(), label);
-	}
-
 }

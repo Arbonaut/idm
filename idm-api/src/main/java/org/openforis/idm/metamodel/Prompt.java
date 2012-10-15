@@ -5,57 +5,22 @@ package org.openforis.idm.metamodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Prompt extends LanguageSpecificText {
+public class Prompt extends TypedLanguageSpecificText<Prompt.Type> {
 
 	private static final long serialVersionUID = 1L;
 
 	public enum Type {
 		INTERVIEW, PAPER, HANDHELD, PC;
 	}
-
-	@XmlAttribute(name = "type")
-	private Type type;
-
-	public Prompt(String language, String text) {
-		super(language, text);
-	}
-
-	public Prompt(Type type, String language, String text) {
-		this(language, text);
-		this.type = type;
-	}
-
-	public Type getType() {
-		return this.type;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Prompt other = (Prompt) obj;
-		if (type != other.type)
-			return false;
-		return true;
-	}
 	
+	public Prompt(Type type, String language, String text) {
+		super(type, language, text);
+	}
+
 }

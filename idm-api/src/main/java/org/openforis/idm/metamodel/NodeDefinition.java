@@ -130,7 +130,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		if ( this.labels == null ) {
 			return Collections.emptyList();
 		} else {
-			return this.labels.getAll();
+			return this.labels.values();
 		}
 	}
 	
@@ -162,7 +162,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		if ( this.prompts == null ) {
 			return Collections.emptyList();
 		} else {
-			return this.prompts.getAll();
+			return this.prompts.values();
 		}
 	}
 	

@@ -77,7 +77,7 @@ public class CodeList extends VersionableSurveyObject {
 		if ( labels == null ) {
 			return Collections.emptyList();
 		} else {
-			return labels.getAll();
+			return labels.values();
 		}
 	}
 	

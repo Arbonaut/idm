@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.model.Node;
@@ -108,9 +109,13 @@ public class Path implements Axis {
 		} else {
 			String head = path.substring(0, idx);
 			String tail = path.substring(idx+1);
-			Path parentPath = parsePath(head);
 			Axis axis = PathElement.parseElement(tail);
-			return new Path(parentPath, axis);
+			if ( idx > 0 ) {
+				Path parentPath = parsePath(head);
+				return new Path(parentPath, axis);
+			} else {
+				return new Path(axis);
+			}
 		}
 	}
 }

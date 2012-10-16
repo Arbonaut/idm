@@ -7,16 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.openforis.idm.metamodel.validation.Check;
-import org.openforis.idm.metamodel.validation.ComparisonCheck;
-import org.openforis.idm.metamodel.validation.CustomCheck;
-import org.openforis.idm.metamodel.validation.DistanceCheck;
-import org.openforis.idm.metamodel.validation.PatternCheck;
-import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.model.Value;
 import org.openforis.idm.util.CollectionUtil;
@@ -27,24 +18,14 @@ import org.openforis.idm.util.CollectionUtil;
  * @author S. Ricci
  * 
  */
-@XmlTransient
 public abstract class AttributeDefinition extends NodeDefinition {
 	
 	private static final long serialVersionUID = 1L;
 
-	@XmlElements({ 
-			@XmlElement(name = "distance", type = DistanceCheck.class), 
-			@XmlElement(name = "pattern", type = PatternCheck.class), 
-			@XmlElement(name = "compare", type = ComparisonCheck.class),
-			@XmlElement(name = "check", type = CustomCheck.class), 
-			@XmlElement(name = "unique", type = UniquenessCheck.class) 
-			})
 	private List<Check<?>> checks;
-
-	@XmlElement(name = "default", type = AttributeDefault.class)
 	private List<AttributeDefault> attributeDefaults;
 
-	protected AttributeDefinition(Survey survey, int id) {
+	AttributeDefinition(Survey survey, int id) {
 		super(survey, id);
 	}
 

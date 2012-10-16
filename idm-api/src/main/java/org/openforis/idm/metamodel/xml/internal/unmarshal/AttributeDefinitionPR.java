@@ -71,7 +71,7 @@ abstract class AttributeDefinitionPR extends NodeDefinitionPR {
 		protected void onStartTag()
 				throws XmlParseException, XmlPullParserException, IOException {
 			this.precision = new Precision();
-			Boolean isDefault = getBooleanAttribute(VALUE, false);
+			Boolean isDefault = getBooleanAttribute(DEFAULT, false);
 			Integer decimalDigits = getIntegerAttribute(DECIMAL_DIGITS, false);
 			String unitName = getAttribute(UNIT, false);
 			Unit unit = getSurvey().getUnit(unitName);

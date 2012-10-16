@@ -3,6 +3,7 @@ package org.openforis.idm.metamodel.xml.internal.marshal;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +18,10 @@ import org.xmlpull.v1.XmlSerializer;
  *
  * @param <P>
  */
-public abstract class AbstractIdmlMarshaller<T,P> {
+public abstract class XmlSerializerSupport<T, P> {
 
-	private XmlSerializer xmlSerializer;
-	private List<AbstractIdmlMarshaller<?,T>> childMarshallers;
+	private XmlSerializer xs;
+	private List<XmlSerializerSupport<?,T>> childMarshallers;
 	private String encoding;
 	private String tagNamespace;
 	private String tagName;
@@ -28,30 +29,22 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 	private Writer writer;
 	private String listWrapperTag;
 	
-	protected AbstractIdmlMarshaller(String tag) {
+	protected XmlSerializerSupport() {
+		this(IdmlConstants.IDML3_NAMESPACE_URI, null);
+	}
+	
+	protected XmlSerializerSupport(String tag) {
 		this(IdmlConstants.IDML3_NAMESPACE_URI, tag);
 	}
 
-	protected AbstractIdmlMarshaller(String tagNamespace, String tagName) {
+	protected XmlSerializerSupport(String tagNamespace, String tagName) {
 		this.includeEmpty = false; 
 		this.tagNamespace = tagNamespace;
 		this.tagName = tagName;
 	}
 
-	protected XmlSerializer getSerializer() {
-		return xmlSerializer;
-	}
-	
-	protected void setXmlSerializer(XmlSerializer serializer) {
-		this.xmlSerializer = serializer;
-	}
-	
-	protected String getEncoding() {
-		return encoding;
-	}
-
-	protected void setEncoding(String encoding) {
-		this.encoding = encoding;
+	protected XmlSerializer getXmlSerializer() {
+		return xs;
 	}
 	
 	public boolean isIncludeEmpty() {
@@ -66,19 +59,32 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 		this.listWrapperTag = listWrapperTag;
 	}
 	
-	public String getListWrapperTag() {
-		return listWrapperTag;
-	}
-	
 	synchronized
 	public void marshal(T sourceObject, OutputStream os, String enc) throws IOException {
 		XmlSerializer ser = createXmlSerializer();
-		ser.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
-	    ser.setOutput(os, enc);
-	    Writer writer = new OutputStreamWriter(os, enc);
-	    marshal(ser, enc, writer, sourceObject);
+		ser.setOutput(os, enc);
+		Writer writer = new OutputStreamWriter(os, enc);
+		this.writer = writer;
+		marshal(sourceObject, enc, ser);
+	}
+	
+	synchronized
+	public void marshal(T sourceObject, Writer wr, String enc) throws IOException {
+		XmlSerializer ser = createXmlSerializer();
+		ser.setOutput(wr);
+		this.writer = wr;
+		marshal(sourceObject, enc, ser);
 	}
 
+	private void marshal(T sourceObject, String enc, XmlSerializer ser)
+			throws UnsupportedEncodingException, IOException {
+		ser.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+	    this.xs = ser;
+		this.encoding = enc;
+		marshal(sourceObject);
+	}
+
+	
 	private static XmlSerializer createXmlSerializer() {
 		try {
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -88,15 +94,12 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 		}
 	}
 
-	synchronized
-	private void marshal(XmlSerializer serializer, String encoding, Writer wr, T sourceObject) throws IOException {
-		this.xmlSerializer = serializer;
-		this.writer = wr;
-	    this.encoding = encoding;
-		marshal(sourceObject);
-	}
-
-	protected final void marshal(T sourceObject) throws IOException {
+	/**
+	 * Main method which calls start, attributes, body and end
+	 * @param sourceObject
+	 * @throws IOException
+	 */
+	protected void marshal(T sourceObject) throws IOException {
 		if ( includeEmpty || sourceObject != null ) {
 			start(sourceObject);
 			attributes(sourceObject);
@@ -107,7 +110,7 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 
 	protected void start(T sourceObject) throws IOException {
 		if ( tagName != null ) {
-			xmlSerializer.startTag(tagNamespace, tagName);
+			xs.startTag(tagNamespace, tagName);
 		}
 	}
 
@@ -121,17 +124,15 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 
 	protected void marshalChildren(T parentObject) throws IOException {
 		if ( childMarshallers != null ) {
-			for (AbstractIdmlMarshaller<?,T> ser : childMarshallers) {
-				ser.xmlSerializer = this.xmlSerializer;
-				ser.encoding = this.encoding;
-				ser.writer = this.writer;
+			for (XmlSerializerSupport<?,T> ser : childMarshallers) {
+				prepareChildMarshaller(ser);
 				ser.marshalInstances(parentObject);
 			}
 		}
 	}
 
 	/**
-	 * Override this method to extract instanced from parent.  
+	 * Override this method to extract instances from parent.  
 	 * Should call marshal() on List or single instances 
 	 * @param parentObject
 	 * @throws IOException
@@ -170,25 +171,30 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 
 	protected void end(T sourceObject) throws IOException {
 		if ( tagName != null ) {
-			xmlSerializer.endTag(tagNamespace, tagName);
+			xs.endTag(tagNamespace, tagName);
 		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void addChildMarshallers(AbstractIdmlMarshaller<?,?>... marshallers) {
+	public void addChildMarshallers(XmlSerializerSupport<?,?>... marshallers) {
 		if ( childMarshallers == null ) {
-			this.childMarshallers = new ArrayList<AbstractIdmlMarshaller<?,T>>(marshallers.length); 
+			this.childMarshallers = new ArrayList<XmlSerializerSupport<?,T>>(marshallers.length); 
 		}
 		
-		for (AbstractIdmlMarshaller ser : marshallers) {
-			ser.setXmlSerializer(xmlSerializer);
-			childMarshallers.add(ser);
+		for (XmlSerializerSupport im : marshallers) {
+			childMarshallers.add(im);
 		}
+	}
+
+	protected final void prepareChildMarshaller(XmlSerializerSupport<?,?> im) {
+		im.xs = this.xs;
+		im.encoding = this.encoding;
+		im.writer = this.writer;
 	}
 
 	
 	public void setPrefix(String prefix, String namespaceUri) throws IOException{
-		xmlSerializer.setPrefix(prefix, namespaceUri);
+		xs.setPrefix(prefix, namespaceUri);
 	}
 
 	protected void setDefaultNamespace(String namespaceUri) throws IOException {
@@ -197,7 +203,7 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 
 	protected void attribute(String name, String value) throws IOException {
 		if ( value != null ) {
-			xmlSerializer.attribute("", name, value);
+			xs.attribute("", name, value);
 		}
 	}
 	
@@ -210,47 +216,47 @@ public abstract class AbstractIdmlMarshaller<T,P> {
 
 	protected void attribute(String ns, String name, String value) 
 				throws IOException {
-		xmlSerializer.attribute(ns, name, value);
+		xs.attribute(ns, name, value);
 	}
 
 	protected void cdsect(String cdata) throws IOException {
-		xmlSerializer.cdsect(cdata);
+		xs.cdsect(cdata);
 	}
 
 	protected void comment(String comment) throws IOException {
-		xmlSerializer.comment(comment);
+		xs.comment(comment);
 	}
 
 	protected void endDocument() throws IOException {
-		xmlSerializer.endDocument();
+		xs.endDocument();
 	}
 
 	protected void endTag(String ns, String name) throws IOException {
-		xmlSerializer.endTag(ns, name);
+		xs.endTag(ns, name);
 	}
 
 	protected void endTag(String name) throws IOException {
-		xmlSerializer.endTag(tagNamespace, name);
+		xs.endTag(tagNamespace, name);
 	}
 
 	protected void startDocument() throws IOException {
-		xmlSerializer.startDocument(getEncoding(), true);
+		xs.startDocument(encoding, true);
 	}
 
 	protected void startTag(String ns, String name) throws IOException{
-		xmlSerializer.startTag(ns, name);
+		xs.startTag(ns, name);
 	}
 
 	protected void startTag(String name) throws IOException{
-		xmlSerializer.startTag(tagNamespace, name);
+		xs.startTag(tagNamespace, name);
 	}
 
 	protected void text(String text) throws IOException  {
-		xmlSerializer.text(text);
+		xs.text(text);
 	}
 	
 	protected void writeXml(String xml) throws IOException {
-		xmlSerializer.flush();
+		xs.flush();
 		writer.write(xml);
 		writer.flush();
 	}

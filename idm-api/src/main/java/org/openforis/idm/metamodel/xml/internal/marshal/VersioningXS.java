@@ -13,12 +13,12 @@ import org.openforis.idm.metamodel.Survey;
  * @author G. Miceli
  *
  */
-class VersioningIM extends AbstractIdmlMarshaller<ModelVersion, Survey> {
+class VersioningXS extends XmlSerializerSupport<ModelVersion, Survey> {
 
-	VersioningIM() {
+	VersioningXS() {
 		super(VERSION);
 		setListWrapperTag(VERSIONING);
-		addChildMarshallers(new LabelIM(), new DescriptionIM(), new DateIM());
+		addChildMarshallers(new LabelXS(), new DescriptionXS(), new DateXS());
 	}
 	
 	@Override
@@ -33,9 +33,9 @@ class VersioningIM extends AbstractIdmlMarshaller<ModelVersion, Survey> {
 		attribute(NAME, version.getName());
 	}
 	
-	private class LabelIM extends LanguageSpecificTextIM<ModelVersion> {
+	private class LabelXS extends LanguageSpecificTextXS<ModelVersion> {
 
-		public LabelIM() {
+		public LabelXS() {
 			super(LABEL);
 		}
 		
@@ -45,9 +45,9 @@ class VersioningIM extends AbstractIdmlMarshaller<ModelVersion, Survey> {
 		}
 	}
 	
-	private class DescriptionIM extends LanguageSpecificTextIM<ModelVersion> {
+	private class DescriptionXS extends LanguageSpecificTextXS<ModelVersion> {
 
-		public DescriptionIM() {
+		public DescriptionXS() {
 			super(DESCRIPTION);
 		}
 		
@@ -57,9 +57,9 @@ class VersioningIM extends AbstractIdmlMarshaller<ModelVersion, Survey> {
 		}
 	}
 	
-	private class DateIM extends TextIM<ModelVersion> {
+	private class DateXS extends TextXS<ModelVersion> {
 
-		public DateIM() {
+		public DateXS() {
 			super(DATE);
 		}
 		

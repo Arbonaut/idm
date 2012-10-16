@@ -7,11 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.IntegerAttribute;
 import org.openforis.idm.model.IntegerValue;
@@ -25,23 +20,19 @@ import org.openforis.idm.model.Value;
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"id", "name", "type", "key", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
-		"labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
 public class NumberAttributeDefinition extends NumericAttributeDefinition implements KeyAttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlAttribute(name = "key")
-	private Boolean key;
+	private boolean key;
 
-	protected NumberAttributeDefinition(Survey survey, int id) {
+	NumberAttributeDefinition(Survey survey, int id) {
 		super(survey, id);
 	}
 
 	@Override
 	public boolean isKey() {
-		return this.key == null ? false : key;
+		return key;
 	}
 	
 	@Override
@@ -112,7 +103,7 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		result = prime * result + (key ? 1231 : 1237);
 		return result;
 	}
 
@@ -125,12 +116,8 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 		if (getClass() != obj.getClass())
 			return false;
 		NumberAttributeDefinition other = (NumberAttributeDefinition) obj;
-		if (key == null) {
-			if (other.key != null)
-				return false;
-		} else if (!key.equals(other.key))
+		if (key != other.key)
 			return false;
 		return true;
 	}
-
 }

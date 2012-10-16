@@ -18,17 +18,17 @@ import org.openforis.idm.metamodel.Survey;
  * @author G. Miceli
  *
  */
-class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
+class CodeListsXS extends VersionableSurveyObjectXS<CodeList, Survey> {
 
-	CodeListsIM() {
+	CodeListsXS() {
 		super(LIST);
 		setListWrapperTag(CODE_LISTS);
 		addChildMarshallers(
-				new LabelIM(), 
-				new DescriptionIM(), 
-				new CodingSchemeIM(), 
-				new HierarchyIM(),
-				new ItemsIM());
+				new LabelXS(), 
+				new DescriptionXS(), 
+				new CodingSchemeXS(), 
+				new HierarchyXS(),
+				new ItemsXS());
 	}
 	
 	@Override
@@ -45,9 +45,9 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 		super.attributes(list);
 	}
 	
-	private class LabelIM extends LanguageSpecificTextIM<CodeList> {
+	private class LabelXS extends LanguageSpecificTextXS<CodeList> {
 
-		public LabelIM() {
+		public LabelXS() {
 			super(LABEL);
 		}
 		
@@ -64,9 +64,9 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 		}
 	}
 	
-	private class DescriptionIM extends LanguageSpecificTextIM<CodeList> {
+	private class DescriptionXS extends LanguageSpecificTextXS<CodeList> {
 
-		public DescriptionIM() {
+		public DescriptionXS() {
 			super(DESCRIPTION);
 		}
 		
@@ -76,9 +76,9 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 		}
 	}
 
-	private class CodingSchemeIM extends AbstractIdmlMarshaller<CodeScope, CodeList> {
+	private class CodingSchemeXS extends XmlSerializerSupport<CodeScope, CodeList> {
 
-		public CodingSchemeIM() {
+		public CodingSchemeXS() {
 			super(CODING_SCHEME);
 		}
 		
@@ -88,16 +88,16 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 		}
 		
 		protected void attributes(CodeScope scope) throws IOException {
-			attribute(SCOPE, scope.name().toLowerCase());
+			attribute(SCOPE, scope == null ? null : scope.name().toLowerCase());
 		}
 	}
 
-	private class HierarchyIM extends AbstractIdmlMarshaller<CodeListLevel, CodeList> {
+	private class HierarchyXS extends XmlSerializerSupport<CodeListLevel, CodeList> {
 
-		public HierarchyIM() {
+		public HierarchyXS() {
 			super(LEVEL);
 			setListWrapperTag(HIERARCHY);
-			addChildMarshallers(new LabelIM(), new DescriptionIM());
+			addChildMarshallers(new LabelXS(), new DescriptionXS());
 		}
 		
 		@Override
@@ -110,9 +110,9 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 			attribute(NAME, level.getName());
 		}
 		
-		private class LabelIM extends LanguageSpecificTextIM<CodeListLevel> {
+		private class LabelXS extends LanguageSpecificTextXS<CodeListLevel> {
 
-			public LabelIM() {
+			public LabelXS() {
 				super(LABEL);
 			}
 			
@@ -122,9 +122,9 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 			}
 		}
 		
-		private class DescriptionIM extends LanguageSpecificTextIM<CodeListLevel> {
+		private class DescriptionXS extends LanguageSpecificTextXS<CodeListLevel> {
 
-			public DescriptionIM() {
+			public DescriptionXS() {
 				super(DESCRIPTION);
 			}
 			
@@ -136,11 +136,11 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 		
 	}
 
-	private abstract class AbstractItemIM<P> extends AbstractIdmlMarshaller<CodeListItem, P> {
+	private abstract class AbstractItemXS<P> extends XmlSerializerSupport<CodeListItem, P> {
 
-		public AbstractItemIM() {
+		public AbstractItemXS() {
 			super(ITEM);
-			addChildMarshallers(new CodeIM(), new LabelIM(), new DescriptionIM());
+			addChildMarshallers(new CodeXS(), new LabelXS(), new DescriptionXS());
 		}
 
 		@Override
@@ -151,9 +151,9 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 			}
 		}
 		
-		private class CodeIM extends TextIM<CodeListItem> {
+		private class CodeXS extends TextXS<CodeListItem> {
 
-			public CodeIM() {
+			public CodeXS() {
 				super(CODE);
 			}
 			
@@ -163,9 +163,9 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 			}
 		}
 		
-		private class LabelIM extends LanguageSpecificTextIM<CodeListItem> {
+		private class LabelXS extends LanguageSpecificTextXS<CodeListItem> {
 
-			public LabelIM() {
+			public LabelXS() {
 				super(LABEL);
 			}
 			
@@ -175,9 +175,9 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 			}
 		}
 		
-		private class DescriptionIM extends LanguageSpecificTextIM<CodeListItem> {
+		private class DescriptionXS extends LanguageSpecificTextXS<CodeListItem> {
 
-			public DescriptionIM() {
+			public DescriptionXS() {
 				super(DESCRIPTION);
 			}
 			
@@ -189,11 +189,11 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 		
 	}
 	
-	private class ItemsIM extends AbstractItemIM<CodeList> {
+	private class ItemsXS extends AbstractItemXS<CodeList> {
 		
-		public ItemsIM() {
+		public ItemsXS() {
 			setListWrapperTag(ITEMS);
-			addChildMarshallers(new ChildItemIM());
+			addChildMarshallers(new ChildItemXS());
 		}
 		
 		@Override
@@ -202,9 +202,9 @@ class CodeListsIM extends VersionableSurveyObjectMarshaller<CodeList, Survey> {
 		}
 	}
 
-	private class ChildItemIM extends AbstractItemIM<CodeListItem> {
+	private class ChildItemXS extends AbstractItemXS<CodeListItem> {
 		
-		public ChildItemIM() {
+		public ChildItemXS() {
 			addChildMarshallers(this);
 		}
 		

@@ -7,21 +7,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlType;
-
 import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "id", "name", "lookupTable", "sinceVersionName", "deprecatedVersionName", "labels", "descriptions", "codingScheme", "hierarchy", "items" })
 public class CodeList extends VersionableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
@@ -30,27 +21,12 @@ public class CodeList extends VersionableSurveyObject {
 		SCHEME, LOCAL
 	}
 
-	@XmlAttribute(name = "name")
 	private String name;
-
-	@XmlAttribute(name = "lookup")
 	private String lookupTable;
-
-	@XmlElement(name = "label", type = CodeListLabel.class)
 	private CodeListLabelMap labels;
-
-	@XmlElement(name = "description", type = LanguageSpecificTextMap.class)
 	private LanguageSpecificTextMap descriptions;
-
-	@XmlElement(name = "codingScheme", type = CodingScheme.class)
 	private CodingScheme codingScheme;
-
-	@XmlElement(name = "level", type = CodeListLevel.class)
-	@XmlElementWrapper(name = "hierarchy")
 	private List<CodeListLevel> hierarchy;
-
-	@XmlElement(name = "item", type = CodeListItem.class)
-	@XmlElementWrapper(name = "items")
 	private List<CodeListItem> items;
 
 	CodeList(Survey survey, int id) {
@@ -244,7 +220,7 @@ public class CodeList extends VersionableSurveyObject {
 
 	public CodeScope getCodeScope() {
 		if ( codingScheme == null || codingScheme.getCodeScope() == null ) {
-			return CodeScope.LOCAL;
+			return null;
 		} else {
 			return codingScheme.getCodeScope();
 		}

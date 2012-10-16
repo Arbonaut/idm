@@ -76,7 +76,31 @@ public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLangua
 		map.remove(key);
 	}
 	
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((map == null) ? 0 : map.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TypedLanguageSpecificTextAbstractMap<?, ?> other = (TypedLanguageSpecificTextAbstractMap<?, ?>) obj;
+		if (map == null) {
+			if (other.map != null)
+				return false;
+		} else if (!map.equals(other.map))
+			return false;
+		return true;
+	}
+
 	static class MapKey<T> {
 		private String language;
 		private T type;

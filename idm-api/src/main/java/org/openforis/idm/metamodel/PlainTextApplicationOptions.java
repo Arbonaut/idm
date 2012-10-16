@@ -6,18 +6,11 @@ package org.openforis.idm.metamodel;
  */
 public class PlainTextApplicationOptions implements ApplicationOptions {
 	private String type;
-	private String text;
-
+	private String body;
+	
 	public PlainTextApplicationOptions() {
 	}
 
-	public PlainTextApplicationOptions(String text, String type) {
-		this.text = text;
-		this.type = type;
-	}
-
-
-	@Override
 	public String getType() {
 		return type;
 	}
@@ -26,11 +19,11 @@ public class PlainTextApplicationOptions implements ApplicationOptions {
 		this.type = type;
 	}
 
-	public String getText() {
-		return text;
+	public String getBody() {
+		return body;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setBody(String body) {
+		this.body = body;
 	}
 }

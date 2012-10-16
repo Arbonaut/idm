@@ -1,10 +1,6 @@
 package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
-import static org.xmlpull.v1.XmlPullParser.CDSECT;
-import static org.xmlpull.v1.XmlPullParser.END_TAG;
-import static org.xmlpull.v1.XmlPullParser.ENTITY_REF;
-import static org.xmlpull.v1.XmlPullParser.START_TAG;
-import static org.xmlpull.v1.XmlPullParser.TEXT;
+import static org.xmlpull.v1.XmlPullParser.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -225,7 +221,8 @@ public abstract class XmlPullReader {
 		this.unordered = unordered;
 	}
 	
-	protected String nextElement(boolean includeOuterTag) throws XmlParseException, XmlPullParserException, IOException {
+	protected String nextElement(boolean includeOuterTag) throws XmlParseException, 
+			XmlPullParserException, IOException {
 		XmlPullParser in = getParser();
 		if (in.getEventType() != START_TAG) {
 		    throw new XmlParseException(in, "start tag expected");
@@ -240,11 +237,15 @@ public abstract class XmlPullReader {
 		}
 	    int depth = 1;
 	    while (depth != 0) {
-	        switch (in.next()) {
+	    	switch (in.next()) {
 	        case START_TAG:
+				out.setPrefix("", in.getNamespace());
 	        	out.startTag(in.getNamespace(), in.getName());
 	        	for ( int i=0; i < in.getAttributeCount(); i++) {
-	        		out.attribute(in.getAttributeNamespace(i), in.getAttributeName(i), in.getAttributeValue(i));
+	        		String attributeNamespace = in.getAttributeNamespace(i);
+					String attributeName = in.getAttributeName(i);
+					String attributeValue = in.getAttributeValue(i);
+					out.attribute(attributeNamespace, attributeName, attributeValue);
 	        	}
 	            depth++;
 	            break;

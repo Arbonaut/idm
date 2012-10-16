@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAnyAttribute;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,42 +22,19 @@ import org.openforis.idm.util.CollectionUtil;
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlTransient
 public abstract class NodeDefinition extends VersionableSurveyObject implements Annotatable {
 	private static final long serialVersionUID = 1L;
-//	private static final transient Log LOG = LogFactory.getLog(NodeDefinition.class);
 
-	@XmlTransient
 	private NodeDefinition parentDefinition;
-	
-	@XmlAttribute(name = "name")
 	private String name;
-
-	@XmlAttribute(name = "relevant")
 	private String relevantExpression;
-
-	@XmlAttribute(name = "requiredIf")
 	private String requiredExpression;
-
-	@XmlAttribute(name = "multiple")
 	private boolean multiple;
-
-	@XmlAttribute(name = "minCount")
 	private Integer minCount;
-
-	@XmlAttribute(name = "maxCount")
 	private Integer maxCount;
-
-	@XmlElement(name = "label", type = NodeLabel.class)
 	private NodeLabelMap labels;
-
-	@XmlElement(name = "prompt", type = Prompt.class)
 	private PromptMap prompts;
-
-	@XmlElement(name = "description", type = LanguageSpecificTextMap.class)
 	private LanguageSpecificTextMap descriptions;
-
-	@XmlAnyAttribute
 	private Map<QName,String> annotations;
 	
 	NodeDefinition(Survey survey, int id) {
@@ -86,7 +59,11 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	}
 	
 	public Set<QName> getAnnotationNames() {
-		return CollectionUtil.unmodifiableSet(annotations.keySet());
+		if ( annotations == null ) {
+			return Collections.emptySet();
+		} else {
+			return Collections.unmodifiableSet(annotations.keySet());
+		}
 	}
 
 	public NodeDefinition getDefinitionByPath(String path) throws InvalidPathException {
@@ -130,7 +107,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		if ( this.labels == null ) {
 			return Collections.emptyList();
 		} else {
-			return this.labels.values();
+			return labels.values();
 		}
 	}
 	

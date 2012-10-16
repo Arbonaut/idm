@@ -3,15 +3,11 @@ package org.openforis.idm.metamodel;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
  */
-@XmlTransient
 public abstract class NumericAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
@@ -30,8 +26,6 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	}
 
 	private Type type; 
-
-	@XmlElement(name = "precision", type = Precision.class)
 	private List<Precision> precisionDefinitions;
 
 	protected NumericAttributeDefinition(Survey survey, int id) {

@@ -13,12 +13,12 @@ import org.openforis.idm.metamodel.Unit;
  * @author G. Miceli
  *
  */
-class UnitsIM extends AbstractIdmlMarshaller<Unit, Survey> {
+class UnitsXS extends XmlSerializerSupport<Unit, Survey> {
 
-	UnitsIM() {
+	UnitsXS() {
 		super(UNIT);
 		setListWrapperTag(UNITS);
-		addChildMarshallers(new LabelIM(), new AbbreviationIM());
+		addChildMarshallers(new LabelXS(), new AbbreviationXS());
 	}
 	
 	@Override
@@ -35,9 +35,9 @@ class UnitsIM extends AbstractIdmlMarshaller<Unit, Survey> {
 		attribute(CONVERSION_FACTOR, unit.getConversionFactor());
 	}
 	
-	private class LabelIM extends LanguageSpecificTextIM<Unit> {
+	private class LabelXS extends LanguageSpecificTextXS<Unit> {
 
-		public LabelIM() {
+		public LabelXS() {
 			super(LABEL);
 		}
 		
@@ -47,9 +47,9 @@ class UnitsIM extends AbstractIdmlMarshaller<Unit, Survey> {
 		}
 	}
 	
-	private class AbbreviationIM extends LanguageSpecificTextIM<Unit> {
+	private class AbbreviationXS extends LanguageSpecificTextXS<Unit> {
 
-		public AbbreviationIM() {
+		public AbbreviationXS() {
 			super(ABBREVIATION);
 		}
 		

@@ -9,7 +9,6 @@ import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
  */
 class DateAttributeDefinitionPR extends AttributeDefinitionPR {
 
-
 	public DateAttributeDefinitionPR() {
 		super(DATE);
 	}

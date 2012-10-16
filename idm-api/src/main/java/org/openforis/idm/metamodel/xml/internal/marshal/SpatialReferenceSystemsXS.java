@@ -13,15 +13,15 @@ import org.openforis.idm.metamodel.Survey;
  * @author G. Miceli
  *
  */
-class SpatialReferenceSystemsIM extends AbstractIdmlMarshaller<SpatialReferenceSystem, Survey> {
+class SpatialReferenceSystemsXS extends XmlSerializerSupport<SpatialReferenceSystem, Survey> {
 
-	SpatialReferenceSystemsIM() {
+	SpatialReferenceSystemsXS() {
 		super(SPATIAL_REFERENCE_SYSTEM);
 		setListWrapperTag(SPATIAL_REFERENCE_SYSTEMS);
 		addChildMarshallers(
-				new LabelIM(),
-				new DescriptionIM(),
-				new WktIM());
+				new LabelXS(),
+				new DescriptionXS(),
+				new WktXS());
 	}
 	
 	@Override
@@ -32,12 +32,12 @@ class SpatialReferenceSystemsIM extends AbstractIdmlMarshaller<SpatialReferenceS
 	
 	@Override
 	protected void attributes(SpatialReferenceSystem srs) throws IOException {
-		attribute(ID, srs.getId());
+		attribute(SRID, srs.getId());
 	}
 	
-	private class LabelIM extends LanguageSpecificTextIM<SpatialReferenceSystem> {
+	private class LabelXS extends LanguageSpecificTextXS<SpatialReferenceSystem> {
 
-		public LabelIM() {
+		public LabelXS() {
 			super(LABEL);
 		}
 		
@@ -47,9 +47,9 @@ class SpatialReferenceSystemsIM extends AbstractIdmlMarshaller<SpatialReferenceS
 		}
 	}
 	
-	private class DescriptionIM extends LanguageSpecificTextIM<SpatialReferenceSystem> {
+	private class DescriptionXS extends LanguageSpecificTextXS<SpatialReferenceSystem> {
 
-		public DescriptionIM() {
+		public DescriptionXS() {
 			super(DESCRIPTION);
 		}
 		
@@ -59,9 +59,9 @@ class SpatialReferenceSystemsIM extends AbstractIdmlMarshaller<SpatialReferenceS
 		}
 	}
 	
-	private class WktIM extends AbstractIdmlMarshaller<String, SpatialReferenceSystem> {
+	private class WktXS extends XmlSerializerSupport<String, SpatialReferenceSystem> {
 
-		public WktIM() {
+		public WktXS() {
 			super(WKT);
 		}
 		

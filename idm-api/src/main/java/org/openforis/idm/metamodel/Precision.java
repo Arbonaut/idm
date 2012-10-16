@@ -90,5 +90,8 @@ public class Precision implements Serializable {
 			return false;
 		return true;
 	}
-	
+
+	public String getUnitName() {
+		return unit == null ? null : unit.getName();
+	}
 }

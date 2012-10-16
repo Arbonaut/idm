@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -77,6 +78,8 @@ public class Survey implements Serializable {
 	@XmlElement(name = "schema", type = Schema.class)
 	private Schema schema;
 
+	private Map<String, String> namespaces;
+	
 	private int lastId;
 	
 	private transient SurveyContext surveyContext;
@@ -603,4 +606,31 @@ public class Survey implements Serializable {
 		return new Unit(this, nextId());
 	}
 	
+	public void addCustomNamespace(String uri, String prefix) {
+		if ( namespaces == null ) {
+			namespaces = new LinkedHashMap<String, String>();
+		}
+		namespaces.put(uri, prefix);
+	}
+	
+	public void removeCustomNamespace(String uri) {
+		if ( namespaces != null ) {
+			namespaces.remove(uri);
+		}
+	}
+	
+	public List<String> getCustomNamespaces() {
+		if ( namespaces == null ) {
+			return Collections.emptyList();
+		} else {
+			return Collections.unmodifiableList(new ArrayList<String>(namespaces.keySet()));
+		}
+	}
+	public String getCustomNamespacePrefix(String uri) {
+		if ( namespaces == null ) {
+			return null;
+		} else {
+			return namespaces.get(uri);
+		}
+	}
 }

@@ -26,10 +26,10 @@ public class SurveyMarshaller extends XmlSerializerSupport<Survey, Void>{
 				new DescriptionXS(),
 				new LanguageXS(),
 				new ApplicationOptionsXS(binder),
-//				new VersioningXS(), 
-//				new CodeListsXS(),
-//				new UnitsXS(),
-//				new SpatialReferenceSystemsXS(),
+				new VersioningXS(), 
+				new CodeListsXS(),
+				new UnitsXS(),
+				new SpatialReferenceSystemsXS(),
 				new SchemaXS());
 	}
 

@@ -9,7 +9,6 @@ import org.openforis.idm.model.Node;
 /**
  * @author S. Ricci
  * @author G. Miceli
- *
  */
 public final class FieldDefinition<T> extends NodeDefinition {
 

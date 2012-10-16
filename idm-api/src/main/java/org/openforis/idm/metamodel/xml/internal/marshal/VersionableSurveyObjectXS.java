@@ -1,12 +1,13 @@
 package org.openforis.idm.metamodel.xml.internal.marshal;
 
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
+
 import java.io.IOException;
 
 import javax.xml.namespace.QName;
 
 import org.openforis.idm.metamodel.Annotatable;
 import org.openforis.idm.metamodel.VersionableSurveyObject;
-import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * 

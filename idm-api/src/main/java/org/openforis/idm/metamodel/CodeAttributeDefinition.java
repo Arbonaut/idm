@@ -7,12 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
@@ -24,32 +18,19 @@ import org.openforis.idm.path.InvalidPathException;
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"id", "name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression","required", "requiredExpression",
-		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class CodeAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlTransient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 		new FieldDefinition<String>("code", "c", null, String.class, this), 
 		new FieldDefinition<String>("qualifier", "q", "other", String.class, this)
 	};
 
-	@XmlAttribute(name = "key")
-	private Boolean key;
-
-	@XmlAttribute(name = "strict")
-	private Boolean allowUnlisted;
-
-	@XmlAttribute(name = "parent")
+	private boolean key;
+	private boolean allowUnlisted;
 	private String parentExpression;
-
-	@XmlTransient
 	private CodeList list;
-
-	@XmlTransient
 	private CodeAttributeDefinition parentCodeAttributeDefinition; 
 	
 	CodeAttributeDefinition(Survey survey, int id) {
@@ -70,7 +51,6 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		}
 	}
 	
-	@XmlAttribute(name = "list")
 	public String getListName() {
 		return list == null ? null : list.getName();
 	}
@@ -89,7 +69,7 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	
 	@Override
 	public boolean isKey() {
-		return this.key == null ? false : key;
+		return key;
 	}
 	
 	@Override
@@ -98,7 +78,7 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	}
 
 	public boolean isAllowUnlisted() {
-		return allowUnlisted == null ? false : allowUnlisted;
+		return allowUnlisted;
 	}
 	
 	public void setAllowUnlisted(Boolean allowUnlisted) {
@@ -154,9 +134,8 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((allowUnlisted == null) ? 0 : allowUnlisted.hashCode());
-		result = prime * result + ((key == null) ? 0 : key.hashCode());
-		result = prime * result + ((list == null) ? 0 : list.hashCode());
+		result = prime * result + (allowUnlisted ? 1231 : 1237);
+		result = prime * result + (key ? 1231 : 1237);
 		result = prime * result + ((parentExpression == null) ? 0 : parentExpression.hashCode());
 		return result;
 	}
@@ -170,20 +149,9 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		if (getClass() != obj.getClass())
 			return false;
 		CodeAttributeDefinition other = (CodeAttributeDefinition) obj;
-		if (allowUnlisted == null) {
-			if (other.allowUnlisted != null)
-				return false;
-		} else if (!allowUnlisted.equals(other.allowUnlisted))
+		if (allowUnlisted != other.allowUnlisted)
 			return false;
-		if (key == null) {
-			if (other.key != null)
-				return false;
-		} else if (!key.equals(other.key))
-			return false;
-		if (list == null) {
-			if (other.list != null)
-				return false;
-		} else if (!list.equals(other.list))
+		if (key != other.key)
 			return false;
 		if (parentExpression == null) {
 			if (other.parentExpression != null)
@@ -192,5 +160,4 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 			return false;
 		return true;
 	}
-	
 }

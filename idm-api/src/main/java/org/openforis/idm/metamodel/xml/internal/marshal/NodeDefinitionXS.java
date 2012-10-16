@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.metamodel.NodeLabel;
+import org.openforis.idm.metamodel.Prompt;
 
 /**
  * 
@@ -19,13 +20,23 @@ public abstract class NodeDefinitionXS<T extends NodeDefinition, P> extends Vers
 		super(tag);
 		addChildMarshallers(
 				new LabelXS(),
-				new DescriptionXS());
+				new DescriptionXS(),
+				new PromptXS());
 	}
 	
 	@Override
 	protected void attributes(T defn) throws IOException {
 		attribute(ID, defn.getId());
 		attribute(NAME, defn.getName());
+		attribute(RELEVANT, defn.getRelevantExpression());
+		if ( defn.isMultiple() ) {
+			attribute(MULTIPLE, true);
+			attribute(MIN_COUNT, defn.getMinCount());
+			attribute(MAX_COUNT, defn.getMaxCount());
+		} else if ( defn.getMinCount() != null && defn.getMinCount() > 0 ){
+			attribute(REQUIRED, true);
+		}
+		attribute(REQUIRED_IF, defn.getRequiredExpression());
 		super.attributes(defn);
 	}
 	
@@ -57,6 +68,25 @@ public abstract class NodeDefinitionXS<T extends NodeDefinition, P> extends Vers
 		@Override
 		protected void marshalInstances(T defn) throws IOException {
 			marshal(defn.getDescriptions());
+		}
+	}
+	
+	private class PromptXS extends LanguageSpecificTextXS<T> {
+
+		public PromptXS() {
+			super(PROMPT);
+		}
+		
+		@Override
+		protected void attributes(LanguageSpecificText txt) throws IOException {
+			Prompt prompt = (Prompt) txt;
+			attribute(TYPE, prompt.getType().name().toLowerCase());
+			super.attributes(txt);
+		}
+		
+		@Override
+		protected void marshalInstances(T defn) throws IOException {
+			marshal(defn.getPrompts());
 		}
 	}
 }

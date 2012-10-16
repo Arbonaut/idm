@@ -17,4 +17,6 @@ abstract class TextXS<P> extends XmlSerializerSupport<String, P>{
 	protected void body(String text) throws IOException {
 		text(text);
 	}
+	
+	
 }

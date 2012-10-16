@@ -1,12 +1,12 @@
 package org.openforis.idm.metamodel.xml.internal.marshal;
 
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
+
 import java.io.IOException;
 import java.util.List;
 
 import org.openforis.idm.metamodel.ApplicationOptions;
 import org.openforis.idm.metamodel.Survey;
-import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
-
 import org.openforis.idm.metamodel.xml.ApplicationOptionsBinder;
 import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 

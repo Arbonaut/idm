@@ -22,21 +22,17 @@ import org.openforis.idm.model.Value;
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
-		"labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class CoordinateAttributeDefinition extends AttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlTransient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 		new FieldDefinition<Double>("x", "x", "x", Double.class, this),
 		new FieldDefinition<Double>("y", "y", "y", Double.class, this),
 		new FieldDefinition<String>("srs", "srs", "srs", String.class, this)
 	};
 
-	protected CoordinateAttributeDefinition(Survey survey, int id) {
+	CoordinateAttributeDefinition(Survey survey, int id) {
 		super(survey, id);
 	}
 

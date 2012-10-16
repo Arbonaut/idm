@@ -1,9 +1,10 @@
 package org.openforis.idm.metamodel.xml.internal.marshal;
 
+import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
+
 import java.io.IOException;
 
 import org.openforis.idm.metamodel.LanguageSpecificText;
-import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
  * 

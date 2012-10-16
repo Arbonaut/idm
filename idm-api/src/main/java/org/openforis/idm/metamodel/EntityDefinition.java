@@ -8,12 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlType;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
@@ -23,24 +17,10 @@ import org.openforis.idm.util.CollectionUtil;
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
 public class EntityDefinition extends NodeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlElements({
-		@XmlElement(name = "entity",     type = EntityDefinition.class), 
-		@XmlElement(name = "number",     type = NumberAttributeDefinition.class),
-		@XmlElement(name = "range",      type = RangeAttributeDefinition.class), 
-		@XmlElement(name = "boolean",    type = BooleanAttributeDefinition.class),
-		@XmlElement(name = "date",       type = DateAttributeDefinition.class), 
-		@XmlElement(name = "time",       type = TimeAttributeDefinition.class),
-		@XmlElement(name = "file",       type = FileAttributeDefinition.class), 
-		@XmlElement(name = "taxon",      type = TaxonAttributeDefinition.class),
-		@XmlElement(name = "coordinate", type = CoordinateAttributeDefinition.class), 
-		@XmlElement(name = "code",       type = CodeAttributeDefinition.class),
-		@XmlElement(name = "text",       type = TextAttributeDefinition.class) })
 	private List<NodeDefinition> childDefinitions;
 
 	EntityDefinition(Survey survey, int id) {

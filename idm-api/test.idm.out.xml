@@ -72,242 +72,251 @@
     </options>
   </applicationOptions>
   <schema>
-    <entity id="1" name="cluster" ui:tabDefinition="cluster" ui:tab="cluster">
+    <entity id="1" name="cluster" multiple="true" ui:tabDefinition="cluster" ui:tab="cluster">
       <label type="instance">Cluster</label>
-      <entity id="2" name="task" since="2.0">
+      <entity id="2" name="task" multiple="true" since="2.0">
         <label type="heading">Quality assurance field</label>
-        <code id="3" name="type">
+        <code id="3" name="type" key="true" list="bp_data_task">
           <label type="instance">Task</label>
         </code>
-        <text id="4" name="person">
+        <text id="4" name="person" type="short">
           <label type="instance">Person</label>
         </text>
         <text id="5" name="date">
           <label type="instance">Date</label>
         </text>
       </entity>
-      <code id="6" name="id">
+      <code id="6" name="id" required="true" key="true" list="sampling_design">
         <label type="instance">Id</label>
       </code>
-      <code id="7" name="region">
+      <code id="7" name="region" required="true" list="admin_unit">
         <label type="instance">Region</label>
       </code>
-      <code id="8" name="district">
+      <code id="8" name="district" required="true" list="admin_unit" parent="region">
         <label type="instance">District</label>
       </code>
-      <number id="9" name="crew_no">
+      <number id="9" name="crew_no" type="integer">
         <label type="instance">Crew no.</label>
         <compare flag="error" gte="1" />
       </number>
-      <text id="10" name="map_sheet">
+      <text id="10" name="map_sheet" multiple="true" maxCount="3" type="short">
         <label type="instance">Map sheet</label>
         <label type="heading">Map sheet(s)</label>
         <unique flag="error" expr="map_sheet" />
       </text>
-      <code id="11" name="accessibility">
+      <code id="11" name="accessibility" required="true" list="accessibility">
         <label type="instance">Accessibility</label>
       </code>
-      <coordinate id="12" name="vehicle_location">
+      <coordinate id="12" name="vehicle_location" required="true">
         <label type="instance">Vehicle location</label>
         <distance flag="error" max="100000" to="idm:lookup('sampling_design', 'coordinate', 'cluster', id, 'plot', '')" />
         <distance flag="warn" max="50000" to="idm:lookup('sampling_design', 'coordinate','cluster', id, 'plot', '')" />
       </coordinate>
-      <text id="13" name="gps_model" ui:autocomplete="gps_model">
+      <text id="13" name="gps_model" ui:autocomplete="gps_model" type="short">
         <label type="instance">GPS model</label>
       </text>
       <code id="14" name="gps_realtime">
         <label type="instance">High precision GPS</label>
         <default value="false" />
       </code>
-      <number id="15" name="plot_direction">
+      <number id="15" name="plot_direction" type="real">
         <label type="instance">Direction to 1st plot</label>
         <default value="0" />
         <compare flag="error" lte="359" gte="0" />
+        <precision decimalDigits="0" unit="deg" />
       </number>
-      <number id="16" name="plot_distance">
+      <number id="16" name="plot_distance" type="real">
         <label type="instance">Distance to 1st plot</label>
         <default value="0" />
         <compare flag="error" lte="20000" gte="0" />
+        <precision decimalDigits="0" unit="m" default="true" />
+        <precision decimalDigits="0" unit="cm" />
+        <precision decimalDigits="0" unit="km" />
       </number>
-      <entity id="17" name="time_study">
+      <entity id="17" name="time_study" multiple="true" minCount="1" maxCount="2">
         <label type="instance">Time study</label>
         <description>Date, start time and end time of visit to the
             cluster.</description>
         <text id="18" name="date">
           <label type="instance">Date</label>
         </text>
-        <text id="19" name="start_time">
+        <text id="19" name="start_time" required="true">
           <label type="instance">Start time</label>
         </text>
-        <text id="20" name="end_time">
+        <text id="20" name="end_time" required="true">
           <label type="instance">End time</label>
           <compare flag="error" gt="start_time" />
         </text>
       </entity>
-      <text id="21" name="remarks">
+      <text id="21" name="remarks" type="memo">
         <label type="instance">Remarks</label>
       </text>
-      <entity id="22" name="plot" ui:layout="form" collect:count="true" ui:tab="plot">
+      <entity id="22" name="plot" multiple="true" ui:layout="form" collect:count="true" ui:tab="plot">
         <label type="instance">Plot</label>
-        <code id="23" name="no" ui:tab="plot_det">
+        <code id="23" name="no" ui:tab="plot_det" key="true" list="sampling_design" parent="parent()/id">
           <label type="instance">No.</label>
         </code>
-        <text id="24" name="subplot" ui:tab="plot_det">
+        <text id="24" name="subplot" requiredIf="share &lt; 100" ui:tab="plot_det" type="short" key="true">
           <label type="instance">Subplot</label>
           <default value="A" />
           <pattern flag="error" regex="[A-Z]">
             <message>Subplot letter must be a single letter (A-Z)</message>
           </pattern>
         </text>
-        <entity id="25" name="time_study" ui:tab="plot_det">
+        <entity id="25" name="time_study" required="true" ui:tab="plot_det">
           <label type="instance">Time study</label>
           <text id="26" name="date">
             <label type="instance">Date</label>
           </text>
-          <text id="27" name="start_time">
+          <text id="27" name="start_time" required="true">
             <label type="instance">Start time</label>
           </text>
-          <text id="28" name="end_time">
+          <text id="28" name="end_time" required="true">
             <label type="instance">End time</label>
             <compare flag="error" gt="start_time" />
           </text>
         </entity>
-        <number id="29" name="share" ui:tab="plot_det">
+        <number id="29" name="share" ui:tab="plot_det" type="real">
           <label type="instance">Share</label>
           <default value="100" />
           <compare flag="error" lte="100" gte="1" />
+          <precision decimalDigits="0" unit="percent" />
         </number>
         <code id="30" name="permanent" ui:tab="plot_det">
           <label type="instance">Permanent plot</label>
           <default value="false" />
         </code>
-        <text id="31" name="group_leader" ui:tab="plot_det">
+        <text id="31" name="group_leader" ui:tab="plot_det" type="short">
           <label type="instance">Group leader</label>
         </text>
-        <code id="32" name="accessibility" ui:tab="plot_det">
+        <code id="32" name="accessibility" required="true" ui:tab="plot_det" list="accessibility">
           <label type="instance">Accessibility</label>
         </code>
-        <code id="33" name="region" ui:tab="plot_det">
+        <code id="33" name="region" required="true" ui:tab="plot_det" list="admin_unit">
           <label type="instance">Region</label>
         </code>
-        <code id="34" name="district" ui:tab="plot_det">
+        <code id="34" name="district" required="true" ui:tab="plot_det" list="admin_unit" parent="region">
           <label type="instance">District</label>
         </code>
-        <text id="35" name="division" ui:tab="plot_det">
+        <text id="35" name="division" required="true" ui:tab="plot_det" type="short">
           <label type="instance">Division</label>
         </text>
-        <text id="36" name="ward" ui:autocomplete="ward" ui:tab="plot_det">
+        <text id="36" name="ward" required="true" ui:autocomplete="ward" ui:tab="plot_det" type="short">
           <label type="instance">Ward</label>
         </text>
-        <text id="37" name="village" ui:autocomplete="village" ui:tab="plot_det">
+        <text id="37" name="village" required="true" ui:autocomplete="village" ui:tab="plot_det" type="short">
           <label type="instance">Village</label>
         </text>
-        <text id="38" name="forest" ui:autocomplete="forest" ui:tab="plot_det">
+        <text id="38" name="forest" ui:autocomplete="forest" ui:tab="plot_det" type="short">
           <label type="instance">Forest or area name</label>
         </text>
-        <number id="39" name="slope" ui:tab="plot_det">
+        <number id="39" name="slope" ui:tab="plot_det" type="real">
           <label type="instance">Slope</label>
           <default value="0" />
           <compare flag="error" lte="200" gte="0" />
+          <precision decimalDigits="0" unit="percent" />
         </number>
-        <coordinate id="40" name="location" ui:tab="plot_det">
+        <coordinate id="40" name="location" required="true" ui:tab="plot_det">
           <label type="instance">GPS reading</label>
           <distance flag="error" max="100" from="idm:lookup('sampling_design', 'centre','cluster', parent()/id, 'plot', no)" to="transform($this , centre/dir, centre/dist)" />
           <distance flag="warn" max="10" from="idm:lookup('sampling_design', 'centre','cluster', parent()/id, 'plot', no)" to="transform($this , centre/dir, centre/dist)" />
         </coordinate>
         <entity id="41" name="centre" ui:tab="plot_det">
           <label type="instance">Plot centre</label>
-          <number id="42" name="dir">
+          <number id="42" name="dir" type="real">
             <label type="instance">Direction</label>
             <default value="0" />
             <compare flag="error" lt="360" gte="0" />
+            <precision decimalDigits="0" unit="deg" />
           </number>
-          <number id="43" name="dist">
+          <number id="43" name="dist" relevant="dir" required="true" type="real">
             <label type="instance">Distance</label>
             <compare flag="error" lte="100" gte="0" />
+            <precision decimalDigits="0" />
           </number>
-          <text id="44" name="desc">
+          <text id="44" name="desc" type="memo">
             <label type="instance">Description</label>
           </text>
         </entity>
-        <code id="45" name="land_use" ui:tab="plot_det">
+        <code id="45" name="land_use" required="true" ui:tab="plot_det" list="land_use">
           <label type="instance">Land use</label>
         </code>
-        <code id="46" name="vegetation_type" ui:tab="plot_det">
+        <code id="46" name="vegetation_type" ui:tab="plot_det" list="vegetation_type">
           <label type="instance">Vegetation</label>
         </code>
-        <code id="47" name="ownership_type" ui:tab="plot_det">
+        <code id="47" name="ownership_type" ui:tab="plot_det" list="ownership">
           <label type="instance">Ownership</label>
         </code>
-        <number id="48" name="canopy_cover" deprecated="1.1" ui:tab="plot_det">
+        <number id="48" name="canopy_cover" relevant="accessibility = 0 and vegetation_type &gt;= 101 and vegetation_type &lt;= 306" deprecated="1.1" ui:tab="plot_det" type="real">
           <label type="instance">Canopy</label>
           <default value="0" />
           <compare flag="error" lte="100" gte="0" />
+          <precision decimalDigits="0" unit="percent" />
         </number>
-        <entity id="49" name="canopy_coverage" since="1.1" ui:tab="plot_det">
+        <entity id="49" name="canopy_coverage" relevant="accessibility = 0 and vegetation_type &gt;= 101 and vegetation_type &lt;= 306" since="1.1" ui:tab="plot_det">
           <label type="instance" xml:lang="en">Canopy coverage</label>
-          <number id="50" name="centre">
+          <number id="50" name="centre" type="integer">
             <label type="instance">C</label>
             <default value="0" />
             <compare flag="error" lte="24" gte="0" />
           </number>
-          <number id="51" name="north">
+          <number id="51" name="north" type="integer">
             <label type="instance">N</label>
             <default value="0" />
             <compare flag="error" lte="24" gte="0" />
           </number>
-          <number id="52" name="east">
+          <number id="52" name="east" type="integer">
             <label type="instance">E</label>
             <default value="0" />
             <compare flag="error" lte="24" gte="0" />
           </number>
-          <number id="53" name="south">
+          <number id="53" name="south" type="integer">
             <label type="instance">S</label>
             <default value="0" />
             <compare flag="error" lte="24" gte="0" />
           </number>
-          <number id="54" name="west">
+          <number id="54" name="west" type="integer">
             <label type="instance">W</label>
             <default value="0" />
             <compare flag="error" lte="24" gte="0" />
           </number>
         </entity>
-        <code id="55" name="undergrowth_type" ui:tab="plot_det">
+        <code id="55" name="undergrowth_type" relevant="accessibility = 0 and vegetation_type &gt;=101 and vegetation_type &lt;=306" required="true" ui:tab="plot_det" list="undergrowth">
           <label type="instance">Undergrowth</label>
         </code>
-        <entity id="56" name="damage" ui:tab="plot_det">
+        <entity id="56" name="damage" relevant="accessibility = 0 and vegetation_type &gt;=101 and vegetation_type &lt;=306" multiple="true" maxCount="2" ui:tab="plot_det">
           <label type="instance">Damage</label>
-          <code id="57" name="type">
+          <code id="57" name="type" required="true" list="damage_type">
             <label type="instance">Type</label>
           </code>
-          <code id="58" name="severity">
+          <code id="58" name="severity" required="true" list="damage_severity">
             <label type="instance">Severity</label>
           </code>
         </entity>
-        <number id="59" name="planting_year" ui:tab="plot_det">
+        <number id="59" name="planting_year" relevant="accessibility = 0 and vegetation_type='104'" ui:tab="plot_det" type="integer">
           <label type="instance">Planting year</label>
           <compare flag="error" lte="2015" gte="1900" />
         </number>
-        <entity id="60" name="soil" ui:tab="plot_det">
+        <entity id="60" name="soil" relevant="accessibility = 0 and permanent" ui:tab="plot_det">
           <label type="instance">Soil</label>
           <entity id="61" name="layer" since="1.1">
             <label type="heading">Layers</label>
-            <code id="62" name="depth">
+            <code id="62" name="depth" key="true" list="soil_depth_class">
               <label type="instance">Depth</label>
             </code>
-            <code id="63" name="north_sampled">
+            <code id="63" name="north_sampled" affirmativeOnly="true">
               <label type="instance">N</label>
             </code>
-            <code id="64" name="east_sampled">
+            <code id="64" name="east_sampled" affirmativeOnly="true">
               <label type="instance">E</label>
             </code>
-            <code id="65" name="south_sampled">
+            <code id="65" name="south_sampled" affirmativeOnly="true">
               <label type="instance">S</label>
             </code>
-            <code id="66" name="west_sampled">
+            <code id="66" name="west_sampled" affirmativeOnly="true">
               <label type="instance">W</label>
             </code>
-            <text id="67" name="colour">
+            <text id="67" name="colour" relevant="false()" type="short">
               <label type="instance">Colour</label>
               <pattern flag="error" regex="(((2.5|5|7.5|10)(R|YR|Y|GY|G|BG|B|PB|P|RP))|GLEY1|GLEY2)/1?[0-9]/([1-2]?[0-9])">
                 <message>Must correspond to colour codes indicated in
@@ -315,117 +324,120 @@
                     hue/value/chroma.</message>
               </pattern>
             </text>
-            <code id="68" name="texture" deprecated="1.1">
+            <code id="68" name="texture" deprecated="1.1" list="soil_texture">
               <label type="instance">Texture</label>
             </code>
-            <code id="69" name="structure">
+            <code id="69" name="structure" list="soil_structure">
               <label type="instance">Structure</label>
             </code>
-            <code id="70" name="stones">
+            <code id="70" name="stones" list="stone_proportion">
               <label type="instance">Stones</label>
+              <prompt type="pc">Proportion of stones</prompt>
             </code>
           </entity>
-          <code id="71" name="structure" deprecated="1.1">
+          <code id="71" name="structure" deprecated="1.1" list="soil_structure">
             <label type="instance">Structure</label>
           </code>
-          <number id="72" name="depth" since="1.1">
+          <number id="72" name="depth" since="1.1" type="real">
             <label type="instance">Depth of organic layer</label>
             <compare flag="error" gte="0" />
+            <precision decimalDigits="0" unit="cm" />
           </number>
-          <text id="73" name="colour" deprecated="1.1">
+          <text id="73" name="colour" deprecated="1.1" type="short">
             <label type="instance">Colour</label>
           </text>
-          <code id="74" name="texture" deprecated="1.1">
+          <code id="74" name="texture" deprecated="1.1" list="soil_texture">
             <label type="instance">Texture</label>
           </code>
           <code id="75" name="sample" deprecated="1.1">
             <label type="instance">Sample collected</label>
           </code>
         </entity>
-        <code id="76" name="erosion" ui:tab="plot_det">
+        <code id="76" name="erosion" relevant="accessibility = 0" required="true" ui:tab="plot_det" list="erosion_intensity">
           <label type="instance">Erosion</label>
         </code>
-        <code id="77" name="grazing" ui:tab="plot_det">
+        <code id="77" name="grazing" relevant="accessibility = 0 and vegetation_type &gt;=101 and vegetation_type &lt;=306" required="true" ui:tab="plot_det" list="grazing_activity">
           <label type="instance">Grazing</label>
         </code>
-        <code id="78" name="catchment" ui:tab="plot_det">
+        <code id="78" name="catchment" relevant="accessibility = 0" required="true" ui:tab="plot_det" list="catchment_value">
           <label type="instance">Water catchment</label>
         </code>
-        <entity id="79" name="human_impact" ui:tab="plot_det">
+        <entity id="79" name="human_impact" relevant="accessibility = 0 and vegetation_type &gt;=101 and vegetation_type &lt;=306" multiple="true" minCount="1" maxCount="3" ui:tab="plot_det">
           <label type="instance">Human impact</label>
-          <code id="80" name="type">
+          <code id="80" name="type" multiple="true" minCount="1" list="human_impact">
             <label type="instance">Code</label>
           </code>
-          <number id="81" name="years_ago">
+          <number id="81" name="years_ago" relevant="type &gt; 0" type="integer">
             <label type="instance">Years ago</label>
             <compare flag="error" lte="200" gte="0" />
           </number>
         </entity>
-        <code id="82" name="nwfp" ui:tab="plot_det">
+        <code id="82" name="nwfp" relevant="accessibility = 0 and vegetation_type &gt;=101 and vegetation_type &lt;=306" multiple="true" minCount="1" maxCount="3" ui:tab="plot_det" list="nwfp">
           <label type="instance">NWFP</label>
         </code>
-        <code id="83" name="mgmt_proposal" ui:tab="plot_det">
+        <code id="83" name="mgmt_proposal" relevant="accessibility = 0 and vegetation_type &gt;=101 and vegetation_type &lt;=203" multiple="true" maxCount="2" ui:tab="plot_det" list="mgmt_proposal">
           <label type="instance">Management proposal</label>
         </code>
-        <entity id="84" name="biodiversity" ui:tab="plot_det">
+        <entity id="84" name="biodiversity" relevant="accessibility = 0 and vegetation_type &gt;=101 and vegetation_type &lt;=306" multiple="true" maxCount="6" ui:tab="plot_det">
           <label type="instance">Biodiversity observed</label>
           <label type="heading">Biodiversity</label>
-          <code id="85" name="type">
+          <code id="85" name="type" list="biodiversity">
             <label type="instance">Code</label>
           </code>
-          <text id="86" name="desc">
+          <text id="86" name="desc" type="short">
             <label type="instance">Description</label>
           </text>
         </entity>
-        <text id="87" name="remarks" ui:tab="plot_det">
+        <text id="87" name="remarks" ui:tab="plot_det" type="memo">
           <label type="instance">Remarks</label>
         </text>
-        <code id="88" name="slope_correction_applied" since="1.1" ui:tab="plot_det">
+        <code id="88" name="slope_correction_applied" relevant="accessibility = 0" requiredIf="slope &gt;= 5" since="1.1" ui:tab="plot_det">
           <label type="instance">Slope correction applied</label>
         </code>
-        <entity id="89" name="shrubs" ui:tab="shrubs_regen">
+        <entity id="89" name="shrubs" relevant="accessibility = 0 and vegetation_type &gt;= 101 and vegetation_type &lt;= 306" ui:tab="shrubs_regen">
           <label type="instance">Shrub</label>
           <label type="heading">Shrubs</label>
           <description>Inside the plot (within 15 m of plot centre)</description>
-          <code id="90" name="coverage">
+          <code id="90" name="coverage" list="shrub_coverage">
             <label type="instance">Coverage class</label>
             <default value="0" />
           </code>
-          <number id="91" name="avg_height">
+          <number id="91" name="avg_height" requiredIf="coverage &gt; 0" type="real">
             <label type="instance">Mean height</label>
             <compare flag="error" lte="10" gte="0" />
+            <precision decimalDigits="2" unit="m" />
           </number>
         </entity>
-        <entity id="92" name="regen" ui:tab="shrubs_regen">
+        <entity id="92" name="regen" relevant="accessibility = 0 and vegetation_type &gt;=101 and vegetation_type &lt;=306" multiple="true" ui:tab="shrubs_regen">
           <label type="instance">Regeneration</label>
-          <text id="93" name="species">
+          <text id="93" name="species" required="true" qualifiable="[]" taxonomy="trees" highestRank="genus">
             <label type="instance">Species</label>
           </text>
-          <number id="94" name="count">
+          <number id="94" name="count" required="true" type="integer">
             <label type="instance">Count</label>
             <description>Number of seedlings and saplings &gt;10cm
                 tall and with DBH&lt;1cm</description>
             <compare flag="error" gte="0" />
           </number>
         </entity>
-        <text id="95" name="regen_remarks" ui:tab="shrubs_regen">
+        <text id="95" name="regen_remarks" relevant="accessibility = 0 and vegetation_type &gt;=101 and vegetation_type &lt;=306" ui:tab="shrubs_regen" type="memo">
           <label type="instance">Remarks</label>
         </text>
-        <entity id="96" name="tree" ui:tab="tree">
+        <entity id="96" name="tree" relevant="accessibility = 0" multiple="true" ui:tab="tree">
           <label type="instance">Tree Stem</label>
-          <number id="97" name="tree_no">
+          <number id="97" name="tree_no" required="true" type="integer" key="true">
             <label type="instance">Tree no.</label>
             <compare flag="error" gte="1" />
           </number>
-          <number id="98" name="stem_no">
+          <number id="98" name="stem_no" type="integer" key="true">
             <label type="instance">Stem no.</label>
             <default value="1" />
             <compare flag="error" gte="1" />
           </number>
-          <text id="99" name="species">
+          <text id="99" name="species" required="true" qualifiable="[]" taxonomy="trees" highestRank="genus">
             <label type="instance">Species</label>
           </text>
-          <number id="100" name="dbh">
+          <number id="100" name="dbh" required="true" type="real">
             <label type="instance">DBH (cm)</label>
             <description>Diameter at the breast height (1.3 m)
                 measured above bark</description>
@@ -434,34 +446,39 @@
               <message>Unusual relationship between DBH and total
                   height.</message>
             </check>
+            <precision decimalDigits="1" unit="cm" />
           </number>
-          <code id="101" name="health">
+          <code id="101" name="health" required="true" list="tree_health">
             <label type="instance">Health</label>
           </code>
-          <code id="102" name="origin">
+          <code id="102" name="origin" required="true" list="tree_origin">
             <label type="instance">Origin</label>
           </code>
-          <number id="103" name="stump_diameter">
+          <number id="103" name="stump_diameter" type="real">
             <label type="instance">Stump diameter</label>
             <compare flag="error" lte="700" gte="0" />
+            <precision decimalDigits="1" unit="cm" />
           </number>
-          <number id="104" name="stump_height">
+          <number id="104" name="stump_height" type="real">
             <label type="instance">Stump height</label>
             <compare flag="error" gte="0" />
+            <precision decimalDigits="0" unit="cm" />
           </number>
-          <number id="105" name="total_height">
+          <number id="105" name="total_height" type="real">
             <label type="instance">Total height</label>
             <compare flag="error" lte="70" gte="1" />
             <check flag="warn" if="health = 1" expr="dbh &lt;= $this  * 8">
               <message>Unusual relationship between dbh and total
                   height.</message>
             </check>
+            <precision decimalDigits="1" unit="m" />
           </number>
-          <number id="106" name="bole_height">
+          <number id="106" name="bole_height" relevant="dbh &gt;= 20" type="real">
             <label type="instance">Bole height</label>
             <compare flag="error" lte="70" gte="1" />
+            <precision decimalDigits="1" unit="m" />
           </number>
-          <text id="107" name="remarks">
+          <text id="107" name="remarks" type="short">
             <label type="instance">Remarks</label>
           </text>
           <code id="108" name="marked">
@@ -469,281 +486,357 @@
             <default value="false" />
           </code>
         </entity>
-        <entity id="109" name="dead_wood" ui:showPosition="true" ui:tab="dead_wood">
+        <entity id="109" name="dead_wood" relevant="accessibility = 0 and vegetation_type &gt;= 101 and vegetation_type &lt;= 306" multiple="true" ui:showPosition="true" ui:tab="dead_wood">
           <label type="instance">Dead Wood</label>
-          <text id="110" name="species">
+          <text id="110" name="species" required="true" qualifiable="[]" taxonomy="trees">
             <label type="instance">Species</label>
           </text>
-          <number id="111" name="diameter1">
+          <number id="111" name="diameter1" required="true" type="real">
             <label type="instance">Diameter 1</label>
             <compare flag="error" gt="0" />
             <compare flag="warn" lte="500" />
+            <precision decimalDigits="1" unit="cm" />
           </number>
-          <number id="112" name="diameter2">
+          <number id="112" name="diameter2" required="true" type="real">
             <label type="instance">Diameter 2</label>
             <compare flag="error" gt="0" />
             <compare flag="warn" lte="500" />
+            <precision decimalDigits="1" unit="cm" />
           </number>
-          <number id="113" name="length">
+          <number id="113" name="length" required="true" type="real">
             <label type="instance">Length</label>
             <compare flag="error" gt="0" />
             <compare flag="warn" lte="500" />
+            <precision decimalDigits="1" unit="m" />
           </number>
-          <number id="114" name="stem_cnt">
+          <number id="114" name="stem_cnt" type="integer">
             <label type="instance">Stem count</label>
             <compare flag="error" gte="0" />
           </number>
-          <code id="115" name="decay">
+          <code id="115" name="decay" list="deadwood_decay">
             <label type="instance">Decay</label>
             <default value="S" />
           </code>
-          <text id="116" name="remarks">
+          <text id="116" name="remarks" type="short">
             <label type="instance">Remarks</label>
           </text>
         </entity>
-        <entity id="117" name="stump" ui:showPosition="true" ui:tab="stump">
+        <entity id="117" name="stump" relevant="accessibility = 0" multiple="true" ui:showPosition="true" ui:tab="stump">
           <label type="instance">Stump</label>
-          <text id="118" name="species">
+          <text id="118" name="species" required="true" qualifiable="[]" taxonomy="trees">
             <label type="instance">Species</label>
           </text>
-          <number id="119" name="diameter">
+          <number id="119" name="diameter" required="true" type="real">
             <label type="instance">Diameter</label>
             <compare flag="error" lte="500" gte="5" />
+            <precision decimalDigits="1" unit="cm" />
           </number>
-          <number id="120" name="height">
+          <number id="120" name="height" type="real">
             <label type="instance">Height</label>
             <default value="15" />
             <compare flag="error" lte="300" gt="0" />
+            <precision decimalDigits="0" unit="cm" />
           </number>
-          <number id="121" name="approx_year">
+          <number id="121" name="approx_year" type="integer">
             <label type="instance">Years ago</label>
             <description>Number of years ago when tree was felled. If
                 year is missing, it is
                 assumed that the tree well felled more than three years ago.</description>
             <compare flag="error" gte="0" />
           </number>
-          <text id="122" name="possible_uses">
+          <text id="122" name="possible_uses" type="short">
             <label type="instance">Possible uses</label>
           </text>
         </entity>
-        <entity id="123" name="bamboo" ui:tab="bamboo">
+        <entity id="123" name="bamboo" relevant="accessibility = 0 and vegetation_type &gt;= 101 and vegetation_type &lt;= 306" multiple="true" ui:tab="bamboo">
           <label type="instance">Bamboo</label>
-          <text id="124" name="species">
+          <text id="124" name="species" required="true" qualifiable="[]" taxonomy="bamboo">
             <label type="instance">Species</label>
           </text>
-          <code id="125" name="living">
+          <code id="125" name="living" list="bamboo_health">
             <label type="instance">Alive/Dead</label>
             <default value="A" />
           </code>
-          <number id="126" name="avg_diameter">
+          <number id="126" name="avg_diameter" required="true" type="real">
             <label type="instance">Average diameter</label>
             <compare flag="error" lte="30" gt="0" />
+            <precision decimalDigits="1" unit="cm" />
           </number>
-          <number id="127" name="avg_height">
+          <number id="127" name="avg_height" required="true" type="real">
             <label type="instance">Average height</label>
             <compare flag="error" lte="50" gte="0.5" />
             <compare flag="warn" lte="15" />
+            <precision decimalDigits="1" unit="m" />
           </number>
-          <number id="128" name="stem_cnt">
+          <number id="128" name="stem_cnt" required="true" type="integer">
             <label type="instance">Stem count</label>
             <compare flag="error" gte="1" />
           </number>
         </entity>
-        <text id="129" name="bamboo_remarks" ui:tab="bamboo">
+        <text id="129" name="bamboo_remarks" ui:tab="bamboo" type="memo">
           <label type="instance">Remarks</label>
         </text>
       </entity>
-      <entity id="130" name="informant" ui:layout="form" ui:tab="informant">
+      <entity id="130" name="informant" multiple="true" ui:layout="form" ui:tab="informant">
         <label type="instance">Key Informant Interview</label>
-        <entity id="131" name="task" since="2.0">
+        <entity id="131" name="task" multiple="true" since="2.0">
           <label type="heading">Control information</label>
-          <code id="132" name="type">
+          <code id="132" name="type" key="true" list="se_data_task">
             <label type="instance">Task</label>
           </code>
           <text id="133" name="date">
             <label type="instance">Date</label>
           </text>
-          <text id="134" name="person">
+          <text id="134" name="person" type="short">
             <label type="instance">Person</label>
           </text>
         </entity>
-        <code id="135" name="role">
+        <code id="135" name="role" multiple="true" minCount="1" list="informant_role">
           <label type="number">1</label>
           <label type="heading">Informant role(s)</label>
+          <prompt type="interview">Who is the Informant?</prompt>
         </code>
-        <number id="136" name="household_count">
+        <number id="136" name="household_count" required="true" type="integer">
           <label type="number">2</label>
           <label type="instance">Nearby households</label>
+          <prompt type="interview">What is the total number of households
+              that reside within boundaries of 2km sampling unit?</prompt>
           <compare flag="error" gte="1" />
         </number>
-        <code id="137" name="population_health">
+        <code id="137" name="population_health" required="true" list="population_health">
           <label type="number">3</label>
           <label type="instance">Health condition</label>
+          <prompt type="interview">Compared to the rest of the population
+              in the district, how would you characterize the general
+              health condition of the population living near and inside
+              the Sampling Unit?</prompt>
         </code>
-        <text id="138" name="product">
+        <text id="138" name="product" multiple="true" maxCount="3" type="short">
           <label type="number">4</label>
           <label type="heading">Most important product(s) harvested</label>
+          <prompt type="interview">Which are the three most important
+              products that most local people harvest from this area
+              (refer to area within SU-- point to 2km circle on
+              map/image)?</prompt>
         </text>
-        <number id="139" name="beneficiary_household_count">
+        <number id="139" name="beneficiary_household_count" type="integer">
           <label type="number">5</label>
           <label type="instance">Harvesting households</label>
+          <prompt type="interview">Approximately how many households
+              (regardless of where they live) regularly harvest products
+              from this particular area (refer to area within SU-- point
+              to 2km circle on map/image)?</prompt>
           <compare flag="error" gte="1" />
         </number>
         <code id="140" name="rules_exist">
           <label type="number">6</label>
           <label type="instance">Product use rules</label>
+          <prompt type="interview">Are there any rules (informal or formal)
+              that constrain local households' uses of products?</prompt>
           <default value="false" />
         </code>
-        <code id="141" name="rule_origin">
+        <code id="141" name="rule_origin" relevant="rules_exist" multiple="true" list="rules_origin">
           <label type="number">7</label>
           <label type="heading">Origin(s) of rules</label>
+          <prompt type="interview">If yes, what is the origin of these
+              rules?</prompt>
         </code>
-        <number id="142" name="all_weather_road_distance">
+        <number id="142" name="all_weather_road_distance" type="real">
           <label type="number">8a</label>
           <label type="instance">Nearest all-weather road distance</label>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="1" unit="km" />
         </number>
-        <number id="143" name="seasonal_road_distance">
+        <number id="143" name="seasonal_road_distance" type="real">
           <label type="number">8b</label>
           <label type="instance">Nearest seasonal road distance</label>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="1" unit="km" />
         </number>
-        <number id="144" name="village_distance">
+        <number id="144" name="village_distance" type="real">
           <label type="number">8c</label>
           <label type="instance">Nearest village distance</label>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="1" unit="km" />
         </number>
-        <number id="145" name="health_centre_distance">
+        <number id="145" name="health_centre_distance" type="real">
           <label type="number">8d</label>
           <label type="instance">Nearest health centre distance</label>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="1" unit="km" />
         </number>
-        <number id="146" name="school_distance">
+        <number id="146" name="school_distance" type="real">
           <label type="number">8e</label>
           <label type="instance">Nearest school distance</label>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="1" unit="km" />
         </number>
-        <number id="147" name="food_market_distance">
+        <number id="147" name="food_market_distance" type="real">
           <label type="number">8f</label>
           <label type="instance">Nearest food market place distance</label>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="0" unit="km" />
         </number>
-        <code id="148" name="settlement_est">
+        <code id="148" name="settlement_est" required="true" list="settlement_years">
           <label type="number">9</label>
           <label type="instance">Settlement established</label>
+          <prompt type="interview">When was this settlement established
+              (when did the local household dwellings arrive to the
+              area)?</prompt>
         </code>
-        <code id="149" name="population_change">
+        <code id="149" name="population_change" required="true" list="population_dynamic">
           <label type="number">10</label>
           <label type="instance">Population trend</label>
+          <prompt type="interview">What is the population trend for the
+              past 5 years for this area?</prompt>
         </code>
-        <code id="150" name="major_event">
+        <code id="150" name="major_event" multiple="true" list="settlement_history">
           <label type="number">11</label>
           <label type="heading">Major historical event(s)</label>
+          <prompt type="interview">What are some of the major historical
+              events that have affected local people and their land use
+              in this area?</prompt>
         </code>
         <code id="151" name="mgmt_exists">
           <label type="number">12</label>
           <label type="instance">Forest management efforts</label>
+          <prompt type="interview">Have there been any efforts to manage or
+              somehow organize the forest resource use within this area?</prompt>
         </code>
-        <entity id="152" name="mgmt_gender_composition" since="2.0">
+        <entity id="152" name="mgmt_gender_composition" relevant="mgmt_exists" since="2.0">
           <label type="instance">Forest management gender composition</label>
-          <number id="153" name="percent_male">
+          <prompt type="interview">If yes, what is the gender composition
+              of the group?</prompt>
+          <number id="153" name="percent_male" type="real">
             <label type="instance">Male</label>
             <compare flag="error" lte="100" gte="0" />
+            <precision decimalDigits="0" unit="percent" />
           </number>
-          <number id="154" name="percent_female">
+          <number id="154" name="percent_female" type="real">
             <label type="instance">Female</label>
             <compare flag="error" lte="100" gte="0" />
             <check flag="error" expr=". + percent_male = 100">
               <message>Male and female gender compositions should add
                   up to 100%</message>
             </check>
+            <precision decimalDigits="0" unit="percent" />
           </number>
         </entity>
-        <code id="155" name="mgmt_leader">
+        <code id="155" name="mgmt_leader" relevant="mgmt_exists" multiple="true" list="mgmt_leader">
           <label type="number">13</label>
           <label type="instance">Management effort leader</label>
+          <prompt type="interview">If yes, was there a particular leader of
+              this effort?</prompt>
         </code>
-        <code id="156" name="mgmt_ongoing">
+        <code id="156" name="mgmt_ongoing" relevant="mgmt_exists">
           <label type="number">14</label>
           <label type="instance">Management ongoing</label>
+          <prompt type="interview">Is this effort still ongoing?</prompt>
         </code>
-        <code id="157" name="mgmt_success">
+        <code id="157" name="mgmt_success" relevant="mgmt_exists" list="mgmt_success">
           <label type="number">15</label>
           <label type="instance">Management success</label>
+          <prompt type="interview">In your opinion, would you consider the
+              efforts to manage and order forest use in this area to
+              have been successful?</prompt>
         </code>
-        <code id="158" name="mgmt_plan">
+        <code id="158" name="mgmt_plan" list="mgmt_plan">
           <label type="number">16</label>
           <label type="instance">Active management plan</label>
+          <prompt type="interview">Does this area have an active forest
+              management plan?</prompt>
           <default value="90" />
         </code>
-        <code id="159" name="mgmt_agreement">
+        <code id="159" name="mgmt_agreement" list="mgmt_agreement">
           <label type="number">17</label>
           <label type="instance">Management arrangement</label>
+          <prompt type="interview">Which management arrangement exist
+              between the land owner and other groups?</prompt>
           <default value="90" />
         </code>
-        <code id="160" name="land_owner" since="2.0">
+        <code id="160" name="land_owner" since="2.0" list="land_owner">
           <label type="number">17b</label>
           <label type="instance">Land owner</label>
+          <prompt type="interview">Who owns the land?</prompt>
           <default value="90" />
         </code>
-        <code id="161" name="illegal_activity">
+        <code id="161" name="illegal_activity" list="illegal_activity_effect_extent">
           <label type="number">18</label>
           <label type="instance">Extent affected by illegal activities</label>
+          <prompt type="interview">To what extent is this particular area
+              affected by large-scale, illegal forestry activities?</prompt>
         </code>
-        <code id="162" name="large_scale_law_enforcement">
+        <code id="162" name="large_scale_law_enforcement" list="law_enforcement_likelihood">
           <label type="number">19</label>
           <label type="instance">Large-scale illegal activity stopped</label>
+          <prompt type="interview">If a local person engages in large-scale
+              illegal activities, (i.e. large timber operation,
+              industrial charcoal making, etc) in this area, what is the
+              likelihood of anybody detecting or stopping this activity?</prompt>
         </code>
-        <code id="163" name="small_scale_law_enforcement">
+        <code id="163" name="small_scale_law_enforcement" list="law_enforcement_likelihood">
           <label type="number">20</label>
           <label type="instance">Small-scale illegal activity stopped</label>
+          <prompt type="interview">If a local person engages in a
+              small-scale illegal activities, (i.e. cutting of timber,
+              charcoal making for local markets, etc), what is the
+              likelihood of anybody detecting or stopping this activity?</prompt>
         </code>
         <code id="164" name="local_forest_leadership_exists">
           <label type="number">21</label>
           <label type="instance">Local forest leadership</label>
+          <prompt type="interview">Are there any local individuals who have
+              shown leadership to organize forest activities among
+              forest users in this area?</prompt>
         </code>
-        <text id="165" name="most_active_forest_org">
+        <text id="165" name="most_active_forest_org" type="short">
           <label type="number">22</label>
           <label type="instance">Most active forest organization</label>
+          <prompt type="interview">Which is the most active forestry
+              organization in this area? (write name)</prompt>
         </text>
-        <number id="166" name="org_nearest_office">
+        <number id="166" name="org_nearest_office" type="real">
           <label type="number">23</label>
           <label type="instance">Distance to nearest office</label>
+          <prompt type="interview">If applicable, how far away from this SU
+              does this forestry organization (mentioned in Q22) have
+              its nearest office?</prompt>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="1" unit="km" />
         </number>
-        <text id="167" name="enumerators_comments" since="1.1">
+        <text id="167" name="enumerators_comments" since="1.1" type="memo">
           <label type="instance">Enumerator's Comments</label>
         </text>
       </entity>
-      <entity id="168" name="household" ui:layout="form" ui:tab="household">
+      <entity id="168" name="household" multiple="true" ui:layout="form" ui:tab="household">
         <label type="instance">Household Survey</label>
         <label type="heading">Household Surveys</label>
-        <entity id="169" name="task" since="2.0" ui:tab="hs_general">
+        <entity id="169" name="task" multiple="true" since="2.0" ui:tab="hs_general">
           <label type="heading">Control information</label>
-          <code id="170" name="type">
+          <code id="170" name="type" key="true" list="se_data_task">
             <label type="instance">Task</label>
           </code>
           <text id="171" name="date">
             <label type="instance">Date</label>
           </text>
-          <text id="172" name="person">
+          <text id="172" name="person" type="short">
             <label type="instance">Person</label>
           </text>
         </entity>
-        <entity id="173" name="log" deprecated="2.0" ui:tab="hs_general">
+        <entity id="173" name="log" multiple="true" maxCount="5" deprecated="2.0" ui:tab="hs_general">
           <label type="heading">Log</label>
-          <entity id="174" name="task">
+          <entity id="174" name="task" multiple="true">
             <label type="instance">Task</label>
-            <text id="175" name="type">
+            <text id="175" name="type" type="short">
               <label type="instance">Task</label>
             </text>
             <text id="176" name="date">
               <label type="instance">Date</label>
             </text>
-            <text id="177" name="actor">
+            <text id="177" name="actor" type="short">
               <label type="instance">Person</label>
             </text>
-            <text id="178" name="status">
+            <text id="178" name="status" type="short">
               <label type="instance">Status</label>
             </text>
           </entity>
@@ -751,33 +844,35 @@
         <code id="179" name="sampling_unit" ui:tab="hs_general">
           <label type="instance">Outside 2 km Sampling Unit</label>
         </code>
-        <text id="180" name="id" ui:tab="hs_general">
+        <text id="180" name="id" ui:tab="hs_general" type="short" key="true">
           <label type="instance">Household no.</label>
           <pattern flag="error" regex="(X-)?[1-9][0-9]*" />
         </text>
-        <number id="181" name="distance_to_forest" ui:tab="hs_general">
+        <number id="181" name="distance_to_forest" required="true" ui:tab="hs_general" type="real">
           <label type="instance">Distance to nearest forest</label>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="1" unit="m" />
         </number>
-        <number id="182" name="distance_to_su_centre" since="2.0" ui:tab="hs_general">
+        <number id="182" name="distance_to_su_centre" required="true" since="2.0" ui:tab="hs_general" type="real">
           <label type="instance">Distance to SU centre</label>
           <compare flag="error" lte="50000" gte="0" />
+          <precision decimalDigits="1" unit="m" />
         </number>
-        <text id="183" name="village" ui:tab="hs_general">
+        <text id="183" name="village" required="true" ui:tab="hs_general" type="short">
           <label type="instance">Village</label>
         </text>
-        <text id="184" name="ward" ui:tab="hs_general">
+        <text id="184" name="ward" required="true" ui:tab="hs_general" type="short">
           <label type="instance">Ward</label>
         </text>
-        <text id="185" name="district" ui:tab="hs_general">
+        <text id="185" name="district" required="true" ui:tab="hs_general" type="short">
           <label type="instance">District</label>
         </text>
-        <coordinate id="186" name="location" ui:tab="hs_general">
+        <coordinate id="186" name="location" required="true" ui:tab="hs_general">
           <label type="instance">Household location</label>
         </coordinate>
-        <entity id="187" name="time_study" ui:tab="hs_general">
+        <entity id="187" name="time_study" required="true" ui:tab="hs_general">
           <label type="instance">Time study</label>
-          <text id="188" name="start_time">
+          <text id="188" name="start_time" required="true">
             <label type="instance">Start time</label>
           </text>
           <text id="189" name="end_time">
@@ -785,380 +880,471 @@
             <compare flag="error" gt="start_time" />
           </text>
         </entity>
-        <number id="190" name="household_member_count" ui:tab="hs_general">
+        <number id="190" name="household_member_count" ui:tab="hs_general" type="integer">
           <label type="number">1</label>
           <label type="instance">Household members</label>
+          <prompt type="interview">How many members are there in this
+              household (people who share meals on a daily basis)?</prompt>
           <compare flag="error" gte="0" />
         </number>
-        <number id="191" name="prev_household_member_count" ui:tab="hs_general">
+        <number id="191" name="prev_household_member_count" ui:tab="hs_general" type="integer">
           <label type="number">2</label>
           <label type="instance">Household members 5 years ago</label>
+          <prompt type="interview">How many members did this household have
+              five years ago?</prompt>
           <compare flag="error" gte="1" />
         </number>
-        <number id="192" name="head_years_at_location" ui:tab="hs_general">
+        <number id="192" name="head_years_at_location" ui:tab="hs_general" type="integer">
           <label type="number">3</label>
           <label type="instance">Head of household years at location</label>
+          <prompt type="interview">For how long has the head of this
+              household lived in this location?</prompt>
           <compare flag="error" gte="0" />
         </number>
-        <text id="193" name="head_birthplace" ui:tab="hs_general">
+        <text id="193" name="head_birthplace" ui:tab="hs_general" type="short">
           <label type="number">4</label>
           <label type="instance">Head of household birthplace</label>
+          <prompt type="interview">What is the birthplace of the head of
+              the household? (name of district)</prompt>
         </text>
-        <entity id="194" name="head" ui:tab="hs_general">
+        <entity id="194" name="head" multiple="true" ui:tab="hs_general">
           <label type="number">5</label>
           <label type="heading">Head(s) of household</label>
-          <code id="195" name="position">
+          <prompt type="interview">Who are the heads of the household (head
+              of household and spouse)?</prompt>
+          <code id="195" name="position" key="true" list="household_position">
             <label type="instance">Position in household</label>
           </code>
           <code id="196" name="interviewed">
             <label type="instance">Person interviewed</label>
           </code>
-          <number id="197" name="age">
+          <number id="197" name="age" type="integer">
             <label type="instance">Age</label>
             <compare flag="error" gte="2" />
           </number>
-          <code id="198" name="gender">
+          <code id="198" name="gender" list="gender">
             <label type="instance">Sex</label>
           </code>
-          <code id="199" name="education">
+          <code id="199" name="education" list="education_level">
             <label type="instance">Education</label>
+            <prompt type="interview">Education (highest level attained)</prompt>
           </code>
         </entity>
         <entity id="200" name="house" ui:tab="hs_assets">
           <label type="number">1</label>
-          <code id="201" name="wall_material" ui:tab="hs_assets">
+          <prompt type="interview">Describe the house in which this
+              household lives (Enumerator’s observation)</prompt>
+          <code id="201" name="wall_material" ui:tab="hs_assets" list="wall_material">
             <label type="number">a</label>
             <label type="instance">Wall material</label>
+            <prompt type="interview">What is the type of material of (most
+                of) the walls?</prompt>
           </code>
-          <code id="202" name="roof_material" ui:tab="hs_assets">
+          <code id="202" name="roof_material" ui:tab="hs_assets" list="roof_material">
             <label type="number">b</label>
             <label type="instance">Roof material</label>
+            <prompt type="interview">What is the type of material of (most
+                of) the roof?</prompt>
           </code>
         </entity>
-        <entity id="203" name="asset" ui:tab="hs_assets">
+        <entity id="203" name="asset" multiple="true" ui:tab="hs_assets">
           <label type="number">2</label>
           <label type="heading">Assets</label>
           <label type="instance">Asset</label>
-          <code id="204" name="type">
+          <prompt type="interview">Please indicate the number of the
+              following items that are owned by the household:</prompt>
+          <code id="204" name="type" key="true" list="asset">
             <label type="instance">Item</label>
           </code>
-          <number id="205" name="count">
+          <number id="205" name="count" type="integer">
             <label type="instance">Count</label>
             <default value="0" />
             <compare flag="error" gte="0" />
           </number>
         </entity>
-        <entity id="206" name="energy_source" ui:tab="hs_assets">
+        <entity id="206" name="energy_source" multiple="true" ui:tab="hs_assets">
           <label type="number">3</label>
           <label type="instance">Main energy source</label>
-          <code id="207" name="type">
+          <prompt type="interview">Please indicate the household's main
+              sources of energy and how they are acquired.</prompt>
+          <code id="207" name="type" key="true" list="energy_source">
             <label type="instance">Energy source used</label>
           </code>
-          <code id="208" name="acquisition_method">
+          <code id="208" name="acquisition_method" multiple="true" list="energy_acquisition_method">
             <label type="heading">Acquisition method(s)</label>
           </code>
-          <number id="209" name="monthly_consumption">
+          <number id="209" name="monthly_consumption" type="real">
             <label type="instance">Qty/mo consumed</label>
             <compare flag="error" gt="0" />
           </number>
-          <text id="210" name="monthly_consumption_unit">
+          <text id="210" name="monthly_consumption_unit" relevant="type='other'" type="short">
             <label type="instance">Other Unit</label>
           </text>
-          <code id="211" name="end_purpose">
+          <code id="211" name="end_purpose" multiple="true" list="energy_end_purpose">
             <label type="heading">End purpose(s)</label>
           </code>
         </entity>
         <code id="212" name="alt_energy_source_available" ui:tab="hs_assets">
           <label type="number">3a</label>
           <label type="instance">Alt. energy sources</label>
+          <prompt type="interview">Are there any alternatives to
+              firewood/charcoal that are available here but not used?</prompt>
         </code>
-        <entity id="213" name="alt_energy_source" ui:tab="hs_assets">
+        <entity id="213" name="alt_energy_source" relevant="alt_energy_source_available" multiple="true" ui:tab="hs_assets">
           <label type="number">3b</label>
           <label type="heading">Alternative energy sources</label>
-          <code id="214" name="type">
+          <code id="214" name="type" key="true" list="alt_energy_source">
             <label type="instance">Energy source</label>
           </code>
-          <code id="215" name="available">
+          <code id="215" name="available" required="true">
             <label type="instance">Available</label>
           </code>
-          <code id="216" name="reason_not_used">
+          <code id="216" name="reason_not_used" relevant="available" required="true" list="reason_for_not_using_energy_source">
             <label type="instance">Reason(s) for not using</label>
           </code>
         </entity>
-        <entity id="217" name="land_access" ui:tab="hs_assets">
+        <entity id="217" name="land_access" multiple="true" ui:tab="hs_assets">
           <label type="number">4</label>
           <label type="heading">Land access and ownership</label>
-          <code id="218" name="type">
+          <prompt type="interview">Please indicate the amount of land that
+              you currently own and have access to:</prompt>
+          <code id="218" name="type" key="true" list="land_category">
             <label type="instance">Category</label>
           </code>
           <entity id="219" name="individually_owned">
             <label type="instance">Individually owned</label>
-            <range id="220" name="area">
+            <range id="220" name="area" required="true" type="real">
               <label type="instance">Area</label>
               <compare flag="error" gte="0" />
+              <precision decimalDigits="0" unit="ha" />
+              <precision decimalDigits="0" unit="ac" />
             </range>
-            <code id="221" name="boundaries_respected">
+            <code id="221" name="boundaries_respected" relevant="area" list="respect_for_boundaries">
               <label type="instance">Boundaries respected</label>
+              <prompt type="interview">Do outsiders respect boundaries?</prompt>
               <default value="NA" />
             </code>
           </entity>
           <entity id="222" name="communally_owned">
             <label type="instance">Communally owned</label>
-            <range id="223" name="area">
+            <range id="223" name="area" required="true" type="real">
               <label type="instance">Area</label>
+              <precision decimalDigits="0" unit="ac" default="true" />
+              <precision decimalDigits="0" unit="ha" />
             </range>
-            <code id="224" name="boundaries_respected">
+            <code id="224" name="boundaries_respected" relevant="area" list="respect_for_boundaries">
               <label type="instance">Boundaries respected</label>
+              <prompt type="interview">Do outsiders respect boundaries?</prompt>
               <default value="NA" />
             </code>
           </entity>
         </entity>
         <entity id="225" name="private_property_change" ui:tab="hs_assets">
           <label type="instance">Private property change</label>
-          <code id="226" name="type">
+          <prompt type="interview">Has the household's private land
+              property changed over the last five years?</prompt>
+          <code id="226" name="type" required="true" list="private_property_change">
             <label type="number">5</label>
             <label type="instance">Change</label>
           </code>
-          <number id="227" name="amount">
+          <number id="227" name="amount" relevant="type='A' or type='B'" required="true" type="real">
             <label type="number">6</label>
             <label type="instance">Amount</label>
             <compare flag="error" gte="0" />
+            <precision decimalDigits="0" unit="ha" />
+            <precision decimalDigits="0" unit="ac" />
           </number>
-          <text id="228" name="reasons">
+          <text id="228" name="reasons" relevant="type='A' or type='B'" required="true" type="memo">
             <label type="number">7</label>
             <label type="instance">Reason(s)</label>
+            <prompt type="interview">Why did this change occur? (text to
+                indicate source cause of change)</prompt>
           </text>
         </entity>
-        <entity id="229" name="food_source" ui:tab="hs_foodsecurity">
+        <entity id="229" name="food_source" multiple="true" ui:tab="hs_foodsecurity">
           <label type="number">1</label>
           <label type="instance">Food source</label>
           <label type="heading">Food source(s)</label>
-          <code id="230" name="type">
+          <prompt type="interview">In the past year, where did the
+              household’s food come from?</prompt>
+          <code id="230" name="type" key="true" list="food_source">
             <label type="instance">Source</label>
           </code>
-          <number id="231" name="duration">
+          <number id="231" name="duration" type="integer">
             <label type="instance">Months food lasts</label>
             <compare flag="error" gte="0" />
           </number>
         </entity>
-        <number id="232" name="food_shortage_month_count" deprecated="2.0" ui:tab="hs_foodsecurity">
+        <number id="232" name="food_shortage_month_count" deprecated="2.0" ui:tab="hs_foodsecurity" type="integer">
           <label type="number">2</label>
           <label type="instance">Food shortage months</label>
           <compare flag="error" gte="0" />
         </number>
-        <code id="233" name="food_shortage_month" since="2.0" ui:tab="hs_foodsecurity">
+        <code id="233" name="food_shortage_month" multiple="true" since="2.0" ui:tab="hs_foodsecurity" list="month">
           <label type="number">2</label>
           <label type="instance">Food shortage months</label>
+          <prompt type="interview"></prompt>
         </code>
         <code id="234" name="supplemental_nwfp_used" ui:tab="hs_foodsecurity">
           <label type="number">3</label>
           <label type="instance">Supplemental NWFP used</label>
+          <prompt type="interview">During critical food shortage months
+              does your household use forest products to meet food
+              needs?</prompt>
         </code>
-        <entity id="235" name="supplemental_nwfp" ui:tab="hs_foodsecurity">
+        <entity id="235" name="supplemental_nwfp" relevant="supplemental_nwfp_used" multiple="true" ui:tab="hs_foodsecurity">
           <label type="number">4</label>
           <label type="instance">Supplemental NWFP</label>
           <label type="heading">Supplemental NWFPs</label>
-          <code id="236" name="type">
+          <prompt type="interview">If yes, please indicate the forest
+              products that are
+              collected to supplement household food supplies during periods of food
+              shortage:</prompt>
+          <code id="236" name="type" key="true" list="supplemental_nwfp">
             <label type="instance">Product</label>
           </code>
-          <text id="237" name="species">
+          <text id="237" name="species" type="short">
             <label type="instance">Species</label>
           </text>
-          <number id="238" name="quantity">
+          <number id="238" name="quantity" type="real">
             <label type="instance">Qty/week</label>
+            <prompt type="interview">Quantity collected/week</prompt>
             <compare flag="error" gte="0" />
+            <precision decimalDigits="0" />
           </number>
-          <text id="239" name="unit" deprecated="2.0">
+          <text id="239" name="unit" deprecated="2.0" type="short">
             <label type="instance">Unit</label>
           </text>
-          <code id="240" name="quantity_unit" since="2.0">
+          <code id="240" name="quantity_unit" since="2.0" list="supplemental_nwfp_unit">
             <label type="instance">Unit</label>
           </code>
-          <number id="241" name="rank">
+          <number id="241" name="rank" type="integer">
             <label type="instance">Rank</label>
+            <prompt type="interview">Rank (1-5)</prompt>
             <compare flag="error" lte="5" gte="1" />
           </number>
         </entity>
-        <code id="242" name="unexpected_expense_incurred" ui:tab="hs_foodsecurity">
+        <code id="242" name="unexpected_expense_incurred" required="true" ui:tab="hs_foodsecurity">
           <label type="number">5</label>
           <label type="instance">Large expenditures</label>
+          <prompt type="interview">Has your household faced any
+              unexpectedly large expenditures during the past 12 months?</prompt>
         </code>
-        <entity id="243" name="shortfall_cause" ui:tab="hs_foodsecurity">
+        <entity id="243" name="shortfall_cause" relevant="unexpected_expense_incurred" multiple="true" ui:tab="hs_foodsecurity">
           <label type="number">6</label>
           <label type="heading">Cause(s) of shortfall</label>
-          <code id="244" name="type">
+          <prompt type="interview">If yes, what event(s) caused this
+              shortfall (fill in table below-multiple answers possible):</prompt>
+          <code id="244" name="type" key="true" list="shortfall_cause">
             <label type="instance">Event</label>
           </code>
-          <code id="245" name="existence">
+          <code id="245" name="existence" required="true">
             <label type="instance">Exists</label>
           </code>
-          <code id="246" name="response">
+          <code id="246" name="response" relevant="existence" multiple="true" minCount="1" list="shortfall_cause_response">
             <label type="instance">Response</label>
           </code>
         </entity>
-        <code id="247" name="forest_disturbances_occured" ui:tab="hs_foodsecurity">
+        <code id="247" name="forest_disturbances_occured" required="true" ui:tab="hs_foodsecurity">
           <label type="number">7</label>
           <label type="instance">Recent disturbances</label>
+          <prompt type="interview">In the last 5 years have there been any
+              major disturbances to the local forests that decreased the
+              availability of forest products?</prompt>
         </code>
-        <entity id="248" name="forest_disturbance" ui:tab="hs_foodsecurity">
+        <entity id="248" name="forest_disturbance" relevant="forest_disturbances_occured" multiple="true" ui:tab="hs_foodsecurity">
           <label type="number">8</label>
           <label type="heading">Response to food disturbances</label>
-          <code id="249" name="type">
+          <prompt type="interview">If yes, what were these events and how
+              did your household cope with this shortfall?</prompt>
+          <code id="249" name="type" key="true" list="forest_disturbance">
             <label type="instance">Event</label>
           </code>
-          <code id="250" name="existence">
+          <code id="250" name="existence" required="true">
             <label type="instance">Exists</label>
           </code>
-          <code id="251" name="response">
+          <code id="251" name="response" relevant="existence" multiple="true" list="forest_disturbance_response">
             <label type="instance">Response</label>
           </code>
         </entity>
-        <entity id="252" name="income_source" ui:tab="hs_income_opinions">
+        <entity id="252" name="income_source" multiple="true" ui:tab="hs_income_opinions">
           <label type="number">1</label>
           <label type="heading">Income sources</label>
-          <code id="253" name="type">
+          <prompt type="interview">In the past 12 months, which have been
+              the most important sources of income for the household?</prompt>
+          <code id="253" name="type" key="true" list="income_source">
             <label type="instance">Income source</label>
           </code>
-          <code id="254" name="subsistence">
+          <code id="254" name="subsistence" relevant="type!='other'" required="true">
             <label type="instance">Source of substinence</label>
           </code>
-          <number id="255" name="rank">
+          <number id="255" name="rank" relevant="subsistence" type="integer">
             <label type="instance">Rank</label>
             <compare flag="error" gte="1" />
           </number>
-          <code id="256" name="cash_income">
+          <code id="256" name="cash_income" relevant="type!='other'" required="true">
             <label type="instance">Source of cash income</label>
           </code>
-          <number id="257" name="cash_income_amount">
+          <number id="257" name="cash_income_amount" relevant="cash_income" type="real">
             <label type="instance">Cash income</label>
+            <prompt type="interview">Cash income during last 12 months (T.
+                Shs)</prompt>
             <compare flag="warn" gte="0" />
+            <precision decimalDigits="0" unit="tsh" />
           </number>
         </entity>
         <entity id="258" name="can_reduce_consumption" ui:tab="hs_income_opinions">
           <label type="number">1</label>
           <label type="instance">Consumption reduction</label>
+          <prompt type="interview">Can nearby households reduce their
+              forest product consumption?</prompt>
           <code id="259" name="flag">
             <label type="instance">Can reduce</label>
           </code>
-          <text id="260" name="comments">
+          <text id="260" name="comments" type="memo">
             <label type="instance">Comments</label>
           </text>
         </entity>
         <entity id="261" name="can_protect_forests_better" ui:tab="hs_income_opinions">
           <label type="number">2</label>
           <label type="instance">Community protection</label>
+          <prompt type="interview">Do you think that local communities in
+              this area are more effective in protecting forests than
+              government officials?</prompt>
           <code id="262" name="flag">
             <label type="instance">More effective</label>
           </code>
-          <text id="263" name="comments">
+          <text id="263" name="comments" type="memo">
             <label type="instance">Comments</label>
           </text>
         </entity>
         <entity id="264" name="rules_fair" ui:tab="hs_income_opinions">
           <label type="number">3</label>
           <label type="instance">Rules</label>
+          <prompt type="interview">Do you think that the rules regarding
+              the use of forest resources in this area are fair to
+              everyone?</prompt>
           <code id="265" name="flag">
             <label type="instance">Fair</label>
           </code>
-          <text id="266" name="comments">
+          <text id="266" name="comments" type="memo">
             <label type="instance">Comments</label>
           </text>
         </entity>
         <entity id="267" name="penalties_fair" ui:tab="hs_income_opinions">
           <label type="number">4</label>
           <label type="instance">Penalties</label>
+          <prompt type="interview">4. Do you think that the penalties for
+              breaking forest use rules in this area are fair to
+              everyone?</prompt>
           <code id="268" name="flag">
             <label type="instance">Fair</label>
           </code>
-          <text id="269" name="comments">
+          <text id="269" name="comments" type="memo">
             <label type="instance">Comments</label>
           </text>
         </entity>
-        <entity id="270" name="product_used" ui:tab="hs_forest_products">
+        <entity id="270" name="product_used" multiple="true" ui:tab="hs_forest_products">
           <label type="number">1</label>
           <label type="instance">Forest product</label>
-          <code id="271" name="category">
+          <prompt type="interview">Please list all tree and forest products
+              used in the past 12 months. For the three most important
+              products for the households, please characterize demand,
+              supply etc (variables in shaded portionsthe right hand
+              side of the table).)</prompt>
+          <code id="271" name="category" list="product_category">
             <label type="instance">Category</label>
+            <prompt type="interview">Product Category</prompt>
           </code>
-          <text id="272" name="species">
+          <text id="272" name="species" type="short">
             <label type="instance">Species name(s)</label>
+            <prompt type="interview">Species names + language</prompt>
           </text>
-          <code id="273" name="land_use">
+          <code id="273" name="land_use" multiple="true" list="product_used_land_use">
             <label type="instance">Land use(s)</label>
           </code>
-          <number id="274" name="rank">
+          <number id="274" name="rank" type="integer">
             <label type="instance">Rank</label>
             <compare flag="error" gte="1" />
           </number>
-          <code id="275" name="distance_to_source">
+          <code id="275" name="distance_to_source" list="distance_to_product_source">
             <label type="instance">Distance to source</label>
           </code>
-          <code id="276" name="harvester">
+          <code id="276" name="harvester" list="harvester">
             <label type="instance">Harvester gender</label>
+            <prompt type="interview">Who harvests?</prompt>
           </code>
-          <code id="277" name="harvesting_change">
+          <code id="277" name="harvesting_change" list="harvesting_change">
             <label type="instance">Harvesting change</label>
           </code>
-          <number id="278" name="harvested_amount">
+          <number id="278" name="harvested_amount" type="real">
             <label type="instance">Qty. harvested</label>
             <compare flag="error" gte="0" />
+            <precision decimalDigits="0" />
           </number>
-          <code id="279" name="harvested_unit">
+          <code id="279" name="harvested_unit" list="harvest_unit">
             <label type="instance">Unit</label>
           </code>
-          <code id="280" name="end_use">
+          <code id="280" name="end_use" list="forest_product_end_use">
             <label type="instance">End Use</label>
           </code>
-          <code id="281" name="rights">
+          <code id="281" name="rights" list="harvest_rights">
             <label type="instance">Rights</label>
           </code>
-          <code id="282" name="conflicts">
+          <code id="282" name="conflicts" list="conflicts_existence_product">
             <label type="instance">Conflicts</label>
           </code>
-          <code id="283" name="local_rules">
+          <code id="283" name="local_rules" list="local_rules">
             <label type="instance">Local rules</label>
           </code>
           <code id="284" name="leg_awareness">
             <label type="instance">Leg. awareness</label>
           </code>
-          <code id="285" name="leg_enforcement">
+          <code id="285" name="leg_enforcement" list="leg_enforcement">
             <label type="instance">Leg. enforcement</label>
           </code>
         </entity>
-        <entity id="286" name="service_used" ui:tab="hs_forest_products">
+        <entity id="286" name="service_used" multiple="true" ui:tab="hs_forest_products">
           <label type="number">2</label>
           <label type="heading">Environmental services used</label>
-          <code id="287" name="type">
+          <prompt type="interview">Please list all forest-related services
+              that the household has benefited from in the past 12
+              months</prompt>
+          <code id="287" name="type" key="true" list="forest_service">
             <label type="instance">Service type</label>
           </code>
           <code id="288" name="exists">
             <label type="instance">Exists</label>
           </code>
-          <number id="289" name="rank">
+          <number id="289" name="rank" relevant="exists" type="integer">
             <label type="instance">Rank</label>
             <compare flag="error" gte="1" />
           </number>
-          <entity id="290" name="payment">
+          <entity id="290" name="payment" relevant="exists">
             <label type="instance">Payment</label>
             <code id="291" name="received">
               <label type="instance">Received</label>
             </code>
-            <code id="292" name="source">
+            <code id="292" name="source" relevant="received" list="payment_source">
               <label type="instance">From</label>
             </code>
-            <number id="293" name="amount">
+            <number id="293" name="amount" relevant="received" type="real">
               <label type="instance">Amount</label>
               <compare flag="error" gte="0" />
+              <precision decimalDigits="0" unit="tsh" />
             </number>
           </entity>
         </entity>
-        <entity id="294" name="land_use_change" ui:tab="hs_forest_products">
+        <entity id="294" name="land_use_change" multiple="true" ui:tab="hs_forest_products">
           <label type="number">3</label>
           <label type="instance">Land use change</label>
-          <code id="295" name="type">
+          <prompt type="interview">During the last five years, how have the
+              following land use characteristics changed in this
+              locality?</prompt>
+          <code id="295" name="type" key="true" list="land_use_characteristic">
             <label type="instance">Land use</label>
           </code>
-          <code id="296" name="change">
+          <code id="296" name="change" required="true" list="land_use_change">
             <label type="instance">Change</label>
           </code>
         </entity>
@@ -1166,60 +1352,94 @@
           <label type="number">I</label>
           <label type="heading">Parcipation in Organizations and Forest
               User Groups</label>
+          <prompt type="interview">We are interested in learning about your
+              household’s involvement in groups that seek to improve
+              forest use (i.e. these can be either formal or informal
+              groups that undertake forest use activities)</prompt>
           <code id="298" name="aware_of_pfm">
             <label type="number">1</label>
             <label type="instance">Aware of PFM</label>
+            <prompt type="interview">Are you aware of any initiatives
+                related to Participatory Forest Management?</prompt>
           </code>
           <code id="299" name="aware_of_other">
             <label type="number">2</label>
             <label type="instance">Other forest initiatives</label>
+            <prompt type="interview">Are there any other initiatives in
+                this area that work on forest-related issues?</prompt>
           </code>
-          <code id="300" name="involvement">
+          <code id="300" name="involvement" relevant="aware_of_other">
             <label type="number">3</label>
             <label type="instance">Involvement</label>
+            <prompt type="interview">Are you or any member of your
+                household involved in a group that organizes activities
+                related to management of the forest (i.e. fire fighting,
+                patrolling, tourism, tree planting, etc)?</prompt>
           </code>
-          <text id="301" name="names">
+          <text id="301" name="names" relevant="involvement" type="short">
             <label type="number">4</label>
             <label type="instance">Name(s) of group(s)</label>
+            <prompt type="interview">What is the name of the group(s) your
+                household is involved with?</prompt>
           </text>
-          <code id="302" name="benefit_effects">
+          <code id="302" name="benefit_effects" relevant="involvement" list="group_participation_benefit">
             <label type="number">5</label>
             <label type="instance">Effects</label>
+            <prompt type="interview">Overall, how would you say the
+                existence of the organization has affected the benefits
+                that the household gets from the forest?</prompt>
           </code>
-          <code id="303" name="patrol_frequency">
+          <code id="303" name="patrol_frequency" relevant="involvement" list="frequency">
             <label type="number">6</label>
             <label type="instance">Patrol frequency</label>
+            <prompt type="interview">How frequently does the
+                group/community that you belong to actively monitor and
+                patrol the forests to detect intruders and thieves of
+                forest products?</prompt>
           </code>
-          <code id="304" name="govt_visit_frequency">
+          <code id="304" name="govt_visit_frequency" list="frequency">
             <label type="number">7</label>
             <label type="instance">Gov't visit frequency</label>
+            <prompt type="interview">How frequently do government officials
+                (district, region, central) visit the forest area?</prompt>
           </code>
-          <code id="305" name="violators_caught">
+          <code id="305" name="violators_caught" list="violators_caught">
             <label type="number">8</label>
             <label type="instance">Violators caught</label>
+            <prompt type="interview">In the past 12 months, approximately
+                how many individuals have been caught breaking the
+                established rules of forest use?</prompt>
           </code>
-          <code id="306" name="punishment_decider">
+          <code id="306" name="punishment_decider" list="punishment_decider">
             <label type="number">9</label>
             <label type="instance">Punishment decider</label>
+            <prompt type="interview">Who decided which punishment these
+                individuals should receive?</prompt>
           </code>
         </entity>
         <entity id="307" name="org_relationships" ui:tab="hs_org_comments">
           <label type="number">J</label>
           <label type="instance">Relationships with forestry organizations</label>
-          <code id="308" name="org_na">
+          <code id="308" name="org_na" affirmativeOnly="true">
             <label type="instance">N/A</label>
           </code>
-          <entity id="309" name="org">
+          <entity id="309" name="org" relevant="org_na">
             <label type="number">1</label>
             <label type="instance">Organization</label>
-            <code id="310" name="type">
+            <prompt type="interview">Which organizations do you consider to
+                be the most important for your participation in
+                forest-related activities? (if the respondent perceives
+                no organization to be important, please mark ‘NA’ above
+                table)</prompt>
+            <code id="310" name="type" key="true" list="org_type">
               <label type="instance">Type</label>
+              <prompt type="interview">Type of Organization</prompt>
             </code>
-            <number id="311" name="rank">
+            <number id="311" name="rank" type="integer">
               <label type="instance">Rank</label>
               <compare flag="error" lte="3" gte="1" />
             </number>
-            <code id="312" name="frequency">
+            <code id="312" name="frequency" list="frequency_of_interaction">
               <label type="instance">Frequency of Interaction</label>
             </code>
           </entity>
@@ -1232,14 +1452,23 @@
             <code id="315" name="problems_experienced">
               <label type="number">1</label>
               <label type="instance">Usage problems</label>
+              <prompt type="interview">In the past 12 months, have you
+                  experienced any
+                  problems relating to the use of land, water, forests or any other local
+                  natural resource?</prompt>
             </code>
-            <code id="316" name="assistance_requested">
+            <code id="316" name="assistance_requested" relevant="problems_experienced">
               <label type="number">2</label>
               <label type="instance">Assistance requested</label>
+              <prompt type="interview">If yes, have you asked any
+                  government
+                  representative (local or national) for assistance or help of any kind to
+                  help solve the problem?</prompt>
             </code>
-            <code id="317" name="assistance_response">
+            <code id="317" name="assistance_response" relevant="assistance_requested" list="assistance_response">
               <label type="number">3</label>
               <label type="instance">Assistance response</label>
+              <prompt type="interview">If yes, what was the response?</prompt>
             </code>
           </entity>
           <entity id="318" name="conflict_dispute_mgmt">
@@ -1247,37 +1476,59 @@
             <code id="319" name="conflict_experienced">
               <label type="number">4</label>
               <label type="instance">Conflicts experienced</label>
+              <prompt type="interview">In the past 12 months, have you or
+                  your
+                  neighbours experienced any disputes or conflict related to the use of
+                  land, water, forests or any other local natural
+                  resource?
+                </prompt>
             </code>
-            <code id="320" name="resolution_attempted">
+            <code id="320" name="resolution_attempted" relevant="conflict_experienced">
               <label type="number">5</label>
               <label type="instance">Resolution attempted</label>
+              <prompt type="interview">If yes, have you attempted to solve
+                  the conflict?</prompt>
             </code>
-            <code id="321" name="forum_used">
+            <code id="321" name="forum_used" relevant="resolution_attempted" list="forum">
               <label type="number">6</label>
               <label type="instance">Forum used</label>
+              <prompt type="interview">If yes, which forum did you use for
+                  solving conflict?</prompt>
             </code>
-            <code id="322" name="forum_effective">
+            <code id="322" name="forum_effective" relevant="forum_used &gt; 0" list="forum_effective">
               <label type="number">7</label>
               <label type="instance">Forum effective</label>
+              <prompt type="interview">Was the forum effective in solving
+                  the conflict?</prompt>
             </code>
-            <code id="323" name="conflict_ongoing">
+            <code id="323" name="conflict_ongoing" relevant="forum_effective = 0">
               <label type="number">8</label>
               <label type="instance">Conflict ongoing</label>
+              <prompt type="interview">If no, does conflict still prevail?</prompt>
             </code>
           </entity>
           <entity id="324" name="monitoring_enforcement">
             <label type="instance">Monitoring and enforcement</label>
-            <code id="325" name="first_contact">
+            <code id="325" name="first_contact" list="first_contact">
               <label type="number">9</label>
               <label type="instance">First contact</label>
+              <prompt type="interview">In case you or other community
+                  members detect a
+                  legal infraction by an outsider related to the use of land, water,
+                  forests or any other local natural resource, whom do
+                  you first
+                  contact?</prompt>
             </code>
-            <code id="326" name="reason">
+            <code id="326" name="reason" list="first_contact_reason">
               <label type="number">10</label>
               <label type="instance">Reason</label>
+              <prompt type="interview">Why?</prompt>
             </code>
             <code id="327" name="necessary">
               <label type="number">11</label>
               <label type="instance">Necessary</label>
+              <prompt type="interview">Has this been necessary during the
+                  last 12 months?</prompt>
             </code>
           </entity>
           <entity id="328" name="transparency">
@@ -1285,10 +1536,20 @@
             <code id="329" name="denied_free_services">
               <label type="number">12</label>
               <label type="instance">Denied services</label>
+              <prompt type="interview">In the last 12 months, in your
+                  interactions with
+                  Government officials, related to the use of land, water, forests or any
+                  other local natural resource, have you ever been
+                  denied the free
+                  services that you are entitled to receive and asked to provide a side
+                  payment for the services?</prompt>
             </code>
-            <number id="330" name="requests">
+            <number id="330" name="requests" relevant="denied_free_services" type="integer">
               <label type="number">13</label>
               <label type="instance">Number of requests</label>
+              <prompt type="interview">Within the last 12 months how often
+                  have you
+                  been met with such requests? (state number of times)</prompt>
               <compare flag="error" gte="0" />
             </number>
           </entity>
@@ -1297,14 +1558,22 @@
             <code id="332" name="pfm_participation">
               <label type="number">14</label>
               <label type="instance">PFM participation</label>
+              <prompt type="interview">1In the past 12 months has your
+                  householdparticipated in Participatory Forest
+                  Management activities?</prompt>
             </code>
-            <code id="333" name="pfm_benefits">
+            <code id="333" name="pfm_benefits" relevant="pfm_participation">
               <label type="number">15</label>
               <label type="instance">Benefits</label>
+              <prompt type="interview">If yes, have you received any
+                  benefits from such participation?</prompt>
             </code>
-            <code id="334" name="fair_share">
+            <code id="334" name="fair_share" relevant="pfm_benefits" list="share_code">
               <label type="number">16</label>
               <label type="instance">Fair share</label>
+              <prompt type="interview">If yes, do you think you receive a
+                  fair share of the total benefits awarded to the
+                  community?</prompt>
             </code>
           </entity>
           <entity id="335" name="govt_assistance">
@@ -1313,53 +1582,62 @@
             <code id="336" name="assistance_received">
               <label type="number">17</label>
               <label type="instance">Benefited from assistance</label>
+              <prompt type="interview">In the past 12 months, has your
+                  household
+                  benefited from technical assistance or training, related to the use of
+                  land, water, forests or any other local natural
+                  resource?</prompt>
             </code>
-            <text id="337" name="training_subject">
+            <text id="337" name="training_subject" relevant="assistance_received" multiple="true" type="short">
               <label type="number">18</label>
               <label type="instance">Training subject</label>
               <label type="heading">Training subjects</label>
+              <prompt type="interview">If yes, please indicate the subject
+                  of the assistance/training?</prompt>
             </text>
-            <number id="338" name="total_days">
+            <number id="338" name="total_days" relevant="assistance_received" type="integer">
               <label type="number">19</label>
               <label type="instance">Total days</label>
+              <prompt type="interview">Please indicate the total number of
+                  days you were receiving the support/training)</prompt>
               <compare flag="error" gte="1" />
             </number>
           </entity>
         </entity>
-        <text id="339" name="comments" ui:tab="hs_comments">
+        <text id="339" name="comments" ui:tab="hs_comments" type="memo">
           <label type="instance">Enumerator's Comments</label>
         </text>
       </entity>
     </entity>
-    <entity id="340" name="household" ui:layout="form" ui:tab="household">
+    <entity id="340" name="household" multiple="true" ui:layout="form" ui:tab="household">
       <label type="instance">Household Survey</label>
       <label type="heading">Household Surveys</label>
-      <entity id="341" name="task" since="2.0" ui:tab="hs_general">
+      <entity id="341" name="task" multiple="true" since="2.0" ui:tab="hs_general">
         <label type="heading">Control information</label>
-        <code id="342" name="type">
+        <code id="342" name="type" key="true" list="se_data_task">
           <label type="instance">Task</label>
         </code>
         <text id="343" name="date">
           <label type="instance">Date</label>
         </text>
-        <text id="344" name="person">
+        <text id="344" name="person" type="short">
           <label type="instance">Person</label>
         </text>
       </entity>
-      <entity id="345" name="log" deprecated="2.0" ui:tab="hs_general">
+      <entity id="345" name="log" multiple="true" maxCount="5" deprecated="2.0" ui:tab="hs_general">
         <label type="heading">Log</label>
-        <entity id="346" name="task">
+        <entity id="346" name="task" multiple="true">
           <label type="instance">Task</label>
-          <text id="347" name="type">
+          <text id="347" name="type" type="short">
             <label type="instance">Task</label>
           </text>
           <text id="348" name="date">
             <label type="instance">Date</label>
           </text>
-          <text id="349" name="actor">
+          <text id="349" name="actor" type="short">
             <label type="instance">Person</label>
           </text>
-          <text id="350" name="status">
+          <text id="350" name="status" type="short">
             <label type="instance">Status</label>
           </text>
         </entity>
@@ -1367,33 +1645,35 @@
       <code id="351" name="sampling_unit" ui:tab="hs_general">
         <label type="instance">Outside 2 km Sampling Unit</label>
       </code>
-      <text id="352" name="id" ui:tab="hs_general">
+      <text id="352" name="id" ui:tab="hs_general" type="short" key="true">
         <label type="instance">Household no.</label>
         <pattern flag="error" regex="(X-)?[1-9][0-9]*" />
       </text>
-      <number id="353" name="distance_to_forest" ui:tab="hs_general">
+      <number id="353" name="distance_to_forest" required="true" ui:tab="hs_general" type="real">
         <label type="instance">Distance to nearest forest</label>
         <compare flag="error" gte="0" />
+        <precision decimalDigits="1" unit="m" />
       </number>
-      <number id="354" name="distance_to_su_centre" since="2.0" ui:tab="hs_general">
+      <number id="354" name="distance_to_su_centre" required="true" since="2.0" ui:tab="hs_general" type="real">
         <label type="instance">Distance to SU centre</label>
         <compare flag="error" lte="50000" gte="0" />
+        <precision decimalDigits="1" unit="m" />
       </number>
-      <text id="355" name="village" ui:tab="hs_general">
+      <text id="355" name="village" required="true" ui:tab="hs_general" type="short">
         <label type="instance">Village</label>
       </text>
-      <text id="356" name="ward" ui:tab="hs_general">
+      <text id="356" name="ward" required="true" ui:tab="hs_general" type="short">
         <label type="instance">Ward</label>
       </text>
-      <text id="357" name="district" ui:tab="hs_general">
+      <text id="357" name="district" required="true" ui:tab="hs_general" type="short">
         <label type="instance">District</label>
       </text>
-      <coordinate id="358" name="location" ui:tab="hs_general">
+      <coordinate id="358" name="location" required="true" ui:tab="hs_general">
         <label type="instance">Household location</label>
       </coordinate>
-      <entity id="359" name="time_study" ui:tab="hs_general">
+      <entity id="359" name="time_study" required="true" ui:tab="hs_general">
         <label type="instance">Time study</label>
-        <text id="360" name="start_time">
+        <text id="360" name="start_time" required="true">
           <label type="instance">Start time</label>
         </text>
         <text id="361" name="end_time">
@@ -1401,380 +1681,466 @@
           <compare flag="error" gt="start_time" />
         </text>
       </entity>
-      <number id="362" name="household_member_count" ui:tab="hs_general">
+      <number id="362" name="household_member_count" ui:tab="hs_general" type="integer">
         <label type="number">1</label>
         <label type="instance">Household members</label>
+        <prompt type="interview">How many members are there in this
+            household (people who share meals on a daily basis)?</prompt>
         <compare flag="error" gte="0" />
       </number>
-      <number id="363" name="prev_household_member_count" ui:tab="hs_general">
+      <number id="363" name="prev_household_member_count" ui:tab="hs_general" type="integer">
         <label type="number">2</label>
         <label type="instance">Household members 5 years ago</label>
+        <prompt type="interview">How many members did this household have
+            five years ago?</prompt>
         <compare flag="error" gte="1" />
       </number>
-      <number id="364" name="head_years_at_location" ui:tab="hs_general">
+      <number id="364" name="head_years_at_location" ui:tab="hs_general" type="integer">
         <label type="number">3</label>
         <label type="instance">Head of household years at location</label>
+        <prompt type="interview">For how long has the head of this
+            household lived in this location?</prompt>
         <compare flag="error" gte="0" />
       </number>
-      <text id="365" name="head_birthplace" ui:tab="hs_general">
+      <text id="365" name="head_birthplace" ui:tab="hs_general" type="short">
         <label type="number">4</label>
         <label type="instance">Head of household birthplace</label>
+        <prompt type="interview">What is the birthplace of the head of the
+            household? (name of district)</prompt>
       </text>
-      <entity id="366" name="head" ui:tab="hs_general">
+      <entity id="366" name="head" multiple="true" ui:tab="hs_general">
         <label type="number">5</label>
         <label type="heading">Head(s) of household</label>
-        <code id="367" name="position">
+        <prompt type="interview">Who are the heads of the household (head
+            of household and spouse)?</prompt>
+        <code id="367" name="position" key="true" list="household_position">
           <label type="instance">Position in household</label>
         </code>
         <code id="368" name="interviewed">
           <label type="instance">Person interviewed</label>
         </code>
-        <number id="369" name="age">
+        <number id="369" name="age" type="integer">
           <label type="instance">Age</label>
           <compare flag="error" gte="2" />
         </number>
-        <code id="370" name="gender">
+        <code id="370" name="gender" list="gender">
           <label type="instance">Sex</label>
         </code>
-        <code id="371" name="education">
+        <code id="371" name="education" list="education_level">
           <label type="instance">Education</label>
+          <prompt type="interview">Education (highest level attained)</prompt>
         </code>
       </entity>
       <entity id="372" name="house" ui:tab="hs_assets">
         <label type="number">1</label>
-        <code id="373" name="wall_material" ui:tab="hs_assets">
+        <prompt type="interview">Describe the house in which this household
+            lives (Enumerator’s observation)</prompt>
+        <code id="373" name="wall_material" ui:tab="hs_assets" list="wall_material">
           <label type="number">a</label>
           <label type="instance">Wall material</label>
+          <prompt type="interview">What is the type of material of (most
+              of) the walls?</prompt>
         </code>
-        <code id="374" name="roof_material" ui:tab="hs_assets">
+        <code id="374" name="roof_material" ui:tab="hs_assets" list="roof_material">
           <label type="number">b</label>
           <label type="instance">Roof material</label>
+          <prompt type="interview">What is the type of material of (most
+              of) the roof?</prompt>
         </code>
       </entity>
-      <entity id="375" name="asset" ui:tab="hs_assets">
+      <entity id="375" name="asset" multiple="true" ui:tab="hs_assets">
         <label type="number">2</label>
         <label type="heading">Assets</label>
         <label type="instance">Asset</label>
-        <code id="376" name="type">
+        <prompt type="interview">Please indicate the number of the
+            following items that are owned by the household:</prompt>
+        <code id="376" name="type" key="true" list="asset">
           <label type="instance">Item</label>
         </code>
-        <number id="377" name="count">
+        <number id="377" name="count" type="integer">
           <label type="instance">Count</label>
           <default value="0" />
           <compare flag="error" gte="0" />
         </number>
       </entity>
-      <entity id="378" name="energy_source" ui:tab="hs_assets">
+      <entity id="378" name="energy_source" multiple="true" ui:tab="hs_assets">
         <label type="number">3</label>
         <label type="instance">Main energy source</label>
-        <code id="379" name="type">
+        <prompt type="interview">Please indicate the household's main
+            sources of energy and how they are acquired.</prompt>
+        <code id="379" name="type" key="true" list="energy_source">
           <label type="instance">Energy source used</label>
         </code>
-        <code id="380" name="acquisition_method">
+        <code id="380" name="acquisition_method" multiple="true" list="energy_acquisition_method">
           <label type="heading">Acquisition method(s)</label>
         </code>
-        <range id="381" name="monthly_consumption">
+        <range id="381" name="monthly_consumption" type="real">
           <label type="instance">Qty/mo consumed</label>
           <compare flag="error" gt="0" />
         </range>
-        <text id="382" name="monthly_consumption_unit">
+        <text id="382" name="monthly_consumption_unit" relevant="type='other'" type="short">
           <label type="instance">Other Unit</label>
         </text>
-        <code id="383" name="end_purpose">
+        <code id="383" name="end_purpose" multiple="true" list="energy_end_purpose">
           <label type="heading">End purpose(s)</label>
         </code>
       </entity>
       <code id="384" name="alt_energy_source_available" ui:tab="hs_assets">
         <label type="number">3a</label>
         <label type="instance">Alt. energy sources</label>
+        <prompt type="interview">Are there any alternatives to
+            firewood/charcoal that are available here but not used?</prompt>
       </code>
-      <entity id="385" name="alt_energy_source" ui:tab="hs_assets">
+      <entity id="385" name="alt_energy_source" relevant="alt_energy_source_available" multiple="true" ui:tab="hs_assets">
         <label type="number">3b</label>
         <label type="heading">Alternative energy sources</label>
-        <code id="386" name="type">
+        <code id="386" name="type" key="true" list="alt_energy_source">
           <label type="instance">Energy source</label>
         </code>
-        <code id="387" name="available">
+        <code id="387" name="available" required="true">
           <label type="instance">Available</label>
         </code>
-        <code id="388" name="reason_not_used">
+        <code id="388" name="reason_not_used" relevant="available" required="true" list="reason_for_not_using_energy_source">
           <label type="instance">Reason(s) for not using</label>
         </code>
       </entity>
-      <entity id="389" name="land_access" ui:tab="hs_assets">
+      <entity id="389" name="land_access" multiple="true" ui:tab="hs_assets">
         <label type="number">4</label>
         <label type="heading">Land access and ownership</label>
-        <code id="390" name="type">
+        <prompt type="interview">Please indicate the amount of land that
+            you currently own and have access to:</prompt>
+        <code id="390" name="type" key="true" list="land_category">
           <label type="instance">Category</label>
         </code>
         <entity id="391" name="individually_owned">
           <label type="instance">Individually owned</label>
-          <range id="392" name="area">
+          <range id="392" name="area" required="true" type="real">
             <label type="instance">Area</label>
             <compare flag="error" gte="0" />
+            <precision decimalDigits="0" unit="ha" />
+            <precision decimalDigits="0" unit="ac" />
           </range>
-          <code id="393" name="boundaries_respected">
+          <code id="393" name="boundaries_respected" relevant="area" list="respect_for_boundaries">
             <label type="instance">Boundaries respected</label>
+            <prompt type="interview">Do outsiders respect boundaries?</prompt>
             <default value="NA" />
           </code>
         </entity>
         <entity id="394" name="communally_owned">
           <label type="instance">Communally owned</label>
-          <range id="395" name="area">
+          <range id="395" name="area" required="true" type="real">
             <label type="instance">Area</label>
+            <precision decimalDigits="0" unit="ac" default="true" />
+            <precision decimalDigits="0" unit="ha" />
           </range>
-          <code id="396" name="boundaries_respected">
+          <code id="396" name="boundaries_respected" relevant="area" list="respect_for_boundaries">
             <label type="instance">Boundaries respected</label>
+            <prompt type="interview">Do outsiders respect boundaries?</prompt>
             <default value="NA" />
           </code>
         </entity>
       </entity>
       <entity id="397" name="private_property_change" ui:tab="hs_assets">
         <label type="instance">Private property change</label>
-        <code id="398" name="type">
+        <prompt type="interview">Has the household's private land property
+            changed over the last five years?</prompt>
+        <code id="398" name="type" required="true" list="private_property_change">
           <label type="number">5</label>
           <label type="instance">Change</label>
         </code>
-        <number id="399" name="amount">
+        <number id="399" name="amount" relevant="type='A' or type='B'" required="true" type="real">
           <label type="number">6</label>
           <label type="instance">Amount</label>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="0" unit="ha" />
+          <precision decimalDigits="0" unit="ac" />
         </number>
-        <text id="400" name="reasons">
+        <text id="400" name="reasons" relevant="type='A' or type='B'" required="true" type="memo">
           <label type="number">7</label>
           <label type="instance">Reason(s)</label>
+          <prompt type="interview">Why did this change occur? (text to
+              indicate source cause of change)</prompt>
         </text>
       </entity>
-      <entity id="401" name="food_source" ui:tab="hs_foodsecurity">
+      <entity id="401" name="food_source" multiple="true" ui:tab="hs_foodsecurity">
         <label type="number">1</label>
         <label type="instance">Food source</label>
         <label type="heading">Food source(s)</label>
-        <code id="402" name="type">
+        <prompt type="interview">In the past year, where did the
+            household’s food come from?</prompt>
+        <code id="402" name="type" key="true" list="food_source">
           <label type="instance">Source</label>
         </code>
-        <number id="403" name="duration">
+        <number id="403" name="duration" type="integer">
           <label type="instance">Months food lasts</label>
           <compare flag="error" gte="0" />
         </number>
       </entity>
-      <number id="404" name="food_shortage_month_count" deprecated="2.0" ui:tab="hs_foodsecurity">
+      <number id="404" name="food_shortage_month_count" deprecated="2.0" ui:tab="hs_foodsecurity" type="integer">
         <label type="number">2</label>
         <label type="instance">Food shortage months</label>
         <compare flag="error" gte="0" />
       </number>
-      <code id="405" name="food_shortage_month" since="2.0" ui:tab="hs_foodsecurity">
+      <code id="405" name="food_shortage_month" multiple="true" since="2.0" ui:tab="hs_foodsecurity" list="month">
         <label type="number">2</label>
         <label type="instance">Food shortage months</label>
+        <prompt type="interview"></prompt>
       </code>
       <code id="406" name="supplemental_nwfp_used" ui:tab="hs_foodsecurity">
         <label type="number">3</label>
         <label type="instance">Supplemental NWFP used</label>
+        <prompt type="interview">During critical food shortage months does
+            your household use forest products to meet food needs?</prompt>
       </code>
-      <entity id="407" name="supplemental_nwfp" ui:tab="hs_foodsecurity">
+      <entity id="407" name="supplemental_nwfp" relevant="supplemental_nwfp_used" multiple="true" ui:tab="hs_foodsecurity">
         <label type="number">4</label>
         <label type="instance">Supplemental NWFP</label>
         <label type="heading">Supplemental NWFPs</label>
-        <code id="408" name="type">
+        <prompt type="interview">If yes, please indicate the forest
+            products that are
+            collected to supplement household food supplies during periods of food
+            shortage:</prompt>
+        <code id="408" name="type" key="true" list="supplemental_nwfp">
           <label type="instance">Product</label>
         </code>
-        <text id="409" name="species">
+        <text id="409" name="species" type="short">
           <label type="instance">Species</label>
         </text>
-        <number id="410" name="quantity">
+        <number id="410" name="quantity" type="real">
           <label type="instance">Qty/week</label>
+          <prompt type="interview">Quantity collected/week</prompt>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="0" />
         </number>
-        <text id="411" name="unit" deprecated="2.0">
+        <text id="411" name="unit" deprecated="2.0" type="short">
           <label type="instance">Unit</label>
         </text>
-        <code id="412" name="quantity_unit" since="2.0">
+        <code id="412" name="quantity_unit" since="2.0" list="supplemental_nwfp_unit">
           <label type="instance">Unit</label>
         </code>
-        <number id="413" name="rank">
+        <number id="413" name="rank" type="integer">
           <label type="instance">Rank</label>
+          <prompt type="interview">Rank (1-5)</prompt>
           <compare flag="error" lte="5" gte="1" />
         </number>
       </entity>
-      <code id="414" name="unexpected_expense_incurred" ui:tab="hs_foodsecurity">
+      <code id="414" name="unexpected_expense_incurred" required="true" ui:tab="hs_foodsecurity">
         <label type="number">5</label>
         <label type="instance">Large expenditures</label>
+        <prompt type="interview">Has your household faced any unexpectedly
+            large expenditures during the past 12 months?</prompt>
       </code>
-      <entity id="415" name="shortfall_cause" ui:tab="hs_foodsecurity">
+      <entity id="415" name="shortfall_cause" relevant="unexpected_expense_incurred" multiple="true" ui:tab="hs_foodsecurity">
         <label type="number">6</label>
         <label type="heading">Cause(s) of shortfall</label>
-        <code id="416" name="type">
+        <prompt type="interview">If yes, what event(s) caused this
+            shortfall (fill in table below-multiple answers possible):</prompt>
+        <code id="416" name="type" key="true" list="shortfall_cause">
           <label type="instance">Event</label>
         </code>
-        <code id="417" name="existence">
+        <code id="417" name="existence" required="true">
           <label type="instance">Exists</label>
         </code>
-        <code id="418" name="response">
+        <code id="418" name="response" relevant="existence" multiple="true" minCount="1" list="shortfall_cause_response">
           <label type="instance">Response</label>
         </code>
       </entity>
-      <code id="419" name="forest_disturbances_occured" ui:tab="hs_foodsecurity">
+      <code id="419" name="forest_disturbances_occured" required="true" ui:tab="hs_foodsecurity">
         <label type="number">7</label>
         <label type="instance">Recent disturbances</label>
+        <prompt type="interview">In the last 5 years have there been any
+            major disturbances to the local forests that decreased the
+            availability of forest products?</prompt>
       </code>
-      <entity id="420" name="forest_disturbance" ui:tab="hs_foodsecurity">
+      <entity id="420" name="forest_disturbance" relevant="forest_disturbances_occured" multiple="true" ui:tab="hs_foodsecurity">
         <label type="number">8</label>
         <label type="heading">Response to food disturbances</label>
-        <code id="421" name="type">
+        <prompt type="interview">If yes, what were these events and how did
+            your household cope with this shortfall?</prompt>
+        <code id="421" name="type" key="true" list="forest_disturbance">
           <label type="instance">Event</label>
         </code>
-        <code id="422" name="existence">
+        <code id="422" name="existence" required="true">
           <label type="instance">Exists</label>
         </code>
-        <code id="423" name="response">
+        <code id="423" name="response" relevant="existence" multiple="true" list="forest_disturbance_response">
           <label type="instance">Response</label>
         </code>
       </entity>
-      <entity id="424" name="income_source" ui:tab="hs_income_opinions">
+      <entity id="424" name="income_source" multiple="true" ui:tab="hs_income_opinions">
         <label type="number">1</label>
         <label type="heading">Income sources</label>
-        <code id="425" name="type">
+        <prompt type="interview">In the past 12 months, which have been the
+            most important sources of income for the household?</prompt>
+        <code id="425" name="type" key="true" list="income_source">
           <label type="instance">Income source</label>
         </code>
-        <code id="426" name="subsistence">
+        <code id="426" name="subsistence" relevant="type!='other'" required="true">
           <label type="instance">Source of substinence</label>
         </code>
-        <number id="427" name="rank">
+        <number id="427" name="rank" relevant="subsistence" type="integer">
           <label type="instance">Rank</label>
           <compare flag="error" gte="1" />
         </number>
-        <code id="428" name="cash_income">
+        <code id="428" name="cash_income" relevant="type!='other'" required="true">
           <label type="instance">Source of cash income</label>
         </code>
-        <number id="429" name="cash_income_amount">
+        <number id="429" name="cash_income_amount" relevant="cash_income" type="real">
           <label type="instance">Cash income</label>
+          <prompt type="interview">Cash income during last 12 months (T.
+              Shs)</prompt>
           <compare flag="warn" gte="0" />
+          <precision decimalDigits="0" unit="tsh" />
         </number>
       </entity>
       <entity id="430" name="can_reduce_consumption" ui:tab="hs_income_opinions">
         <label type="number">1</label>
         <label type="instance">Consumption reduction</label>
+        <prompt type="interview">Can nearby households reduce their forest
+            product consumption?</prompt>
         <code id="431" name="flag">
           <label type="instance">Can reduce</label>
         </code>
-        <text id="432" name="comments">
+        <text id="432" name="comments" type="memo">
           <label type="instance">Comments</label>
         </text>
       </entity>
       <entity id="433" name="can_protect_forests_better" ui:tab="hs_income_opinions">
         <label type="number">2</label>
         <label type="instance">Community protection</label>
+        <prompt type="interview">Do you think that local communities in
+            this area are more effective in protecting forests than
+            government officials?</prompt>
         <code id="434" name="flag">
           <label type="instance">More effective</label>
         </code>
-        <text id="435" name="comments">
+        <text id="435" name="comments" type="memo">
           <label type="instance">Comments</label>
         </text>
       </entity>
       <entity id="436" name="rules_fair" ui:tab="hs_income_opinions">
         <label type="number">3</label>
         <label type="instance">Rules</label>
+        <prompt type="interview">Do you think that the rules regarding the
+            use of forest resources in this area are fair to everyone?</prompt>
         <code id="437" name="flag">
           <label type="instance">Fair</label>
         </code>
-        <text id="438" name="comments">
+        <text id="438" name="comments" type="memo">
           <label type="instance">Comments</label>
         </text>
       </entity>
       <entity id="439" name="penalties_fair" ui:tab="hs_income_opinions">
         <label type="number">4</label>
         <label type="instance">Penalties</label>
+        <prompt type="interview">4. Do you think that the penalties for
+            breaking forest use rules in this area are fair to everyone?</prompt>
         <code id="440" name="flag">
           <label type="instance">Fair</label>
         </code>
-        <text id="441" name="comments">
+        <text id="441" name="comments" type="memo">
           <label type="instance">Comments</label>
         </text>
       </entity>
-      <entity id="442" name="product_used" ui:tab="hs_forest_products">
+      <entity id="442" name="product_used" multiple="true" ui:tab="hs_forest_products">
         <label type="number">1</label>
         <label type="instance">Forest product</label>
-        <code id="443" name="category">
+        <prompt type="interview">Please list all tree and forest products
+            used in the past 12 months. For the three most important
+            products for the households, please characterize demand,
+            supply etc (variables in shaded portionsthe right hand side
+            of the table).)</prompt>
+        <code id="443" name="category" list="product_category">
           <label type="instance">Category</label>
+          <prompt type="interview">Product Category</prompt>
         </code>
-        <text id="444" name="species">
+        <text id="444" name="species" type="short">
           <label type="instance">Species name(s)</label>
+          <prompt type="interview">Species names + language</prompt>
         </text>
-        <code id="445" name="land_use">
+        <code id="445" name="land_use" multiple="true" list="product_used_land_use">
           <label type="instance">Land use(s)</label>
         </code>
-        <number id="446" name="rank">
+        <number id="446" name="rank" type="integer">
           <label type="instance">Rank</label>
           <compare flag="error" gte="1" />
         </number>
-        <code id="447" name="distance_to_source">
+        <code id="447" name="distance_to_source" list="distance_to_product_source">
           <label type="instance">Distance to source</label>
         </code>
-        <code id="448" name="harvester">
+        <code id="448" name="harvester" list="harvester">
           <label type="instance">Harvester gender</label>
+          <prompt type="interview">Who harvests?</prompt>
         </code>
-        <code id="449" name="harvesting_change">
+        <code id="449" name="harvesting_change" list="harvesting_change">
           <label type="instance">Harvesting change</label>
         </code>
-        <number id="450" name="harvested_amount">
+        <number id="450" name="harvested_amount" type="real">
           <label type="instance">Qty. harvested</label>
           <compare flag="error" gte="0" />
+          <precision decimalDigits="0" />
         </number>
-        <code id="451" name="harvested_unit">
+        <code id="451" name="harvested_unit" list="harvest_unit">
           <label type="instance">Unit</label>
         </code>
-        <code id="452" name="end_use">
+        <code id="452" name="end_use" list="forest_product_end_use">
           <label type="instance">End Use</label>
         </code>
-        <code id="453" name="rights">
+        <code id="453" name="rights" list="harvest_rights">
           <label type="instance">Rights</label>
         </code>
-        <code id="454" name="conflicts">
+        <code id="454" name="conflicts" list="conflicts_existence_product">
           <label type="instance">Conflicts</label>
         </code>
-        <code id="455" name="local_rules">
+        <code id="455" name="local_rules" list="local_rules">
           <label type="instance">Local rules</label>
         </code>
         <code id="456" name="leg_awareness">
           <label type="instance">Leg. awareness</label>
         </code>
-        <code id="457" name="leg_enforcement">
+        <code id="457" name="leg_enforcement" list="leg_enforcement">
           <label type="instance">Leg. enforcement</label>
         </code>
       </entity>
-      <entity id="458" name="service_used" ui:tab="hs_forest_products">
+      <entity id="458" name="service_used" multiple="true" ui:tab="hs_forest_products">
         <label type="number">2</label>
         <label type="heading">Environmental services used</label>
-        <code id="459" name="type">
+        <prompt type="interview">Please list all forest-related services
+            that the household has benefited from in the past 12 months</prompt>
+        <code id="459" name="type" key="true" list="forest_service">
           <label type="instance">Service type</label>
         </code>
         <code id="460" name="exists">
           <label type="instance">Exists</label>
         </code>
-        <number id="461" name="rank">
+        <number id="461" name="rank" relevant="exists" type="integer">
           <label type="instance">Rank</label>
           <compare flag="error" gte="1" />
         </number>
-        <entity id="462" name="payment">
+        <entity id="462" name="payment" relevant="exists">
           <label type="instance">Payment</label>
           <code id="463" name="received">
             <label type="instance">Received</label>
           </code>
-          <code id="464" name="source">
+          <code id="464" name="source" relevant="received" list="payment_source">
             <label type="instance">From</label>
           </code>
-          <number id="465" name="amount">
+          <number id="465" name="amount" relevant="received" type="real">
             <label type="instance">Amount</label>
             <compare flag="error" gte="0" />
+            <precision decimalDigits="0" unit="tsh" />
           </number>
         </entity>
       </entity>
-      <entity id="466" name="land_use_change" ui:tab="hs_forest_products">
+      <entity id="466" name="land_use_change" multiple="true" ui:tab="hs_forest_products">
         <label type="number">3</label>
         <label type="instance">Land use change</label>
-        <code id="467" name="type">
+        <prompt type="interview">During the last five years, how have the
+            following land use characteristics changed in this locality?</prompt>
+        <code id="467" name="type" key="true" list="land_use_characteristic">
           <label type="instance">Land use</label>
         </code>
-        <code id="468" name="change">
+        <code id="468" name="change" required="true" list="land_use_change">
           <label type="instance">Change</label>
         </code>
       </entity>
@@ -1782,60 +2148,93 @@
         <label type="number">I</label>
         <label type="heading">Parcipation in Organizations and Forest User
             Groups</label>
+        <prompt type="interview">We are interested in learning about your
+            household’s involvement in groups that seek to improve
+            forest use (i.e. these can be either formal or informal
+            groups that undertake forest use activities)</prompt>
         <code id="470" name="aware_of_pfm">
           <label type="number">1</label>
           <label type="instance">Aware of PFM</label>
+          <prompt type="interview">Are you aware of any initiatives related
+              to Participatory Forest Management?</prompt>
         </code>
         <code id="471" name="aware_of_other">
           <label type="number">2</label>
           <label type="instance">Other forest initiatives</label>
+          <prompt type="interview">Are there any other initiatives in this
+              area that work on forest-related issues?</prompt>
         </code>
-        <code id="472" name="involvement">
+        <code id="472" name="involvement" relevant="aware_of_other">
           <label type="number">3</label>
           <label type="instance">Involvement</label>
+          <prompt type="interview">Are you or any member of your household
+              involved in a group that organizes activities related to
+              management of the forest (i.e. fire fighting, patrolling,
+              tourism, tree planting, etc)?</prompt>
         </code>
-        <text id="473" name="names">
+        <text id="473" name="names" relevant="involvement" type="short">
           <label type="number">4</label>
           <label type="instance">Name(s) of group(s)</label>
+          <prompt type="interview">What is the name of the group(s) your
+              household is involved with?</prompt>
         </text>
-        <code id="474" name="benefit_effects">
+        <code id="474" name="benefit_effects" relevant="involvement" list="group_participation_benefit">
           <label type="number">5</label>
           <label type="instance">Effects</label>
+          <prompt type="interview">Overall, how would you say the existence
+              of the organization has affected the benefits that the
+              household gets from the forest?</prompt>
         </code>
-        <code id="475" name="patrol_frequency">
+        <code id="475" name="patrol_frequency" relevant="involvement" list="frequency">
           <label type="number">6</label>
           <label type="instance">Patrol frequency</label>
+          <prompt type="interview">How frequently does the group/community
+              that you belong to actively monitor and patrol the forests
+              to detect intruders and thieves of forest products?</prompt>
         </code>
-        <code id="476" name="govt_visit_frequency">
+        <code id="476" name="govt_visit_frequency" list="frequency">
           <label type="number">7</label>
           <label type="instance">Gov't visit frequency</label>
+          <prompt type="interview">How frequently do government officials
+              (district, region, central) visit the forest area?</prompt>
         </code>
-        <code id="477" name="violators_caught">
+        <code id="477" name="violators_caught" list="violators_caught">
           <label type="number">8</label>
           <label type="instance">Violators caught</label>
+          <prompt type="interview">In the past 12 months, approximately how
+              many individuals have been caught breaking the established
+              rules of forest use?</prompt>
         </code>
-        <code id="478" name="punishment_decider">
+        <code id="478" name="punishment_decider" list="punishment_decider">
           <label type="number">9</label>
           <label type="instance">Punishment decider</label>
+          <prompt type="interview">Who decided which punishment these
+              individuals should receive?</prompt>
         </code>
       </entity>
       <entity id="479" name="org_relationships" ui:tab="hs_org_comments">
         <label type="number">J</label>
         <label type="instance">Relationships with forestry organizations</label>
-        <code id="480" name="org_na">
+        <code id="480" name="org_na" affirmativeOnly="true">
           <label type="instance">N/A</label>
         </code>
-        <entity id="481" name="org">
+        <entity id="481" name="org" relevant="org_na">
           <label type="number">1</label>
           <label type="instance">Organization</label>
-          <code id="482" name="type">
+          <prompt type="interview">Which organizations do you consider to
+              be the most important for your participation in
+              forest-related activities? (if the respondent perceives no
+              organization to be important, please mark ‘NA’ above
+              table)</prompt>
+          <code id="482" name="type" key="true" list="org_type">
             <label type="instance">Type</label>
+            <prompt type="interview">Type of Organization</prompt>
           </code>
-          <number id="483" name="rank">
+          <number id="483" name="rank" type="integer">
             <label type="instance">Rank</label>
             <compare flag="error" lte="3" gte="1" />
           </number>
-          <code id="484" name="frequency">
+          <code id="484" name="frequency" list="frequency_of_interaction">
             <label type="instance">Frequency of Interaction</label>
           </code>
         </entity>
@@ -1848,14 +2247,23 @@
           <code id="487" name="problems_experienced">
             <label type="number">1</label>
             <label type="instance">Usage problems</label>
+            <prompt type="interview">In the past 12 months, have you
+                experienced any
+                problems relating to the use of land, water, forests or any other local
+                natural resource?</prompt>
           </code>
-          <code id="488" name="assistance_requested">
+          <code id="488" name="assistance_requested" relevant="problems_experienced">
             <label type="number">2</label>
             <label type="instance">Assistance requested</label>
+            <prompt type="interview">If yes, have you asked any government
+                representative (local or national) for assistance or
+                help of any kind to
+                help solve the problem?</prompt>
           </code>
-          <code id="489" name="assistance_response">
+          <code id="489" name="assistance_response" relevant="assistance_requested" list="assistance_response">
             <label type="number">3</label>
             <label type="instance">Assistance response</label>
+            <prompt type="interview">If yes, what was the response?</prompt>
           </code>
         </entity>
         <entity id="490" name="conflict_dispute_mgmt">
@@ -1863,37 +2271,59 @@
           <code id="491" name="conflict_experienced">
             <label type="number">4</label>
             <label type="instance">Conflicts experienced</label>
+            <prompt type="interview">In the past 12 months, have you or
+                your
+                neighbours experienced any disputes or conflict related to the use of
+                land, water, forests or any other local natural
+                resource?
+              </prompt>
           </code>
-          <code id="492" name="resolution_attempted">
+          <code id="492" name="resolution_attempted" relevant="conflict_experienced">
             <label type="number">5</label>
             <label type="instance">Resolution attempted</label>
+            <prompt type="interview">If yes, have you attempted to solve
+                the conflict?</prompt>
           </code>
-          <code id="493" name="forum_used">
+          <code id="493" name="forum_used" relevant="resolution_attempted" list="forum">
             <label type="number">6</label>
             <label type="instance">Forum used</label>
+            <prompt type="interview">If yes, which forum did you use for
+                solving conflict?</prompt>
           </code>
-          <code id="494" name="forum_effective">
+          <code id="494" name="forum_effective" relevant="forum_used &gt; 0" list="forum_effective">
             <label type="number">7</label>
             <label type="instance">Forum effective</label>
+            <prompt type="interview">Was the forum effective in solving the
+                conflict?</prompt>
           </code>
-          <code id="495" name="conflict_ongoing">
+          <code id="495" name="conflict_ongoing" relevant="forum_effective = 0">
             <label type="number">8</label>
             <label type="instance">Conflict ongoing</label>
+            <prompt type="interview">If no, does conflict still prevail?</prompt>
           </code>
         </entity>
         <entity id="496" name="monitoring_enforcement">
           <label type="instance">Monitoring and enforcement</label>
-          <code id="497" name="first_contact">
+          <code id="497" name="first_contact" list="first_contact">
             <label type="number">9</label>
             <label type="instance">First contact</label>
+            <prompt type="interview">In case you or other community members
+                detect a
+                legal infraction by an outsider related to the use of land, water,
+                forests or any other local natural resource, whom do you
+                first
+                contact?</prompt>
           </code>
-          <code id="498" name="reason">
+          <code id="498" name="reason" list="first_contact_reason">
             <label type="number">10</label>
             <label type="instance">Reason</label>
+            <prompt type="interview">Why?</prompt>
           </code>
           <code id="499" name="necessary">
             <label type="number">11</label>
             <label type="instance">Necessary</label>
+            <prompt type="interview">Has this been necessary during the
+                last 12 months?</prompt>
           </code>
         </entity>
         <entity id="500" name="transparency">
@@ -1901,10 +2331,20 @@
           <code id="501" name="denied_free_services">
             <label type="number">12</label>
             <label type="instance">Denied services</label>
+            <prompt type="interview">In the last 12 months, in your
+                interactions with
+                Government officials, related to the use of land, water, forests or any
+                other local natural resource, have you ever been denied
+                the free
+                services that you are entitled to receive and asked to provide a side
+                payment for the services?</prompt>
           </code>
-          <number id="502" name="requests">
+          <number id="502" name="requests" relevant="denied_free_services" type="integer">
             <label type="number">13</label>
             <label type="instance">Number of requests</label>
+            <prompt type="interview">Within the last 12 months how often
+                have you
+                been met with such requests? (state number of times)</prompt>
             <compare flag="error" gte="0" />
           </number>
         </entity>
@@ -1913,14 +2353,22 @@
           <code id="504" name="pfm_participation">
             <label type="number">14</label>
             <label type="instance">PFM participation</label>
+            <prompt type="interview">1In the past 12 months has your
+                householdparticipated in Participatory Forest Management
+                activities?</prompt>
           </code>
-          <code id="505" name="pfm_benefits">
+          <code id="505" name="pfm_benefits" relevant="pfm_participation">
             <label type="number">15</label>
             <label type="instance">Benefits</label>
+            <prompt type="interview">If yes, have you received any benefits
+                from such participation?</prompt>
           </code>
-          <code id="506" name="fair_share">
+          <code id="506" name="fair_share" relevant="pfm_benefits" list="share_code">
             <label type="number">16</label>
             <label type="instance">Fair share</label>
+            <prompt type="interview">If yes, do you think you receive a
+                fair share of the total benefits awarded to the
+                community?</prompt>
           </code>
         </entity>
         <entity id="507" name="govt_assistance">
@@ -1929,20 +2377,29 @@
           <code id="508" name="assistance_received">
             <label type="number">17</label>
             <label type="instance">Benefited from assistance</label>
+            <prompt type="interview">In the past 12 months, has your
+                household
+                benefited from technical assistance or training, related to the use of
+                land, water, forests or any other local natural
+                resource?</prompt>
           </code>
-          <text id="509" name="training_subject">
+          <text id="509" name="training_subject" relevant="assistance_received" multiple="true" type="short">
             <label type="number">18</label>
             <label type="instance">Training subject</label>
             <label type="heading">Training subjects</label>
+            <prompt type="interview">If yes, please indicate the subject of
+                the assistance/training?</prompt>
           </text>
-          <number id="510" name="total_days">
+          <number id="510" name="total_days" relevant="assistance_received" type="integer">
             <label type="number">19</label>
             <label type="instance">Total days</label>
+            <prompt type="interview">Please indicate the total number of
+                days you were receiving the support/training)</prompt>
             <compare flag="error" gte="1" />
           </number>
         </entity>
       </entity>
-      <text id="511" name="comments" ui:tab="hs_comments">
+      <text id="511" name="comments" ui:tab="hs_comments" type="memo">
         <label type="instance">Enumerator's Comments</label>
       </text>
     </entity>

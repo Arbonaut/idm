@@ -2,6 +2,8 @@ package org.openforis.idm.metamodel.xml.internal.marshal;
 
 import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
+import java.io.IOException;
+
 import org.openforis.idm.metamodel.NumberAttributeDefinition;
 
 /**
@@ -15,4 +17,11 @@ class NumberAttributeXS extends NumericAttributeXS<NumberAttributeDefinition> {
 		super(NUMBER);
 	}
 
+	@Override
+	protected void attributes(NumberAttributeDefinition defn) throws IOException {
+		super.attributes(defn);
+		if ( defn.isKey() ) {
+			attribute(KEY, true);
+		}
+	}
 }

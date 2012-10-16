@@ -12,9 +12,9 @@ public class PlainTextApplicationOptionsBinder implements ApplicationOptionsBind
 	}
 
 	@Override
-	public PlainTextApplicationOptions unmarshal(String namespaceUri, String body) {
+	public PlainTextApplicationOptions unmarshal(String type, String body) {
 		PlainTextApplicationOptions options = new PlainTextApplicationOptions();
-		options.setNamespaceUri(namespaceUri);
+		options.setType(type);
 		options.setBody(body);
 		return options;
 	} 
@@ -25,7 +25,7 @@ public class PlainTextApplicationOptionsBinder implements ApplicationOptionsBind
 	}
 
 	@Override
-	public boolean isSupported(String namespaceUri) {
+	public boolean isSupported(String type) {
 		return true;
 	}
 }

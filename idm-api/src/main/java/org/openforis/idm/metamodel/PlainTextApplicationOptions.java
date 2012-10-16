@@ -5,18 +5,18 @@ package org.openforis.idm.metamodel;
  * @author G. Miceli
  */
 public class PlainTextApplicationOptions implements ApplicationOptions {
-	private String namespaceUri;
+	private String type;
 	private String body;
 	
 	public PlainTextApplicationOptions() {
 	}
 
-	public String getNamespaceUri() {
-		return namespaceUri;
+	public String getType() {
+		return type;
 	}
 
-	public void setNamespaceUri(String namespaceUri) {
-		this.namespaceUri = namespaceUri;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getBody() {

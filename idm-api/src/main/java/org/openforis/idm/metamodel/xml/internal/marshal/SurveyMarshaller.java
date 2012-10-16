@@ -20,12 +20,12 @@ public class SurveyMarshaller extends XmlSerializerSupport<Survey, Void>{
 	public SurveyMarshaller(SurveyIdmlBinder binder) {
 		super(IDML3_NAMESPACE_URI, SURVEY);
 		addChildMarshallers(
-//				new ProjectXS(),
-//				new UriXS(), 
-//				new CycleXS(),
-//				new DescriptionXS(),
-//				new LanguageXS(),
-//				new ApplicationOptionsXS(binder),
+				new ProjectXS(),
+				new UriXS(), 
+				new CycleXS(),
+				new DescriptionXS(),
+				new LanguageXS(),
+				new ApplicationOptionsXS(binder),
 //				new VersioningXS(), 
 //				new CodeListsXS(),
 //				new UnitsXS(),

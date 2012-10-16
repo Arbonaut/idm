@@ -19,7 +19,7 @@ import org.xmlpull.v1.XmlSerializer;
  */
 public abstract class XmlSerializerSupport<T, P> {
 
-	private XmlSerializer xmlSerializer;
+	private XmlSerializer xs;
 	private List<XmlSerializerSupport<?,T>> childMarshallers;
 	private String encoding;
 	private String tagNamespace;
@@ -43,7 +43,7 @@ public abstract class XmlSerializerSupport<T, P> {
 	}
 
 	protected XmlSerializer getXmlSerializer() {
-		return xmlSerializer;
+		return xs;
 	}
 	
 	public boolean isIncludeEmpty() {
@@ -64,7 +64,7 @@ public abstract class XmlSerializerSupport<T, P> {
 		ser.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
 	    ser.setOutput(os, enc);
 	    Writer writer = new OutputStreamWriter(os, enc);
-	    this.xmlSerializer = ser;
+	    this.xs = ser;
 		this.writer = writer;
 		this.encoding = enc;
 		marshal(sourceObject);
@@ -95,7 +95,7 @@ public abstract class XmlSerializerSupport<T, P> {
 
 	protected void start(T sourceObject) throws IOException {
 		if ( tagName != null ) {
-			xmlSerializer.startTag(tagNamespace, tagName);
+			xs.startTag(tagNamespace, tagName);
 		}
 	}
 
@@ -156,7 +156,7 @@ public abstract class XmlSerializerSupport<T, P> {
 
 	protected void end(T sourceObject) throws IOException {
 		if ( tagName != null ) {
-			xmlSerializer.endTag(tagNamespace, tagName);
+			xs.endTag(tagNamespace, tagName);
 		}
 	}
 
@@ -172,14 +172,14 @@ public abstract class XmlSerializerSupport<T, P> {
 	}
 
 	protected final void prepareChildMarshaller(XmlSerializerSupport<?,?> im) {
-		im.xmlSerializer = this.xmlSerializer;
+		im.xs = this.xs;
 		im.encoding = this.encoding;
 		im.writer = this.writer;
 	}
 
 	
 	public void setPrefix(String prefix, String namespaceUri) throws IOException{
-		xmlSerializer.setPrefix(prefix, namespaceUri);
+		xs.setPrefix(prefix, namespaceUri);
 	}
 
 	protected void setDefaultNamespace(String namespaceUri) throws IOException {
@@ -188,7 +188,7 @@ public abstract class XmlSerializerSupport<T, P> {
 
 	protected void attribute(String name, String value) throws IOException {
 		if ( value != null ) {
-			xmlSerializer.attribute("", name, value);
+			xs.attribute("", name, value);
 		}
 	}
 	
@@ -201,47 +201,47 @@ public abstract class XmlSerializerSupport<T, P> {
 
 	protected void attribute(String ns, String name, String value) 
 				throws IOException {
-		xmlSerializer.attribute(ns, name, value);
+		xs.attribute(ns, name, value);
 	}
 
 	protected void cdsect(String cdata) throws IOException {
-		xmlSerializer.cdsect(cdata);
+		xs.cdsect(cdata);
 	}
 
 	protected void comment(String comment) throws IOException {
-		xmlSerializer.comment(comment);
+		xs.comment(comment);
 	}
 
 	protected void endDocument() throws IOException {
-		xmlSerializer.endDocument();
+		xs.endDocument();
 	}
 
 	protected void endTag(String ns, String name) throws IOException {
-		xmlSerializer.endTag(ns, name);
+		xs.endTag(ns, name);
 	}
 
 	protected void endTag(String name) throws IOException {
-		xmlSerializer.endTag(tagNamespace, name);
+		xs.endTag(tagNamespace, name);
 	}
 
 	protected void startDocument() throws IOException {
-		xmlSerializer.startDocument(encoding, true);
+		xs.startDocument(encoding, true);
 	}
 
 	protected void startTag(String ns, String name) throws IOException{
-		xmlSerializer.startTag(ns, name);
+		xs.startTag(ns, name);
 	}
 
 	protected void startTag(String name) throws IOException{
-		xmlSerializer.startTag(tagNamespace, name);
+		xs.startTag(tagNamespace, name);
 	}
 
 	protected void text(String text) throws IOException  {
-		xmlSerializer.text(text);
+		xs.text(text);
 	}
 	
 	protected void writeXml(String xml) throws IOException {
-		xmlSerializer.flush();
+		xs.flush();
 		writer.write(xml);
 		writer.flush();
 	}

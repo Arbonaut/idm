@@ -32,16 +32,18 @@ class ApplicationOptionsXS extends XmlSerializerSupport<ApplicationOptions, Surv
 	}
 	
 	@Override
-	protected void attributes(ApplicationOptions options) throws IOException {
-		String type = options.getNamespaceUri();
+	protected void start(ApplicationOptions options) throws IOException {
+		String type= options.getType();
 		attribute(TYPE, type);
+		super.start(options);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void body(ApplicationOptions options) throws IOException {
-		String type = options.getNamespaceUri();
-		ApplicationOptionsBinder optionsBinder = binder.getApplicationOptionsBinder(type);
+		String namespaceUri = options.getType();
+		setDefaultNamespace(namespaceUri);
+		ApplicationOptionsBinder optionsBinder = binder.getApplicationOptionsBinder(namespaceUri);
 		String xml = optionsBinder.marshal(options);
 		writeXml(xml);
 	}

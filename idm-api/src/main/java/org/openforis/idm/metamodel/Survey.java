@@ -421,7 +421,7 @@ public class Survey implements Serializable {
 		if ( applicationOptionsMap == null ) {
 			this.applicationOptionsMap = new LinkedHashMap<String, ApplicationOptions>();
 		}
-		applicationOptionsMap.put(options.getNamespaceUri(), options);
+		applicationOptionsMap.put(options.getType(), options);
 	}
 	
 	public void removeApplicationOptions(String type) {

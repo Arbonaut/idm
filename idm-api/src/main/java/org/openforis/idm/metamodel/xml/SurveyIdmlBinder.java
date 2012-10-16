@@ -40,8 +40,8 @@ public class SurveyIdmlBinder {
 			InputStream is = new FileInputStream(f);
 			SurveyContext ctx = new DefaultSurveyContext();
 			SurveyIdmlBinder binder = new SurveyIdmlBinder(ctx);
-			PlainTextApplicationOptionsBinder textAOB = new PlainTextApplicationOptionsBinder("ui");
-			binder.addApplicationOptionsBinder(textAOB);
+//			PlainTextApplicationOptionsBinder textAOB = new PlainTextApplicationOptionsBinder("ui");
+//			binder.addApplicationOptionsBinder(textAOB);
 			
 			Survey survey = binder.unmarshal(is);
 			

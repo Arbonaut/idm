@@ -13,13 +13,13 @@ import org.openforis.idm.metamodel.NodeLabel;
  * @author G. Miceli
  *
  */
-public abstract class AbstractNodeDefinitionIM<T extends NodeDefinition, P> extends VersionableSurveyObjectMarshaller<T, P> {
+public abstract class NodeDefinitionXS<T extends NodeDefinition, P> extends VersionableSurveyObjectXS<T, P> {
 
-	protected AbstractNodeDefinitionIM(String tag) {
+	protected NodeDefinitionXS(String tag) {
 		super(tag);
 		addChildMarshallers(
-				new LabelIM(),
-				new DescriptionIM());
+				new LabelXS(),
+				new DescriptionXS());
 	}
 	
 	@Override
@@ -29,9 +29,9 @@ public abstract class AbstractNodeDefinitionIM<T extends NodeDefinition, P> exte
 		super.attributes(defn);
 	}
 	
-	private class LabelIM extends LanguageSpecificTextIM<T> {
+	private class LabelXS extends LanguageSpecificTextXS<T> {
 
-		public LabelIM() {
+		public LabelXS() {
 			super(LABEL);
 		}
 		
@@ -48,9 +48,9 @@ public abstract class AbstractNodeDefinitionIM<T extends NodeDefinition, P> exte
 		}
 	}
 	
-	private class DescriptionIM extends LanguageSpecificTextIM<T> {
+	private class DescriptionXS extends LanguageSpecificTextXS<T> {
 
-		public DescriptionIM() {
+		public DescriptionXS() {
 			super(DESCRIPTION);
 		}
 		

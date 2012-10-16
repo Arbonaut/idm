@@ -9,9 +9,9 @@ import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
  * @author G. Miceli
  *
  */
-class CoordinateAttributeIM extends AbstractAttributeDefinitionIM<CoordinateAttributeDefinition> {
+class CoordinateAttributeXS extends AttributeDefinitionXS<CoordinateAttributeDefinition> {
 
-	CoordinateAttributeIM() {
+	CoordinateAttributeXS() {
 		super(COORDINATE);
 	}
 }

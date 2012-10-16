@@ -7,9 +7,9 @@ import org.openforis.idm.metamodel.NumericAttributeDefinition;
  * @author G. Miceli
  *
  */
-abstract class NumericAttributeIM<T extends NumericAttributeDefinition> extends AbstractAttributeDefinitionIM<T> {
+abstract class NumericAttributeXS<T extends NumericAttributeDefinition> extends AttributeDefinitionXS<T> {
 
-	protected NumericAttributeIM(String tag) {
+	protected NumericAttributeXS(String tag) {
 		super(tag);
 	}
 

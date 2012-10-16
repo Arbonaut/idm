@@ -8,24 +8,24 @@ import org.openforis.idm.metamodel.xml.ApplicationOptionsBinder;
  */
 public class PlainTextApplicationOptionsBinder implements ApplicationOptionsBinder<PlainTextApplicationOptions> {
 
-	private String optionsType;
-	
-	public PlainTextApplicationOptionsBinder(String optionsType) {
-		this.optionsType = optionsType;
+	public PlainTextApplicationOptionsBinder() {
 	}
 
 	@Override
-	public PlainTextApplicationOptions unmarshal(String body) {
-		return new PlainTextApplicationOptions(body, optionsType);
+	public PlainTextApplicationOptions unmarshal(String namespaceUri, String body) {
+		PlainTextApplicationOptions options = new PlainTextApplicationOptions();
+		options.setNamespaceUri(namespaceUri);
+		options.setBody(body);
+		return options;
 	} 
 
 	@Override
 	public String marshal(PlainTextApplicationOptions options) {
-		return options.getText();
+		return options.getBody();
 	}
 
 	@Override
-	public boolean isSupported(String type) {
-		return optionsType.equals(type);
+	public boolean isSupported(String namespaceUri) {
+		return true;
 	}
 }

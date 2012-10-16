@@ -12,7 +12,7 @@ public interface ApplicationOptionsBinder<T extends ApplicationOptions> {
 	 * IDML options element 
 	 * @return the converted {@link ApplicationOptions} object
 	 */
-	T unmarshal(String body);
+	T unmarshal(String namespaceUri, String body);
 
 	/**
 	 * 
@@ -25,8 +25,8 @@ public interface ApplicationOptionsBinder<T extends ApplicationOptions> {
 	
 	/**
 	 * 
-	 * @param optionsType
-	 * @return true if the optionType specified is supported by this marshallar
+	 * @param namespaceUri
+	 * @return true if the namespaceUri specified is supported by this marshallar
 	 */
-	boolean isSupported(String optionsType);
+	boolean isSupported(String namespaceUri);
 }

@@ -19,19 +19,19 @@ import org.openforis.idm.metamodel.TimeAttributeDefinition;
 /**
  * @author G. Miceli
  */
-public class NodeDefinitionIM extends PolymorphicIdmlMarshaller<NodeDefinition, EntityDefinition> {
-	public NodeDefinitionIM(EntityDefinitionIM entityIM) {
-		setDelegate(EntityDefinition.class, entityIM);
-		setDelegate(CodeAttributeDefinition.class, new CodeAttributeIM());
-		setDelegate(BooleanAttributeDefinition.class, new BooleanAttributeIM());
-		setDelegate(TextAttributeDefinition.class, new TextAttributeIM());
-		setDelegate(NumberAttributeDefinition.class, new NumberAttributeIM());
-		setDelegate(RangeAttributeDefinition.class, new RangeAttributeIM());
-		setDelegate(FileAttributeDefinition.class, new FileAttributeIM());
-		setDelegate(CoordinateAttributeDefinition.class, new CoordinateAttributeIM());
-		setDelegate(DateAttributeDefinition.class, new DateAttributeIM());
-		setDelegate(TimeAttributeDefinition.class, new TimeAttributeIM());
-		setDelegate(TaxonAttributeDefinition.class, new TaxonAttributeIM());
+public class NodeDefinitionXSDelegator extends PolymorphicXmlSerializer<NodeDefinition, EntityDefinition> {
+	public NodeDefinitionXSDelegator(EntityDefinitionXS entityXS) {
+		setDelegate(EntityDefinition.class, entityXS);
+		setDelegate(CodeAttributeDefinition.class, new CodeAttributeXS());
+		setDelegate(BooleanAttributeDefinition.class, new BooleanAttributeXS());
+		setDelegate(TextAttributeDefinition.class, new TextAttributeXS());
+		setDelegate(NumberAttributeDefinition.class, new NumberAttributeXS());
+		setDelegate(RangeAttributeDefinition.class, new RangeAttributeXS());
+		setDelegate(FileAttributeDefinition.class, new FileAttributeXS());
+		setDelegate(CoordinateAttributeDefinition.class, new CoordinateAttributeXS());
+		setDelegate(DateAttributeDefinition.class, new DateAttributeXS());
+		setDelegate(TimeAttributeDefinition.class, new TimeAttributeXS());
+		setDelegate(TaxonAttributeDefinition.class, new TaxonAttributeXS());
 	}
 	
 	@Override

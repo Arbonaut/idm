@@ -5,6 +5,9 @@ import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 import org.openforis.idm.metamodel.xml.XmlParseException;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
 import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 /**
@@ -46,10 +49,28 @@ public class SurveyUnmarshaller extends IdmlPullReader {
 	public void onStartTag() throws XmlParseException {
 		String lastId = getAttribute(LAST_ID, true);
 		Boolean published = getBooleanAttribute(PUBLISHED, false);
-		SurveyContext surveyContext = getSurveyBinder().getSurveyContext(); 
+		SurveyIdmlBinder surveyBinder = getSurveyBinder();
+		SurveyContext surveyContext = surveyBinder.getSurveyContext(); 
 		this.survey = surveyContext.createSurvey();
 		survey.setLastId(Integer.valueOf(lastId));
 		survey.setPublished(published == null ? false : published);
+		readNamepaceDeclarations();
+	}
+
+	protected void readNamepaceDeclarations() throws XmlParseException {
+		XmlPullParser pp = getParser();
+		try {
+			int nsCount = pp.getNamespaceCount(1);
+			for (int i = 0; i < nsCount; i++) {
+				String prefix = pp.getNamespacePrefix(i);
+				if ( prefix != null ) {
+					String uri = pp.getNamespaceUri(i);
+					survey.addCustomNamespace(uri, prefix);
+				}
+			}
+		} catch (XmlPullParserException e) {
+			throw new XmlParseException(pp, "Failed to read namespace declarations", e);
+		}
 	}
 
 	// TAG READERS

@@ -12,11 +12,11 @@ import org.openforis.idm.metamodel.Survey;
  * @author G. Miceli
  *
  */
-class SchemaIM extends AbstractIdmlMarshaller<Schema, Survey> {
+class SchemaXS extends XmlSerializerSupport<Schema, Survey> {
 
-	SchemaIM() {
+	SchemaXS() {
 		super(SCHEMA);
-		addChildMarshallers(new EntityDefinitionIM());
+		addChildMarshallers(new EntityDefinitionXS());
 	}
 	
 	@Override

@@ -2,16 +2,17 @@ package org.openforis.idm.metamodel.xml.internal.marshal;
 
 import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
-import org.openforis.idm.metamodel.CodeAttributeDefinition;
+import org.openforis.idm.metamodel.BooleanAttributeDefinition;
 
 /**
  * 
  * @author G. Miceli
  *
  */
-class CodeAttributeIM extends AbstractAttributeDefinitionIM<CodeAttributeDefinition> {
+class BooleanAttributeXS extends AttributeDefinitionXS<BooleanAttributeDefinition> {
 
-	CodeAttributeIM() {
+	BooleanAttributeXS() {
 		super(CODE);
 	}
+
 }

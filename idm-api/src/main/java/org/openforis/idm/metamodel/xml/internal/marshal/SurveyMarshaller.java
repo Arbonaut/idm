@@ -3,9 +3,11 @@ package org.openforis.idm.metamodel.xml.internal.marshal;
 import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
+import org.xmlpull.v1.XmlSerializer;
 
 
 /**
@@ -13,29 +15,39 @@ import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
  * 
  * @author G. Miceli
  */
-public class SurveyMarshaller extends AbstractIdmlMarshaller<Survey, Void>{
+public class SurveyMarshaller extends XmlSerializerSupport<Survey, Void>{
 
 	public SurveyMarshaller(SurveyIdmlBinder binder) {
 		super(IDML3_NAMESPACE_URI, SURVEY);
 		addChildMarshallers(
-//				new ProjectIM(),
-//				new UriIM(), 
-//				new CycleIM(),
-//				new DescriptionIM(),
-//				new LanguageIM(),
-//				new ApplicationOptionsIM(binder),
-//				new VersioningIM(), 
-//				new CodeListsIM(),
-//				new UnitsIM(),
-//				new SpatialReferenceSystemsIM(),
-				new SchemaIM());
+//				new ProjectXS(),
+//				new UriXS(), 
+//				new CycleXS(),
+//				new DescriptionXS(),
+//				new LanguageXS(),
+//				new ApplicationOptionsXS(binder),
+//				new VersioningXS(), 
+//				new CodeListsXS(),
+//				new UnitsXS(),
+//				new SpatialReferenceSystemsXS(),
+				new SchemaXS());
 	}
 
 	@Override
 	protected void start(Survey survey) throws IOException {
 		startDocument();
 		setDefaultNamespace(IDML3_NAMESPACE_URI);
+		setCustomNamespacePrefixes(survey);
 		super.start(survey);
+	}
+
+	protected void setCustomNamespacePrefixes(Survey survey) throws IOException {
+		List<String> uris = survey.getCustomNamespaces();
+		for (String uri : uris) {
+			XmlSerializer xs = getXmlSerializer();
+			String prefix = survey.getCustomNamespacePrefix(uri);
+			xs.setPrefix(prefix, uri);
+		}
 	}
 
 	@Override
@@ -50,8 +62,8 @@ public class SurveyMarshaller extends AbstractIdmlMarshaller<Survey, Void>{
 		getXmlSerializer().endDocument();
 	}
 
-	private class ProjectIM extends LanguageSpecificTextIM<Survey> {
-		public ProjectIM() {
+	private class ProjectXS extends LanguageSpecificTextXS<Survey> {
+		public ProjectXS() {
 			super(PROJECT);
 		}
 
@@ -61,8 +73,8 @@ public class SurveyMarshaller extends AbstractIdmlMarshaller<Survey, Void>{
 		}
 	}
 
-	private class UriIM extends TextIM<Survey> {
-		public UriIM() {
+	private class UriXS extends TextXS<Survey> {
+		public UriXS() {
 			super(URI);
 		}
 
@@ -72,8 +84,8 @@ public class SurveyMarshaller extends AbstractIdmlMarshaller<Survey, Void>{
 		}
 	}
 
-	private class CycleIM extends TextIM<Survey> {
-		public CycleIM() {
+	private class CycleXS extends TextXS<Survey> {
+		public CycleXS() {
 			super(CYCLE);
 		}
 
@@ -83,8 +95,8 @@ public class SurveyMarshaller extends AbstractIdmlMarshaller<Survey, Void>{
 		}
 	}
 
-	private class DescriptionIM extends LanguageSpecificTextIM<Survey> {
-		public DescriptionIM() {
+	private class DescriptionXS extends LanguageSpecificTextXS<Survey> {
+		public DescriptionXS() {
 			super(DESCRIPTION);
 		}
 
@@ -94,8 +106,8 @@ public class SurveyMarshaller extends AbstractIdmlMarshaller<Survey, Void>{
 		}
 	}
 
-	private class LanguageIM extends TextIM<Survey> {
-		public LanguageIM() {
+	private class LanguageXS extends TextXS<Survey> {
+		public LanguageXS() {
 			super(LANGUAGE);
 		}
 

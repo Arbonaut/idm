@@ -17,10 +17,10 @@ import org.xmlpull.v1.XmlSerializer;
  *
  * @param <P>
  */
-public abstract class AbstractIdmlMarshaller<T, P> {
+public abstract class XmlSerializerSupport<T, P> {
 
 	private XmlSerializer xmlSerializer;
-	private List<AbstractIdmlMarshaller<?,T>> childMarshallers;
+	private List<XmlSerializerSupport<?,T>> childMarshallers;
 	private String encoding;
 	private String tagNamespace;
 	private String tagName;
@@ -28,15 +28,15 @@ public abstract class AbstractIdmlMarshaller<T, P> {
 	private Writer writer;
 	private String listWrapperTag;
 	
-	protected AbstractIdmlMarshaller() {
+	protected XmlSerializerSupport() {
 		this(IdmlConstants.IDML3_NAMESPACE_URI, null);
 	}
 	
-	protected AbstractIdmlMarshaller(String tag) {
+	protected XmlSerializerSupport(String tag) {
 		this(IdmlConstants.IDML3_NAMESPACE_URI, tag);
 	}
 
-	protected AbstractIdmlMarshaller(String tagNamespace, String tagName) {
+	protected XmlSerializerSupport(String tagNamespace, String tagName) {
 		this.includeEmpty = false; 
 		this.tagNamespace = tagNamespace;
 		this.tagName = tagName;
@@ -109,7 +109,7 @@ public abstract class AbstractIdmlMarshaller<T, P> {
 
 	protected void marshalChildren(T parentObject) throws IOException {
 		if ( childMarshallers != null ) {
-			for (AbstractIdmlMarshaller<?,T> ser : childMarshallers) {
+			for (XmlSerializerSupport<?,T> ser : childMarshallers) {
 				prepareChildMarshaller(ser);
 				ser.marshalInstances(parentObject);
 			}
@@ -161,17 +161,17 @@ public abstract class AbstractIdmlMarshaller<T, P> {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void addChildMarshallers(AbstractIdmlMarshaller<?,?>... marshallers) {
+	public void addChildMarshallers(XmlSerializerSupport<?,?>... marshallers) {
 		if ( childMarshallers == null ) {
-			this.childMarshallers = new ArrayList<AbstractIdmlMarshaller<?,T>>(marshallers.length); 
+			this.childMarshallers = new ArrayList<XmlSerializerSupport<?,T>>(marshallers.length); 
 		}
 		
-		for (AbstractIdmlMarshaller im : marshallers) {
+		for (XmlSerializerSupport im : marshallers) {
 			childMarshallers.add(im);
 		}
 	}
 
-	protected final void prepareChildMarshaller(AbstractIdmlMarshaller<?,?> im) {
+	protected final void prepareChildMarshaller(XmlSerializerSupport<?,?> im) {
 		im.xmlSerializer = this.xmlSerializer;
 		im.encoding = this.encoding;
 		im.writer = this.writer;

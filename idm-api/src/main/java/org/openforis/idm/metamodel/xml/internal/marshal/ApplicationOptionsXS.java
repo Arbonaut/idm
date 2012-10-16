@@ -15,11 +15,11 @@ import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
  * @author G. Miceli
  *
  */
-class ApplicationOptionsIM extends AbstractIdmlMarshaller<ApplicationOptions, Survey> {
+class ApplicationOptionsXS extends XmlSerializerSupport<ApplicationOptions, Survey> {
 
 	private SurveyIdmlBinder binder;
 
-	ApplicationOptionsIM(SurveyIdmlBinder binder) {
+	ApplicationOptionsXS(SurveyIdmlBinder binder) {
 		super(OPTIONS);
 		setListWrapperTag(APPLICATION_OPTIONS);
 		this.binder = binder;
@@ -33,14 +33,14 @@ class ApplicationOptionsIM extends AbstractIdmlMarshaller<ApplicationOptions, Su
 	
 	@Override
 	protected void attributes(ApplicationOptions options) throws IOException {
-		String type = options.getType();
+		String type = options.getNamespaceUri();
 		attribute(TYPE, type);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void body(ApplicationOptions options) throws IOException {
-		String type = options.getType();
+		String type = options.getNamespaceUri();
 		ApplicationOptionsBinder optionsBinder = binder.getApplicationOptionsBinder(type);
 		String xml = optionsBinder.marshal(options);
 		writeXml(xml);

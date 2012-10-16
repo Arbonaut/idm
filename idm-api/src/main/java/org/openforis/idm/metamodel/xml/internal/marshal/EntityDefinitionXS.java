@@ -13,14 +13,14 @@ import org.openforis.idm.metamodel.Schema;
  * @author G. Miceli
  * 
  */
-public class EntityDefinitionIM extends AbstractNodeDefinitionIM<EntityDefinition, Schema> {
-	public EntityDefinitionIM() {
+public class EntityDefinitionXS extends NodeDefinitionXS<EntityDefinition, Schema> {
+	public EntityDefinitionXS() {
 		super(ENTITY);
-		addChildMarshallers(new NodeDefinitionIM(this));
+		addChildMarshallers(new NodeDefinitionXSDelegator(this));
 	}
 	
 	/**
-	 * Only used by SchemaIM.  NodeDefinition finds children on its own
+	 * Only used by SchemaXS.  NodeDefinition finds children on its own
 	 */
 	@Override
 	protected void marshalInstances(Schema schema) throws IOException {

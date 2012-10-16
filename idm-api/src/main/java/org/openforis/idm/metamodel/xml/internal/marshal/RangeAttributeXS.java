@@ -9,9 +9,9 @@ import org.openforis.idm.metamodel.RangeAttributeDefinition;
  * @author G. Miceli
  *
  */
-class RangeAttributeIM extends NumericAttributeIM<RangeAttributeDefinition> {
+class RangeAttributeXS extends NumericAttributeXS<RangeAttributeDefinition> {
 
-	RangeAttributeIM() {
+	RangeAttributeXS() {
 		super(RANGE);
 	}
 

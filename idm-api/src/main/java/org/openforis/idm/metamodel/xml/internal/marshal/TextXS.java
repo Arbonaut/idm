@@ -7,9 +7,9 @@ import java.io.IOException;
  * @author G. Miceli
  *
  */
-abstract class TextIM<P> extends AbstractIdmlMarshaller<String, P>{
+abstract class TextXS<P> extends XmlSerializerSupport<String, P>{
 
-	public TextIM(String tag) {
+	public TextXS(String tag) {
 		super(tag);
 	}
 

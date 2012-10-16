@@ -87,7 +87,11 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	}
 	
 	public Set<QName> getAnnotationNames() {
-		return CollectionUtil.unmodifiableSet(annotations.keySet());
+		if ( annotations == null ) {
+			return Collections.emptySet();
+		} else {
+			return Collections.unmodifiableSet(annotations.keySet());
+		}
 	}
 
 	public NodeDefinition getDefinitionByPath(String path) throws InvalidPathException {

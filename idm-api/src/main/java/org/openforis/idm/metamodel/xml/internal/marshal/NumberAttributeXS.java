@@ -9,9 +9,9 @@ import org.openforis.idm.metamodel.NumberAttributeDefinition;
  * @author G. Miceli
  *
  */
-class NumberAttributeIM extends NumericAttributeIM<NumberAttributeDefinition> {
+class NumberAttributeXS extends NumericAttributeXS<NumberAttributeDefinition> {
 
-	NumberAttributeIM() {
+	NumberAttributeXS() {
 		super(NUMBER);
 	}
 

@@ -1,19 +1,16 @@
 package org.openforis.idm.metamodel.xml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openforis.idm.metamodel.DefaultSurveyContext;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.internal.marshal.SurveyMarshaller;
-import org.openforis.idm.metamodel.xml.internal.unmarshal.PlainTextApplicationOptionsBinder;
 import org.openforis.idm.metamodel.xml.internal.unmarshal.SurveyUnmarshaller;
 
 /**
@@ -32,28 +29,27 @@ public class SurveyIdmlBinder {
 		this.optionsBinders = new ArrayList<ApplicationOptionsBinder<?>>();
 	}
 
-	// TODO Remove
-	public static void main(String[] args) {
-		try {
-			File f = new File("../idm-test/src/main/resources/test.idm.xml");
-//			File f = new File("~/workspace/faofin/tz/naforma-idm/tanzania-naforma.idm.xml");
-			InputStream is = new FileInputStream(f);
-			SurveyContext ctx = new DefaultSurveyContext();
-			SurveyIdmlBinder binder = new SurveyIdmlBinder(ctx);
-			PlainTextApplicationOptionsBinder textAOB = new PlainTextApplicationOptionsBinder();
-			binder.addApplicationOptionsBinder(textAOB);
-			
-			Survey survey = binder.unmarshal(is);
-			
-			FileOutputStream fos = new FileOutputStream("test.idm.out.xml");
-			// Write
-			binder.marshal(survey, fos);
-			fos.flush();
-			fos.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		try {
+//			File f = new File("../idm-test/src/main/resources/test.idm.xml");
+////			File f = new File("~/workspace/faofin/tz/naforma-idm/tanzania-naforma.idm.xml");
+//			InputStream is = new FileInputStream(f);
+//			SurveyContext ctx = new DefaultSurveyContext();
+//			SurveyIdmlBinder binder = new SurveyIdmlBinder(ctx);
+//			PlainTextApplicationOptionsBinder textAOB = new PlainTextApplicationOptionsBinder();
+//			binder.addApplicationOptionsBinder(textAOB);
+//			
+//			Survey survey = binder.unmarshal(is);
+//			
+//			FileOutputStream fos = new FileOutputStream("test.idm.out.xml");
+//			// Write
+//			binder.marshal(survey, fos);
+//			fos.flush();
+//			fos.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public void addApplicationOptionsBinder(ApplicationOptionsBinder<?> binder) {
 		optionsBinders.add(binder);
@@ -82,10 +78,21 @@ public class SurveyIdmlBinder {
 		SurveyMarshaller ser = new SurveyMarshaller(this);
 		ser.marshal(survey, os, UTF8_ENCODING);
 	}
+	
+	public void marshal(Survey survey, Writer wr) throws IOException {
+		SurveyMarshaller ser = new SurveyMarshaller(this);
+		ser.marshal(survey, wr, UTF8_ENCODING);
+	}
 		
 	public Survey unmarshal(InputStream is) throws XmlParseException, IOException {
 		SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this);
 		unmarshaller.parse(is, UTF8_ENCODING);
+		return unmarshaller.getSurvey();
+	}	
+	
+	public Survey unmarshal(Reader r) throws XmlParseException, IOException {
+		SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this);
+		unmarshaller.parse(r);
 		return unmarshaller.getSurvey();
 	}	
 }

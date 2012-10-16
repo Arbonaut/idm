@@ -14,7 +14,7 @@ import org.openforis.idm.metamodel.BooleanAttributeDefinition;
 class BooleanAttributeXS extends AttributeDefinitionXS<BooleanAttributeDefinition> {
 
 	BooleanAttributeXS() {
-		super(CODE);
+		super(BOOLEAN);
 	}
 
 	@Override

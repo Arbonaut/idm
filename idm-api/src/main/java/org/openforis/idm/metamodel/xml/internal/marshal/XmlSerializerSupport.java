@@ -3,6 +3,7 @@ package org.openforis.idm.metamodel.xml.internal.marshal;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,15 +62,29 @@ public abstract class XmlSerializerSupport<T, P> {
 	synchronized
 	public void marshal(T sourceObject, OutputStream os, String enc) throws IOException {
 		XmlSerializer ser = createXmlSerializer();
-		ser.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
-	    ser.setOutput(os, enc);
-	    Writer writer = new OutputStreamWriter(os, enc);
-	    this.xs = ser;
+		ser.setOutput(os, enc);
+		Writer writer = new OutputStreamWriter(os, enc);
 		this.writer = writer;
+		marshal(sourceObject, enc, ser);
+	}
+	
+	synchronized
+	public void marshal(T sourceObject, Writer wr, String enc) throws IOException {
+		XmlSerializer ser = createXmlSerializer();
+		ser.setOutput(wr);
+		this.writer = wr;
+		marshal(sourceObject, enc, ser);
+	}
+
+	private void marshal(T sourceObject, String enc, XmlSerializer ser)
+			throws UnsupportedEncodingException, IOException {
+		ser.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+	    this.xs = ser;
 		this.encoding = enc;
 		marshal(sourceObject);
 	}
 
+	
 	private static XmlSerializer createXmlSerializer() {
 		try {
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();

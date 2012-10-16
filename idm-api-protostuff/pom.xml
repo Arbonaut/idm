@@ -23,6 +23,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>net.sf.kxml</groupId>
+			<artifactId>kxml2</artifactId>
+			<version>2.3.0</version>
+			<scope>test</scope>
+		</dependency>  
+		<dependency>
 			<groupId>com.dyuproject.protostuff</groupId>
 			<artifactId>protostuff-api</artifactId>
 			<version>${protostuff.version}</version>

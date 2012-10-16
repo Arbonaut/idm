@@ -32,10 +32,9 @@ class ApplicationOptionsXS extends XmlSerializerSupport<ApplicationOptions, Surv
 	}
 	
 	@Override
-	protected void start(ApplicationOptions options) throws IOException {
+	protected void attributes(ApplicationOptions options) throws IOException {
 		String type= options.getType();
 		attribute(TYPE, type);
-		super.start(options);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

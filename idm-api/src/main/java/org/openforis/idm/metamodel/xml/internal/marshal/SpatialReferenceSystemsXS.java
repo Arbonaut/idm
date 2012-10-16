@@ -32,7 +32,7 @@ class SpatialReferenceSystemsXS extends XmlSerializerSupport<SpatialReferenceSys
 	
 	@Override
 	protected void attributes(SpatialReferenceSystem srs) throws IOException {
-		attribute(ID, srs.getId());
+		attribute(SRID, srs.getId());
 	}
 	
 	private class LabelXS extends LanguageSpecificTextXS<SpatialReferenceSystem> {

@@ -16,7 +16,7 @@ import org.openforis.idm.metamodel.FileAttributeDefinition;
 class FileAttributeXS extends AttributeDefinitionXS<FileAttributeDefinition> {
 
 	FileAttributeXS() {
-		super(TEXT);
+		super(FILE);
 	}
 	
 	@Override

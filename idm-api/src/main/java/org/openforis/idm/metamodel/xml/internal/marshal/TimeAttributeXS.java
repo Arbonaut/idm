@@ -12,6 +12,6 @@ import org.openforis.idm.metamodel.TimeAttributeDefinition;
 class TimeAttributeXS extends AttributeDefinitionXS<TimeAttributeDefinition> {
 
 	TimeAttributeXS() {
-		super(TEXT);
+		super(TIME);
 	}
 }

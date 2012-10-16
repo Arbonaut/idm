@@ -14,7 +14,7 @@ import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 class TaxonAttributeXS extends AttributeDefinitionXS<TaxonAttributeDefinition> {
 
 	TaxonAttributeXS() {
-		super(TEXT);
+		super(TAXON);
 	}
 	
 	@Override

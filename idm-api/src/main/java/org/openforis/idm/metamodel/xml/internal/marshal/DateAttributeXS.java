@@ -12,6 +12,6 @@ import org.openforis.idm.metamodel.DateAttributeDefinition;
 class DateAttributeXS extends AttributeDefinitionXS<DateAttributeDefinition> {
 
 	DateAttributeXS() {
-		super(TEXT);
+		super(DATE);
 	}
 }

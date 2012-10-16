@@ -1,7 +1,6 @@
 package org.openforis.idm;
 
 import java.io.InputStream;
-import java.net.URL;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -25,8 +24,7 @@ public abstract class AbstractTest {
 
 	@BeforeClass
 	public static void setUp() throws Exception {
-		URL idm = ClassLoader.getSystemResource("test.idm.xml");
-		InputStream is = idm.openStream();
+		InputStream is = AbstractTest.class.getClassLoader().getResourceAsStream("test.idm.xml");
 		SurveyContext surveyContext = new TestSurveyContext();
 		SurveyIdmlBinder parser = new SurveyIdmlBinder(surveyContext);
 		survey = parser.unmarshal(is);

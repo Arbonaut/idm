@@ -88,7 +88,7 @@ class CodeListsXS extends VersionableSurveyObjectXS<CodeList, Survey> {
 		}
 		
 		protected void attributes(CodeScope scope) throws IOException {
-			attribute(SCOPE, scope.name().toLowerCase());
+			attribute(SCOPE, scope == null ? null : scope.name().toLowerCase());
 		}
 	}
 

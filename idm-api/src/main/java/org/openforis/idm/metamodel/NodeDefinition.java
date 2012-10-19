@@ -16,7 +16,6 @@ import org.openforis.idm.model.Node;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.path.InvalidPathException;
 import org.openforis.idm.path.Path;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli

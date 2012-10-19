@@ -8,7 +8,7 @@ import org.openforis.idm.model.expression.ExpressionFactory;
 
 /**
  * @author M. Togna
- * 
+ * @author G. Miceli
  */
 public interface SurveyContext {
 
@@ -16,6 +16,7 @@ public interface SurveyContext {
 
 	Validator getValidator();
 	
-	ExternalCodeListProvider  getExternalCodeListProvider();
-	
+	ExternalCodeListProvider getExternalCodeListProvider();
+
+	Survey createSurvey();
 }

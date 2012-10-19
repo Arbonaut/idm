@@ -3,135 +3,72 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAnyAttribute;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
 
-import org.openforis.idm.metamodel.expression.SchemaPathExpression;
-import org.openforis.idm.metamodel.xml.internal.XmlInherited;
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.NodePathPointer;
+import org.openforis.idm.path.InvalidPathException;
+import org.openforis.idm.path.Path;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlTransient
-public abstract class NodeDefinition extends Versionable implements Annotatable, Serializable {
+public abstract class NodeDefinition extends VersionableSurveyObject implements Annotatable {
 	private static final long serialVersionUID = 1L;
-//	private static final transient Log LOG = LogFactory.getLog(NodeDefinition.class);
 
-	@XmlTransient
-	private Integer id;
-	
-	@XmlTransient
-	@XmlParent
 	private NodeDefinition parentDefinition;
-	
-	@XmlTransient
-	@XmlParent
-	@XmlInherited("schema")
-	private Schema schema;
-	
-	@XmlAttribute(name = "name")
 	private String name;
-
-	@XmlAttribute(name = "relevant")
 	private String relevantExpression;
-
-	@XmlAttribute(name = "required")
-	private Boolean required;
-	
-	@XmlAttribute(name = "requiredIf")
 	private String requiredExpression;
-
-	@XmlAttribute(name = "multiple")
-	private Boolean multiple;
-
-	@XmlAttribute(name = "minCount")
+	private boolean multiple;
 	private Integer minCount;
-
-	@XmlAttribute(name = "maxCount")
 	private Integer maxCount;
-
-	@XmlElement(name = "label", type = NodeLabel.class)
-	private List<NodeLabel> labels;
-
-	@XmlElement(name = "prompt", type = Prompt.class)
-	private List<Prompt> prompts;
-
-	@XmlElement(name = "description", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;
-
-	@XmlAnyAttribute
+	private NodeLabelMap labels;
+	private PromptMap prompts;
+	private LanguageSpecificTextMap descriptions;
 	private Map<QName,String> annotations;
 	
+	NodeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	public abstract Node<?> createNode();
 	
-	/**
-	 * For each NodeDefiniton X with relevance attr defined:
-	 *    1. relative paths of parent of dependent node 
-	 *    2. name or child def of child node   
-	 *    (see {@link NodePathPointer}
-	 */
-//	@XmlTransient
-//	private Set<NodePathPointer> relevantExpressionDependencies;
-
-	/**
-	 * For each NodeDefiniton X with requiredExpression defined:
-	 *    1. relative paths of parent of dependent node 
-	 *    2. name or child def of child node   
-	 *    (see {@link NodePathPointer}
-	 */
-//	@XmlTransient
-//	private Set<NodePathPointer> requiredExpressionDependencies;
-
 	public String getAnnotation(QName qname) {
 		return annotations == null ? null : annotations.get(qname);
 	}
 
+	public void setAnnotation(QName qname, String value) {
+		if ( annotations == null ) {
+			annotations = new HashMap<QName, String>();
+		}
+		if (StringUtils.isNotBlank(value)) {
+			annotations.put(qname, value);
+		} else {
+			annotations.remove(qname);
+		}
+	}
+	
 	public Set<QName> getAnnotationNames() {
-		return CollectionUtil.unmodifiableSet(annotations.keySet());
-	}
-	
-	public Integer getId() {
-		return id;
-	}
-
-	// TODO Encapsulate this better (e.g. using reflection or subclass)
-	public void setId(Integer id) {
-		this.id = id;
-		if ( schema != null ) {
-			schema.indexById(this);
+		if ( annotations == null ) {
+			return Collections.emptySet();
+		} else {
+			return Collections.unmodifiableSet(annotations.keySet());
 		}
 	}
-	
-	public Schema getSchema() {
-		return schema;
-	}
 
-	protected void setSchema(Schema schema) {
-		this.schema = schema;
-	}
-	
-	public NodeDefinition getDefinitionByRelativePath(String path) {
-		SchemaPathExpression expression = new SchemaPathExpression(path);
-		Object object = expression.evaluate(this);
-		if (object instanceof NodeDefinition) {
-			return (NodeDefinition) object;
-		}
-		return null;
+	public NodeDefinition getDefinitionByPath(String path) throws InvalidPathException {
+		Path p = Path.parsePath(path);
+		return p.evaluate(this);
 	}
 
 	public String getName() {
@@ -142,43 +79,24 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 		return this.relevantExpression;
 	}
 
-	/*
-	public boolean isRequired() {
-		if (required == null) {
-			return minCount != null && minCount >= 1;
-		} else {
-			return required;
-		}
-	}
-	*/
-	
 	public String getRequiredExpression() {
 		return requiredExpression;
 	}
 
+	/**
+	 * This property is meaningless for root entities
+	 * @return 
+	 */
 	public boolean isMultiple() {
-		if ( multiple == null ) {
-			if ( parentDefinition == null && schema != null ) {
-				// Root entity is always multiple
-				return true;
-			} else {
-				return (minCount != null && minCount > 1) || (maxCount != null && maxCount > 1);
-			}
-		} else {
-			return multiple;
-		}
+		return multiple;
 	}
 
 	public Integer getMinCount() {
-		if (minCount == null) {
-			return required == Boolean.TRUE ? 1 : null;
-		} else {
-			return minCount;
-		}
+		return minCount;
 	}
 
 	public Integer getMaxCount() {
-		if ( maxCount == null && !isMultiple() ) {
+		if ( !multiple ) {
 			return 1;
 		} else {
 			return maxCount;
@@ -186,41 +104,99 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 
 	public List<NodeLabel> getLabels() {
-		return CollectionUtil.unmodifiableList(labels);
+		if ( this.labels == null ) {
+			return Collections.emptyList();
+		} else {
+			return labels.values();
+		}
+	}
+	
+	public String getLabel(NodeLabel.Type type, String language) {
+		return labels == null ? null: labels.getText(type, language);
+	}
+	
+	public void setLabel(NodeLabel.Type type, String language, String text) {
+		if ( labels == null ) {
+			labels = new NodeLabelMap();
+		}
+		labels.setText(type, language, text);
 	}
 
-	public List<NodeLabel> getLabels(NodeLabel.Type type) {
-		List<NodeLabel> list = new ArrayList<NodeLabel>();
-		if (labels != null) {
-			for (NodeLabel label : labels) {
-				if (label.getType().equals(type)) {
-					list.add(label);
-				}
-			}
+	public void addLabel(NodeLabel label) {
+		if ( labels == null ) {
+			labels = new NodeLabelMap();
 		}
-		return Collections.unmodifiableList(list);
+		labels.add(label);
+	}
+
+	public void removeLabel(NodeLabel.Type type, String language) {
+		if (labels != null ) {
+			labels.remove(type, language);
+		}
 	}
 
 	public List<Prompt> getPrompts() {
-		return CollectionUtil.unmodifiableList(prompts);
+		if ( this.prompts == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.prompts.values();
+		}
+	}
+	
+	public String getPrompt(Prompt.Type type, String language) {
+		return prompts == null ? null: prompts.getText(type, language);
+	}
+	
+	public void setPrompt(Prompt.Type type, String language, String text) {
+		if ( prompts == null ) {
+			prompts = new PromptMap();
+		}
+		prompts.setText(type, language, text);
 	}
 
-	public List<Prompt> getPrompts(Prompt.Type type) {
-		List<Prompt> list = new ArrayList<Prompt>();
-		if (prompts != null) {
-			for (Prompt prompt : prompts) {
-				if (prompt.getType().equals(type)) {
-					list.add(prompt);
-				}
-			}
+	public void addPrompt(Prompt prompt) {
+		if ( prompts == null ) {
+			prompts = new PromptMap();
 		}
-		return Collections.unmodifiableList(list);
+		prompts.add(prompt);
+	}
+
+	public void removePrompt(Prompt.Type type, String language) {
+		if (prompts != null ) {
+			prompts.remove(type, language);
+		}
 	}
 	
 	public List<LanguageSpecificText> getDescriptions() {
-		return CollectionUtil.unmodifiableList(descriptions);
+		if ( this.descriptions == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.descriptions.values();
+		}
 	}
 
+	public String getDescription(String language) {
+		return descriptions == null ? null: descriptions.getText(language);
+	}
+	
+	public void setDescription(String language, String description) {
+		if ( descriptions == null ) {
+			descriptions = new LanguageSpecificTextMap();
+		}
+		descriptions.setText(language, description);
+	}
+	
+	public void addDescription(LanguageSpecificText description) {
+		if ( descriptions == null ) {
+			descriptions = new LanguageSpecificTextMap();
+		}
+		descriptions.add(description);
+	}
+
+	public void removeDescription(String language) {
+		descriptions.remove(language);
+	}
+	
 	public String getPath() {
 		NodeDefinition defn = this;
 		StringBuilder sb = new StringBuilder(64);
@@ -235,15 +211,17 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	public NodeDefinition getParentDefinition() {
 		return this.parentDefinition;
 	}
-
+	
 	protected void setParentDefinition(NodeDefinition parentDefinition) {
 		this.parentDefinition = parentDefinition;
-		this.schema = parentDefinition.getSchema();
 	}
 	
-	@Override
-	public Survey getSurvey() {
-		return schema == null ? null : schema.getSurvey();
+	public EntityDefinition getRootEntity() {
+		NodeDefinition ptr = this;
+		while ( ptr.getParentDefinition() != null ) {
+			ptr = ptr.getParentDefinition();
+		}
+		return (EntityDefinition) ptr;
 	}
 	
 	@Override
@@ -262,131 +240,114 @@ public abstract class NodeDefinition extends Versionable implements Annotatable,
 	}
 
 	public void setName(String name) {
-		checkLockState();
 		this.name = name;
 	}
-
 	
-	//	public Set<NodePathPointer> getDependencies(String expression) {
-//		Set<NodePathPointer> nodePointers = new HashSet<NodePathPointer>();
-//		if (StringUtils.isNotBlank(expression)) {
-//			List<String> referencedPaths = getReferencedPaths(expression);
-//			for (String path : referencedPaths) {
-//				try {
-//					NodeDefinition dependantNodeDefn = getDependantNodeDefinition(path);
-//					EntityDefinition parentDependantDefn = dependantNodeDefn.getParentDefinition();
-//
-//					String sourcePath = getPath();
-//					String destinationPath = parentDependantDefn.getPath();
-//					String relativePath = getRelativePath(sourcePath, destinationPath);
-//
-//					NodePathPointer nodePointer = new NodePathPointer(relativePath, dependantNodeDefn.getName());
-//					nodePointers.add(nodePointer);
-//				} catch (Exception e) {
-//					if (LOG.isErrorEnabled()) {
-//						LOG.error("Unable to register dependency for node " + getPath() + " with expression " + path, e);
-//					}
-//				}
-//			}
-//		}
-//		return nodePointers;
-//	}
-
 	public void setRelevantExpression(String relevantExpression) {
-		checkLockState();
 		this.relevantExpression = relevantExpression;
 	}
 
-	public void setRequired(Boolean required) {
-		checkLockState();
-		this.required = required;
-	}
-
 	public void setRequiredExpression(String requiredExpression) {
-		checkLockState();
 		this.requiredExpression = requiredExpression;
 	}
 
-	public void setMultiple(Boolean multiple) {
-		checkLockState();
+
+	/**
+	 * This property is meaningless for root entities
+	 * @param multiple 
+	 */
+	public void setMultiple(boolean multiple) {
 		this.multiple = multiple;
 	}
 
 	public void setMinCount(Integer minCount) {
-		checkLockState();
 		this.minCount = minCount;
 	}
 
 	public void setMaxCount(Integer maxCount) {
-		checkLockState();
 		this.maxCount = maxCount;
+		if ( maxCount != null && maxCount > 1 ) {
+			this.multiple = true;
+		}
 	}
 
-	/**
-	 * @throws IllegalStateException when the survey is already 
-	 * associated with one or more records or nodes (i.e. locked)
-	 */
-	protected void checkLockState() {
-		// TODO
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((annotations == null) ? 0 : annotations.hashCode());
+		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
+		result = prime * result + getId();
+		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
+		result = prime * result + ((maxCount == null) ? 0 : maxCount.hashCode());
+		result = prime * result + ((minCount == null) ? 0 : minCount.hashCode());
+		result = prime * result + (multiple ? 1231 : 1237);
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((prompts == null) ? 0 : prompts.hashCode());
+		result = prime * result + ((relevantExpression == null) ? 0 : relevantExpression.hashCode());
+		result = prime * result + ((requiredExpression == null) ? 0 : requiredExpression.hashCode());
+		return result;
 	}
 
-//	protected List<String> getReferencedPaths(String expression) {
-//		if (StringUtils.isBlank(expression)) {
-//			return Collections.emptyList();
-//		} else {
-//			try {
-//				Survey survey = getSurvey();
-//				SurveyContext surveyContext = survey.getContext();
-//				ExpressionFactory expressionFactory = surveyContext.getExpressionFactory();
-//				ModelPathExpression pathExpression = expressionFactory.createModelPathExpression(expression);
-//				return pathExpression.getReferencedPaths();
-//			} catch (InvalidExpressionException e) {
-//				if (LOG.isErrorEnabled()) {
-//					LOG.error("Invalid expression " + expression, e);
-//				}
-//				return Collections.emptyList();
-//			}
-//		}
-//	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NodeDefinition other = (NodeDefinition) obj;
+		if (annotations == null) {
+			if (other.annotations != null)
+				return false;
+		} else if (!annotations.equals(other.annotations))
+			return false;
+		if (descriptions == null) {
+			if (other.descriptions != null)
+				return false;
+		} else if (!descriptions.equals(other.descriptions))
+			return false;
+		if (getId() != other.getId())
+			return false;
+		if (labels == null) {
+			if (other.labels != null)
+				return false;
+		} else if (!labels.equals(other.labels))
+			return false;
+		if (maxCount == null) {
+			if (other.maxCount != null)
+				return false;
+		} else if (!maxCount.equals(other.maxCount))
+			return false;
+		if (minCount == null) {
+			if (other.minCount != null)
+				return false;
+		} else if (!minCount.equals(other.minCount))
+			return false;
+		if (multiple!=other.multiple)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (prompts == null) {
+			if (other.prompts != null)
+				return false;
+		} else if (!prompts.equals(other.prompts))
+			return false;
+		if (relevantExpression == null) {
+			if (other.relevantExpression != null)
+				return false;
+		} else if (!relevantExpression.equals(other.relevantExpression))
+			return false;
+		if (requiredExpression == null) {
+			if (other.requiredExpression != null)
+				return false;
+		} else if (!requiredExpression.equals(other.requiredExpression))
+			return false;
+		return true;
+	}
 
-//	protected String getRelativePath(String xpathSource, String xpathDestination) {
-//		String path = "";
-//		String[] sources = xpathSource.split("\\/");
-//		String[] dests = xpathDestination.split("\\/");
-//		int i = 0;
-//		for (; i < sources.length; i++) {
-//			if(dests.length == i){
-//				break;
-//			}
-//			String src = sources[i];
-//			String dest = dests[i];
-//			if (dest.equals(src)) {
-//				continue;
-//			} else {
-//				break;
-//			}
-//		}
-//
-//		for (int k = i; k < sources.length; k++) {
-//			if (path != "")
-//				path += "/";
-//			path += "parent()";
-//		}
-//
-//		for (int k = i; k < dests.length; k++) {
-//			if (path != "")
-//				path += "/";
-//			path += dests[k];
-//		}
-//		return path;
-//	}
-//
-//	protected NodeDefinition getDependantNodeDefinition(String path) {
-//		String normalizedPath = path.replaceAll("\\$this/", "");
-//		SchemaPathExpression schemaPathExpression = new SchemaPathExpression(normalizedPath);
-//		EntityDefinition parentDefn = getParentDefinition();
-//		NodeDefinition dependantNodeDefn = schemaPathExpression.evaluate(parentDefn);
-//		return dependantNodeDefn;
-//	}
-	
 }

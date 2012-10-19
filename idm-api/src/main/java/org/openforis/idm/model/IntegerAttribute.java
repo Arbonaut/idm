@@ -14,7 +14,7 @@ public class IntegerAttribute extends NumberAttribute<Integer, IntegerValue> {
 	public IntegerAttribute(NumberAttributeDefinition definition) {
 		super(definition);
 		if ( !definition.isInteger() ) {
-			throw new IllegalArgumentException("Attempted to create IntegerAttribute with real NumberDefinition");
+			throw new IllegalArgumentException("NumberAttributeDefinition with type integer required");
 		}
 	}
 	

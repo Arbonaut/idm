@@ -1,49 +1,31 @@
 package org.openforis.idm.path;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.NodeDefinition;
-import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.xml.IdmlBindingContext;
-import org.openforis.idm.metamodel.xml.InvalidIdmlException;
-import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
 import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.Field;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.RealAttribute;
 import org.openforis.idm.model.Record;
-import org.openforis.idm.model.TestSurveyContext;
 
 /**
  * @author G. Miceli
  */
-public class PathTest {
-
-	private static Survey survey;
-
-	@BeforeClass
-	public static void setUp() throws IOException, InvalidIdmlException {
-		URL idm = ClassLoader.getSystemResource("test.idm.xml");
-		InputStream is = idm.openStream();
-		IdmlBindingContext idmlBindingContext = new IdmlBindingContext(new TestSurveyContext());
-		SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
-		survey = su.unmarshal(is);
-	}
+public class PathTest extends AbstractTest {
 
 	@Test
 	public void testSingleAttributeWithIndex() throws InvalidPathException {
 		Entity cluster = getRootEntity();
-		Entity plot = cluster.addEntity("plot");
-		Entity tree1 = plot.addEntity("tree");
-		tree1.addValue("dbh", 12.2);
-		Entity tree2 = plot.addEntity("tree");
-		RealAttribute dbh2 = tree2.addValue("dbh", 15.7);
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		Entity tree1 = EntityBuilder.addEntity(plot, "tree");
+		EntityBuilder.addValue(tree1, "dbh", 12.2);
+		Entity tree2 = EntityBuilder.addEntity(plot, "tree");
+		RealAttribute dbh2 = EntityBuilder.addValue(tree2, "dbh", 15.7);
 		
 		Path path = Path.parsePath("tree[2]/dbh[1]");
 		
@@ -60,11 +42,11 @@ public class PathTest {
 	@Test
 	public void testSingleAttributeWithoutIndex() throws InvalidPathException {
 		Entity cluster = getRootEntity();
-		Entity plot = cluster.addEntity("plot");
-		Entity tree1 = plot.addEntity("tree");
-		tree1.addValue("dbh", 12.2);
-		Entity tree2 = plot.addEntity("tree");
-		RealAttribute dbh2 = tree2.addValue("dbh", 15.7);
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		Entity tree1 = EntityBuilder.addEntity(plot, "tree");
+		EntityBuilder.addValue(tree1, "dbh", 12.2);
+		Entity tree2 = EntityBuilder.addEntity(plot, "tree");
+		RealAttribute dbh2 = EntityBuilder.addValue(tree2, "dbh", 15.7);
 		
 		Path path = Path.parsePath("tree[2]/dbh");
 		
@@ -81,11 +63,11 @@ public class PathTest {
 	@Test
 	public void testMultipleAttributeWithoutIndex() throws InvalidPathException {
 		Entity cluster = getRootEntity();
-		Entity plot = cluster.addEntity("plot");
-		plot.addEntity("tree");
-		Entity tree2 = plot.addEntity("tree");
-		RealAttribute dbh1 = tree2.addValue("dbh", 12.2);
-		RealAttribute dbh2 = tree2.addValue("dbh", 15.7);
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addEntity(plot, "tree");
+		Entity tree2 = EntityBuilder.addEntity(plot, "tree");
+		RealAttribute dbh1 = EntityBuilder.addValue(tree2, "dbh", 12.2);
+		RealAttribute dbh2 = EntityBuilder.addValue(tree2, "dbh", 15.7);
 		
 		Path path = Path.parsePath("tree[2]/dbh");
 		
@@ -103,11 +85,11 @@ public class PathTest {
 	@Test
 	public void testMultipleFieldPathWithIndex() throws InvalidPathException {
 		Entity cluster = getRootEntity();
-		Entity plot = cluster.addEntity("plot");
-		plot.addEntity("tree");
-		Entity tree2 = plot.addEntity("tree");
-		tree2.addValue("dbh", 12.2);
-		RealAttribute dbh2 = tree2.addValue("dbh", 15.7);
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addEntity(plot, "tree");
+		Entity tree2 = EntityBuilder.addEntity(plot, "tree");
+		EntityBuilder.addValue(tree2, "dbh", 12.2);
+		RealAttribute dbh2 = EntityBuilder.addValue(tree2, "dbh", 15.7);
 		
 		Path path = Path.parsePath("tree[2]/dbh[2]/value");
 		
@@ -124,11 +106,11 @@ public class PathTest {
 	@Test
 	public void testMultipleFieldPathWithoutIndex() throws InvalidPathException {
 		Entity cluster = getRootEntity();
-		Entity plot = cluster.addEntity("plot");
-		plot.addEntity("tree");
-		Entity tree2 = plot.addEntity("tree");
-		RealAttribute dbh1 = tree2.addValue("dbh", 12.2);
-		RealAttribute dbh2 = tree2.addValue("dbh", 15.7);
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addEntity(plot, "tree");
+		Entity tree2 = EntityBuilder.addEntity(plot, "tree");
+		RealAttribute dbh1 = EntityBuilder.addValue(tree2, "dbh", 12.2);
+		RealAttribute dbh2 = EntityBuilder.addValue(tree2, "dbh", 15.7);
 		
 		Path path = Path.parsePath("tree[2]/dbh/value");
 		

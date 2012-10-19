@@ -9,6 +9,7 @@ import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.Coordinate;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.Record;
 
 /**
@@ -45,7 +46,7 @@ public class LookupFunctionTest extends AbstractTest {
 	@Test
 	public void testLookupFunctionWithPath() throws InvalidExpressionException {
 		Record record = cluster.getRecord();
-		cluster.addValue("id", new Code("205_128"));
+		EntityBuilder.addValue(cluster, "id", new Code("205_128"));
 		SurveyContext recordContext = record.getSurveyContext();
 
 		String expr = "idm:lookup('sampling_design', 'plot_centre','cluster', id,'plot', '0')";

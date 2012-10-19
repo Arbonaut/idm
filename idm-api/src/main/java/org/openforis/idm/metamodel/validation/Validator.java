@@ -17,6 +17,8 @@ import org.openforis.idm.model.CoordinateAttribute;
 import org.openforis.idm.model.DateAttribute;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.IntegerRangeAttribute;
+import org.openforis.idm.model.NumberAttribute;
+import org.openforis.idm.model.NumericRangeAttribute;
 import org.openforis.idm.model.RealRangeAttribute;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.model.TimeAttribute;
@@ -91,6 +93,8 @@ public class Validator {
 			validateCoordinateAttributeValue((CoordinateAttribute) attribute, results);
 		} else if (attribute instanceof DateAttribute) {
 			validateDateAttributeValue((DateAttribute) attribute, results);
+		} else if (attribute instanceof NumberAttribute) {
+			validateNumericAttributeValue((NumberAttribute<?, ?>) attribute, results);
 		} else if (attribute instanceof IntegerRangeAttribute) {
 			validateIntegerRangeAttributeValue((IntegerRangeAttribute) attribute, results);
 		} else if (attribute instanceof RealRangeAttribute) {
@@ -130,16 +134,37 @@ public class Validator {
 		}
 	}
 	
-	private void validateIntegerRangeAttributeValue(IntegerRangeAttribute attribute, ValidationResults results) {
-		IntegerRangeValidator validator = new IntegerRangeValidator();
+	protected void validateNumericAttributeValue(NumberAttribute<?, ?> attribute, ValidationResults results) {
+		validateNumericAttributeUnit(attribute, results);
+	}
+
+	protected void validateNumericAttributeUnit(NumberAttribute<?, ?> attribute, ValidationResults results) {
+		NumberValueUnitValidator validator = new NumberValueUnitValidator();
 		ValidationResultFlag result = validator.evaluate(attribute);
 		results.addResult(validator, result);
 	}
+	
+	protected void validateIntegerRangeAttributeValue(IntegerRangeAttribute attribute, ValidationResults results) {
+		IntegerRangeValidator validator = new IntegerRangeValidator();
+		ValidationResultFlag result = validator.evaluate(attribute);
+		results.addResult(validator, result);
+		
+		validateNumericRangeUnit(attribute, results);
+	}
 
-	private void validateRealRangeAttributeValue(RealRangeAttribute attribute, ValidationResults results) {
+	protected void validateRealRangeAttributeValue(RealRangeAttribute attribute, ValidationResults results) {
 		RealRangeValidator validator = new RealRangeValidator();
 		ValidationResultFlag result = validator.evaluate(attribute);
 		results.addResult(validator, result);
+		
+		validateNumericRangeUnit(attribute, results);
+	}
+
+	protected void validateNumericRangeUnit(NumericRangeAttribute<?, ?> attribute,
+			ValidationResults results) {
+		NumericRangeUnitValidator unitValidator = new NumericRangeUnitValidator();
+		ValidationResultFlag unitValidationResult = unitValidator.evaluate(attribute);
+		results.addResult(unitValidator, unitValidationResult);
 	}
 
 	private boolean evaluateCheckCondition(Attribute<?, ?> attribute, String condition) {

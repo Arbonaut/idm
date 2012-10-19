@@ -36,6 +36,10 @@ public class PatternCheck extends Check<Attribute<?,?>> {
 		return this.regularExpression;
 	}
 
+	public void setRegularExpression(String regularExpression) {
+		this.regularExpression = regularExpression;
+	}
+	
 	private Pattern getPattern() {
 		if (pattern == null) {
 			this.pattern = Pattern.compile(regularExpression);

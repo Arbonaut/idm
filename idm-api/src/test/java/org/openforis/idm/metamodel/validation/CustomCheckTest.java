@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.Test;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.RealAttribute;
 
 /**
@@ -21,10 +22,10 @@ public class CustomCheckTest extends ValidationTest {
 
 	@Test
 	public void testPass() {
-		Entity plot = cluster.addEntity("plot");
-		Entity tree = plot.addEntity("tree");
-		RealAttribute totalHeight = tree.addValue("total_height", 16.0);
-		tree.addValue("dbh", 2.0);
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		Entity tree = EntityBuilder.addEntity(plot, "tree");
+		RealAttribute totalHeight = EntityBuilder.addValue(tree, "total_height", 16.0);
+		EntityBuilder.addValue(tree, "dbh", 2.0);
 
 		ValidationResults results = validate(totalHeight);
 		assertFalse(containsCustomCheck(results.getWarnings()));
@@ -32,11 +33,11 @@ public class CustomCheckTest extends ValidationTest {
 
 	@Test
 	public void testPassLtEq() {
-		Entity plot = cluster.addEntity("plot");
-		Entity tree = plot.addEntity("tree");
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		Entity tree = EntityBuilder.addEntity(plot, "tree");
 
-		RealAttribute totalHeight = tree.addValue("total_height", 16.0);
-		tree.addValue("dbh", 16.0);
+		RealAttribute totalHeight = EntityBuilder.addValue(tree, "total_height", 16.0);
+		EntityBuilder.addValue(tree, "dbh", 16.0);
 
 		ValidationResults results = validate(totalHeight);
 		assertFalse(containsCustomCheck(results.getWarnings()));
@@ -44,11 +45,11 @@ public class CustomCheckTest extends ValidationTest {
 
 	@Test
 	public void testPassLtEqWithCondition1() {
-		Entity plot = cluster.addEntity("plot");
-		Entity tree = plot.addEntity("tree");
-		tree.addValue("health", new Code("1"));
-		RealAttribute totalHeight = tree.addValue("total_height", 16.0);
-		tree.addValue("dbh", 16.0);
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		Entity tree = EntityBuilder.addEntity(plot, "tree");
+		EntityBuilder.addValue(tree, "health", new Code("1"));
+		RealAttribute totalHeight = EntityBuilder.addValue(tree, "total_height", 16.0);
+		EntityBuilder.addValue(tree, "dbh", 16.0);
 
 		ValidationResults results = validate(totalHeight);
 		assertFalse(containsCustomCheck(results.getWarnings()));
@@ -56,22 +57,22 @@ public class CustomCheckTest extends ValidationTest {
 
 	@Test
 	public void testFailLtEqWithCondition() {
-		Entity plot = cluster.addEntity("plot");
-		Entity tree = plot.addEntity("tree");
-		RealAttribute totalHeight = tree.addValue("total_height", 2.0);
-		tree.addValue("dbh", 16.5);
-		tree.addValue("health", new Code("1"));
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		Entity tree = EntityBuilder.addEntity(plot, "tree");
+		RealAttribute totalHeight = EntityBuilder.addValue(tree, "total_height", 2.0);
+		EntityBuilder.addValue(tree, "dbh", 16.5);
+		EntityBuilder.addValue(tree, "health", new Code("1"));
 		ValidationResults results = validate(totalHeight);
 		assertTrue(containsCustomCheck(results.getWarnings()));
 	}
 
 	@Test
 	public void testPassLtEqWithCondition() {
-		Entity plot = cluster.addEntity("plot");
-		Entity tree = plot.addEntity("tree");
-		RealAttribute totalHeight = tree.addValue("total_height", 2.0);
-		tree.addValue("dbh", 16.5);
-		tree.addValue("health", new Code("2"));
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		Entity tree = EntityBuilder.addEntity(plot, "tree");
+		RealAttribute totalHeight = EntityBuilder.addValue(tree, "total_height", 2.0);
+		EntityBuilder.addValue(tree, "dbh", 16.5);
+		EntityBuilder.addValue(tree, "health", new Code("2"));
 		ValidationResults results = validate(totalHeight);
 		assertFalse(containsCustomCheck(results.getWarnings()));
 	}

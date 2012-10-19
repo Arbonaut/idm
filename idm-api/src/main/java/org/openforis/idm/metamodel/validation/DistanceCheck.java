@@ -3,12 +3,11 @@
  */
 package org.openforis.idm.metamodel.validation;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.ServiceLoader;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,14 +26,24 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author K. Waga
+ * @author S. Ricci
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType
 public class DistanceCheck extends Check<CoordinateAttribute> {
+
+	private static CoordinateOperations coordinateOperations;
+
+	static {
+		ServiceLoader<CoordinateOperations> serviceLoader = ServiceLoader.load(CoordinateOperations.class);
+		Iterator<CoordinateOperations> it = serviceLoader.iterator();
+		if ( it.hasNext() ) {
+			coordinateOperations = it.next();
+		}
+	}
 
 	private static final long serialVersionUID = 1L;
 	private static final Log LOG = LogFactory.getLog(DistanceCheck.class);
-	
+
 	@XmlAttribute(name = "to")
 	private String destinationPointExpression;
 
@@ -63,41 +72,61 @@ public class DistanceCheck extends Check<CoordinateAttribute> {
 		return sourcePointExpression;
 	}
 
+	public void setDestinationPointExpression(String destinationPointExpression) {
+		this.destinationPointExpression = destinationPointExpression;
+	}
+
+	public void setMinDistanceExpression(String minDistanceExpression) {
+		this.minDistanceExpression = minDistanceExpression;
+	}
+
+	public void setMaxDistanceExpression(String maxDistanceExpression) {
+		this.maxDistanceExpression = maxDistanceExpression;
+	}
+
+	public void setSourcePointExpression(String sourcePointExpression) {
+		this.sourcePointExpression = sourcePointExpression;
+	}
+
 	@Override
 	public ValidationResultFlag evaluate(CoordinateAttribute coordinateAttr) {
-		try {
-			boolean valid = true;
-			beforeExecute(coordinateAttr);
-
-			Entity parentEntity = coordinateAttr.getParent();
-			SurveyContext recordContext = coordinateAttr.getRecord().getSurveyContext();
-			Coordinate from = getCoordinate(recordContext, getSourcePointExpression(), parentEntity, coordinateAttr, coordinateAttr.getValue());
-			Coordinate to = getCoordinate(recordContext, getDestinationPointExpression(), parentEntity, coordinateAttr, null);
-
-			if ( !(from == null || to == null) ) {
-				double distance = CoordinateOperations.orthodromicDistance(from, to);
-
-				if (maxDistanceExpression != null) {
-					double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, coordinateAttr, maxDistanceExpression);
-					if (distance > maxDistance) {
-						valid = false;
-					}
-				}
-				if (minDistanceExpression != null) {
-					double minDistance = evaluateDistanceExpression(recordContext, parentEntity, coordinateAttr, minDistanceExpression);
-					if (distance < minDistance) {
-						valid = false;
-					}
-				}
-			}
-
-			return ValidationResultFlag.valueOf(valid, this.getFlag());
-		} catch (Exception e) {
-//			throw new IdmInterpretationError("Unable to execute distance check", e);
-			if( LOG.isInfoEnabled() ){
-				LOG.info("Unable to evaluate distance check " , e);
-			}
+		if ( coordinateOperations == null ) {
 			return ValidationResultFlag.OK;
+		} else {
+			try {
+				boolean valid = true;
+				beforeExecute(coordinateAttr);
+
+				Entity parentEntity = coordinateAttr.getParent();
+				SurveyContext recordContext = coordinateAttr.getRecord().getSurveyContext();
+				Coordinate from = getCoordinate(recordContext, getSourcePointExpression(), parentEntity, coordinateAttr, coordinateAttr.getValue());
+				Coordinate to = getCoordinate(recordContext, getDestinationPointExpression(), parentEntity, coordinateAttr, null);
+
+				if ( !(from == null || to == null) ) {
+					double distance = coordinateOperations.orthodromicDistance(from, to);
+
+					if (maxDistanceExpression != null) {
+						double maxDistance = evaluateDistanceExpression(recordContext, parentEntity, coordinateAttr, maxDistanceExpression);
+						if (distance > maxDistance) {
+							valid = false;
+						}
+					}
+					if (minDistanceExpression != null) {
+						double minDistance = evaluateDistanceExpression(recordContext, parentEntity, coordinateAttr, minDistanceExpression);
+						if (distance < minDistance) {
+							valid = false;
+						}
+					}
+				}
+
+				return ValidationResultFlag.valueOf(valid, this.getFlag());
+			} catch (Exception e) {
+	//			throw new IdmInterpretationError("Unable to execute distance check", e);
+				if( LOG.isInfoEnabled() ){
+					LOG.info("Unable to evaluate distance check " , e);
+				}
+				return ValidationResultFlag.OK;
+			}
 		}
 	}
 
@@ -120,7 +149,7 @@ public class DistanceCheck extends Check<CoordinateAttribute> {
 	private void beforeExecute(CoordinateAttribute coordinate) {
 		Survey survey = coordinate.getDefinition().getSurvey();
 		List<SpatialReferenceSystem> list = survey.getSpatialReferenceSystems();
-		CoordinateOperations.parseSRS(list);
+		coordinateOperations.parseSRS(list);
 	}
 
 }

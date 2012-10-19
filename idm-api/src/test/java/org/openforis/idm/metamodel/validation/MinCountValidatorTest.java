@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.Date;
 import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.EntityBuilder;
 
 /**
  * @author G. Miceli
@@ -34,7 +35,7 @@ public class MinCountValidatorTest extends ValidationTest {
 
 	@Test
 	public void testSpecifiedRequiredSingleAttribute() {
-		cluster.addValue("region", new Code("001"));
+		EntityBuilder.addValue(cluster, "region", new Code("001"));
 		ValidationResultFlag result = cluster.validateMinCount("region");
 		assertTrue(result.isOk());
 //		ValidationResults results = validate(cluster);
@@ -54,8 +55,8 @@ public class MinCountValidatorTest extends ValidationTest {
 
 	@Test
 	public void testEmptyMultipleRequiredAttribute() {
-		cluster.addValue("map_sheet", "");
-		cluster.addValue("map_sheet", "");
+		EntityBuilder.addValue(cluster, "map_sheet", "");
+		EntityBuilder.addValue(cluster, "map_sheet", "");
 //		ValidationResults results = validate(cluster);
 //		List<ValidationResult> errors = results.getErrors();
 //		assertFalse(containsMinCountError(errors, "map_sheet"));
@@ -66,8 +67,8 @@ public class MinCountValidatorTest extends ValidationTest {
 
 	@Test
 	public void testTooFewMultipleRequiredAttribute() {
-		cluster.addValue("map_sheet", "");
-		cluster.addValue("map_sheet", "567");
+		EntityBuilder.addValue(cluster, "map_sheet", "");
+		EntityBuilder.addValue(cluster, "map_sheet", "567");
 		
 		ValidationResultFlag result = cluster.validateMinCount("map_sheet");
 		assertTrue(result.isOk());
@@ -79,8 +80,8 @@ public class MinCountValidatorTest extends ValidationTest {
 
 	@Test
 	public void testMultipleRequiredAttribute() {
-		cluster.addValue("map_sheet", "123");
-		cluster.addValue("map_sheet", "567");
+		EntityBuilder.addValue(cluster, "map_sheet", "123");
+		EntityBuilder.addValue(cluster, "map_sheet", "567");
 		
 		ValidationResultFlag result = cluster.validateMinCount("map_sheet");
 		assertTrue(result.isOk());
@@ -101,8 +102,8 @@ public class MinCountValidatorTest extends ValidationTest {
 
 	@Test
 	public void testEmptyRequiredMultipleEntity() {
-		Entity timeStudy = cluster.addEntity("time_study");
-		timeStudy.addValue("date", (Date) null);
+		Entity timeStudy = EntityBuilder.addEntity(cluster, "time_study");
+		EntityBuilder.addValue(timeStudy, "date", (Date) null);
 		
 		ValidationResultFlag result = cluster.validateMinCount("time_study");
 		assertFalse(result.isOk());
@@ -114,8 +115,8 @@ public class MinCountValidatorTest extends ValidationTest {
 
 	@Test
 	public void testSpecifiedRequiredMultipleEntity() {
-		Entity timeStudy = cluster.addEntity("time_study");
-		timeStudy.addValue("date", new Date(2012, 1, 1));
+		Entity timeStudy = EntityBuilder.addEntity(cluster, "time_study");
+		EntityBuilder.addValue(timeStudy, "date", new Date(2012, 1, 1));
 //		ValidationResults results = validate(cluster);
 //		List<ValidationResult> errors = results.getErrors();
 //		assertFalse(containsMinCountError(errors, "time_study"));

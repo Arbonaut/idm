@@ -10,6 +10,7 @@ import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.Node;
 
 /**
@@ -20,7 +21,7 @@ public class RequiredExpressionTest extends AbstractTest {
 
 	@Test
 	public void testTrue() throws InvalidExpressionException {
-		CodeAttribute region = cluster.addValue("region", new Code("004"));
+		CodeAttribute region = EntityBuilder.addValue(cluster, "region", new Code("004"));
 		String expr = "true()";
 		boolean b = evaluateExpression(expr, region);
 		Assert.assertTrue(b);
@@ -28,7 +29,7 @@ public class RequiredExpressionTest extends AbstractTest {
 
 	@Test
 	public void testFalse() throws InvalidExpressionException {
-		CodeAttribute region = cluster.addValue("region", new Code("004"));
+		CodeAttribute region = EntityBuilder.addValue(cluster, "region", new Code("004"));
 		String expr = "false()";
 		boolean b = evaluateExpression(expr, region);
 		Assert.assertFalse(b);
@@ -36,8 +37,8 @@ public class RequiredExpressionTest extends AbstractTest {
 
 	@Test
 	public void testSubPlotRequired() throws InvalidExpressionException {
-		Entity plot = cluster.addEntity("plot");
-		plot.addValue("share", 12.4);
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addValue(plot, "share", 12.4);
 
 		String expr = "share < 100";
 		boolean b = evaluateExpression(expr, plot);
@@ -46,10 +47,10 @@ public class RequiredExpressionTest extends AbstractTest {
 
 	@Test
 	public void testSubPlotNotRequired() throws InvalidExpressionException {
-		cluster.addEntity("plot");
-		cluster.addEntity("plot");
-		Entity plot = cluster.addEntity("plot");
-		plot.addValue("share", 120.4);
+		EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addEntity(cluster, "plot");
+		Entity plot = EntityBuilder.addEntity(cluster, "plot");
+		EntityBuilder.addValue(plot, "share", 120.4);
 
 		String expr = "share < 100";
 		boolean b = evaluateExpression(expr, plot);

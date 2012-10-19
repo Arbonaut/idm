@@ -8,12 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlType;
-
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.util.CollectionUtil;
@@ -22,25 +17,15 @@ import org.openforis.idm.util.CollectionUtil;
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "childDefinitions" })
 public class EntityDefinition extends NodeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlElements({
-		@XmlElement(name = "entity",     type = EntityDefinition.class), 
-		@XmlElement(name = "number",     type = NumberAttributeDefinition.class),
-		@XmlElement(name = "range",      type = RangeAttributeDefinition.class), 
-		@XmlElement(name = "boolean",    type = BooleanAttributeDefinition.class),
-		@XmlElement(name = "date",       type = DateAttributeDefinition.class), 
-		@XmlElement(name = "time",       type = TimeAttributeDefinition.class),
-		@XmlElement(name = "file",       type = FileAttributeDefinition.class), 
-		@XmlElement(name = "taxon",      type = TaxonAttributeDefinition.class),
-		@XmlElement(name = "coordinate", type = CoordinateAttributeDefinition.class), 
-		@XmlElement(name = "code",       type = CodeAttributeDefinition.class),
-		@XmlElement(name = "text",       type = TextAttributeDefinition.class) })
 	private List<NodeDefinition> childDefinitions;
+
+	EntityDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
 
 	public List<NodeDefinition> getChildDefinitions() {
 		return CollectionUtil.unmodifiableList(childDefinitions);
@@ -49,23 +34,88 @@ public class EntityDefinition extends NodeDefinition {
 	public NodeDefinition getChildDefinition(String name) {
 		if (childDefinitions != null) {
 			for (NodeDefinition childDefinition : childDefinitions) {
-				if (childDefinition.getName().equals(name)) {
+				if ( StringUtils.equals(childDefinition.getName(), name) ) {
 					return childDefinition;
 				}
 			}
 		}
-		return null;
+		throw new IllegalArgumentException("Child definition " + name + " not found in " + getPath());
 	}
 	
+	public NodeDefinition getChildDefinition(int id) {
+		if (childDefinitions != null) {
+			for (NodeDefinition childDefinition : childDefinitions) {
+				if (childDefinition.getId() == id) {
+					return childDefinition;
+				}
+			}
+		}
+		throw new IllegalArgumentException("Child definition with id " + id + 
+				" not found in " + getPath());
+	}
+
+	/**
+	 * Get child definition and cast to requested type
+	 * 
+	 * @throws IllegalArgumentException if not defined in model or if not 
+	 * assignable from type defined in definitionClass
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends NodeDefinition> T getChildDefinition(String name, Class<T> definitionClass) {
+		NodeDefinition childDefinition = getChildDefinition(name);
+		if (!childDefinition.getClass().isAssignableFrom(definitionClass)) {
+			throw new IllegalArgumentException(childDefinition.getPath() + 
+					" is not a " + definitionClass.getSimpleName());
+		}
+		return (T) childDefinition;
+	}
 	
+	public int getChildIndex(NodeDefinition defn) {
+		if ( childDefinitions != null ) {
+			int result = childDefinitions.indexOf(defn);
+			if ( result < 0 ) {
+				throw new IllegalArgumentException(this.getPath() + "- child not found:" + defn.getName());
+			}
+			return result;
+		} else {
+			throw new IllegalArgumentException(this.getPath() + " has no children");
+		}
+	}
+
 	public void addChildDefinition(NodeDefinition defn) {
-		checkLockState();
+		if ( defn.getName() == null ) {
+			throw new NullPointerException("name");
+		}
+
+		if ( defn.isDetached() ) {
+			throw new IllegalArgumentException("Detached definitions cannot be added");
+		}
+		
 		if (childDefinitions == null) {
 			childDefinitions = new ArrayList<NodeDefinition>();
 		}
 		childDefinitions.add(defn);
+		defn.setParentDefinition(this);
 	}
 
+	public void removeChildDefinition(int id) {
+		NodeDefinition childDefn = getChildDefinition(id);
+		removeChildDefinition(childDefn);
+	}
+	
+	public void removeChildDefinition(NodeDefinition defn) {
+		childDefinitions.remove(defn);
+	}
+	
+	public void moveChildDefinition(int id, int index) {
+		NodeDefinition defn = getChildDefinition(id);
+		moveChildDefinition(defn, index);
+	}
+
+	public void moveChildDefinition(NodeDefinition defn, int newIndex) {
+		CollectionUtil.moveItem(childDefinitions, defn, newIndex);
+	}
+	
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {
 		ArrayList<AttributeDefinition> result = new ArrayList<AttributeDefinition>();
 		for (NodeDefinition nodeDefinition : childDefinitions) {
@@ -129,5 +179,38 @@ public class EntityDefinition extends NodeDefinition {
 			}
 			return true;
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((childDefinitions == null) ? 0 : childDefinitions.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EntityDefinition other = (EntityDefinition) obj;
+		if (childDefinitions == null) {
+			if (other.childDefinitions != null)
+				return false;
+		} else if (!childDefinitions.equals(other.childDefinitions))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public void detach() {
+		for (NodeDefinition child : childDefinitions) {
+			child.detach();
+		}
+		super.detach();
 	}
 }

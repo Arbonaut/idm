@@ -15,12 +15,12 @@ import org.openforis.idm.model.TimeAttribute;
 /**
  * @author G. Miceli
  */
-public class FieldColumnProviderTest {
+public class FieldColumnProviderTest extends AbstractColumnProviderTest {
 
 	@Test
 	public void testTimeAtRoot() throws Exception {
 		// Model
-		TimeAttributeDefinition timeDefn = new TimeAttributeDefinition();
+		TimeAttributeDefinition timeDefn = schema.createTimeAttributeDefinition();
 		timeDefn.setName("time");
 		timeDefn.setMultiple(false);
 		
@@ -76,7 +76,7 @@ public class FieldColumnProviderTest {
 //		
 //		// Data
 //		Entity plot = (Entity) plotDef.createNode();
-//		TimeAttribute time = plot.addValue("time", new Time(17,16));
+//		TimeAttribute time = EntityBuilder.addValue(plot, "time", new Time(17,16));
 //		
 //		// Provider
 //		AttributeColumnProvider timeFcp = new AttributeColumnProvider(timeDefn, null);

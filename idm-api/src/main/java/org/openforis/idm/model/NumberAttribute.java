@@ -14,6 +14,7 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 	protected NumberAttribute(NumberAttributeDefinition definition) {
 		super(definition);
 	}
+	
 	public String getUnitName() {
 		return getUnitField().getValue();
 	}
@@ -73,12 +74,12 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 	
 	@Override
 	public boolean isFilled() {
-		return getField(0).hasValue();
+		return getNumberField().hasValue();
 	}
 	
 	@Override
 	public boolean isEmpty() {
-		return getValue() == null;
+		return ! getNumberField().hasValue();
 	}
 	
 	

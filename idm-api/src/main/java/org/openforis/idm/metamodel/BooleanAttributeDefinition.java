@@ -7,12 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-
 import org.openforis.idm.model.BooleanAttribute;
 import org.openforis.idm.model.BooleanValue;
 import org.openforis.idm.model.Node;
@@ -23,27 +17,27 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  * @author S. Ricci
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
-		"affirmativeOnly", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
 public class BooleanAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	@XmlTransient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 			new FieldDefinition<Boolean>("value", "v", null, Boolean.class, this)
 	};
 	
-	@XmlAttribute(name = "affirmativeOnly")
-	private Boolean affirmativeOnly;
+	private boolean affirmativeOnly;
+
+
+	BooleanAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
 
 	public boolean isAffirmativeOnly() {
-		return affirmativeOnly == null ? false : affirmativeOnly;
+		return affirmativeOnly;
 	}
 	
-	protected void setAffirmativeOnly(boolean affirmativeOnly) {
-		this.affirmativeOnly = affirmativeOnly ? true : null;
+	public void setAffirmativeOnly(boolean affirmativeOnly) {
+		this.affirmativeOnly = affirmativeOnly;
 	}
 
 	@Override
@@ -65,5 +59,27 @@ public class BooleanAttributeDefinition extends AttributeDefinition {
 	@Override
 	public Class<? extends Value> getValueType() {
 		return BooleanValue.class;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (affirmativeOnly ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BooleanAttributeDefinition other = (BooleanAttributeDefinition) obj;
+		if (affirmativeOnly != other.affirmativeOnly)
+			return false;
+		return true;
 	}
 }

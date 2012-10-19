@@ -5,38 +5,27 @@ package org.openforis.idm.metamodel;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.InputStream;
-import java.net.URL;
+import java.util.List;
 
+import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 import org.openforis.idm.metamodel.expression.SchemaPathExpression;
-import org.openforis.idm.metamodel.xml.IdmlBindingContext;
-import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
-import org.openforis.idm.model.TestSurveyContext;
 
 /**
  * @author M. Togna
  * 
  */
-public class SchemaExpressionTest {
+public class SchemaExpressionTest extends AbstractTest {
 
-	private static Survey survey;
-
-	// @BeforeClass
-	public static void setUp() throws Exception {
-		URL idm = ClassLoader.getSystemResource("test.idm.xml");
-		InputStream is = idm.openStream();
-		IdmlBindingContext idmlBindingContext = new IdmlBindingContext(new TestSurveyContext());
-		SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
-		survey = su.unmarshal(is);
-	}
-
-	// @Test
+	@Test
 	public void testRootEntityDefinition() {
-		EntityDefinition cluster = survey.getSchema().getRootEntityDefinitions().get(0);
+		Schema schema = survey.getSchema();
+		List<EntityDefinition> rootEntityDefinitions = schema.getRootEntityDefinitions();
+		EntityDefinition cluster = rootEntityDefinitions.get(0);
 		assertEquals("cluster", cluster.getName());
 	}
 
-	// @Test
+	@Test
 	public void testExpression() {
 		EntityDefinition cluster = survey.getSchema().getRootEntityDefinitions().get(0);
 

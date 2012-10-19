@@ -14,7 +14,7 @@ public class IntegerRangeAttribute extends NumericRangeAttribute<IntegerRange, I
 	public IntegerRangeAttribute(RangeAttributeDefinition definition) {
 		super(definition);
 		if (!definition.isInteger()) {
-			throw new IllegalArgumentException("Attempted to create IntegerRangeAttribute with real definition");
+			throw new IllegalArgumentException("RangeAttributeDefinition with type integer required");
 		}
 	}
 

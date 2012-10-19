@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
 import org.openforis.idm.model.Entity;
+import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Time;
 import org.openforis.idm.model.TimeAttribute;
@@ -16,21 +17,20 @@ import org.openforis.idm.model.TimeAttribute;
 /**
  * @author G. Miceli
  */
-public class TimeColumnProviderTest {
+public class TimeColumnProviderTest extends AbstractColumnProviderTest {
 
 	@Test
 	public void testSingleTime() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
-		TimeAttributeDefinition timeDefn = new TimeAttributeDefinition();
+		EntityDefinition plotDef = createTestPlotRootEntity();
+		TimeAttributeDefinition timeDefn = schema.createTimeAttributeDefinition();
 		timeDefn.setName("time");
 		timeDefn.setMultiple(false);
 		plotDef.addChildDefinition(timeDefn);
 		
 		// Data
 		Entity plot = (Entity) plotDef.createNode();
-		TimeAttribute time = plot.addValue("time", new Time(17,16));
+		TimeAttribute time = EntityBuilder.addValue(plot, "time", new Time(17,16));
 		
 		// Provider
 		AttributeColumnProvider provider = new AttributeColumnProvider(timeDefn, null);
@@ -52,17 +52,16 @@ public class TimeColumnProviderTest {
 	@Test
 	public void testExpandMultipleTimeInstances() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
-		TimeAttributeDefinition timeDefn = new TimeAttributeDefinition();
+		EntityDefinition plotDef = createTestPlotRootEntity();
+		TimeAttributeDefinition timeDefn = schema.createTimeAttributeDefinition();
 		timeDefn.setName("time");
 		timeDefn.setMaxCount(2);
 		plotDef.addChildDefinition(timeDefn);
 		
 		// Data
 		Entity plot = (Entity) plotDef.createNode();
-		TimeAttribute time1 = plot.addValue("time", new Time(9,37));
-		TimeAttribute time2 = plot.addValue("time", new Time(17,16));
+		TimeAttribute time1 = EntityBuilder.addValue(plot, "time", new Time(9,37));
+		TimeAttribute time2 = EntityBuilder.addValue(plot, "time", new Time(17,16));
 		
 		// Provider
 		AttributeColumnProvider provider = new AttributeColumnProvider(timeDefn, null);
@@ -90,16 +89,15 @@ public class TimeColumnProviderTest {
 	@Test
 	public void testExpandSingleTimeFields() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
-		TimeAttributeDefinition timeDefn = new TimeAttributeDefinition();
+		EntityDefinition plotDef = createTestPlotRootEntity();
+		TimeAttributeDefinition timeDefn = schema.createTimeAttributeDefinition();
 		timeDefn.setName("time");
 		timeDefn.setMultiple(false);
 		plotDef.addChildDefinition(timeDefn);
 		
 		// Data
 		Entity plot = (Entity) plotDef.createNode();
-		TimeAttribute time = plot.addValue("time", new Time(17,16));
+		TimeAttribute time = EntityBuilder.addValue(plot, "time", new Time(17,16));
 
 		// Provider
 		AttributeColumnProvider provider = new AttributeColumnProvider(timeDefn, null);
@@ -122,9 +120,8 @@ public class TimeColumnProviderTest {
 	@Test
 	public void testMissingSingleTime() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
-		TimeAttributeDefinition timeDefn = new TimeAttributeDefinition();
+		EntityDefinition plotDef = createTestPlotRootEntity();
+		TimeAttributeDefinition timeDefn = schema.createTimeAttributeDefinition();
 		timeDefn.setName("time");
 		timeDefn.setMultiple(false);
 		plotDef.addChildDefinition(timeDefn);
@@ -151,9 +148,8 @@ public class TimeColumnProviderTest {
 	@Test
 	public void testExpandMissingSingleTimeFields() throws Exception {
 		// Model
-		EntityDefinition plotDef = new EntityDefinition();
-		plotDef.setName("plot");
-		TimeAttributeDefinition timeDefn = new TimeAttributeDefinition();
+		EntityDefinition plotDef = createTestPlotRootEntity();
+		TimeAttributeDefinition timeDefn = schema.createTimeAttributeDefinition();
 		timeDefn.setName("time");
 		timeDefn.setMultiple(false);
 		plotDef.addChildDefinition(timeDefn);
@@ -176,6 +172,13 @@ public class TimeColumnProviderTest {
 		assertEquals(2, cells.size());
 		assertEquals(0, cells.get(0).getNodes().size());
 		assertEquals(0, cells.get(1).getNodes().size());
+	}
+
+	private EntityDefinition createTestPlotRootEntity() {
+		EntityDefinition plotDef = schema.createEntityDefinition();
+		plotDef.setName("plot");
+		schema.addRootEntityDefinition(plotDef);
+		return plotDef;
 	}
 
 

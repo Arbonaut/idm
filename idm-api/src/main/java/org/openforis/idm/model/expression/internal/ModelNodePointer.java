@@ -75,11 +75,19 @@ public class ModelNodePointer extends DynamicPointer {
 		} else if ( value instanceof BooleanValue ) {		
 			return ((BooleanValue) value).getValue(); 
 		} else if (value instanceof Time ) {
-			Time time = (Time) value;
-			return time.getHour() * 100 + time.getMinute();
+			if ( attribute.isFilled() ) {
+				Time time = (Time) value;
+				return time.getHour() * 100 + time.getMinute();
+			} else {
+				return null;
+			}
 		} else if (value instanceof Date) {
-			Date date = (Date) value;
-			return (date.getYear() * 10000) + (date.getMonth() * 100) + date.getDay();
+			if ( attribute.isFilled() ) {
+				Date date = (Date) value;
+				return (date.getYear() * 10000) + (date.getMonth() * 100) + date.getDay();
+			} else {
+				return null;
+			}
 		} else if (value instanceof Code) {
 			Code code = (Code) value;
 			return code.getCode();

@@ -108,9 +108,13 @@ public class Path implements Axis {
 		} else {
 			String head = path.substring(0, idx);
 			String tail = path.substring(idx+1);
-			Path parentPath = parsePath(head);
 			Axis axis = PathElement.parseElement(tail);
-			return new Path(parentPath, axis);
+			if ( idx > 0 ) {
+				Path parentPath = parsePath(head);
+				return new Path(parentPath, axis);
+			} else {
+				return new Path(axis);
+			}
 		}
 	}
 }

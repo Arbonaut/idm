@@ -25,12 +25,16 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
+@XmlType(name="", propOrder = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
 		"type", "labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
 public class RangeAttributeDefinition extends NumericAttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
+	RangeAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	@Override
 	public Node<?> createNode() {
 		Type effectiveType = getType();
@@ -56,7 +60,7 @@ public class RangeAttributeDefinition extends NumericAttributeDefinition {
 		} else if (isReal()) {
 			return RealRange.parseRealRange(string, unit);
 		}
-		throw new RuntimeException("Invalid range type " + type);
+		throw new RuntimeException("Invalid range type " + getType());
 	}
 	
 	@Override

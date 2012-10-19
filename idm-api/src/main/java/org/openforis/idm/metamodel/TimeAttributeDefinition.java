@@ -23,7 +23,7 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name="", propOrder = {"name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
+@XmlType(name="", propOrder = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
 	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
 public class TimeAttributeDefinition extends AttributeDefinition {
 
@@ -35,6 +35,10 @@ public class TimeAttributeDefinition extends AttributeDefinition {
 			new FieldDefinition<Integer>("minute", "m", "m", Integer.class, this)
 	};
 	
+	protected TimeAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	@Override
 	public Node<?> createNode() {
 		return new TimeAttribute(this);

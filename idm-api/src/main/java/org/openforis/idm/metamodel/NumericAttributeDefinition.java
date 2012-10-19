@@ -3,18 +3,11 @@ package org.openforis.idm.metamodel;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.openforis.idm.metamodel.xml.internal.NumberAttributeDefinitionTypeAdapter;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
  */
-@XmlTransient
 public abstract class NumericAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
@@ -32,14 +25,11 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		}
 	}
 
-	@XmlElement(name = "precision", type = Precision.class)
+	private Type type; 
 	private List<Precision> precisionDefinitions;
 
-	@XmlAttribute(name = "type")
-	@XmlJavaTypeAdapter(NumberAttributeDefinitionTypeAdapter.class) Type type;
-
-	public NumericAttributeDefinition() {
-		super();
+	protected NumericAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
 	}
 
 	public Type getType() {
@@ -47,7 +37,6 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	}
 
 	public void setType(Type type) {
-		checkLockState();
 		this.type = type;
 	}
 	
@@ -64,11 +53,16 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	}
 
 	public void addPrecisionDefinition(Precision precision) {
-		checkLockState();
 		if ( precisionDefinitions == null ) {
 			precisionDefinitions = new ArrayList<Precision>();
 		}
 		precisionDefinitions.add(precision);
+	}
+	
+	public void removeAllPrecisionDefinitions() {
+		if ( precisionDefinitions != null ) {
+			precisionDefinitions.clear();
+		}
 	}
 	
 	/**
@@ -113,9 +107,12 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	 * returns the first unit defined
 	 */
 	public Unit getDefaultUnit() {
+		Unit unit = null;
 		Precision defaultPrecision = getDefaultPrecision();
-		Unit unit = defaultPrecision.getUnit();
-		if ( unit != null && precisionDefinitions != null ) {
+		if ( defaultPrecision != null) {
+			unit = defaultPrecision.getUnit();
+		}
+		if ( unit == null && precisionDefinitions != null ) {
 			for (Precision pd : precisionDefinitions) {
 				unit = pd.getUnit();
 				if ( unit != null ) {
@@ -137,6 +134,34 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 			}
 		}
 		return CollectionUtil.unmodifiableList(units);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((precisionDefinitions == null) ? 0 : precisionDefinitions.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NumericAttributeDefinition other = (NumericAttributeDefinition) obj;
+		if (precisionDefinitions == null) {
+			if (other.precisionDefinitions != null)
+				return false;
+		} else if (!precisionDefinitions.equals(other.precisionDefinitions))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
 	}
 	
 }

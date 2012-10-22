@@ -16,4 +16,26 @@ public abstract class IdentifiableSurveyObject extends SurveyObject {
 	public final int getId() {
 		return id;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IdentifiableSurveyObject other = (IdentifiableSurveyObject) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 }

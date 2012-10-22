@@ -13,7 +13,7 @@ import org.openforis.idm.util.CollectionUtil;
  * @author G. Miceli
  * @author M. Togna
  */
-public class CodeList extends VersionableSurveyObject {
+public class CodeList extends VersionableSurveyObject implements Annotatable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -314,5 +314,4 @@ public class CodeList extends VersionableSurveyObject {
 		int id = getSurvey().nextId();
 		return createItem(id);
 	}
-
 }

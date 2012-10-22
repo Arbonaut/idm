@@ -4,25 +4,19 @@
 package org.openforis.idm.metamodel;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import javax.xml.namespace.QName;
-
-import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.path.InvalidPathException;
 import org.openforis.idm.path.Path;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public abstract class NodeDefinition extends VersionableSurveyObject implements Annotatable {
+public abstract class NodeDefinition extends VersionableSurveyObject {
 	private static final long serialVersionUID = 1L;
 
 	private NodeDefinition parentDefinition;
@@ -35,36 +29,12 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	private NodeLabelMap labels;
 	private PromptMap prompts;
 	private LanguageSpecificTextMap descriptions;
-	private Map<QName,String> annotations;
 	
 	NodeDefinition(Survey survey, int id) {
 		super(survey, id);
 	}
 
 	public abstract Node<?> createNode();
-	
-	public String getAnnotation(QName qname) {
-		return annotations == null ? null : annotations.get(qname);
-	}
-
-	public void setAnnotation(QName qname, String value) {
-		if ( annotations == null ) {
-			annotations = new HashMap<QName, String>();
-		}
-		if (StringUtils.isNotBlank(value)) {
-			annotations.put(qname, value);
-		} else {
-			annotations.remove(qname);
-		}
-	}
-	
-	public Set<QName> getAnnotationNames() {
-		if ( annotations == null ) {
-			return Collections.emptySet();
-		} else {
-			return Collections.unmodifiableSet(annotations.keySet());
-		}
-	}
 
 	public NodeDefinition getDefinitionByPath(String path) throws InvalidPathException {
 		Path p = Path.parsePath(path);
@@ -275,7 +245,6 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((annotations == null) ? 0 : annotations.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
 		result = prime * result + getId();
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
@@ -298,11 +267,6 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		if (getClass() != obj.getClass())
 			return false;
 		NodeDefinition other = (NodeDefinition) obj;
-		if (annotations == null) {
-			if (other.annotations != null)
-				return false;
-		} else if (!annotations.equals(other.annotations))
-			return false;
 		if (descriptions == null) {
 			if (other.descriptions != null)
 				return false;

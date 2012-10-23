@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TaxonAttribute;
 import org.openforis.idm.model.TaxonOccurrence;
@@ -21,6 +22,8 @@ import org.openforis.idm.model.Value;
  * @author W. Eko
  */
 public class TaxonAttributeDefinition extends AttributeDefinition {
+
+	private static final String QUALIFIER_SEPARATOR = ",";
 
 	private static final long serialVersionUID = 1L;
 
@@ -67,27 +70,35 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 		return taxonomy;
 	}
 
-	public String getHighestRank() {
-		return highestRank;
-	}
-	
 	public void setTaxonomy(String taxonomy) {
 		this.taxonomy = taxonomy;
 	}
 
+	public String getHighestRank() {
+		return highestRank;
+	}
+	
 	public void setHighestRank(String highestRank) {
 		this.highestRank = highestRank;
 	}
 
 	public List<String> getQualifiers() {
 		if ( qualifiers != null ) {
-			String[] exprs = qualifiers.split(",");
+			String[] exprs = qualifiers.split(QUALIFIER_SEPARATOR);
 			return Collections.unmodifiableList(Arrays.asList(exprs));
 		} else {
 			return Collections.emptyList();
 		}
 	}
 
+	public void setQualifiers(String qualifiers) {
+		this.qualifiers = qualifiers != null && qualifiers.length() > 0 ? qualifiers: null;
+	}
+
+	public void setQualifiers(List<String> qualifiers) {
+		setQualifiers(StringUtils.join(qualifiers, QUALIFIER_SEPARATOR));
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -124,5 +135,5 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 			return false;
 		return true;
 	}
-	
+
 }

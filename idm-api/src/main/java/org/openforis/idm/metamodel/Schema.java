@@ -8,12 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-
 import org.openforis.idm.path.InvalidPathException;
 import org.openforis.idm.path.Path;
 import org.openforis.idm.util.CollectionUtil;
@@ -22,16 +16,11 @@ import org.openforis.idm.util.CollectionUtil;
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "rootEntityDefinitions" })
 public class Schema extends SurveyObject {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlElement(name = "entity", type = EntityDefinition.class)
 	private List<EntityDefinition> rootEntityDefinitions;
-
-	@XmlTransient
 	private Map<Integer, NodeDefinition> definitionsById;
 	
 	public Schema(Survey survey) {

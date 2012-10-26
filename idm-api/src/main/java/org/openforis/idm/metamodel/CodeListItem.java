@@ -11,12 +11,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -24,33 +18,17 @@ import org.openforis.idm.util.CollectionUtil;
  * @author M. Togna
  * @author S. Ricci
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "id", "qualifiable", "sinceVersionName", "deprecatedVersionName", "code", "labels", "descriptions", "childItems" })
 public class CodeListItem extends VersionableSurveyObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "qualifiable")
 	private Boolean qualifiable;
-
-	@XmlElement(name = "code")
 	private String code;
-
-	@XmlElement(name = "label", type = LanguageSpecificTextMap.class)
 	private LanguageSpecificTextMap labels;
-
-	@XmlElement(name = "description", type = LanguageSpecificTextMap.class)
 	private LanguageSpecificTextMap descriptions;
-
-	@XmlElement(name = "item", type = CodeListItem.class)
 	private List<CodeListItem> childItems;
-
 	private CodeList list;
-
 	private CodeListItem parentItem;
-	
-//	@XmlTransient
-//	private int lastItemId;
 
 	CodeListItem(CodeList codeList, int id) {
 		super(codeList.getSurvey(), id);

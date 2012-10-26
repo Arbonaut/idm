@@ -8,14 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.util.CollectionUtil;
 
@@ -26,64 +18,28 @@ import org.openforis.idm.util.CollectionUtil;
  * @author S. Ricci
  * @author E. Suprapto Wibowo
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "projectNames", "uri", "published", "cycle", "descriptions", "configuration", "modelVersions",
-		"codeLists", "units", "spatialReferenceSystems", "schema" })
-@XmlRootElement(name = "survey")
 public class Survey implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlTransient
 	private Integer id;
-	
-	@XmlTransient
 	private String name;
-	
-	@XmlElement(name = "project", type = LanguageSpecificText.class)
 	private LanguageSpecificTextMap projectNames;
-	
-	@XmlElement(name = "uri")
 	private String uri;
-
-	@XmlElement(name = "published", required = false)
 	private boolean published;
-	
-	@XmlElement(name = "cycle")
 	private String cycle;
-
-	@XmlElement(name = "description", type = LanguageSpecificTextMap.class)
 	private LanguageSpecificTextMap descriptions;
-
 	private LinkedHashMap<String, ApplicationOptions> applicationOptionsMap;
-	
-	@XmlElement(name = "version", type = ModelVersion.class)
-	@XmlElementWrapper(name = "versioning")
 	private List<ModelVersion> modelVersions;
-
-	@XmlElement(name = "list", type = CodeList.class)
-	@XmlElementWrapper(name = "codeLists")
 	private List<CodeList> codeLists;
-
-	@XmlElement(name = "unit", type = Unit.class)
-	@XmlElementWrapper(name = "units")
 	private List<Unit> units;
-
-	@XmlElement(name = "spatialReferenceSystem", type = SpatialReferenceSystem.class)
-	@XmlElementWrapper(name = "spatialReferenceSystems")
 	private List<SpatialReferenceSystem> spatialReferenceSystems;
-
 	private List<String> languages;
-	
-	@XmlElement(name = "schema", type = Schema.class)
 	private Schema schema;
-
 	private Map<String, String> namespaces;
-	
 	private int lastId;
-	
+
 	private transient SurveyContext surveyContext;
-	
 	private transient SurveyDependencies surveyDependencies;
 	
 	protected Survey(SurveyContext surveyContext) {

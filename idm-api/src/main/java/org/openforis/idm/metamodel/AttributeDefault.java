@@ -5,11 +5,6 @@ package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Record;
@@ -23,23 +18,13 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "value", "expression", "condition" })
 public class AttributeDefault implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "value")
 	private String value;
-
-	@XmlAttribute(name = "expr")
 	private String expression;
-
-	@XmlAttribute(name = "if")
 	private String condition;
-
-	public AttributeDefault() {
-	}
 	
 	public String getValue() {
 		return value;

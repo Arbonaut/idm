@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import javax.xml.bind.annotation.XmlAttribute;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openforis.idm.geospatial.CoordinateOperations;
@@ -44,16 +42,9 @@ public class DistanceCheck extends Check<CoordinateAttribute> {
 	private static final long serialVersionUID = 1L;
 	private static final Log LOG = LogFactory.getLog(DistanceCheck.class);
 
-	@XmlAttribute(name = "to")
 	private String destinationPointExpression;
-
-	@XmlAttribute(name = "min")
 	private String minDistanceExpression;
-
-	@XmlAttribute(name = "max")
 	private String maxDistanceExpression;
-
-	@XmlAttribute(name = "from")
 	private String sourcePointExpression;
 
 	public String getDestinationPointExpression() {

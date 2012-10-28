@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.util.CollectionUtil;
 
 /**
@@ -53,13 +54,17 @@ public abstract class LanguageSpecificTextAbstractMap<T extends LanguageSpecific
 	}
 	
 	public void setText(String language, String text) {
-		String key = getMapKey(language);
-		T languageSpecificText = map.get(key);
-		if ( languageSpecificText == null ) {
-			languageSpecificText = createLanguageSpecificTextInstance(language, text);
-			map.put(key, languageSpecificText);
+		if ( StringUtils.isBlank(text) ) {
+			remove(language);
 		} else {
-			languageSpecificText.setText(text);
+			String key = getMapKey(language);
+			T languageSpecificText = map.get(key);
+			if ( languageSpecificText == null ) {
+				languageSpecificText = createLanguageSpecificTextInstance(language, text);
+				map.put(key, languageSpecificText);
+			} else {
+				languageSpecificText.setText(text);
+			}	
 		}
 	}
 

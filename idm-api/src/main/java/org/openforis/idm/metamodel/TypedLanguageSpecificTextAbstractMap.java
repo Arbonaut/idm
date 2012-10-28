@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 
  * @author S. Ricci
@@ -47,12 +49,16 @@ public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLangua
 	}
 	
 	public void setText(T type, String language, String text) {
-		L languageSpecificText = get(type, language);
-		if ( languageSpecificText == null ) {
-			languageSpecificText = createLanguageSpecificTextInstance(type, language, text);
-			add(languageSpecificText);
+		if ( StringUtils.isBlank(text) ) {
+			remove(type, language);
 		} else {
-			languageSpecificText.setText(text);
+			L languageSpecificText = get(type, language);
+			if ( languageSpecificText == null ) {
+				languageSpecificText = createLanguageSpecificTextInstance(type, language, text);
+				add(languageSpecificText);
+			} else {
+				languageSpecificText.setText(text);
+			}
 		}
 	}
 

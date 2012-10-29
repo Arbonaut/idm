@@ -14,9 +14,8 @@ import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-import org.openforis.idm.metamodel.xml.InvalidIdmlException;
+import org.openforis.idm.metamodel.xml.IdmlParseException;
 import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
-import org.openforis.idm.metamodel.xml.XmlParseException;
 
 /**
  * @author G. Miceli
@@ -27,7 +26,7 @@ public class XmlBindingIntegrationTest {
 	private Log log = LogFactory.getLog(XmlBindingIntegrationTest.class);
 
 	@Test
-	public void roundTripMarshallingTest() throws IOException, InvalidIdmlException, XmlParseException {
+	public void roundTripMarshallingTest() throws IdmlParseException, IOException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
 		SurveyContext ctx = new DefaultSurveyContext();

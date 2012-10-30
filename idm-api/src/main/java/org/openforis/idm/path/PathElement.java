@@ -24,6 +24,7 @@ import org.openforis.idm.model.Record;
 public class PathElement implements Axis {
 
 	private static final String PARENT_FUNCTION = "parent()";
+	private static final String PARENT_SYMBOL = "..";
 	private static final Pattern PATTERN = Pattern.compile("(\\w+)(?:\\[(\\d+)\\])?");
 	private String name;
 	private Integer index;
@@ -57,7 +58,7 @@ public class PathElement implements Axis {
 	
 	@Override
 	public List<Node<?>> evaluate(Node<?> context) {
-		if ( PARENT_FUNCTION.equals(name) ) {
+		if ( PARENT_FUNCTION.equals(name) || PARENT_SYMBOL.equals(name) ) {
 			Entity parent = context.getParent();
 			if ( parent == null ) { 
 				return Collections.emptyList();
@@ -158,5 +159,36 @@ public class PathElement implements Axis {
 		} catch ( NumberFormatException e ) {
 			throw new InvalidPathException(s);
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((index == null) ? 0 : index.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PathElement other = (PathElement) obj;
+		if (index == null) {
+			if (other.index != null)
+				return false;
+		} else if (!index.equals(other.index))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 }

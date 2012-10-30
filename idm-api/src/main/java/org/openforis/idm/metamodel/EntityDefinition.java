@@ -138,8 +138,8 @@ public class EntityDefinition extends NodeDefinition {
 		while (!stack.isEmpty()) {
 			// Pop the next list of nodes to insert
 			NodeDefinition defn = stack.pop();
-			// Insert this list in order
-
+			
+			// Pre-order operation
 			visitor.visit(defn);
 
 			// For entities, add existing child nodes to the stack

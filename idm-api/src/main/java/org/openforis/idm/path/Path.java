@@ -14,44 +14,58 @@ import org.openforis.idm.model.Record;
  * @author G. Miceli
  *
  */
-public class Path implements Axis {
+public final class Path implements Axis {
 	private Path parentPath;
-	private Axis axis;
-
-	public Path(Path parentPath, Axis axis) {
+	private PathElement lastElement;
+	private boolean absolute;
+	
+	private Path(Path parentPath, PathElement lastElement) {
 		this.parentPath = parentPath;
-		this.axis = axis;
+		this.lastElement = lastElement;
+		this.absolute = parentPath.absolute;
 	}
 
-	public Path(Path parentPath, String name) {
-		this(parentPath, new PathElement(name));
+	private Path(PathElement firstElement, boolean absolute) {
+		this.lastElement = firstElement;
+		this.absolute = absolute;
 	}
-
-	public Path(Path parentPath, String name, int idx) {
-		this(parentPath, new PathElement(name, idx));
-	}
-
-	public Path(Axis axis) {
-		this(null, axis);
-	}
-
+	
 	public Path getParentPath() {
 		return parentPath;
 	}
 	
 	public Axis getAxis() {
-		return axis;
+		return lastElement;
+	}
+
+	public Path append(PathElement lastElement) {
+		return new Path(parentPath, lastElement);
+	}
+
+	public Path appendElement(String name) {
+		return new Path(parentPath, new PathElement(name));
+	}
+
+	public Path appendElement(String name, int idx) {
+		return new Path(parentPath, new PathElement(name, idx));
+	}
+	
+	public boolean isAbsolute() {
+		return absolute;
 	}
 	
 	@Override
 	public List<Node<?>> evaluate(Node<?> context) {
-		if ( parentPath == null ) {
-			return axis.evaluate(context);
+		if ( absolute ) {
+			Record record = context.getRecord();
+			return evaluate(record);
+		} else if ( parentPath == null ) {
+			return lastElement.evaluate(context);
 		} else {
 			List<Node<?>> contexts = parentPath.evaluate(context);
 			List<Node<?>> results = new ArrayList<Node<?>>();
 			for (Node<?> ctx : contexts) {
-				List<Node<?>> eval = axis.evaluate(ctx);
+				List<Node<?>> eval = lastElement.evaluate(ctx);
 				results.addAll(eval);
 			}
 			return Collections.unmodifiableList(results);
@@ -61,12 +75,12 @@ public class Path implements Axis {
 	@Override
 	public List<Node<?>> evaluate(Record context) {
 		if ( parentPath == null ) {
-			return axis.evaluate(context);
+			return lastElement.evaluate(context);
 		} else {
 			List<Node<?>> contexts = parentPath.evaluate(context);
 			List<Node<?>> results = new ArrayList<Node<?>>();
 			for (Node<?> ctx : contexts) {
-				List<Node<?>> eval = axis.evaluate(ctx);
+				List<Node<?>> eval = lastElement.evaluate(ctx);
 				results.addAll(eval);
 			}
 			return Collections.unmodifiableList(results);
@@ -75,46 +89,103 @@ public class Path implements Axis {
 	
 	@Override
 	public String toString() {
-		if ( parentPath == null ) {
-			return axis.toString();
-		} else {
-			return parentPath.toString() + "/" + axis.toString();
+		StringBuffer sb = new StringBuffer();
+		toString(sb);
+		return sb.toString();
+	}
+
+	private void toString(StringBuffer sb) {
+		if ( absolute ) {
+			sb.append('/');
+		}
+		sb.append(lastElement);
+		if ( parentPath != null ) {
+			parentPath.toString(sb);
+			sb.append('/');
 		}
 	}
 
 	@Override
 	public NodeDefinition evaluate(NodeDefinition context) {
-		if ( parentPath != null ) {
-			context = parentPath.evaluate(context);
+		if ( absolute ) {
+			Schema schema = context.getSchema();
+			return evaluate(schema);
+		} else { 
+			if ( parentPath != null ) {
+				context = parentPath.evaluate(context);
+			}
+			return lastElement.evaluate(context);
 		}
-		return axis.evaluate(context);
 	}
 
 	@Override
 	public NodeDefinition evaluate(Schema context) {
 		if ( parentPath == null ) {
-			return axis.evaluate(context);
+			return lastElement.evaluate(context);
 		} else {
 			NodeDefinition ctx = parentPath.evaluate(context);
-			return axis.evaluate(ctx);
+			return lastElement.evaluate(ctx);
 		}
 	}
 	
 	public static Path parsePath(String path) throws InvalidPathException {
 		int idx = path.lastIndexOf('/');
 		if ( idx < 0 ) {
-			PathElement axis = PathElement.parseElement(path);
-			return new Path(axis);
+			PathElement lastElement = PathElement.parseElement(path);
+			return new Path(lastElement, false);
 		} else {
 			String head = path.substring(0, idx);
 			String tail = path.substring(idx+1);
-			Axis axis = PathElement.parseElement(tail);
-			if ( idx > 0 ) {
-				Path parentPath = parsePath(head);
-				return new Path(parentPath, axis);
+			PathElement lastElement = PathElement.parseElement(tail);
+			if ( idx == 0 ){
+				return new Path(lastElement, true);
 			} else {
-				return new Path(axis);
+				Path parentPath = parsePath(head);
+				return parentPath.append(lastElement);
 			}
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((lastElement == null) ? 0 : lastElement.hashCode());
+		result = prime * result + ((parentPath == null) ? 0 : parentPath.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Path other = (Path) obj;
+		if (lastElement == null) {
+			if (other.lastElement != null)
+				return false;
+		} else if (!lastElement.equals(other.lastElement))
+			return false;
+		if (parentPath == null) {
+			if (other.parentPath != null)
+				return false;
+		} else if (!parentPath.equals(other.parentPath))
+			return false;
+		return true;
+	}
+
+	public static Path pathOf(NodeDefinition defn) {
+		NodeDefinition parent = defn.getParentDefinition();
+		String name = defn.getName();
+		PathElement elem = new PathElement(name);
+		if ( parent == null ) {
+			return new Path(elem, true);
+		} else {
+			Path parentPath = Path.pathOf(parent);
+			return parentPath.append(elem);
 		}
 	}
 }

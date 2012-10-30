@@ -12,6 +12,16 @@ import org.openforis.idm.model.Record;
 import org.openforis.idm.path.Axis;
 
 /**
+ * Given a tuple axis and a set of element axes, extracts 
+ * data or metadata from the IDM model and metamodel.  The tuple
+ * axis defines what node type each tuples is to represent.  Element
+ * axes define how to extract data and metadata elements relative to 
+ * the tuple node.
+ * 
+ * In relational database terms, a pivot produces a single table, where
+ * each rows represents an instance obtained by applying the tuple axis 
+ * to the model, and columns are extracted by applying the element axes. 
+ *  
  * @author G. Miceli
  */
 public final class Pivot {

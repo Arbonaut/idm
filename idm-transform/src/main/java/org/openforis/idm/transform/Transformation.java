@@ -8,6 +8,13 @@ import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.model.Record;
 
 /**
+ * Transforms metadata and data from IDM's n-dimensional hierarchical structure
+ * into a four-dimensional structure: TupleDefinition/Tuple/Element/Node.
+ *  
+ * When element axes point to single nodes (non-multiple), one node per element
+ * is produced, reducing the structure to a three-dimensions.  Transformation
+ * results may then be mapped to database and flat-file Table/Row/Column structures.
+ * 
  * @author G. Miceli
  */
 public final class Transformation {
@@ -42,5 +49,4 @@ public final class Transformation {
 		}
 		return Collections.unmodifiableList(result);
 	}
-
 }

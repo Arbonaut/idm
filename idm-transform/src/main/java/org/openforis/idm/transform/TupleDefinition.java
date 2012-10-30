@@ -7,19 +7,24 @@ import java.util.List;
 import org.openforis.idm.metamodel.NodeDefinition;
 
 /**
+ * In relational database terms, a tuple is a table row 
+ * with a fixed number of elements (columns).  This class
+ * is analogous to a database table definition, describing
+ * the elements (columns) contained therein.   
+ * 
  * @author G. Miceli
  */
 public class TupleDefinition {
-	private NodeDefinition parentDefinition;
+	private NodeDefinition nodeDefinition;
 	private List<NodeDefinition> elementDefinitions;
 	
-	public TupleDefinition(NodeDefinition parentDefinition) {
-		this.parentDefinition = parentDefinition;
+	public TupleDefinition(NodeDefinition nodeDefinition) {
+		this.nodeDefinition = nodeDefinition;
 		this.elementDefinitions = new ArrayList<NodeDefinition>();
 	}
 	
-	public NodeDefinition getParentDefinition() {
-		return parentDefinition;
+	public NodeDefinition getNodeDefinition() {
+		return nodeDefinition;
 	}
 
 	public void addElementDefinition(NodeDefinition elementDefn) {

@@ -8,24 +8,26 @@ import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
 
 /**
+ * Analogous to a database row, a tuple represents a set of elements 
+ * extracted from a single data node.
  * 
  * @author G. Miceli
  *
  */
 public final class Tuple {
 	private TupleDefinition tupleDefinition;
-	private Node<?> parentNode;
+	private Node<?> node;
 	private List<Element> elements;
 	
-	public Tuple(TupleDefinition tupleDefinition, Node<?> parentNode) {
+	public Tuple(TupleDefinition tupleDefinition, Node<?> node) {
 		this.tupleDefinition = tupleDefinition;
-		this.parentNode = parentNode;
+		this.node = node;
 		int elementCount = getElementCount();
 		this.elements = new ArrayList<Element>(elementCount);
 	}
 	
-	public Node<?> getParentNode() {
-		return parentNode;
+	public Node<?> getNode() {
+		return node;
 	}
 	
 	public TupleDefinition getTupleDefinition() {
@@ -54,6 +56,12 @@ public final class Tuple {
 		return Collections.unmodifiableList(elements);
 	}
 	
+	/**
+	 * A list of extracted nodes for a single element (e.g. column)
+	 * 
+	 * @author G. Miceli
+	 *
+	 */
 	public static class Element {
 		private List<Node<?>> nodes;
 		
@@ -74,6 +82,13 @@ public final class Tuple {
 		}
 	}
 
+	/**
+	 * A single extracted nodes for a single element (e.g. column).  This
+	 * applies to single nodes (non-multiple) only 
+	 * 
+	 * @author G. Miceli
+	 *
+	 */
 	public static class SingleElement extends Element {
 		SingleElement(List<Node<?>> nodes) {
 			super(nodes);

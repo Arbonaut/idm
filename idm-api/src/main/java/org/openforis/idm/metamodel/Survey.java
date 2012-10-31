@@ -412,6 +412,10 @@ public class Survey implements Serializable {
 		languages.remove(lang);
 	}
 	
+	public void moveLanguage(String language, int index) {
+		CollectionUtil.moveItem(languages, language, index);
+	}
+
 	public SurveyContext getContext() {
 		return surveyContext;
 	}

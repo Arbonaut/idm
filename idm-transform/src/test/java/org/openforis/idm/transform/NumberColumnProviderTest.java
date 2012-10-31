@@ -271,7 +271,7 @@ public class NumberColumnProviderTest extends AbstractColumnProviderTest {
 //		plotDef.setName("plot");
 //		NumberAttributeDefinition numberDefn = schema.createNumberAttributeDefinition();
 //		numberDefn.setName("number");
-//		numberDefn.setType(Type.INTEGER);
+//		numberDefn.setType(Standard.INTEGER);
 //		numberDefn.setMaxCount(2);
 //		plotDef.addChildDefinition(numberDefn);
 //		

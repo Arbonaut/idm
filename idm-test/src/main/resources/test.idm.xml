@@ -4941,7 +4941,7 @@
           <label>Exists</label>
         </boolean>
         <code id="418" list="shortfall_cause_response" multiple="true"
-          name="response" relevant="existence" required="true">
+          name="response" relevant="existence" required="true" db:table="shortfall_cause_response">
           <label>Response</label>
         </code>
       </entity>
@@ -4966,7 +4966,7 @@
           <label>Exists</label>
         </boolean>
         <code id="423" list="forest_disturbance_response"
-          multiple="true" name="response" relevant="existence">
+          multiple="true" name="response" relevant="existence" db:table="forest_disturbance_response">
           <label>Response</label>
         </code>
       </entity>

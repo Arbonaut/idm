@@ -2,6 +2,7 @@ package org.openforis.idm.path;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.openforis.idm.metamodel.NodeDefinition;
@@ -14,7 +15,7 @@ import org.openforis.idm.model.Record;
  * @author G. Miceli
  *
  */
-public final class Path implements Axis {
+public final class Path implements Axis, Iterable<PathElement> {
 	private Path parentPath;
 	private PathElement lastElement;
 	private boolean absolute;
@@ -128,7 +129,7 @@ public final class Path implements Axis {
 		}
 	}
 	
-	public static Path parsePath(String path) throws InvalidPathException {
+	public static Path parse(String path) throws InvalidPathException {
 		int idx = path.lastIndexOf('/');
 		if ( idx < 0 ) {
 			PathElement lastElement = PathElement.parseElement(path);
@@ -140,7 +141,7 @@ public final class Path implements Axis {
 			if ( idx == 0 ){
 				return new Path(lastElement, true);
 			} else {
-				Path parentPath = parsePath(head);
+				Path parentPath = parse(head);
 				return parentPath.append(lastElement);
 			}
 		}
@@ -187,5 +188,23 @@ public final class Path implements Axis {
 			Path parentPath = Path.pathOf(parent);
 			return parentPath.append(elem);
 		}
+	}
+
+	public List<PathElement> elements() {
+		List<PathElement> list = new ArrayList<PathElement>();
+		elements(list);
+		return Collections.unmodifiableList(list);
+	}
+	
+	private void elements(List<PathElement> list) {
+		if ( parentPath != null ) {
+			parentPath.elements(list);
+		}
+		list.add(lastElement);
+	}
+
+	@Override
+	public Iterator<PathElement> iterator() {
+		return elements().iterator();
 	}
 }

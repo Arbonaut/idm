@@ -40,7 +40,7 @@ public class Schema extends SurveyObject {
 	}
 	
 	public NodeDefinition getDefinitionByPath(String absolutePath) throws InvalidPathException {
-		Path path = Path.parsePath(absolutePath);
+		Path path = Path.parse(absolutePath);
 		return path.evaluate(this);
 	}
 	

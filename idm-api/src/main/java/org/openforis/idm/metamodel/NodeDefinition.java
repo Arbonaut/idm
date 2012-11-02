@@ -37,7 +37,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject {
 	public abstract Node<?> createNode();
 
 	public NodeDefinition getDefinitionByPath(String path) throws InvalidPathException {
-		Path p = Path.parsePath(path);
+		Path p = Path.parse(path);
 		return p.evaluate(this);
 	}
 
@@ -54,7 +54,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject {
 	}
 
 	/**
-	 * This property is meaningless for root entities
+	 * This property must be true for root entities
 	 * @return 
 	 */
 	public boolean isMultiple() {

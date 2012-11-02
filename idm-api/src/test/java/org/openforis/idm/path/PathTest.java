@@ -27,7 +27,7 @@ public class PathTest extends AbstractTest {
 		Entity tree2 = EntityBuilder.addEntity(plot, "tree");
 		RealAttribute dbh2 = EntityBuilder.addValue(tree2, "dbh", 15.7);
 		
-		Path path = Path.parsePath("tree[2]/dbh[1]");
+		Path path = Path.parse("tree[2]/dbh[1]");
 		
 		// Node
 		List<Node<?>> res = path.evaluate(plot);
@@ -48,7 +48,7 @@ public class PathTest extends AbstractTest {
 		Entity tree2 = EntityBuilder.addEntity(plot, "tree");
 		RealAttribute dbh2 = EntityBuilder.addValue(tree2, "dbh", 15.7);
 		
-		Path path = Path.parsePath("tree[2]/dbh");
+		Path path = Path.parse("tree[2]/dbh");
 		
 		// Node
 		List<Node<?>> res = path.evaluate(plot);
@@ -69,7 +69,7 @@ public class PathTest extends AbstractTest {
 		RealAttribute dbh1 = EntityBuilder.addValue(tree2, "dbh", 12.2);
 		RealAttribute dbh2 = EntityBuilder.addValue(tree2, "dbh", 15.7);
 		
-		Path path = Path.parsePath("tree[2]/dbh");
+		Path path = Path.parse("tree[2]/dbh");
 		
 		// Node
 		List<Node<?>> res = path.evaluate(plot);
@@ -91,7 +91,7 @@ public class PathTest extends AbstractTest {
 		EntityBuilder.addValue(tree2, "dbh", 12.2);
 		RealAttribute dbh2 = EntityBuilder.addValue(tree2, "dbh", 15.7);
 		
-		Path path = Path.parsePath("tree[2]/dbh[2]/value");
+		Path path = Path.parse("tree[2]/dbh[2]/value");
 		
 		// Node
 		List<Node<?>> res = path.evaluate(plot);
@@ -112,7 +112,7 @@ public class PathTest extends AbstractTest {
 		RealAttribute dbh1 = EntityBuilder.addValue(tree2, "dbh", 12.2);
 		RealAttribute dbh2 = EntityBuilder.addValue(tree2, "dbh", 15.7);
 		
-		Path path = Path.parsePath("tree[2]/dbh/value");
+		Path path = Path.parse("tree[2]/dbh/value");
 		
 		// Node
 		List<Node<?>> res = path.evaluate(plot);

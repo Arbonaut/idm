@@ -10,6 +10,8 @@ import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Record;
 import org.openforis.idm.path.Axis;
+import org.openforis.idm.path.InvalidPathException;
+import org.openforis.idm.path.Path;
 
 /**
  * Given a tuple axis and a set of element axes, extracts 
@@ -79,5 +81,15 @@ public final class Pivot {
 			tuples.add(tuple);
 		}
 		return Collections.unmodifiableList(tuples);
+	}
+	
+	public static Pivot fromPath(String path) throws InvalidPathException {
+		Path pathObj = Path.parse(path);
+		return new Pivot(pathObj);
+	}
+	
+	public static Pivot fromNodeDefinition(NodeDefinition defn) {
+		Path path = Path.pathOf(defn);
+		return new Pivot(path);
 	}
 }

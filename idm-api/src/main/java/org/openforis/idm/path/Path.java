@@ -40,15 +40,15 @@ public final class Path implements Axis, Iterable<PathElement> {
 	}
 
 	public Path append(PathElement lastElement) {
-		return new Path(parentPath, lastElement);
+		return new Path(this, lastElement);
 	}
 
 	public Path appendElement(String name) {
-		return new Path(parentPath, new PathElement(name));
+		return new Path(this, new PathElement(name));
 	}
 
 	public Path appendElement(String name, int idx) {
-		return new Path(parentPath, new PathElement(name, idx));
+		return new Path(this, new PathElement(name, idx));
 	}
 	
 	public boolean isAbsolute() {
@@ -99,11 +99,11 @@ public final class Path implements Axis, Iterable<PathElement> {
 		if ( absolute ) {
 			sb.append('/');
 		}
-		sb.append(lastElement);
 		if ( parentPath != null ) {
 			parentPath.toString(sb);
 			sb.append('/');
 		}
+		sb.append(lastElement);
 	}
 
 	@Override
@@ -190,6 +190,27 @@ public final class Path implements Axis, Iterable<PathElement> {
 		}
 	}
 
+	public static Path relative(String... elements) {
+		return fromElements(false, elements);
+	}
+
+	public static Path absolute(String... elements) {
+		return fromElements(true, elements);
+	}
+
+	private static Path fromElements (boolean absolute, String... elements) {
+		Path path = null;
+		for (String element : elements) {
+			PathElement e = new PathElement(element);
+			if ( path == null ) {
+				path = new Path(e, absolute);
+			} else {
+				path = path.append(e);
+			}
+		}
+		return path;
+	}
+	
 	public List<PathElement> elements() {
 		List<PathElement> list = new ArrayList<PathElement>();
 		elements(list);

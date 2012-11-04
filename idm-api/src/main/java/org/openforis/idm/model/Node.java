@@ -90,15 +90,12 @@ public abstract class Node<D extends NodeDefinition> implements Serializable {
 		}
 	}
 
-	@Deprecated
 	protected abstract void write(StringWriter sw, int indent);
 
 	public abstract boolean isEmpty();
 	
 	public abstract  boolean hasData();
 	
-//	public abstract ValidationResults validate();
-
 	public List<Entity> getAncestors() {
 		List<Entity> ancestors = new ArrayList<Entity>();
 		Entity parent = getParent();

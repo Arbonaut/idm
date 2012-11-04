@@ -93,4 +93,8 @@ public final class FieldDefinition<T> extends NodeDefinition {
 	public Integer getMaxCount() {
 		return 1;
 	}
+	
+	public AttributeDefinition getAttributeDefinition() {
+		return (AttributeDefinition) getParentDefinition();
+	}
 }

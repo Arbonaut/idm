@@ -19,7 +19,7 @@ public final class Tuple {
 	private Node<?> node;
 	private List<Element> elements;
 	
-	public Tuple(TupleDefinition tupleDefinition, Node<?> node) {
+	Tuple(TupleDefinition tupleDefinition, Node<?> node) {
 		this.tupleDefinition = tupleDefinition;
 		this.node = node;
 		int elementCount = getElementCount();

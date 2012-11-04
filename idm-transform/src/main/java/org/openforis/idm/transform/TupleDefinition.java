@@ -14,11 +14,11 @@ import org.openforis.idm.metamodel.NodeDefinition;
  * 
  * @author G. Miceli
  */
-public class TupleDefinition {
+public final class TupleDefinition {
 	private NodeDefinition nodeDefinition;
 	private List<NodeDefinition> elementDefinitions;
 	
-	public TupleDefinition(NodeDefinition nodeDefinition) {
+	TupleDefinition(NodeDefinition nodeDefinition) {
 		this.nodeDefinition = nodeDefinition;
 		this.elementDefinitions = new ArrayList<NodeDefinition>();
 	}

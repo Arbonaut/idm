@@ -25,6 +25,8 @@ public class PathElement implements Axis {
 
 	private static final String PARENT_FUNCTION = "parent()";
 	private static final String PARENT_SYMBOL = "..";
+	private static final String THIS_FUNCTION = "this()";
+	private static final String THIS_SYMBOL = ".";
 	private static final Pattern PATTERN = Pattern.compile("(\\w+)(?:\\[(\\d+)\\])?");
 	private String name;
 	private Integer index;
@@ -67,6 +69,10 @@ public class PathElement implements Axis {
 				results.add(parent);
 				return Collections.unmodifiableList(results);
 			}
+		} else if ( THIS_FUNCTION.equals(name) || THIS_SYMBOL.equals(name) ) {
+			List<Node<?>> results = new ArrayList<Node<?>>(1);
+			results.add(context);
+			return Collections.unmodifiableList(results);
 		} else if ( context instanceof Entity ) {
 			return evaluateInternal((Entity) context);
 		} if ( context instanceof Attribute ) {
@@ -122,8 +128,10 @@ public class PathElement implements Axis {
 
 	@Override
 	public NodeDefinition evaluate(NodeDefinition context) {
-		if ( PARENT_FUNCTION.equals(name) ) {
+		if ( PARENT_FUNCTION.equals(name) || PARENT_SYMBOL.equals(name) ) {
 			return context.getParentDefinition();
+		} else if ( THIS_FUNCTION.equals(name) || THIS_SYMBOL.equals(name) ) {
+			return context;
 		} else if ( context instanceof EntityDefinition ) {
 			return evaluateInternal((EntityDefinition) context);
 		} else if ( context instanceof AttributeDefinition ) {

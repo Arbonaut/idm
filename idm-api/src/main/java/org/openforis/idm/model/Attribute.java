@@ -227,10 +227,7 @@ public abstract class Attribute<D extends AttributeDefinition, V extends Value> 
 		for (int i = 0; i < indent; i++) {
 			sw.append('\t');
 		}
-		sw.append(getName());
-		sw.append(": ");
 		sw.append(value == null ? "!!null" : value.toString());
-		sw.append("\n");
 	}
 
 	@Override

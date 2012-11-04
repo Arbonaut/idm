@@ -258,4 +258,10 @@ public class Schema extends SurveyObject {
 		definitionsById.remove(id);	
 		defn.detach();
 	}
+	
+	public void traverse(NodeDefinitionVisitor visitor) {
+		for (EntityDefinition root : rootEntityDefinitions) {
+			root.traverse(visitor);
+		}
+	}
 }

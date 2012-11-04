@@ -80,6 +80,9 @@ public abstract class XmlPullReader {
 	
 	synchronized
 	public void parse(InputStream is, String enc) throws XmlParseException, IOException {
+		if ( is == null ) {
+			throw new NullPointerException("InputStream");
+		}
 		try {
 			XmlPullParser parser = createParser();
 			parser.setInput(is, enc);			

@@ -83,13 +83,13 @@ public final class Pivot {
 		return Collections.unmodifiableList(tuples);
 	}
 	
-	public static Pivot fromPath(String path) throws InvalidPathException {
-		Path pathObj = Path.parse(path);
-		return new Pivot(pathObj);
-	}
-	
-	public static Pivot fromNodeDefinition(NodeDefinition defn) {
-		Path path = Path.pathOf(defn);
-		return new Pivot(path);
-	}
+//	public static Pivot fromPath(String path) throws InvalidPathException {
+//		Path pathObj = Path.parse(path);
+//		return new Pivot(pathObj);
+//	}
+//	
+//	public static Pivot fromNodeDefinition(NodeDefinition defn) {
+//		Path path = Path.pathOf(defn);
+//		return new Pivot(path);
+//	}
 }

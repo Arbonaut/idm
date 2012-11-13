@@ -183,7 +183,7 @@ public class Survey implements Serializable {
 		modelVersions.set(index, version);
 	}
 
-	protected ModelVersion getVersionById(int id) {
+	public ModelVersion getVersionById(int id) {
 		for (ModelVersion v : modelVersions) {
 			if (id == v.getId() ) {
 				return v;

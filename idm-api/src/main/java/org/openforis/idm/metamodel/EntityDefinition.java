@@ -118,11 +118,13 @@ public class EntityDefinition extends NodeDefinition {
 	
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {
 		ArrayList<AttributeDefinition> result = new ArrayList<AttributeDefinition>();
-		for (NodeDefinition nodeDefinition : childDefinitions) {
-			if(nodeDefinition instanceof KeyAttributeDefinition) {
-				KeyAttributeDefinition keyAttributeDefinition = (KeyAttributeDefinition) nodeDefinition;
-				if(keyAttributeDefinition.isKey()) {
-					result.add((AttributeDefinition) keyAttributeDefinition);
+		if ( childDefinitions != null ) {
+			for (NodeDefinition nodeDefinition : childDefinitions) {
+				if(nodeDefinition instanceof KeyAttributeDefinition) {
+					KeyAttributeDefinition keyAttributeDefinition = (KeyAttributeDefinition) nodeDefinition;
+					if(keyAttributeDefinition.isKey()) {
+						result.add((AttributeDefinition) keyAttributeDefinition);
+					}
 				}
 			}
 		}

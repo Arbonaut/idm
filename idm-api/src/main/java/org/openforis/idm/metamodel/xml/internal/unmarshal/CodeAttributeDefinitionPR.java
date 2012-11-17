@@ -31,7 +31,7 @@ class CodeAttributeDefinitionPR extends AttributeDefinitionPR {
 		CodeAttributeDefinition defn = (CodeAttributeDefinition) getDefinition();
 		defn.setKey(key == null ? false : key);
 		defn.setParentExpression(parent);
-		defn.setAllowUnlisted(strict == null ? false : strict);
+		defn.setAllowUnlisted(strict == null ? false : ! strict);
 		defn.setListName(listName);
 	}
 	

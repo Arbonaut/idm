@@ -60,7 +60,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 		}
 		attributeDefaults.add(def);
 	}
-
+	
 	public void removeAllAttributeDefaults() {
 		if ( attributeDefaults != null ) {
 			attributeDefaults.clear();
@@ -68,6 +68,10 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	}
 	public void removeAttributeDefault(AttributeDefault def) {
 		attributeDefaults.remove(def);
+	}
+	
+	public void moveAttributeDefault(AttributeDefault def, int toIndex) {
+		CollectionUtil.moveItem(attributeDefaults, def, toIndex);
 	}
 
 	public abstract <V extends Value> V createValue(String string);

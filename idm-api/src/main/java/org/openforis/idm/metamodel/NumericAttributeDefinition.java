@@ -59,10 +59,12 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		precisionDefinitions.add(precision);
 	}
 	
-	public void removeAllPrecisionDefinitions() {
-		if ( precisionDefinitions != null ) {
-			precisionDefinitions.clear();
-		}
+	public void removePrecisionDefinition(Precision precision) {
+		precisionDefinitions.remove(precision);
+	}
+	
+	public void movePrecisionDefinition(Precision precision, int toIndex) {
+		CollectionUtil.moveItem(precisionDefinitions, precision, toIndex);
 	}
 	
 	/**
@@ -163,5 +165,5 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 			return false;
 		return true;
 	}
-	
+
 }

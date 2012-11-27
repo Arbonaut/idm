@@ -50,7 +50,7 @@ public class SurveyUnmarshaller extends IdmlPullReader {
 		String lastId = getAttribute(LAST_ID, true);
 		Boolean published = getBooleanAttribute(PUBLISHED, false);
 		SurveyIdmlBinder surveyBinder = getSurveyBinder();
-		SurveyContext surveyContext = surveyBinder.getSurveyContext(); 
+		SurveyContext surveyContext = surveyBinder.getSurveyContext();
 		this.survey = surveyContext.createSurvey();
 		survey.setLastId(Integer.valueOf(lastId));
 		survey.setPublished(published == null ? false : published);

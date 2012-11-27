@@ -1,6 +1,10 @@
 package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
-import static org.xmlpull.v1.XmlPullParser.*;
+import static org.xmlpull.v1.XmlPullParser.CDSECT;
+import static org.xmlpull.v1.XmlPullParser.END_TAG;
+import static org.xmlpull.v1.XmlPullParser.ENTITY_REF;
+import static org.xmlpull.v1.XmlPullParser.START_TAG;
+import static org.xmlpull.v1.XmlPullParser.TEXT;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +13,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -102,6 +107,7 @@ public abstract class XmlPullReader {
 
 	private XmlPullParser createParser() throws XmlPullParserException {
 		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		factory.setNamespaceAware(true);
 		XmlPullParser parser = factory.newPullParser();
 		parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
 		return parser;
@@ -109,22 +115,23 @@ public abstract class XmlPullReader {
 
 	private void parseElement(XmlPullParser parser) throws XmlParseException, XmlPullParserException, IOException {
 		this.parser = parser;
-		
 		if ( !isTagSupported(parser.getName(), parser.getNamespace()) ) {
-		    throw new IllegalStateException("Invalid tag for this reader");
+			throw new IllegalStateException("Invalid tag for reader "+getClass());
 		}
 		
 		this.count++;
-
+		
 		if ( maxCount != null && count > maxCount ) {
 			throw new XmlParseException(parser, "Too many elements; max "+maxCount);
 		}
-
+		
 		parseTag();
 		
 		this.lastChildPullReaderIdx = 0;
 		resetChildReaders();
 	}
+
+
 
 	protected void parseTag() throws XmlParseException, XmlPullParserException, IOException {
 		onStartTag();
@@ -190,9 +197,10 @@ public abstract class XmlPullReader {
 		// no-op
 	}
 	
-	public boolean isTagSupported(String tag, String ns) {
-		return tagName.equals(tag) && namespace.equals(ns); 
-	}
+    public boolean isTagSupported(String tag, String ns) {
+        return tagName.equals(tag) && namespace.equals(ns);
+  } 
+
 	
 	protected List<XmlPullReader> getChildPullReaders() {
 		return childPullReaders;
@@ -266,6 +274,7 @@ public abstract class XmlPullReader {
 	        	break;
 	        }
 	    }
+	    out.flush();
 	    return sw.toString();
 //	    IOUtils.copy(tpis, new OutputStreamWriter(System.out), "UTF-8");
 	}

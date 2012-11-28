@@ -344,6 +344,17 @@ public class Survey implements Serializable {
 		return null;
 	}
 
+	public Unit getUnit(int id) {
+		if ( units != null) {
+			for (Unit unit : units) {
+				if (unit.getId() == id) {
+					return unit;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public Unit getUnit(String name) {
 		if ( units != null && name != null ) {
 			for (Unit unit : units) {

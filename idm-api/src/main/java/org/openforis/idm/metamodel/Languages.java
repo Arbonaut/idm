@@ -15,10 +15,10 @@ import java.util.Map;
  * @author S. Ricci
  *
  */
-public class Languages {
+public abstract class Languages {
 
-	private static final String LANG_CODES_ISO_639_3_TXT_FILE = "lang_codes_iso_639_3.txt";
 	private static final String LANG_CODES_ISO_639_1_TXT_FILE = "lang_codes_iso_639_1.txt";
+	private static final String LANG_CODES_ISO_639_3_TXT_FILE = "lang_codes_iso_639_3.txt";
 	
 	private static Map<Standard, List<String>> languageCodes;
 

@@ -70,7 +70,7 @@ public class EntityDefinition extends NodeDefinition {
 		return (T) childDefinition;
 	}
 	
-	public int getChildIndex(NodeDefinition defn) {
+	public int getChildDefinitionIndex(NodeDefinition defn) {
 		if ( childDefinitions != null ) {
 			int result = childDefinitions.indexOf(defn);
 			if ( result < 0 ) {

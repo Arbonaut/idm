@@ -197,11 +197,11 @@ public class ModelNodePointer extends DynamicPointer {
 	
 	private Number getNormalizedValue(Number value, Unit unit, Unit defaultUnit) {
 		if ( value != null && unit.getConversionFactor() != null && defaultUnit.getConversionFactor() != null ) {
-			float unitConvFact = unit.getConversionFactor().floatValue();
-			float defaultUnitConvFact = defaultUnit.getConversionFactor().floatValue();
-			float floatValue = value.floatValue();
-			float normalized = floatValue * unitConvFact;
-			Float normalizedToDefault = normalized / defaultUnitConvFact;
+			double unitConvFact = unit.getConversionFactor();
+			double defaultUnitConvFact = defaultUnit.getConversionFactor();
+			double doubleValue = value.doubleValue();
+			double normalized = doubleValue * unitConvFact;
+			double normalizedToDefault = normalized / defaultUnitConvFact;
 			return normalizedToDefault;
 		} else {
 			return value;

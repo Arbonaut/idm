@@ -282,6 +282,11 @@ public abstract class XmlPullReader {
 		return val == null ? null : Integer.valueOf(val);
 	}
 
+	protected Double getDoubleAttribute(String attr, boolean required) throws XmlParseException {
+		String val = getAttribute(attr, required);
+		return val == null ? null : Double.valueOf(val);
+	}
+
 	protected Float getFloatAttribute(String attr, boolean required) throws XmlParseException {
 		String val = getAttribute(attr, required);
 		return val == null ? null : Float.valueOf(val);

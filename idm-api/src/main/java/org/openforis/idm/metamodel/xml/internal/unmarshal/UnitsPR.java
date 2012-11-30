@@ -33,7 +33,7 @@ public class UnitsPR extends IdmlPullReader {
 			int id = getIntegerAttribute(ID, true);
 			String name = getAttribute(NAME, true);
 			String dimension = getAttribute(DIMENSION, true);
-			Float conversionFactor = getFloatAttribute(CONVERSION_FACTOR, false);
+			Double conversionFactor = getDoubleAttribute(CONVERSION_FACTOR, false);
 			Survey survey = getSurvey();
 			this.unit = survey.createUnit(id);
 			unit.setName(name);

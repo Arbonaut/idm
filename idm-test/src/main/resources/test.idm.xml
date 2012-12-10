@@ -4001,7 +4001,7 @@
         <entity id="60" name="soil" relevant="accessibility = 0 and permanent"
           ui:tab="plot_det">
           <label>Soil</label>
-          <entity id="61" name="layer" since="1.1">
+          <entity id="61" name="layer" since="1.1" multiple="true">
             <label type="heading">Layers</label>
             <code id="62" key="true" list="soil_depth_class"
               name="depth">

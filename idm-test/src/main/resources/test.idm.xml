@@ -4174,7 +4174,7 @@
             <label>Species</label>
           </taxon>
           <number id="100" name="dbh" required="true" type="real">
-            <label>DBH (cm)</label>
+            <label>DBH</label>
             <description>Diameter at the breast height (1.3 m)
               measured above bark</description>
             <precision decimalDigits="1" unit="cm" />

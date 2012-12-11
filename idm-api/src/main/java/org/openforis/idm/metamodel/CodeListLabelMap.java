@@ -6,5 +6,7 @@ package org.openforis.idm.metamodel;
  *
  */
 public class CodeListLabelMap extends TypedLanguageSpecificTextAbstractMap<CodeListLabel, CodeListLabel.Type> {
+
+	private static final long serialVersionUID = 1L;
 	
 }

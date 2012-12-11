@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -17,8 +18,10 @@ import org.openforis.idm.util.CollectionUtil;
  * @author S. Ricci
  *
  */
-public abstract class LanguageSpecificTextAbstractMap<T extends LanguageSpecificText> {
+public abstract class LanguageSpecificTextAbstractMap<T extends LanguageSpecificText> implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	private static final String VOID_LANGUAGE_KEY = "";
 
 	private final Class<T> genericType;

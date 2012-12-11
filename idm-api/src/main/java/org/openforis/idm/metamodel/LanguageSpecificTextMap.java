@@ -8,5 +8,7 @@ package org.openforis.idm.metamodel;
  *
  */
 public class LanguageSpecificTextMap extends LanguageSpecificTextAbstractMap<LanguageSpecificText> {
+
+	private static final long serialVersionUID = 1L;
 	
 }

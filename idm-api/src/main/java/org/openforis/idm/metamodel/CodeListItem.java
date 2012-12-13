@@ -142,17 +142,35 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	
 	public CodeListItem findChildItem(String code) {
 		if ( childItems != null && code != null ) {
-			String adaptedCode = Pattern.quote(code);
-			Pattern pattern = Pattern.compile("^" + adaptedCode + "$", Pattern.CASE_INSENSITIVE);
+			Pattern pattern = createMatchingPattern(code);
 			for (CodeListItem item : childItems) {
-				String itemCode = item.getCode();
-				Matcher matcher = pattern.matcher(itemCode);
-				if(matcher.find()) {
+				if ( item.matchCode(pattern) ) {
 					return item;
 				}
 			}
 		}
 		return null;
+	}
+	
+	protected Pattern createMatchingPattern(String code) {
+		String adaptedCode = Pattern.quote(code);
+		Pattern pattern = Pattern.compile("^" + adaptedCode + "$", Pattern.CASE_INSENSITIVE);
+		return pattern;
+	}
+	
+	public boolean matchCode(String code) {
+		Pattern pattern = createMatchingPattern(code);
+		return matchCode(pattern);
+	}
+
+	protected boolean matchCode(Pattern pattern) {
+		String itemCode = getCode();
+		Matcher matcher = pattern.matcher(itemCode);
+		if(matcher.find()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void addChildItem(CodeListItem item) {

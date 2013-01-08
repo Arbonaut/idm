@@ -160,4 +160,18 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 			return false;
 		return true;
 	}
+
+	public int getCodeListLevel() {
+		if ( list == null || list.getHierarchy().isEmpty() ) {
+			return 0;
+		} else {
+			int level = 0;
+			CodeAttributeDefinition ptr = getParentCodeAttributeDefinition();
+			while ( ptr != null ) {
+				level ++;
+				ptr = ptr.getParentCodeAttributeDefinition();
+			}
+			return level;
+		}
+	}
 }

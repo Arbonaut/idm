@@ -315,4 +315,20 @@ public class CodeList extends VersionableSurveyObject {
 		return createItem(id);
 	}
 
+	public List<CodeListItem> getItems(int level) {
+		return getItemsInternal(items, level);
+	}
+
+	private List<CodeListItem> getItemsInternal(List<CodeListItem> parentItems, int level) {
+		if ( level <= 0 ) {
+			return Collections.unmodifiableList(parentItems);
+		} else {
+			ArrayList<CodeListItem> descendants = new ArrayList<CodeListItem>();
+			for (CodeListItem item : parentItems) {
+				List<CodeListItem> childItems = item.getChildItems();
+				descendants.addAll(childItems);
+			}
+			return getItemsInternal(descendants, level-1);
+		}
+	}
 }

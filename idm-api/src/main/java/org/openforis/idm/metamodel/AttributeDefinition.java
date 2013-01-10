@@ -125,5 +125,19 @@ public abstract class AttributeDefinition extends NodeDefinition {
 			return false;
 		return true;
 	}
-	
+
+	/**
+	 * Build name prefixing all names of ancestor single entities
+	 * @return
+	 */
+	public String getCompoundName() {
+		StringBuilder sb = new StringBuilder(getName());
+		NodeDefinition ancestor = getParentDefinition();
+		while ( ancestor != null && !ancestor.isMultiple() ) {
+			sb.insert(0, "_");
+			sb.insert(0, ancestor.getName());
+			ancestor = ancestor.getParentDefinition();
+		}
+		return sb.toString();
+	}
 }

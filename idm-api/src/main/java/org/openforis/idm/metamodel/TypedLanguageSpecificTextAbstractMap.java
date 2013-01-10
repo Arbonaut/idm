@@ -110,7 +110,10 @@ public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLangua
 		return true;
 	}
 
-	static class MapKey<T> {
+	static class MapKey<T> implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+
 		private String language;
 		private T type;
 		

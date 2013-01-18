@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.util.CollectionUtil;
@@ -170,9 +171,18 @@ public class Survey implements Serializable {
 		if ( modelVersions != null ) {
 			ModelVersion oldVersion = getVersionById(version.getId());
 			modelVersions.remove(oldVersion);
+			removeReferences(oldVersion);
 		}
 	}
 	
+	protected void removeReferences(ModelVersion version) {
+		schema.removeReferences(version);
+		List<CodeList> codeLists = getCodeLists();
+		for (CodeList codeList : codeLists) {
+			codeList.removeVersioning(version);
+		}
+	}
+
 	public void moveVersion(ModelVersion version, int index) {
 		CollectionUtil.moveItem(modelVersions, version, index);
 	}
@@ -251,9 +261,25 @@ public class Survey implements Serializable {
 		if ( units != null ) {
 			Unit oldUnit = getUnitById(unit.getId());
 			units.remove(oldUnit);
+			removeReferences(unit);
 		}
 	}
 	
+	protected void removeReferences(Unit unit) {
+		List<EntityDefinition> rootEntities = schema.getRootEntityDefinitions();
+		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
+		stack.addAll(rootEntities);
+		while ( ! stack.isEmpty() ) {
+			NodeDefinition defn = stack.pop();
+			if ( defn instanceof EntityDefinition ) {
+				stack.addAll(((EntityDefinition) defn).getChildDefinitions());
+			} else if ( defn instanceof NumericAttributeDefinition ) {
+				NumericAttributeDefinition numericAttrDefn = (NumericAttributeDefinition) defn;
+				numericAttrDefn.removePrecisionDefinitions(unit);
+			}
+		}
+	}
+
 	public void moveUnit(Unit unit, int index) {
 		CollectionUtil.moveItem(units, unit, index);
 	}

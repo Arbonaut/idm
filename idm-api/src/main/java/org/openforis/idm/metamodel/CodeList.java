@@ -241,6 +241,14 @@ public class CodeList extends VersionableSurveyObject {
 		}
 		return false;
 	}
+	
+	@Override
+	public void removeVersioning(ModelVersion version) {
+		super.removeVersioning(version);
+		for (CodeListItem item : getItems()) {
+			item.removeVersioning(version);
+		}
+	}
 
 	@Override
 	public int hashCode() {

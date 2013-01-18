@@ -1,6 +1,7 @@
 package org.openforis.idm.metamodel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.openforis.idm.util.CollectionUtil;
@@ -61,6 +62,20 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	
 	public void removePrecisionDefinition(Precision precision) {
 		precisionDefinitions.remove(precision);
+	}
+	
+	public void removePrecisionDefinitions(Unit unit) {
+		if ( precisionDefinitions != null ) {
+			int unitId = unit.getId();
+			Iterator<Precision> it = precisionDefinitions.iterator();
+			while (it.hasNext()) {
+				Precision precision = (Precision) it.next();
+				Unit un = precision.getUnit();
+				if ( un != null && un.getId() == unitId ) {
+					it.remove();
+				}
+			}
+		}
 	}
 	
 	public void movePrecisionDefinition(Precision precision, int toIndex) {

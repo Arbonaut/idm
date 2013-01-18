@@ -235,6 +235,16 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 		}
 		return false;
 	}
+	
+	@Override
+	public void removeVersioning(ModelVersion version) {
+		super.removeVersioning(version);
+		if ( childItems != null ) {
+			for (CodeListItem child : childItems ) {
+				child.removeVersioning(version);
+			}
+		}
+	}
 
 	@Override
 	public int hashCode() {

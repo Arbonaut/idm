@@ -11,7 +11,7 @@ import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
  */
 class VersioningPR extends IdmlPullReader {
 	
-public VersioningPR() {
+	public VersioningPR() {
 		super(VERSIONING, 1);
 		addChildPullReaders(new VersionPR());
 	}

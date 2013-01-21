@@ -114,7 +114,7 @@ public class Schema extends SurveyObject {
 		CollectionUtil.moveItem(rootEntityDefinitions, rootEntity, newIndex);
 	}
 	
-	protected void removeReferences(final ModelVersion version) {
+	protected void removeVersioning(final ModelVersion version) {
 		List<EntityDefinition> rootDefns = getRootEntityDefinitions();
 		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
 		stack.addAll(rootDefns);
@@ -127,7 +127,6 @@ public class Schema extends SurveyObject {
 				}
 			});
 		}
-		
 	}
 	
 	@Override

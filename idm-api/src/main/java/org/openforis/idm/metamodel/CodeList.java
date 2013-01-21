@@ -242,11 +242,10 @@ public class CodeList extends VersionableSurveyObject {
 		return false;
 	}
 	
-	@Override
-	public void removeVersioning(ModelVersion version) {
-		super.removeVersioning(version);
+	public void removeVersioningRecursive(ModelVersion version) {
+		removeVersioning(version);
 		for (CodeListItem item : getItems()) {
-			item.removeVersioning(version);
+			item.removeVersioningRecursive(version);
 		}
 	}
 

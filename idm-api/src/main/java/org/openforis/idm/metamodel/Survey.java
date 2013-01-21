@@ -171,15 +171,19 @@ public class Survey implements Serializable {
 		if ( modelVersions != null ) {
 			ModelVersion oldVersion = getVersionById(version.getId());
 			modelVersions.remove(oldVersion);
-			removeReferences(oldVersion);
+			removeVersioningReferences(oldVersion);
 		}
 	}
 	
-	protected void removeReferences(ModelVersion version) {
-		schema.removeReferences(version);
+	protected void removeVersioningReferences(ModelVersion version) {
+		schema.removeVersioning(version);
+		removeCodeListsVersioning(version);
+	}
+
+	protected void removeCodeListsVersioning(ModelVersion version) {
 		List<CodeList> codeLists = getCodeLists();
 		for (CodeList codeList : codeLists) {
-			codeList.removeVersioning(version);
+			codeList.removeVersioningRecursive(version);
 		}
 	}
 

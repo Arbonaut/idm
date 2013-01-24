@@ -9,6 +9,7 @@ import static org.openforis.idm.metamodel.validation.ValidationResultFlag.OK;
 import java.util.List;
 
 import org.junit.Test;
+import org.openforis.idm.metamodel.Unit;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Entity;
@@ -139,7 +140,8 @@ public class ComparisonCheckTest extends ValidationTest {
 	@Test
 	public void testLteWithNormalizedValuesPassOnLt() {
 		RealAttribute plotDistance = EntityBuilder.addValue(cluster, "plot_distance", 25000d);
-		plotDistance.setUnitName("cm");
+		Unit unit = survey.getUnit("cm");
+		plotDistance.setUnit(unit);
 		ValidationResults results = validate(plotDistance);
 		assertFalse(containsComparisonCheck(results.getErrors()));
 	}
@@ -147,7 +149,8 @@ public class ComparisonCheckTest extends ValidationTest {
 	@Test
 	public void testLteWithNormalizedValuesFailOnLt() {
 		RealAttribute plotDistance = EntityBuilder.addValue(cluster, "plot_distance", 25000d);
-		plotDistance.setUnitName("m");
+		Unit unit = survey.getUnit("m");
+		plotDistance.setUnit(unit);
 		ValidationResults results = validate(plotDistance);
 		assertTrue(containsComparisonCheck(results.getErrors()));
 	}

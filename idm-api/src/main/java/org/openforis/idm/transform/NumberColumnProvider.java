@@ -25,6 +25,6 @@ public class NumberColumnProvider extends CompositeAttributeColumnProvider {
 
 	@Override
 	protected Field<?>[] getFieldsToExtract(Attribute<?, ?> attr) {
-		return new Field[] { attr.getField(0), attr.getField(1) };
+		return new Field[] { attr.getField(0), attr.getField(2) };
 	}
 }

@@ -16,7 +16,7 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 	}
 	
 	public Integer getUnitId() {
-		return getUnitIdField().getValue();
+		return getUnitField().getValue();
 	}
 	
 	public String getUnitName() {
@@ -53,7 +53,7 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<Integer> getUnitIdField() {
+	public Field<Integer> getUnitField() {
 		return (Field<Integer>) getField(2);
 	}
 
@@ -72,7 +72,7 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 	}
 	
 	public void setUnitId(Integer id) {
-		getUnitIdField().setValue(id);
+		getUnitField().setValue(id);
 		onUpdateValue();
 	}
 	
@@ -84,7 +84,7 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 		Unit unit = value.getUnit();
 		Integer unitId = unit == null ? null : unit.getId();
 		getNumberField().setValue(number);
-		getUnitIdField().setValue(unitId);
+		getUnitField().setValue(unitId);
 		onUpdateValue();
 	}
 

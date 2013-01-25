@@ -1,5 +1,9 @@
 package org.openforis.idm.transform;
 
+import static org.openforis.idm.metamodel.CodeAttributeDefinition.QUALIFIER_FIELD;
+import static org.openforis.idm.metamodel.NumericAttributeDefinition.UNIT_FIELD;
+import static org.openforis.idm.metamodel.NumericAttributeDefinition.UNIT_NAME_FIELD;
+
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
 import org.openforis.idm.metamodel.CodeList;
 import org.openforis.idm.metamodel.FieldDefinition;
@@ -29,7 +33,7 @@ public class DefaultChildExpansionFilter implements ChildExpansionFilter {
 
 	protected boolean isFieldIncluded(CodeAttributeDefinition parentDefn, FieldDefinition<?> fieldDefn) {
 		String fieldName = fieldDefn.getName();
-		if ( fieldName.equals("qualifier") ) {
+		if ( fieldName.equals(QUALIFIER_FIELD) ) {
 			// Only include qualifier and column group if qualifier is ever allowed   
 			CodeList list = parentDefn.getList();
 			return list.isQualifiable();
@@ -40,9 +44,12 @@ public class DefaultChildExpansionFilter implements ChildExpansionFilter {
 	
 	protected boolean isFieldIncluded(NumericAttributeDefinition parentDefn, FieldDefinition<?> fieldDefn) {
 		String fieldName = fieldDefn.getName();
-		if ( fieldName.equals("unit") ) {
+		if ( fieldName.equals(UNIT_FIELD) ) {
 			// Only include unit column if it may ever be ambiguous
 			return parentDefn.isVariableUnit();
+		} else if ( fieldName.equals(UNIT_NAME_FIELD) ) {
+			//TODO
+			return false;
 		} else {
 			return true;
 		}

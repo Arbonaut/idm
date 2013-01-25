@@ -31,7 +31,7 @@ public abstract class NumericRangeAttribute<T extends NumericRange<N>,N extends 
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Field<Integer> getUnitIdField() {
+	public Field<Integer> getUnitField() {
 		return (Field<Integer>) getField(3);		
 	}
 
@@ -63,11 +63,11 @@ public abstract class NumericRangeAttribute<T extends NumericRange<N>,N extends 
 	}
 
 	public Integer getUnitId(){
-		return getUnitIdField().getValue();
+		return getUnitField().getValue();
 	}
 	
 	public void setUnitId(Integer id){
-		getUnitIdField().setValue(id);
+		getUnitField().setValue(id);
 		onUpdateValue();
 	}
 
@@ -109,7 +109,7 @@ public abstract class NumericRangeAttribute<T extends NumericRange<N>,N extends 
 			Integer unitId = unit == null ? null : unit.getId();
 			getFromField().setValue(from);
 			getToField().setValue(to);
-			getUnitIdField().setValue(unitId);
+			getUnitField().setValue(unitId);
 		}
 		onUpdateValue();
 	}

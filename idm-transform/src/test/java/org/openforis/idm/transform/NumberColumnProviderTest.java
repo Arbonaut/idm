@@ -253,10 +253,8 @@ public class NumberColumnProviderTest extends AbstractColumnProviderTest {
 		Field<Integer> valueField = (Field<Integer>) cells.get(0).getNodes().get(0);
 		assertEquals((Integer) 1, valueField.getValue());
 		assertEquals(1, cells.get(1).getNodes().size());
-		Field<String> unitField = (Field<String>) cells.get(1).getNodes().get(0);
-		String unitFieldValue = unitField.getValue();
-		String cmUnitId = Integer.toString(u2.getId());
-		assertEquals(cmUnitId, unitFieldValue);
+		Field<Integer> unitField = (Field<Integer>) cells.get(1).getNodes().get(0);
+		assertEquals((Integer) u2.getId(), unitField.getValue());
 	}
 
 	private EntityDefinition createTestPlotRootEntity() {

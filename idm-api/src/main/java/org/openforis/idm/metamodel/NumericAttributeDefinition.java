@@ -13,6 +13,9 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
+	public static final String UNIT_FIELD = "unit";
+	public static final String UNIT_NAME_FIELD = "unit_name";
+	
 	public enum Type {
 		INTEGER(Integer.class), REAL(Double.class);
 

@@ -1,6 +1,8 @@
 package org.openforis.idm.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.openforis.idm.model.species.Taxon;
+import org.openforis.idm.model.species.TaxonVernacularName;
 
 /**
  * @author G. Miceli
@@ -9,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public final class TaxonOccurrence implements Value {
 
+	private Integer taxonId;
 	private String code;
 	private String scientificName;
 	private String vernacularName;
@@ -25,12 +28,46 @@ public final class TaxonOccurrence implements Value {
 		this.scientificName = scientificName;
 	}
 
-	public TaxonOccurrence(String code, String scientificName, String vernacularName, String languageCode, String languageVariety) {
+	public TaxonOccurrence(Integer taxonId, String code, String scientificName) {
+		super();
+		this.taxonId = taxonId;
+		this.code = code;
+		this.scientificName = scientificName;
+	}
+	
+	public TaxonOccurrence(String code, String scientificName, String vernacularName, 
+			String languageCode, String languageVariety) {
+		super();
 		this.code = code;
 		this.scientificName = scientificName;
 		this.vernacularName = vernacularName;
 		this.languageCode = languageCode;
 		this.languageVariety = languageVariety;
+	}
+	
+	public TaxonOccurrence(Integer taxonId, String code, String scientificName, String vernacularName, 
+			String languageCode, String languageVariety) {
+		super();
+		this.taxonId = taxonId;
+		this.code = code;
+		this.scientificName = scientificName;
+		this.vernacularName = vernacularName;
+		this.languageCode = languageCode;
+		this.languageVariety = languageVariety;
+	}
+
+	public TaxonOccurrence(Taxon taxon, TaxonVernacularName vernacularName) {
+		this(taxon.getTaxonId(), taxon.getCode(), taxon.getScientificName(), 
+					vernacularName.getVernacularName(), vernacularName.getLanguageCode(),
+					vernacularName.getLanguageVariety());
+	}
+	
+	public Integer getTaxonId() {
+		return taxonId;
+	}
+
+	public void setTaxonId(Integer taxonId) {
+		this.taxonId = taxonId;
 	}
 
 	public String getCode() {
@@ -56,6 +93,7 @@ public final class TaxonOccurrence implements Value {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
+			.append("taxonId", taxonId)
 			.append("code", code)
 			.append("scientificName", scientificName)
 			.append("vernacularName", vernacularName)
@@ -69,10 +107,15 @@ public final class TaxonOccurrence implements Value {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((code == null) ? 0 : code.hashCode());
-		result = prime * result + ((languageCode == null) ? 0 : languageCode.hashCode());
-		result = prime * result + ((languageVariety == null) ? 0 : languageVariety.hashCode());
-		result = prime * result + ((scientificName == null) ? 0 : scientificName.hashCode());
-		result = prime * result + ((vernacularName == null) ? 0 : vernacularName.hashCode());
+		result = prime * result
+				+ ((languageCode == null) ? 0 : languageCode.hashCode());
+		result = prime * result
+				+ ((languageVariety == null) ? 0 : languageVariety.hashCode());
+		result = prime * result
+				+ ((scientificName == null) ? 0 : scientificName.hashCode());
+		result = prime * result + ((taxonId == null) ? 0 : taxonId.hashCode());
+		result = prime * result
+				+ ((vernacularName == null) ? 0 : vernacularName.hashCode());
 		return result;
 	}
 
@@ -104,6 +147,11 @@ public final class TaxonOccurrence implements Value {
 			if (other.scientificName != null)
 				return false;
 		} else if (!scientificName.equals(other.scientificName))
+			return false;
+		if (taxonId == null) {
+			if (other.taxonId != null)
+				return false;
+		} else if (!taxonId.equals(other.taxonId))
 			return false;
 		if (vernacularName == null) {
 			if (other.vernacularName != null)

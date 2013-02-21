@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import org.openforis.idm.path.InvalidPathException;
 import org.openforis.idm.path.Path;
@@ -116,8 +115,6 @@ public class Schema extends SurveyObject {
 	
 	protected void removeVersioning(final ModelVersion version) {
 		List<EntityDefinition> rootDefns = getRootEntityDefinitions();
-		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
-		stack.addAll(rootDefns);
 		for (EntityDefinition entityDefinition : rootDefns) {
 			entityDefinition.removeVersioning(version);
 			entityDefinition.traverse(new NodeDefinitionVisitor() {

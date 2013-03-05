@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.path.InvalidPathException;
 import org.openforis.idm.path.Path;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -39,7 +39,7 @@ public class Schema extends SurveyObject {
 	}
 
 	public List<EntityDefinition> getRootEntityDefinitions() {
-		return CollectionUtil.unmodifiableList(rootEntityDefinitions);
+		return CollectionUtils.unmodifiableList(rootEntityDefinitions);
 	}
 
 	public void addRootEntityDefinition(EntityDefinition defn) {
@@ -111,7 +111,7 @@ public class Schema extends SurveyObject {
 	}
 	
 	public void moveRootEntityDefinition(EntityDefinition rootEntity, int newIndex) {
-		CollectionUtil.moveItem(rootEntityDefinitions, rootEntity, newIndex);
+		CollectionUtils.shiftItem(rootEntityDefinitions, rootEntity, newIndex);
 	}
 	
 	protected void removeVersioning(final ModelVersion version) {

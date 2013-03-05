@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author G. Miceli
@@ -126,7 +126,7 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	}
 
 	public List<CodeListItem> getChildItems() {
-		return CollectionUtil.unmodifiableList(childItems);
+		return CollectionUtils.unmodifiableList(childItems);
 	}
 	
 	public CodeListItem getChildItem(String code) {
@@ -196,7 +196,7 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	}
 
 	public void moveChildItem(CodeListItem item, int indexTo) {
-		CollectionUtil.moveItem(childItems, item, indexTo);
+		CollectionUtils.shiftItem(childItems, item, indexTo);
 	}
 
 	protected int calculateLastUsedItemId() {

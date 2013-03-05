@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author G. Miceli
@@ -53,7 +53,7 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	}
 
 	public List<Precision> getPrecisionDefinitions() {
-		return CollectionUtil.unmodifiableList(precisionDefinitions);
+		return CollectionUtils.unmodifiableList(precisionDefinitions);
 	}
 
 	public void addPrecisionDefinition(Precision precision) {
@@ -82,7 +82,7 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	}
 	
 	public void movePrecisionDefinition(Precision precision, int toIndex) {
-		CollectionUtil.moveItem(precisionDefinitions, precision, toIndex);
+		CollectionUtils.shiftItem(precisionDefinitions, precision, toIndex);
 	}
 	
 	/**
@@ -153,7 +153,7 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 				}
 			}
 		}
-		return CollectionUtil.unmodifiableList(units);
+		return CollectionUtils.unmodifiableList(units);
 	}
 
 	@Override

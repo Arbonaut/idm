@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -28,7 +28,7 @@ public class EntityDefinition extends NodeDefinition {
 	}
 
 	public List<NodeDefinition> getChildDefinitions() {
-		return CollectionUtil.unmodifiableList(childDefinitions);
+		return CollectionUtils.unmodifiableList(childDefinitions);
 	}
 	
 	public NodeDefinition getChildDefinition(String name) {
@@ -113,7 +113,7 @@ public class EntityDefinition extends NodeDefinition {
 	}
 
 	public void moveChildDefinition(NodeDefinition defn, int newIndex) {
-		CollectionUtil.moveItem(childDefinitions, defn, newIndex);
+		CollectionUtils.shiftItem(childDefinitions, defn, newIndex);
 	}
 	
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {

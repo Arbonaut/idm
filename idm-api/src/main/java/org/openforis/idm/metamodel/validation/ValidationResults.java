@@ -6,7 +6,7 @@ package org.openforis.idm.metamodel.validation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * The results of validating a single node
@@ -26,11 +26,11 @@ public class ValidationResults {
 	}
 
 	public List<ValidationResult> getErrors() {
-		return CollectionUtil.unmodifiableList(errors);
+		return CollectionUtils.unmodifiableList(errors);
 	}
 
 	public List<ValidationResult> getWarnings() {
-		return CollectionUtil.unmodifiableList(warnings);
+		return CollectionUtils.unmodifiableList(warnings);
 	}
 
 	public List<ValidationResult> getFailed() {

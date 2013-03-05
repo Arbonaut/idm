@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author G. Miceli
@@ -112,7 +112,7 @@ public class CodeList extends VersionableSurveyObject {
 	}
 
 	public List<CodeListLevel> getHierarchy() {
-		return CollectionUtil.unmodifiableList(this.hierarchy);
+		return CollectionUtils.unmodifiableList(this.hierarchy);
 	}
 
 	public void addLevel(CodeListLevel level) {
@@ -165,7 +165,7 @@ public class CodeList extends VersionableSurveyObject {
 	}
 	
 	public List<CodeListItem> getItems() {
-		return CollectionUtil.unmodifiableList(this.items);
+		return CollectionUtils.unmodifiableList(this.items);
 	}
 	
 	public CodeListItem getItem(String code) {
@@ -215,7 +215,7 @@ public class CodeList extends VersionableSurveyObject {
 	}
 	
 	public void moveItem(CodeListItem item, int indexTo) {
-		CollectionUtil.moveItem(items, item, indexTo);
+		CollectionUtils.shiftItem(items, item, indexTo);
 	}
 
 	public CodeScope getCodeScope() {

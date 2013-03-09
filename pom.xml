@@ -19,17 +19,30 @@
 	</properties>
 
 	<distributionManagement>
-    <repository>
-      <id>openforis-releases-repository</id>
-      <name>Open Foris Repository</name>
-      <url>http://www.openforis.org/nexus/content/repositories/releases/</url>
-    </repository>
-    <snapshotRepository>
-     <id>openforis-snapshots-repository</id>
-     <name>Open Foris Snapshots Repository</name>
-      <url>http://www.openforis.org/nexus/content/repositories/snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
+		<repository>
+			<id>openforis-releases-repository</id>
+			<name>Open Foris Repository</name>
+			<url>http://www.openforis.org/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>openforis-snapshots-repository</id>
+			<name>Open Foris Snapshots Repository</name>
+			<url>http://www.openforis.org/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>openforis-releases-repository</id>
+			<name>Open Foris Repository</name>
+			<url>http://www.openforis.org/nexus/content/repositories/releases/</url>
+		</repository>
+		<repository>
+			<id>openforis-snapshots-repository</id>
+			<name>Open Foris Snapshots Repository</name>
+			<url>http://www.openforis.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
   
 	<scm>
 		<connection>scm:git:git@github.com:openforis/idm.git</connection>

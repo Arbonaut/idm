@@ -241,10 +241,12 @@ public class Survey implements Serializable {
 		codeLists.set(index, codeList);
 	}
 
-	protected CodeList getCodeListById(int id) {
-		for (CodeList c : codeLists) {
-			if ( id == c.getId() ) {
-				return c;
+	public CodeList getCodeListById(int id) {
+		if ( codeLists != null) {
+			for (CodeList c : codeLists) {
+				if ( id == c.getId() ) {
+					return c;
+				}
 			}
 		}
 		return null;

@@ -8,5 +8,7 @@ package org.openforis.idm.metamodel;
  *
  */
 public class NodeLabelMap extends TypedLanguageSpecificTextAbstractMap<NodeLabel, NodeLabel.Type> {
+
+	private static final long serialVersionUID = 1L;
 	
 }

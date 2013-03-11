@@ -39,10 +39,14 @@ class CodeListsPR extends IdmlPullReader {
 			int id = getIntegerAttribute(ID, true);
 			String name = getAttribute(NAME, false);
 			String lookupTable = getAttribute(LOOKUP, false);
+			String since = getAttribute(SINCE, false);
+			String deprecated = getAttribute(DEPRECATED, false);
 			Survey survey = getSurvey();
 			list = survey.createCodeList(id);
 			list.setName(name);
 			list.setLookupTable(lookupTable);
+			list.setSinceVersionByName(since);
+			list.setDeprecatedVersionByName(deprecated);
 		}
 
 		private class CodingSchemePR extends IdmlPullReader {
@@ -171,8 +175,12 @@ class CodeListsPR extends IdmlPullReader {
 						throws XmlParseException, XmlPullParserException, IOException {
 					int id = getIntegerAttribute(ID, true);
 					Boolean q = getBooleanAttribute(QUALIFIABLE, false);
+					String since = getAttribute(SINCE, false);
+					String deprecated = getAttribute(DEPRECATED, false);
 					this.item = list.createItem(id);
 					item.setQualifiable(q==null ? false : q);
+					item.setSinceVersionByName(since);
+					item.setDeprecatedVersionByName(deprecated);
 				}
 				
 				private class CodePR extends TextPullReader {

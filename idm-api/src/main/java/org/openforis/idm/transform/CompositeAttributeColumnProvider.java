@@ -63,7 +63,7 @@ public abstract class CompositeAttributeColumnProvider implements ColumnProvider
 		}
 	}
 
-	private String getFieldValue(Field<?> field) {
+	protected String getFieldValue(Field<?> field) {
 		Object value = field.getValue();
 		return value == null ? "" : value.toString();
 	}

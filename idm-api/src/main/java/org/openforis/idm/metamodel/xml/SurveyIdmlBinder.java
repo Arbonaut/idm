@@ -84,15 +84,27 @@ public class SurveyIdmlBinder {
 		ser.marshal(survey, wr, UTF8_ENCODING);
 	}
 		
-	public Survey unmarshal(InputStream is) throws XmlParseException, IOException {
-		SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this);
-		unmarshaller.parse(is, UTF8_ENCODING);
-		return unmarshaller.getSurvey();
+	public Survey unmarshal(InputStream is) throws IdmlParseException {
+		try {
+			SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this);
+			unmarshaller.parse(is, UTF8_ENCODING);
+			return unmarshaller.getSurvey();
+		} catch (XmlParseException e) {
+			throw new IdmlParseException(e);
+		} catch (IOException e) {
+			throw new IdmlParseException(e);
+		}
 	}	
 	
-	public Survey unmarshal(Reader r) throws XmlParseException, IOException {
-		SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this);
-		unmarshaller.parse(r);
-		return unmarshaller.getSurvey();
-	}	
+	public Survey unmarshal(Reader r) throws IdmlParseException {
+		try {
+			SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this);
+			unmarshaller.parse(r);
+			return unmarshaller.getSurvey();
+		} catch (XmlParseException e) {
+			throw new IdmlParseException(e);
+		} catch (IOException e) {
+			throw new IdmlParseException(e);
+		}
+	}		
 }

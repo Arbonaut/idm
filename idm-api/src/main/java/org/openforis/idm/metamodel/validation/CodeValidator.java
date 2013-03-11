@@ -11,6 +11,7 @@ import org.openforis.idm.model.CodeAttribute;
 
 /**
  * @author M. Togna
+ * @author S. Ricci
  * 
  */
 public class CodeValidator implements ValidationRule<CodeAttribute> {
@@ -23,11 +24,20 @@ public class CodeValidator implements ValidationRule<CodeAttribute> {
 		} else {
 			CodeListItem item = attribute.getCodeListItem();
 			if (item == null) {
-				return ValidationResultFlag.ERROR;
+				if (isAllowedUnlisted(attribute)) {
+					return ValidationResultFlag.WARNING;
+				} else {
+					return ValidationResultFlag.ERROR;
+				}
 			} else {
 				return ValidationResultFlag.OK;
 			}
 		}
+	}
+
+	private boolean isAllowedUnlisted(CodeAttribute attribute) {
+		CodeAttributeDefinition definition = attribute.getDefinition();
+		return definition.isAllowUnlisted();
 	}
 
 	private boolean isExternalCodeList(CodeAttribute node) {

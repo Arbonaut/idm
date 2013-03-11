@@ -1,7 +1,6 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.RangeAttributeDefinition;
-import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.Unit;
 
 /**
@@ -27,9 +26,15 @@ public abstract class NumericRangeAttribute<T extends NumericRange<N>,N extends 
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<String> getUnitField() {
+	public Field<String> getUnitNameField() {
 		return (Field<String>) getField(2);		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Field<Integer> getUnitField() {
+		return (Field<Integer>) getField(3);		
+	}
+
 	public N getFrom() {
 		return getFromField().getValue();
 	}
@@ -48,18 +53,48 @@ public abstract class NumericRangeAttribute<T extends NumericRange<N>,N extends 
 		onUpdateValue();
 	}	
 
-	public void setUnitName(String name){
-		getUnitField().setValue(name);
-		onUpdateValue();
+	public String getUnitName(){
+		return getUnitNameField().getValue();
 	}
 	
+	public void setUnitName(String name){
+		getUnitNameField().setValue(name);
+		onUpdateValue();
+	}
+
+	public Integer getUnitId(){
+		return getUnitField().getValue();
+	}
+	
+	public void setUnitId(Integer id){
+		getUnitField().setValue(id);
+		onUpdateValue();
+	}
+
+	public Unit getUnit() {
+		Integer unitId = getUnitId();
+		Unit unit = null;
+		if ( unitId != null ) {
+			unit = getSurvey().getUnit(unitId);
+		} else {
+			String unitName = getUnitName();
+			if ( unitName != null ) {
+				unit = getSurvey().getUnit(unitName);
+			}
+		}
+		return unit;
+	}
+	
+	public void setUnit(Unit unit) {
+		Integer unitId = unit == null ? null : unit.getId();
+		setUnitId(unitId);
+	}
+
 	@Override
 	public T getValue() {
 		N from = getFromField().getValue();
 		N to = getToField().getValue();
-		String unitName = getUnitField().getValue();
-		Survey survey = getSurvey();
-		Unit unit = survey.getUnit(unitName);
+		Unit unit = getUnit();
 		return createRange(from, to, unit);
 	}
 
@@ -71,28 +106,14 @@ public abstract class NumericRangeAttribute<T extends NumericRange<N>,N extends 
 			N from = value.getFrom();
 			N to = value.getTo();
 			Unit unit = value.getUnit();
-			String unitName = unit == null ? null : unit.getName();
+			Integer unitId = unit == null ? null : unit.getId();
 			getFromField().setValue(from);
 			getToField().setValue(to);
-			getUnitField().setValue(unitName);
+			getUnitField().setValue(unitId);
 		}
 		onUpdateValue();
 	}
 	
-	public String getUnitName(){
-		return getUnitField().getValue();
-	}
-	
-	public Unit getUnit() {
-		String unitName = getUnitName();
-		if ( unitName != null ) {
-			Unit unit = getSurvey().getUnit(unitName);
-			return unit;
-		} else {
-			return null;
-		}
-	}
-
 	@Override
 	public boolean isFilled() {
 		return getField(0).hasValue() && getField(1).hasValue(); 

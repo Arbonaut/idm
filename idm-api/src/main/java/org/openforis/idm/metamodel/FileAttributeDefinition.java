@@ -8,11 +8,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.model.File;
 import org.openforis.idm.model.FileAttribute;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Value;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -44,7 +44,7 @@ public class FileAttributeDefinition extends AttributeDefinition {
 	}
 	
 	public List<String> getExtensions() {
-		return CollectionUtil.unmodifiableList(extensions);
+		return CollectionUtils.unmodifiableList(extensions);
 	}
 	
 	public void addExtension(String extension) {

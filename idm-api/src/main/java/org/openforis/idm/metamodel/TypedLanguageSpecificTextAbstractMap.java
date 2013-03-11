@@ -1,5 +1,6 @@
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -17,7 +18,9 @@ import org.apache.commons.lang3.StringUtils;
  * @param <T>
  * @param <T>
  */
-public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLanguageSpecificText<T>, T extends Enum<T>> {
+public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLanguageSpecificText<T>, T extends Enum<T>> implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	private final Class<L> itemClass;
 	private final Class<T> typeClass;
@@ -107,7 +110,10 @@ public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLangua
 		return true;
 	}
 
-	static class MapKey<T> {
+	static class MapKey<T> implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+
 		private String language;
 		private T type;
 		

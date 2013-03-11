@@ -269,7 +269,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 			this.multiple = true;
 		}
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -28,7 +28,7 @@ public class EntityDefinition extends NodeDefinition {
 	}
 
 	public List<NodeDefinition> getChildDefinitions() {
-		return CollectionUtil.unmodifiableList(childDefinitions);
+		return CollectionUtils.unmodifiableList(childDefinitions);
 	}
 	
 	public NodeDefinition getChildDefinition(String name) {
@@ -70,7 +70,7 @@ public class EntityDefinition extends NodeDefinition {
 		return (T) childDefinition;
 	}
 	
-	public int getChildIndex(NodeDefinition defn) {
+	public int getChildDefinitionIndex(NodeDefinition defn) {
 		if ( childDefinitions != null ) {
 			int result = childDefinitions.indexOf(defn);
 			if ( result < 0 ) {
@@ -113,16 +113,18 @@ public class EntityDefinition extends NodeDefinition {
 	}
 
 	public void moveChildDefinition(NodeDefinition defn, int newIndex) {
-		CollectionUtil.moveItem(childDefinitions, defn, newIndex);
+		CollectionUtils.shiftItem(childDefinitions, defn, newIndex);
 	}
 	
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {
 		ArrayList<AttributeDefinition> result = new ArrayList<AttributeDefinition>();
-		for (NodeDefinition nodeDefinition : childDefinitions) {
-			if(nodeDefinition instanceof KeyAttributeDefinition) {
-				KeyAttributeDefinition keyAttributeDefinition = (KeyAttributeDefinition) nodeDefinition;
-				if(keyAttributeDefinition.isKey()) {
-					result.add((AttributeDefinition) keyAttributeDefinition);
+		if ( childDefinitions != null ) {
+			for (NodeDefinition nodeDefinition : childDefinitions) {
+				if(nodeDefinition instanceof KeyAttributeDefinition) {
+					KeyAttributeDefinition keyAttributeDefinition = (KeyAttributeDefinition) nodeDefinition;
+					if(keyAttributeDefinition.isKey()) {
+						result.add((AttributeDefinition) keyAttributeDefinition);
+					}
 				}
 			}
 		}

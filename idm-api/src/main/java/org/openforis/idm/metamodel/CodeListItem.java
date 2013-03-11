@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author G. Miceli
@@ -126,7 +126,7 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	}
 
 	public List<CodeListItem> getChildItems() {
-		return CollectionUtil.unmodifiableList(childItems);
+		return CollectionUtils.unmodifiableList(childItems);
 	}
 	
 	public CodeListItem getChildItem(String code) {
@@ -142,17 +142,35 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	
 	public CodeListItem findChildItem(String code) {
 		if ( childItems != null && code != null ) {
-			String adaptedCode = Pattern.quote(code);
-			Pattern pattern = Pattern.compile("^" + adaptedCode + "$", Pattern.CASE_INSENSITIVE);
+			Pattern pattern = createMatchingPattern(code);
 			for (CodeListItem item : childItems) {
-				String itemCode = item.getCode();
-				Matcher matcher = pattern.matcher(itemCode);
-				if(matcher.find()) {
+				if ( item.matchCode(pattern) ) {
 					return item;
 				}
 			}
 		}
 		return null;
+	}
+	
+	protected Pattern createMatchingPattern(String code) {
+		String adaptedCode = Pattern.quote(code);
+		Pattern pattern = Pattern.compile("^" + adaptedCode + "$", Pattern.CASE_INSENSITIVE);
+		return pattern;
+	}
+	
+	public boolean matchCode(String code) {
+		Pattern pattern = createMatchingPattern(code);
+		return matchCode(pattern);
+	}
+
+	protected boolean matchCode(Pattern pattern) {
+		String itemCode = getCode();
+		Matcher matcher = pattern.matcher(itemCode);
+		if(matcher.find()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void addChildItem(CodeListItem item) {
@@ -178,7 +196,7 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	}
 
 	public void moveChildItem(CodeListItem item, int indexTo) {
-		CollectionUtil.moveItem(childItems, item, indexTo);
+		CollectionUtils.shiftItem(childItems, item, indexTo);
 	}
 
 	protected int calculateLastUsedItemId() {
@@ -216,6 +234,15 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 			}
 		}
 		return false;
+	}
+	
+	public void removeVersioningRecursive(ModelVersion version) {
+		removeVersioning(version);
+		if ( childItems != null ) {
+			for (CodeListItem child : childItems ) {
+				child.removeVersioningRecursive(version);
+			}
+		}
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public class Unit extends IdentifiableSurveyObject {
 
 	private String name;
 	private String dimension;
-	private Float conversionFactor;
+	private Double conversionFactor;
 	private LanguageSpecificTextMap labels;
 	private LanguageSpecificTextMap abbreviations;
 
@@ -42,11 +42,11 @@ public class Unit extends IdentifiableSurveyObject {
 		this.dimension = dimension;
 	}
 	
-	public Number getConversionFactor() {
+	public Double getConversionFactor() {
 		return this.conversionFactor;
 	}
 
-	public void setConversionFactor(Float conversionFactor) {
+	public void setConversionFactor(Double conversionFactor) {
 		this.conversionFactor = conversionFactor;
 	}
 	

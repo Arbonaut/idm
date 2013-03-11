@@ -72,7 +72,8 @@ public class RangeAttributeDefinition extends NumericAttributeDefinition {
 		default:
 			throw new UnsupportedOperationException("Unknown type");
 		}
-		result.add(new FieldDefinition<String>("unit", "u", "unit", String.class, this));
+		result.add(new FieldDefinition<String>(UNIT_NAME_FIELD, "u_name", "unit", String.class, this));
+		result.add(new FieldDefinition<Integer>(UNIT_FIELD, "u", "unit_id", Integer.class, this));
 		return Collections.unmodifiableList(result);
 	}
 	

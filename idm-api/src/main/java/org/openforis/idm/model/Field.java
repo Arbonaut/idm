@@ -23,14 +23,15 @@ public final class Field<T> extends Node<FieldDefinition<T>> implements Serializ
 	Attribute<?,?> attribute;
 	State state;
 	
-	public Field(Class<T> valueType, Attribute<?,?> attribute) {
+	public Field(FieldDefinition<T> definition, Class<T> valueType, Attribute<?,?> attribute) {
+		this.definition = definition;
 		this.valueType = valueType;
 		this.attribute = attribute;
 		state = new State();
 	}
 	
-	public Field(Class<T> valueType) {
-		this(valueType, null);
+	public Field(FieldDefinition<T> definition, Class<T> valueType) {
+		this(definition, valueType, null);
 	}
 	
 	public T getValue() {

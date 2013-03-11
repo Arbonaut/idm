@@ -46,7 +46,11 @@ public class ExternalCodeValidator implements ValidationRule<CodeAttribute> {
 		String listName = getListName(codeAttribute);
 		String code = externalCodeListProvider.getCode(listName, colName, (Object[]) columns.toArray(new String[] {}));
 		if (code == null || !code.equals(codeAttribute.getValue().getCode())) {
-			return ValidationResultFlag.ERROR;
+			if ( isAllowedUnlisted(codeAttribute) ) {
+				return ValidationResultFlag.WARNING;
+			} else {
+				return ValidationResultFlag.ERROR;
+			}
 		} else {
 			return ValidationResultFlag.OK;
 		}
@@ -95,6 +99,11 @@ public class ExternalCodeValidator implements ValidationRule<CodeAttribute> {
 		List<CodeListLevel> hierarchy = codeList.getHierarchy();
 		CodeListLevel codeListLevel = hierarchy.get(level);
 		return codeListLevel.getName();
+	}
+	
+	private boolean isAllowedUnlisted(CodeAttribute attribute) {
+		CodeAttributeDefinition definition = attribute.getDefinition();
+		return definition.isAllowUnlisted();
 	}
 
 }

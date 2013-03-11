@@ -9,9 +9,8 @@
 	<modules>
 		<module>idm-api</module>
 		<module>idm-api-protostuff</module>
-    	<module>idm-transform</module>
-<!--     	<module>idm-db</module> -->
-    	<module>idm-test</module>
+  	<module>idm-transform</module>
+  	<module>idm-test</module>
 	</modules>
 
 	<properties>
@@ -21,20 +20,38 @@
 
 	<distributionManagement>
 		<repository>
-			<id>releases</id>
-			<name>Repository with internal releases</name>
-			<url>${idm-internal-repository.url}</url>
+			<id>openforis-releases-repository</id>
+			<name>Open Foris Repository</name>
+			<url>http://www.openforis.org/nexus/content/repositories/releases/</url>
 		</repository>
+		<snapshotRepository>
+			<id>openforis-snapshots-repository</id>
+			<name>Open Foris Snapshots Repository</name>
+			<url>http://www.openforis.org/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
 	</distributionManagement>
 
+	<repositories>
+		<repository>
+			<id>openforis-releases-repository</id>
+			<name>Open Foris Repository</name>
+			<url>http://www.openforis.org/nexus/content/repositories/releases/</url>
+		</repository>
+		<repository>
+			<id>openforis-snapshots-repository</id>
+			<name>Open Foris Snapshots Repository</name>
+			<url>http://www.openforis.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
+  
 	<scm>
 		<connection>scm:git:git@github.com:openforis/idm.git</connection>
 		<url>scm:git:git@github.com:openforis/idm.git</url>
 		<developerConnection>scm:git:git@github.com:openforis/idm.git</developerConnection>
 	  <tag>HEAD</tag>
-  	</scm>
+	</scm>
 
-    <build>
+  <build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -60,7 +77,7 @@
 						<file>
 							<name>.settings/org.eclipse.core.resources.prefs</name>
 							<content>
-				                <![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]>
+	                <![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]>
 							</content>
 						</file>
 					</additionalConfig>
@@ -69,7 +86,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>2.3</version>
+				<version>2.4</version>
 			</plugin>
 		</plugins>
 	</build>

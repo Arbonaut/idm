@@ -3,8 +3,8 @@ package org.openforis.idm.transform;
 import java.util.Arrays;
 import java.util.List;
 
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -19,7 +19,7 @@ public class Cell {
 
 	public Cell(Column column, List<Node<?>> nodes) {
 		this.column = column;
-		this.nodes = CollectionUtil.unmodifiableList(nodes);
+		this.nodes = CollectionUtils.unmodifiableList(nodes);
 	}
 
 	public Column getColumn() {

@@ -12,13 +12,8 @@ public class XmlParseException extends Exception {
 	public XmlParseException(XmlPullParser parser, String message, Throwable cause) {
 		super(message+" "+parser.getPositionDescription(), cause);
 	}
-
-	public XmlParseException(XmlPullParser parser) {
-		this(parser, "unexpected");
-	}
-
+	
 	public XmlParseException(XmlPullParser parser, String msg) {
-		super(msg+" "+parser.getPositionDescription());
+		super(msg+" "+parser == null ? null : parser.getPositionDescription());
 	}
-
 }

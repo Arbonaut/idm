@@ -179,6 +179,10 @@ public class CodeList extends VersionableSurveyObject {
 		return null;
 	}
 	
+	public void removeAllItems() {
+		items = null;
+	}
+	
 	public CodeListItem findItem(String code) {
 		if ( items != null && code != null ) {
 			String adaptedCode = Pattern.quote(code);

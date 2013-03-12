@@ -130,6 +130,15 @@ public class CodeList extends VersionableSurveyObject {
 			}
 		}
 	}
+	
+	/**
+	 * Removes all levels in hierarchy and all the child items
+	 * 
+	 */
+	public void removeAllLevels() {
+		removeAllItems();
+		hierarchy = null;
+	}
 
 	public boolean hasItemsInLevel(int levelIndex) {
 		List<CodeListItem> itemsInLevel = getItemsInLevel(levelIndex);
@@ -179,6 +188,11 @@ public class CodeList extends VersionableSurveyObject {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * Removes all child items
+	 * 
+	 */
 	public void removeAllItems() {
 		items = null;
 	}
@@ -342,4 +356,5 @@ public class CodeList extends VersionableSurveyObject {
 			return getItemsInternal(descendants, level-1);
 		}
 	}
+
 }

@@ -7,7 +7,7 @@
   <xs:annotation>
     <xs:documentation xml:lang="en">
       Inventory Data Modeling Language 3.1
-      October 2012
+      March 2013
 
         Inventory Data Modeling Language (IDML) is an XML implementation of the Inventory Data Metamodel (IDMM), providing a formal language for defining and describing inventory data models.  It is an abstraction which enables the creation of software that is flexible and reuseable in a wider range of scenarios.  The IDMM also allows tools to interoperate on the same field data, regardless of platform or implementation.  For example, mobile or personal data recorder (PDR) software, web or desktop-based data management software and data modeling tools that are designed to work with the IDMM would all be able work together and exchange data, regardless of vendor or inventory-specific details or functionality.
 
@@ -23,7 +23,8 @@
         Changes from 3.0:
          * Code list hierarchy levels no longer contain id attribute; their natural order
           determines hierarchy rank
-         * Languages in Survey 
+         * Languages in Survey
+         * Added oftype attributes 
     </xs:documentation>
   </xs:annotation>
 

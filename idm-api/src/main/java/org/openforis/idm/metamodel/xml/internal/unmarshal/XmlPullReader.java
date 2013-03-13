@@ -292,14 +292,26 @@ public abstract class XmlPullReader {
 		return val == null ? null : Float.valueOf(val);
 	}
 
-	// TODO namespace in kXML must be null for this to work, even though the attributes 
-	// are in IDML namespace.  how does this behave with other xmlpull implementations?
 	protected String getAttribute(String attr, boolean required) throws XmlParseException {
 		XmlPullParser parser = getParser();
-		String value = parser.getAttributeValue(null, attr);
+		String value = getAttributeValue(parser, namespace, attr);
 		if ( required && (value == null || value.isEmpty())  ) {
 			throw new XmlParseException(parser, "missing required attribute "+attr);
 		}
 		return value;
+	}
+	
+	protected static String getAttributeValue(XmlPullParser parser, String namespace, String attr) {
+		String val = parser.getAttributeValue(namespace, attr);
+		if ( val == null && namespace!=null ) {
+			// If attribute is not qualified it will be returned as being in the default 
+			// namespace.  Instead, as per W3c, it should be considered as having the same 
+			// namespace as its parent element
+			String elementNamespace = parser.getNamespace();
+			if ( namespace.equals(elementNamespace) ) {
+				val = parser.getAttributeValue(XmlPullParser.NO_NAMESPACE, attr);
+			}
+		}
+		return val;
 	}
 }

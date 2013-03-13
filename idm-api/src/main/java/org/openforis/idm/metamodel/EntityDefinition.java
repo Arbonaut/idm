@@ -105,6 +105,7 @@ public class EntityDefinition extends NodeDefinition {
 	
 	public void removeChildDefinition(NodeDefinition defn) {
 		childDefinitions.remove(defn);
+		defn.detach();
 	}
 	
 	public void moveChildDefinition(int id, int index) {
@@ -160,6 +161,14 @@ public class EntityDefinition extends NodeDefinition {
 		return new Entity(this);
 	}
 	
+	@Override
+	public void detach() {
+		for (NodeDefinition child : childDefinitions) {
+			child.detach();
+		}
+		super.detach();
+	}
+
 	/**
 	 *  
 	 * @return true if entities with only keys of type internal code (not lookup)
@@ -208,11 +217,4 @@ public class EntityDefinition extends NodeDefinition {
 		return true;
 	}
 	
-	@Override
-	public void detach() {
-		for (NodeDefinition child : childDefinitions) {
-			child.detach();
-		}
-		super.detach();
-	}
 }

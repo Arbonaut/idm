@@ -69,6 +69,15 @@ public abstract class NodeDefinition extends VersionableSurveyObject implements 
 		Path p = Path.parsePath(path);
 		return p.evaluate(this);
 	}
+	
+	@Override
+	void detach() {
+		Schema schema = getSchema();
+		if ( schema != null ) {
+			schema.detach(this);
+		}
+		super.detach();
+	}
 
 	public String getName() {
 		return this.name;

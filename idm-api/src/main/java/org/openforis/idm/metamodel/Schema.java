@@ -65,6 +65,7 @@ public class Schema extends SurveyObject {
 		}
 
 		rootEntityDefinitions.add(defn);
+		index(defn);
 	}
 	
 	public void removeRootEntityDefinition(String name) {
@@ -74,6 +75,7 @@ public class Schema extends SurveyObject {
 
 	protected void removeRootEntityDefinition(EntityDefinition defn) {
 		rootEntityDefinitions.remove(defn);
+		detach(defn);
 	}
 	
 	public EntityDefinition getRootEntityDefinition(String name) {
@@ -278,6 +280,5 @@ public class Schema extends SurveyObject {
 	public void detach(NodeDefinition defn) {
 		int id = defn.getId();
 		definitionsById.remove(id);	
-		defn.detach();
 	}
 }

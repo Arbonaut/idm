@@ -29,6 +29,7 @@ import org.openforis.idm.model.RealAttribute;
 import org.openforis.idm.model.RealRange;
 import org.openforis.idm.model.RealRangeAttribute;
 import org.openforis.idm.model.RealValue;
+import org.openforis.idm.model.TaxonOccurrence;
 import org.openforis.idm.model.TextValue;
 import org.openforis.idm.model.Time;
 
@@ -91,6 +92,9 @@ public class ModelNodePointer extends DynamicPointer {
 		} else if (value instanceof Code) {
 			Code code = (Code) value;
 			return code.getCode();
+		} else if (value instanceof TaxonOccurrence) {
+			TaxonOccurrence taxonOcc = (TaxonOccurrence) value;
+			return taxonOcc.getCode();
 		} else {
 			throw new UnsupportedOperationException("Unsupported value type of "+attribute.getClass());
 		}

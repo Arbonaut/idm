@@ -3,7 +3,7 @@ package org.openforis.idm.model.species;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author G. Miceli
@@ -69,7 +69,7 @@ public class TaxonVernacularName {
 	}
 
 	public List<String> getQualifiers() {
-		return CollectionUtil.unmodifiableList(qualifiers);
+		return CollectionUtils.unmodifiableList(qualifiers);
 	}
 
 	public void setQualifiers(List<String> qualifiers) {

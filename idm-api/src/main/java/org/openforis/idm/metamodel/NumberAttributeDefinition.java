@@ -24,6 +24,8 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 
 	private static final long serialVersionUID = 1L;
 	
+	public static final String VALUE_FIELD = "value";
+
 	private boolean key;
 
 	NumberAttributeDefinition(Survey survey, int id) {
@@ -74,15 +76,16 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 		Type type = getType();
 		switch (type) {
 		case INTEGER:
-			result.add(new FieldDefinition<Integer>("value", "v", null, Integer.class, this));
+			result.add(new FieldDefinition<Integer>(VALUE_FIELD, "v", null, Integer.class, this));
 			break;
 		case REAL:
-			result.add(new FieldDefinition<Double>("value", "v", null, Double.class, this));
+			result.add(new FieldDefinition<Double>(VALUE_FIELD, "v", null, Double.class, this));
 			break;
 		default:
 			throw new UnsupportedOperationException("Unknown type");
 		}
-		result.add(new FieldDefinition<String>("unit", "u", "unit", String.class, this));
+		result.add(new FieldDefinition<String>(UNIT_NAME_FIELD, "u_name", UNIT_NAME_FIELD, String.class, this));
+		result.add(new FieldDefinition<Integer>(UNIT_FIELD, "u", "unit_id", Integer.class, this));
 		return Collections.unmodifiableList(result);
 	}
 

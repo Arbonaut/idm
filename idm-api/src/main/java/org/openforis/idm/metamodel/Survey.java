@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.model.NodePathPointer;
-import org.openforis.idm.util.CollectionUtil;
 
 
 /**
@@ -157,7 +157,7 @@ public class Survey implements Serializable {
 	}
 
 	public List<ModelVersion> getVersions() {
-		return CollectionUtil.unmodifiableList(this.modelVersions);
+		return CollectionUtils.unmodifiableList(this.modelVersions);
 	}
 	
 	public void addVersion(ModelVersion version) {
@@ -188,7 +188,7 @@ public class Survey implements Serializable {
 	}
 
 	public void moveVersion(ModelVersion version, int index) {
-		CollectionUtil.moveItem(modelVersions, version, index);
+		CollectionUtils.shiftItem(modelVersions, version, index);
 	}
 	
 	public void updateVersion(ModelVersion version) {
@@ -207,7 +207,7 @@ public class Survey implements Serializable {
 	}
 
 	public List<CodeList> getCodeLists() {
-		return CollectionUtil.unmodifiableList(this.codeLists);
+		return CollectionUtils.unmodifiableList(this.codeLists);
 	}
 	
 	public void addCodeList(CodeList codeList) {
@@ -232,7 +232,7 @@ public class Survey implements Serializable {
 	}
 	
 	public void moveCodeList(CodeList codeList, int index) {
-		CollectionUtil.moveItem(codeLists, codeList, index);
+		CollectionUtils.shiftItem(codeLists, codeList, index);
 	}
 	
 	public void updateCodeList(CodeList codeList) {
@@ -241,17 +241,19 @@ public class Survey implements Serializable {
 		codeLists.set(index, codeList);
 	}
 
-	protected CodeList getCodeListById(int id) {
-		for (CodeList c : codeLists) {
-			if ( id == c.getId() ) {
-				return c;
+	public CodeList getCodeListById(int id) {
+		if ( codeLists != null) {
+			for (CodeList c : codeLists) {
+				if ( id == c.getId() ) {
+					return c;
+				}
 			}
 		}
 		return null;
 	}
 
 	public List<Unit> getUnits() {
-		return CollectionUtil.unmodifiableList(this.units);
+		return CollectionUtils.unmodifiableList(this.units);
 	}
 	
 	public void addUnit(Unit unit) {
@@ -285,7 +287,7 @@ public class Survey implements Serializable {
 	}
 
 	public void moveUnit(Unit unit, int index) {
-		CollectionUtil.moveItem(units, unit, index);
+		CollectionUtils.shiftItem(units, unit, index);
 	}
 	
 	public void updateUnit(Unit unit) {
@@ -304,7 +306,7 @@ public class Survey implements Serializable {
 	}
 
 	public List<SpatialReferenceSystem> getSpatialReferenceSystems() {
-		return CollectionUtil.unmodifiableList(this.spatialReferenceSystems);
+		return CollectionUtils.unmodifiableList(this.spatialReferenceSystems);
 	}
 	
 	public SpatialReferenceSystem getSpatialReferenceSystem(String id) {
@@ -330,7 +332,7 @@ public class Survey implements Serializable {
 	}
 	
 	public void moveSpatialReferenceSystem(SpatialReferenceSystem srs, int index) {
-		CollectionUtil.moveItem(spatialReferenceSystems, srs, index);
+		CollectionUtils.shiftItem(spatialReferenceSystems, srs, index);
 	}
 	
 	public void updateSpatialReferenceSystem(SpatialReferenceSystem srs) {
@@ -436,7 +438,7 @@ public class Survey implements Serializable {
 	}
 	
 	public List<String> getLanguages() {
-		return CollectionUtil.unmodifiableList(languages);
+		return CollectionUtils.unmodifiableList(languages);
 	}
 	
 	public void addLanguage(String lang) {
@@ -454,7 +456,7 @@ public class Survey implements Serializable {
 	}
 	
 	public void moveLanguage(String language, int index) {
-		CollectionUtil.moveItem(languages, language, index);
+		CollectionUtils.shiftItem(languages, language, index);
 	}
 
 	public SurveyContext getContext() {

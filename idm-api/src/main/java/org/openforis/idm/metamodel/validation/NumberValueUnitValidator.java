@@ -19,7 +19,12 @@ public class NumberValueUnitValidator implements ValidationRule<NumberAttribute<
 		NumberAttributeDefinition defn = attribute.getDefinition();
 		List<Unit> units = defn.getUnits();
 		if ( units.size() > 1  && unit == null ) {
-			return ValidationResultFlag.ERROR;
+			Number number = attribute.getNumber();
+			if ( number != null && number.doubleValue() != 0) {
+				return ValidationResultFlag.ERROR;
+			} else {
+				return ValidationResultFlag.OK;
+			}
 		} else {
 			return ValidationResultFlag.OK;
 		}

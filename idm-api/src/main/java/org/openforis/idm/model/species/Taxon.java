@@ -26,6 +26,19 @@ public class Taxon {
 			return null;
 		}
 		
+		public TaxonRank getParent() {
+			switch (this) {
+			case SUBSPECIES:
+				return SPECIES;
+			case SPECIES:
+				return GENUS;
+			case GENUS:
+				return FAMILY;
+			default:
+				return null;
+			}
+		}
+		
 		public String getName() {
 			return name;
 		}

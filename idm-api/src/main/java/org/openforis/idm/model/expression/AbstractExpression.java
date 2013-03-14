@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 import org.apache.commons.jxpath.Variables;
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
@@ -18,7 +19,6 @@ import org.openforis.idm.model.expression.internal.ModelJXPathCompiledExpression
 import org.openforis.idm.model.expression.internal.ModelJXPathContext;
 import org.openforis.idm.model.expression.internal.ModelLocationPath;
 import org.openforis.idm.model.expression.internal.ModelNodePointer;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author M. Togna
@@ -44,7 +44,7 @@ abstract class AbstractExpression {
 		for (ModelLocationPath path : paths) {
 			list.add(path.toString());
 		}
-		return CollectionUtil.unmodifiableList(list);
+		return CollectionUtils.unmodifiableList(list);
 	}
 
 	protected Object evaluateSingle(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {

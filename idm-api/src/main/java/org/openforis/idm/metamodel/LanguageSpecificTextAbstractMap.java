@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author S. Ricci
@@ -48,7 +48,7 @@ public abstract class LanguageSpecificTextAbstractMap<T extends LanguageSpecific
 	
 	public List<T> values() {
 		Collection<T> result = map.values();
-		return CollectionUtil.unmodifiableList(new ArrayList<T>(result));
+		return CollectionUtils.unmodifiableList(new ArrayList<T>(result));
 	}
 	
 	public String getText(String language) {

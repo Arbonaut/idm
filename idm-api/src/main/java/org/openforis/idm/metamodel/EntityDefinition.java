@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -28,7 +28,7 @@ public class EntityDefinition extends NodeDefinition {
 	}
 
 	public List<NodeDefinition> getChildDefinitions() {
-		return CollectionUtil.unmodifiableList(childDefinitions);
+		return CollectionUtils.unmodifiableList(childDefinitions);
 	}
 	
 	public NodeDefinition getChildDefinition(String name) {
@@ -105,6 +105,7 @@ public class EntityDefinition extends NodeDefinition {
 	
 	public void removeChildDefinition(NodeDefinition defn) {
 		childDefinitions.remove(defn);
+		defn.detach();
 	}
 	
 	public void moveChildDefinition(int id, int index) {
@@ -113,7 +114,7 @@ public class EntityDefinition extends NodeDefinition {
 	}
 
 	public void moveChildDefinition(NodeDefinition defn, int newIndex) {
-		CollectionUtil.moveItem(childDefinitions, defn, newIndex);
+		CollectionUtils.shiftItem(childDefinitions, defn, newIndex);
 	}
 	
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {
@@ -160,6 +161,14 @@ public class EntityDefinition extends NodeDefinition {
 		return new Entity(this);
 	}
 	
+	@Override
+	public void detach() {
+		for (NodeDefinition child : childDefinitions) {
+			child.detach();
+		}
+		super.detach();
+	}
+
 	/**
 	 *  
 	 * @return true if entities with only keys of type internal code (not lookup)
@@ -208,11 +217,4 @@ public class EntityDefinition extends NodeDefinition {
 		return true;
 	}
 	
-	@Override
-	public void detach() {
-		for (NodeDefinition child : childDefinitions) {
-			child.detach();
-		}
-		super.detach();
-	}
 }

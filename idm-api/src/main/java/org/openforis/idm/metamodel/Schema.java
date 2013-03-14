@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.path.InvalidPathException;
 import org.openforis.idm.path.Path;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -39,7 +39,7 @@ public class Schema extends SurveyObject {
 	}
 
 	public List<EntityDefinition> getRootEntityDefinitions() {
-		return CollectionUtil.unmodifiableList(rootEntityDefinitions);
+		return CollectionUtils.unmodifiableList(rootEntityDefinitions);
 	}
 
 	public void addRootEntityDefinition(EntityDefinition defn) {
@@ -65,6 +65,7 @@ public class Schema extends SurveyObject {
 		}
 
 		rootEntityDefinitions.add(defn);
+		index(defn);
 	}
 	
 	public void removeRootEntityDefinition(String name) {
@@ -74,6 +75,7 @@ public class Schema extends SurveyObject {
 
 	protected void removeRootEntityDefinition(EntityDefinition defn) {
 		rootEntityDefinitions.remove(defn);
+		detach(defn);
 	}
 	
 	public EntityDefinition getRootEntityDefinition(String name) {
@@ -111,13 +113,11 @@ public class Schema extends SurveyObject {
 	}
 	
 	public void moveRootEntityDefinition(EntityDefinition rootEntity, int newIndex) {
-		CollectionUtil.moveItem(rootEntityDefinitions, rootEntity, newIndex);
+		CollectionUtils.shiftItem(rootEntityDefinitions, rootEntity, newIndex);
 	}
 	
 	protected void removeVersioning(final ModelVersion version) {
 		List<EntityDefinition> rootDefns = getRootEntityDefinitions();
-		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
-		stack.addAll(rootDefns);
 		for (EntityDefinition entityDefinition : rootDefns) {
 			entityDefinition.removeVersioning(version);
 			entityDefinition.traverse(new NodeDefinitionVisitor() {
@@ -127,6 +127,25 @@ public class Schema extends SurveyObject {
 				}
 			});
 		}
+	}
+	
+	public List<TaxonAttributeDefinition> getTaxonAttributeDefinitions(String taxonomyName) {
+		List<TaxonAttributeDefinition> result = new ArrayList<TaxonAttributeDefinition>();
+		List<EntityDefinition> rootDefns = getRootEntityDefinitions();
+		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
+		stack.addAll(rootDefns);
+		while ( ! stack.isEmpty() ) {
+			NodeDefinition node = stack.pop();
+			if ( node instanceof TaxonAttributeDefinition ) {
+				TaxonAttributeDefinition taxonAttr = (TaxonAttributeDefinition) node;
+				if ( taxonAttr.getTaxonomy().equals(taxonomyName) ) {
+					result.add(taxonAttr);
+				}
+			} else if ( node instanceof EntityDefinition ) {
+				stack.addAll(((EntityDefinition) node).getChildDefinitions());
+			}
+		}
+		return result;
 	}
 	
 	@Override
@@ -261,6 +280,5 @@ public class Schema extends SurveyObject {
 	public void detach(NodeDefinition defn) {
 		int id = defn.getId();
 		definitionsById.remove(id);	
-		defn.detach();
 	}
 }

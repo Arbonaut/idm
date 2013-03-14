@@ -39,7 +39,7 @@ public class CollectionUtil {
 		}
 	}
 	
-	public static <T> void moveItem(List<T> list, T item, int toIndex) {
+	public static <T> void shiftItem(List<T> list, T item, int toIndex) {
 		int oldIndex = list.indexOf(item);
 		if ( oldIndex < 0 ) {
 			throw new IllegalArgumentException("Item not found");

@@ -174,22 +174,30 @@ public class EntityDefinition extends NodeDefinition {
 	 * @return true if entities with only keys of type internal code (not lookup)
 	 */
 	public boolean isEnumerable() {
-		List<AttributeDefinition> keyDefs = getKeyAttributeDefinitions();
-		if ( keyDefs.isEmpty() ) {
-			return false;
-		} else {
-			for (AttributeDefinition keyDef : keyDefs) {
-				if ( keyDef instanceof CodeAttributeDefinition ) {
-					CodeList list = ((CodeAttributeDefinition) keyDef).getList();
-					if ( list.getLookupTable() != null ) {
-						return false;
+		CodeAttributeDefinition enumeratingKeyCodeAttribute = getEnumeratingKeyCodeAttribute();
+		return enumeratingKeyCodeAttribute != null;
+	}
+	
+	public CodeAttributeDefinition getEnumeratingKeyCodeAttribute() {
+		return getEnumeratingKeyCodeAttribute(null);
+	}
+	
+	public CodeAttributeDefinition getEnumeratingKeyCodeAttribute(ModelVersion version) {
+		List<AttributeDefinition> keyDefns = getKeyAttributeDefinitions();
+		for (AttributeDefinition keyDefn: keyDefns) {
+			if (version == null || version.isApplicable(keyDefn) ) {
+				if ( keyDefn instanceof CodeAttributeDefinition ) {
+					CodeAttributeDefinition codeDefn = (CodeAttributeDefinition) keyDefn;
+					CodeList list = codeDefn.getList();
+					if ( list.getLookupTable() == null ) {
+						return codeDefn;
 					}
 				} else {
-					return false;
+					return null;
 				}
 			}
-			return true;
 		}
+		return null;
 	}
 
 	@Override

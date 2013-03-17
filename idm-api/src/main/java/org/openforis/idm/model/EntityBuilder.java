@@ -1,5 +1,6 @@
 package org.openforis.idm.model;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import org.openforis.idm.metamodel.AttributeDefinition;
@@ -163,7 +164,11 @@ public class EntityBuilder {
 		return addValueInternal(parentEntity, name, value, null, TimeAttribute.class, TimeAttributeDefinition.class);
 	}
 	
-	private static <T extends Attribute<D, V>, D extends AttributeDefinition, V extends Value> T addValueInternal(Entity entity, String name, V value, Integer idx, Class<T> type, Class<D> definitionType) {
+	private static <T extends Attribute<D, V>, 
+				    D extends AttributeDefinition, 
+				    V extends Value> 
+			T addValueInternal(Entity entity, String name, V value, Integer idx,
+					           Class<T> type, Class<D> definitionType) {
 		T attr = createNode(entity, name, type, definitionType);
 		if ( idx != null ) {
 			entity.add(attr, idx);
@@ -178,7 +183,8 @@ public class EntityBuilder {
 		try {
 			EntityDefinition entityDefn = entity.getDefinition();
 			NodeDefinition definition = entityDefn.getChildDefinition(name, definitionType);
-			return type.getConstructor(definitionType).newInstance(definition);
+			Constructor<T> constructor = type.getConstructor(definitionType);
+			return constructor.newInstance(definition);
 		} catch (SecurityException e) {
 			throw new RuntimeException(e);
 		} catch (InstantiationException e) {

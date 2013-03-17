@@ -7,13 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Transient;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Date;
 import org.openforis.idm.model.DateAttribute;
@@ -25,20 +18,22 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
+
 public class DateAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	@Transient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 			new FieldDefinition<Integer>("year", "y", "y", Integer.class, this),
 			new FieldDefinition<Integer>("month", "m", "m", Integer.class, this),
 			new FieldDefinition<Integer>("day", "d", "d", Integer.class, this)
 	};
 	
+	
+	DateAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	@Override
 	public Node<?> createNode() {
 		return new DateAttribute(this);

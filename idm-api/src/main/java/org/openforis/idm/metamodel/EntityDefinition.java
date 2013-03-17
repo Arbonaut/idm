@@ -8,12 +8,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
+import org.apache.commons.lang3.StringUtils;
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.util.CollectionUtil;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementUnion;
-import org.simpleframework.xml.Order;
 
 /**
  * @author G. Miceli
@@ -21,48 +19,25 @@ import org.simpleframework.xml.Order;
  * @author K. Waga
  * @author S. Ricci
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes={"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName"}, elements = {"labels", "prompts", "descriptions", "childDefinitions" })
+
 public class EntityDefinition extends NodeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
-	/*@XmlElements({
-		@XmlElement(name = "entity",     type = EntityDefinition.class), 
-		@XmlElement(name = "number",     type = NumberAttributeDefinition.class),
-		@XmlElement(name = "range",      type = RangeAttributeDefinition.class), 
-		@XmlElement(name = "boolean",    type = BooleanAttributeDefinition.class),
-		@XmlElement(name = "date",       type = DateAttributeDefinition.class), 
-		@XmlElement(name = "time",       type = TimeAttributeDefinition.class),
-		@XmlElement(name = "file",       type = FileAttributeDefinition.class), 
-		@XmlElement(name = "taxon",      type = TaxonAttributeDefinition.class),
-		@XmlElement(name = "coordinate", type = CoordinateAttributeDefinition.class), 
-		@XmlElement(name = "code",       type = CodeAttributeDefinition.class),
-		@XmlElement(name = "text",       type = TextAttributeDefinition.class) })
-	private List<NodeDefinition> childDefinitions;*/
-	@ElementUnion({
-		@Element(name = "entity",     type = EntityDefinition.class), 
-		@Element(name = "number",     type = NumberAttributeDefinition.class),
-		@Element(name = "range",      type = RangeAttributeDefinition.class), 
-		@Element(name = "boolean",    type = BooleanAttributeDefinition.class),
-		@Element(name = "date",       type = DateAttributeDefinition.class), 
-		@Element(name = "time",       type = TimeAttributeDefinition.class),
-		@Element(name = "file",       type = FileAttributeDefinition.class), 
-		@Element(name = "taxon",      type = TaxonAttributeDefinition.class),
-		@Element(name = "coordinate", type = CoordinateAttributeDefinition.class), 
-		@Element(name = "code",       type = CodeAttributeDefinition.class),
-		@Element(name = "text",       type = TextAttributeDefinition.class)
-	})
 	private List<NodeDefinition> childDefinitions;
 
+	EntityDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	public List<NodeDefinition> getChildDefinitions() {
-		return CollectionUtil.unmodifiableList(childDefinitions);
+		return CollectionUtils.unmodifiableList(childDefinitions);
 	}
 	
 	public NodeDefinition getChildDefinition(String name) {
 		if (childDefinitions != null) {
 			for (NodeDefinition childDefinition : childDefinitions) {
-				if (childDefinition.getName().equals(name)) {
+				if ( StringUtils.equals(childDefinition.getName(), name) ) {
 					return childDefinition;
 				}
 			}
@@ -70,36 +45,90 @@ public class EntityDefinition extends NodeDefinition {
 		throw new IllegalArgumentException("Child definition " + name + " not found in " + getPath());
 	}
 	
+	public NodeDefinition getChildDefinition(int id) {
+		if (childDefinitions != null) {
+			for (NodeDefinition childDefinition : childDefinitions) {
+				if (childDefinition.getId() == id) {
+					return childDefinition;
+				}
+			}
+		}
+		throw new IllegalArgumentException("Child definition with id " + id + 
+				" not found in " + getPath());
+	}
+
 	/**
 	 * Get child definition and cast to requested type
 	 * 
-	 * @throws IllegalArgumentException
-	 *             if not defined in model or if not assignable from type defined in definitionClass
+	 * @throws IllegalArgumentException if not defined in model or if not 
+	 * assignable from type defined in definitionClass
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getChildDefinition(String name, Class<T> definitionClass) {
+	public <T extends NodeDefinition> T getChildDefinition(String name, Class<T> definitionClass) {
 		NodeDefinition childDefinition = getChildDefinition(name);
 		if (!childDefinition.getClass().isAssignableFrom(definitionClass)) {
-			throw new IllegalArgumentException(childDefinition.getPath() + " is not a " + definitionClass.getSimpleName());
+			throw new IllegalArgumentException(childDefinition.getPath() + 
+					" is not a " + definitionClass.getSimpleName());
 		}
 		return (T) childDefinition;
 	}
+	
+	public int getChildDefinitionIndex(NodeDefinition defn) {
+		if ( childDefinitions != null ) {
+			int result = childDefinitions.indexOf(defn);
+			if ( result < 0 ) {
+				throw new IllegalArgumentException(this.getPath() + "- child not found:" + defn.getName());
+			}
+			return result;
+		} else {
+			throw new IllegalArgumentException(this.getPath() + " has no children");
+		}
+	}
 
 	public void addChildDefinition(NodeDefinition defn) {
-		checkLockState();
+		if ( defn.getName() == null ) {
+			throw new NullPointerException("name");
+		}
+
+		if ( defn.isDetached() ) {
+			throw new IllegalArgumentException("Detached definitions cannot be added");
+		}
+		
 		if (childDefinitions == null) {
 			childDefinitions = new ArrayList<NodeDefinition>();
 		}
 		childDefinitions.add(defn);
+		defn.setParentDefinition(this);
 	}
 
+	public void removeChildDefinition(int id) {
+		NodeDefinition childDefn = getChildDefinition(id);
+		removeChildDefinition(childDefn);
+	}
+	
+	public void removeChildDefinition(NodeDefinition defn) {
+		childDefinitions.remove(defn);
+		defn.detach();
+	}
+	
+	public void moveChildDefinition(int id, int index) {
+		NodeDefinition defn = getChildDefinition(id);
+		moveChildDefinition(defn, index);
+	}
+
+	public void moveChildDefinition(NodeDefinition defn, int newIndex) {
+		CollectionUtils.shiftItem(childDefinitions, defn, newIndex);
+	}
+	
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {
 		ArrayList<AttributeDefinition> result = new ArrayList<AttributeDefinition>();
-		for (NodeDefinition nodeDefinition : childDefinitions) {
-			if(nodeDefinition instanceof KeyAttributeDefinition) {
-				KeyAttributeDefinition keyAttributeDefinition = (KeyAttributeDefinition) nodeDefinition;
-				if(keyAttributeDefinition.isKey()) {
-					result.add((AttributeDefinition) keyAttributeDefinition);
+		if ( childDefinitions != null ) {
+			for (NodeDefinition nodeDefinition : childDefinitions) {
+				if(nodeDefinition instanceof KeyAttributeDefinition) {
+					KeyAttributeDefinition keyAttributeDefinition = (KeyAttributeDefinition) nodeDefinition;
+					if(keyAttributeDefinition.isKey()) {
+						result.add((AttributeDefinition) keyAttributeDefinition);
+					}
 				}
 			}
 		}
@@ -135,27 +164,43 @@ public class EntityDefinition extends NodeDefinition {
 		return new Entity(this);
 	}
 	
+	@Override
+	public void detach() {
+		for (NodeDefinition child : childDefinitions) {
+			child.detach();
+		}
+		super.detach();
+	}
+
 	/**
 	 *  
 	 * @return true if entities with only keys of type internal code (not lookup)
 	 */
 	public boolean isEnumerable() {
-		List<AttributeDefinition> keyDefs = getKeyAttributeDefinitions();
-		if ( keyDefs.isEmpty() ) {
-			return false;
-		} else {
-			for (AttributeDefinition keyDef : keyDefs) {
-				if ( keyDef instanceof CodeAttributeDefinition ) {
-					CodeList list = ((CodeAttributeDefinition) keyDef).getList();
-					if ( list.getLookupTable() != null ) {
-						return false;
+		CodeAttributeDefinition enumeratingKeyCodeAttribute = getEnumeratingKeyCodeAttribute();
+		return enumeratingKeyCodeAttribute != null;
+	}
+	
+	public CodeAttributeDefinition getEnumeratingKeyCodeAttribute() {
+		return getEnumeratingKeyCodeAttribute(null);
+	}
+	
+	public CodeAttributeDefinition getEnumeratingKeyCodeAttribute(ModelVersion version) {
+		List<AttributeDefinition> keyDefns = getKeyAttributeDefinitions();
+		for (AttributeDefinition keyDefn: keyDefns) {
+			if (version == null || version.isApplicable(keyDefn) ) {
+				if ( keyDefn instanceof CodeAttributeDefinition ) {
+					CodeAttributeDefinition codeDefn = (CodeAttributeDefinition) keyDefn;
+					CodeList list = codeDefn.getList();
+					if ( list.getLookupTable() == null ) {
+						return codeDefn;
 					}
 				} else {
-					return false;
+					return null;
 				}
 			}
-			return true;
 		}
+		return null;
 	}
 
 	@Override
@@ -182,6 +227,5 @@ public class EntityDefinition extends NodeDefinition {
 			return false;
 		return true;
 	}
-	
 	
 }

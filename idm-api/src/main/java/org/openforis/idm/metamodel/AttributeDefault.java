@@ -4,13 +4,6 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
-
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.Order;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Attribute;
 import org.openforis.idm.model.Record;
@@ -25,32 +18,37 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-//@XmlType(name = "", propOrder = { "value", "expression", "condition" })
-@Order(attributes = {"value", "expr", "if"})
+
 public class AttributeDefault implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@org.simpleframework.xml.Attribute(name = "value", required=false)
 	private String value;
-
-	@org.simpleframework.xml.Attribute(name = "expr", required=false)
 	private String expression;
-
-	@org.simpleframework.xml.Attribute(name = "if", required=false)
 	private String condition;
-
+	
 	public String getValue() {
 		return value;
+	}
+	
+	public void setValue(String value) {
+		this.value = value;
 	}
 	
 	public String getExpression() {
 		return this.expression;
 	}
+	
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
 
 	public String getCondition() {
 		return this.condition;
+	}
+	
+	public void setCondition(String condition) {
+		this.condition = condition;
 	}
 	
 	@SuppressWarnings("unchecked")

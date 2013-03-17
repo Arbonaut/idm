@@ -4,50 +4,22 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Root;
-
-import org.openforis.idm.util.CollectionUtil;
-
 
 /**
  * @author G. Miceli
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = {"srid"}, elements = { "label", "description",  "wkt" })
-@Root(name = "spatialReferenceSystem")
+
 public class SpatialReferenceSystem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Attribute(name = "srid")
 	private String id;
-
-	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> labels;*/
-	@ElementList(inline=true, entry="label", type=LanguageSpecificText.class)
-	private List<LanguageSpecificText> labels;
-
-	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;*/
-	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;
-
-	@Element(name = "wkt")
+	private LanguageSpecificTextMap labels;
+	private LanguageSpecificTextMap descriptions;
 	private String wellKnownText;
 
 	public String getId() {
@@ -59,63 +31,63 @@ public class SpatialReferenceSystem implements Serializable {
 	}
 	
 	public List<LanguageSpecificText> getLabels() {
-		return CollectionUtil.unmodifiableList(labels);
+		if ( this.labels == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.labels.values();
+		}
 	}
 	
 	public String getLabel(String language) {
-		if (labels != null ) {
-			return LanguageSpecificText.getText(labels, language);
-		} else {
-			return null;
-		}
+		return labels == null ? null: labels.getText(language);
 	}
 	
 	public void addLabel(LanguageSpecificText label) {
 		if ( labels == null ) {
-			labels = new ArrayList<LanguageSpecificText>();
+			labels = new LanguageSpecificTextMap();
 		}
 		labels.add(label);
 	}
 
-	public void setLabel(String language, String description) {
+	public void setLabel(String language, String text) {
 		if ( labels == null ) {
-			labels = new ArrayList<LanguageSpecificText>();
+			labels = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(labels, language, description);
+		labels.setText(language, text);
 	}
 	
 	public void removeLabel(String language) {
-		LanguageSpecificText.remove(labels, language);
+		labels.remove(language);
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return CollectionUtil.unmodifiableList(descriptions);
+		if ( this.descriptions == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.descriptions.values();
+		}
 	}
 
 	public String getDescription(String language) {
-		if (descriptions != null ) {
-			return LanguageSpecificText.getText(descriptions, language);
-		} else {
-			return null;
-		}
+		return descriptions == null ? null: descriptions.getText(language);
 	}
 	
 	public void setDescription(String language, String description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(descriptions, language, description);
+		descriptions.setText(language, description);
 	}
 	
 	public void addDescription(LanguageSpecificText description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
 		descriptions.add(description);
 	}
 
 	public void removeDescription(String language) {
-		LanguageSpecificText.remove(descriptions, language);
+		descriptions.remove(language);
 	}
 
 	public String getWellKnownText() {
@@ -164,7 +136,7 @@ public class SpatialReferenceSystem implements Serializable {
 		if (wellKnownText == null) {
 			if (other.wellKnownText != null)
 				return false;
-		} else if (!wellKnownText.equals(other.wellKnownText))
+		} else if (!wellKnownText.trim().equals(other.wellKnownText.trim()))
 			return false;
 		return true;
 	}

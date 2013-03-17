@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.IdmInterpretationError;
 import org.openforis.idm.metamodel.NodeDefinition;
@@ -26,7 +27,6 @@ import org.openforis.idm.model.expression.ExpressionFactory;
 import org.openforis.idm.model.expression.InvalidExpressionException;
 import org.openforis.idm.model.expression.RelevanceExpression;
 import org.openforis.idm.model.expression.RequiredExpression;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -313,7 +313,7 @@ public class Entity extends Node<EntityDefinition> {
 	
 	public List<Node<? extends NodeDefinition>> getAll(String name) {
 		List<Node<? extends NodeDefinition>> children = childrenByName.get(name);
-		return  CollectionUtil.unmodifiableList(children);
+		return  CollectionUtils.unmodifiableList(children);
 	}
 
 	//
@@ -434,9 +434,7 @@ public class Entity extends Node<EntityDefinition> {
 					RelevanceExpression relevanceExpr = expressionFactory.createRelevanceExpression(expr);
 					return relevanceExpr.evaluate(this, null);
 				} catch (InvalidExpressionException e) {
-					throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
-				} catch(Exception e){
-					throw new IdmInterpretationError("Unable to evaluate expression: " + expr, e);
+					throw new IdmInterpretationError(defn.getPath() + " - Unable to evaluate expression: " + expr, e);
 				}
 			}
 		} else {

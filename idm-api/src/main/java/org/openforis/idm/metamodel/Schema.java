@@ -3,134 +3,153 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Stack;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Transient;
-
-import org.openforis.idm.metamodel.xml.internal.XmlInit;
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
+import org.openforis.idm.path.InvalidPathException;
+import org.openforis.idm.path.Path;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(elements = { "entity" })
-public class Schema implements Serializable {
+
+public class Schema extends SurveyObject {
 
 	private static final long serialVersionUID = 1L;
-	
-	/*@XmlElement(name = "entity", type = EntityDefinition.class)
-	private List<EntityDefinition> rootEntityDefinitions;*/
-	@ElementList(inline=true, entry="entity", type=EntityDefinition.class)
+
 	private List<EntityDefinition> rootEntityDefinitions;
-
-	@Transient
-	private Map<String, NodeDefinition> definitionsByPath;
-
-	@Transient
 	private Map<Integer, NodeDefinition> definitionsById;
 	
-	@Transient
-	@XmlParent
-	private Survey survey;
-
-	@Transient
-	private int nextDefinitionId;
-	
-	public Schema() {
-		definitionsByPath = new HashMap<String, NodeDefinition>(); 
+	public Schema(Survey survey) {
+		super(survey);
 		definitionsById = new HashMap<Integer, NodeDefinition>();
-		nextDefinitionId = 1;
 	}
 	
-	public Survey getSurvey() {
-		return survey;
+	public NodeDefinition getDefinitionByPath(String absolutePath) throws InvalidPathException {
+		Path path = Path.parsePath(absolutePath);
+		return path.evaluate(this);
 	}
 	
-	public NodeDefinition getByPath(String absolutePath) {
-		return definitionsByPath.get(absolutePath);
-	}
-	
-	public NodeDefinition getById(int id) {
+	public NodeDefinition getDefinitionById(int id) {
 		return definitionsById.get(id);
 	}
-	
-	@XmlInit
-	void reindexDefinitions() {
-		 definitionsById.clear();
-		 definitionsByPath.clear();
-		 for (EntityDefinition entityDefn : getRootEntityDefinitions()) {
-			entityDefn.traverse(new NodeDefinitionVisitor() {
-				@Override
-				public void visit(NodeDefinition definition) {
-					indexByPath(definition);
-					indexById(definition);
-				}
-			});
-		}
-	}
 
-	void indexByPath(NodeDefinition definition) {
-		String path = definition.getPath();
-		definitionsByPath.put(path, definition);
-	}
-
-	void indexById(NodeDefinition definition) {
-		Integer id = definition.getId();
-		if ( id != null ) {
-			definitionsById.put(id, definition);
-		}
-	}
-
-	public Set<String> getDefinedPaths() {
-		return Collections.unmodifiableSet(definitionsByPath.keySet());
-	}
-
-	public Collection<NodeDefinition> getAllDefinitions() {
-		return Collections.unmodifiableCollection(definitionsByPath.values());
-	}
-	
 	public List<EntityDefinition> getRootEntityDefinitions() {
-		return CollectionUtil.unmodifiableList(rootEntityDefinitions);
+		return CollectionUtils.unmodifiableList(rootEntityDefinitions);
 	}
 
 	public void addRootEntityDefinition(EntityDefinition defn) {
-		if ( defn.getId() == null ) {
-			defn.setId(nextDefinitionId ++);
-		} else {
-			nextDefinitionId = Math.max(nextDefinitionId, defn.getId() + 1);
+		if ( defn.isDetached() ) {
+			throw new IllegalArgumentException("Detached definitions cannot be added");
 		}
+		
+		if ( defn.getSchema() != this ) {
+			throw new IllegalArgumentException("Definition does not belong to this schema");
+		}
+		
+		if ( defn.getParentDefinition() != null ) {
+			throw new IllegalArgumentException("Parent of root definition must be null");
+		}
+		
+		int id = defn.getId();
+		if ( id < 1 || id > getLastId() ) {
+			throw new IllegalArgumentException("Invalid definition id " + id);
+		}
+		
+		if ( rootEntityDefinitions == null) {
+			rootEntityDefinitions = new ArrayList<EntityDefinition>();
+		}
+
 		rootEntityDefinitions.add(defn);
-		indexById(defn);
-		indexByPath(defn);
+		index(defn);
 	}
 	
 	public void removeRootEntityDefinition(String name) {
 		EntityDefinition defn = getRootEntityDefinition(name);
+		removeRootEntityDefinition(defn);
+	}
+
+	protected void removeRootEntityDefinition(EntityDefinition defn) {
 		rootEntityDefinitions.remove(defn);
-		reindexDefinitions();
+		detach(defn);
 	}
 	
 	public EntityDefinition getRootEntityDefinition(String name) {
-		return (EntityDefinition) getByPath("/"+name);
+		if ( rootEntityDefinitions != null ) {
+			for (EntityDefinition defn : rootEntityDefinitions) {
+				if ( defn.getName().equals(name) ) {
+					return defn;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public EntityDefinition getRootEntityDefinition(int id) {
+		if ( rootEntityDefinitions != null ) {
+			for (EntityDefinition node : rootEntityDefinitions) {
+				if ( node.getId() == id ) {
+					return node;
+				}
+			}
+		}
+		throw new IllegalArgumentException("Root entity definition with id " + id + " not found");
 	}
 
+	public int getRootEntityIndex(EntityDefinition rootEntity) {
+		if ( rootEntityDefinitions != null ) {
+			int result = rootEntityDefinitions.indexOf(rootEntity);
+			if ( result < 0 ) {
+				throw new IllegalArgumentException("Root entity not found:" + rootEntity.getName());
+			}
+			return result;
+		} else {
+			throw new IllegalArgumentException("Schema has no root entities");
+		}
+	}
+	
+	public void moveRootEntityDefinition(EntityDefinition rootEntity, int newIndex) {
+		CollectionUtils.shiftItem(rootEntityDefinitions, rootEntity, newIndex);
+	}
+	
+	protected void removeVersioning(final ModelVersion version) {
+		List<EntityDefinition> rootDefns = getRootEntityDefinitions();
+		for (EntityDefinition entityDefinition : rootDefns) {
+			entityDefinition.removeVersioning(version);
+			entityDefinition.traverse(new NodeDefinitionVisitor() {
+				@Override
+				public void visit(NodeDefinition defn) {
+					defn.removeVersioning(version);
+				}
+			});
+		}
+	}
+	
+	public List<TaxonAttributeDefinition> getTaxonAttributeDefinitions(String taxonomyName) {
+		List<TaxonAttributeDefinition> result = new ArrayList<TaxonAttributeDefinition>();
+		List<EntityDefinition> rootDefns = getRootEntityDefinitions();
+		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
+		stack.addAll(rootDefns);
+		while ( ! stack.isEmpty() ) {
+			NodeDefinition node = stack.pop();
+			if ( node instanceof TaxonAttributeDefinition ) {
+				TaxonAttributeDefinition taxonAttr = (TaxonAttributeDefinition) node;
+				if ( taxonAttr.getTaxonomy().equals(taxonomyName) ) {
+					result.add(taxonAttr);
+				}
+			} else if ( node instanceof EntityDefinition ) {
+				stack.addAll(((EntityDefinition) node).getChildDefinitions());
+			}
+		}
+		return result;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -155,6 +174,113 @@ public class Schema implements Serializable {
 			return false;
 		return true;
 	}
+
+	private int nextId() {
+		return getSurvey().nextId();
+	}
+
+	private int getLastId() {
+		return getSurvey().getLastId();
+	}
 	
+	private <T extends NodeDefinition> T index(T defn) {
+		int id = defn.getId();
+		definitionsById.put(id, defn);
+		return defn;
+	}
+
+	public EntityDefinition createEntityDefinition(int id) {
+		return index(new EntityDefinition(getSurvey(), id));
+	}
+
+	public EntityDefinition createEntityDefinition() {
+		return index(createEntityDefinition(nextId()));
+	}
+
+	public CodeAttributeDefinition createCodeAttributeDefinition(int id) {
+		return index(new CodeAttributeDefinition(getSurvey(), id));
+	}
+
+	public CodeAttributeDefinition createCodeAttributeDefinition() {
+		return index(createCodeAttributeDefinition(nextId()));
+	}
+
+	public TextAttributeDefinition createTextAttributeDefinition(int id) {
+		return index(new TextAttributeDefinition(getSurvey(), id));
+	}
+
+	public TextAttributeDefinition createTextAttributeDefinition() {
+		return index(createTextAttributeDefinition(nextId()));
+	}
+
+	public FileAttributeDefinition createFileAttributeDefinition(int id) {
+		return index(new FileAttributeDefinition(getSurvey(), id));
+	}
+
+	public FileAttributeDefinition createFileAttributeDefinition() {
+		return index(createFileAttributeDefinition(nextId()));
+	}
+
+	public NumberAttributeDefinition createNumberAttributeDefinition(int id) {
+		return index(new NumberAttributeDefinition(getSurvey(), id));
+	}
+
+	public NumberAttributeDefinition createNumberAttributeDefinition() {
+		return index(createNumberAttributeDefinition(nextId()));
+	}
+
+	public RangeAttributeDefinition createRangeAttributeDefinition(int id) {
+		return index(new RangeAttributeDefinition(getSurvey(), id));
+	}
+
+	public RangeAttributeDefinition createRangeAttributeDefinition() {
+		return index(createRangeAttributeDefinition(nextId()));
+	}
+
+	public TimeAttributeDefinition createTimeAttributeDefinition(int id) {
+		return index(new TimeAttributeDefinition(getSurvey(), id));
+	}
+
+	public TimeAttributeDefinition createTimeAttributeDefinition() {
+		return index(createTimeAttributeDefinition(nextId()));
+	}
+
+	public DateAttributeDefinition createDateAttributeDefinition(int id) {
+		return index(new DateAttributeDefinition(getSurvey(), id));
+	}
+
+	public DateAttributeDefinition createDateAttributeDefinition() {
+		return index(createDateAttributeDefinition(nextId()));
+	}
 	
+
+	public TaxonAttributeDefinition createTaxonAttributeDefinition(int id) {
+		return index(new TaxonAttributeDefinition(getSurvey(), id));
+	}
+
+	public TaxonAttributeDefinition createTaxonAttributeDefinition() {
+		return index(createTaxonAttributeDefinition(nextId()));
+	}
+
+
+	public BooleanAttributeDefinition createBooleanAttributeDefinition(int id) {
+		return index(new BooleanAttributeDefinition(getSurvey(), id));
+	}
+
+	public BooleanAttributeDefinition createBooleanAttributeDefinition() {
+		return index(createBooleanAttributeDefinition(nextId()));
+	}
+
+	public CoordinateAttributeDefinition createCoordinateAttributeDefinition(int id) {
+		return index(new CoordinateAttributeDefinition(getSurvey(), id));
+	}
+
+	public CoordinateAttributeDefinition createCoordinateAttributeDefinition() {
+		return index(createCoordinateAttributeDefinition(nextId()));
+	}
+	
+	public void detach(NodeDefinition defn) {
+		int id = defn.getId();
+		definitionsById.remove(id);	
+	}
 }

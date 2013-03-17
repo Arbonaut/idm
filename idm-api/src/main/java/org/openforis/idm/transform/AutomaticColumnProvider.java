@@ -11,8 +11,11 @@ import org.openforis.idm.metamodel.CoordinateAttributeDefinition;
 import org.openforis.idm.metamodel.DateAttributeDefinition;
 import org.openforis.idm.metamodel.EntityDefinition;
 import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.NumberAttributeDefinition;
+import org.openforis.idm.metamodel.RangeAttributeDefinition;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 import org.openforis.idm.metamodel.TimeAttributeDefinition;
+import org.openforis.idm.metamodel.Unit;
 
 /**
  * @author G. Miceli
@@ -89,6 +92,17 @@ public class AutomaticColumnProvider extends ColumnProviderChain {
 				cols.add(new CoordinateColumnProvider(name));
 			} else if(defn instanceof DateAttributeDefinition) {
 				cols.add(new DateColumnProvider(name));
+			} else if(defn instanceof NumberAttributeDefinition){
+				List<Unit> units = ((NumberAttributeDefinition) defn).getUnits();
+				if ( units != null && units.size() > 0 ) {
+					cols.add(new NumberColumnProvider(name));
+				} else {
+					cols.add(new SingleAttributeColumnProvider(name, name));
+				}
+			} else if(defn instanceof RangeAttributeDefinition){
+				cols.add(new RangeColumnProvider(name));
+			} else if(defn instanceof TimeAttributeDefinition){
+				cols.add(new TimeColumnProvider(name));
 			} else if(defn instanceof TaxonAttributeDefinition){
 				cols.add(new TaxonColumnProvider(name));
 			} else if(defn instanceof TimeAttributeDefinition){

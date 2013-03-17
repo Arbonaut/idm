@@ -3,63 +3,30 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Order;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = { "id", "name", "dimension", "conversionFactor" }, elements = { "labels", "abbreviations" })
-public class Unit implements Serializable {
+
+public class Unit extends IdentifiableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
 
-	@Attribute(name = "id")
-	private int id;
-
-	@Attribute(name = "name")
 	private String name;
-
-	@Attribute(name = "dimension")
 	private String dimension;
+	private Double conversionFactor;
+	private LanguageSpecificTextMap labels;
+	private LanguageSpecificTextMap abbreviations;
 
-	@Attribute(name = "conversionFactor", required = false)
-	private Float conversionFactor;
-
-	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> labels;*/
-	@ElementList(entry="label", type = LanguageSpecificText.class, required=false)
-	private List<LanguageSpecificText> labels;
-
-	/*@XmlElement(name = "abbreviation", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> abbreviations;*/
-	@ElementList(entry="abbreviation", type = LanguageSpecificText.class, required=false)
-	private List<LanguageSpecificText> abbreviations;
-
-	public int getId() {
-		return id;
+	Unit(Survey survey, int id) {
+		super(survey, id);
 	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+
 	public String getName() {
 		return this.name;
 	}
@@ -76,72 +43,72 @@ public class Unit implements Serializable {
 		this.dimension = dimension;
 	}
 	
-	public Number getConversionFactor() {
+	public Double getConversionFactor() {
 		return this.conversionFactor;
 	}
 
-	public void setConversionFactor(Float conversionFactor) {
+	public void setConversionFactor(Double conversionFactor) {
 		this.conversionFactor = conversionFactor;
 	}
 	
 	public List<LanguageSpecificText> getLabels() {
-		return CollectionUtil.unmodifiableList(labels);
+		if ( labels == null ) {
+			return Collections.emptyList();
+		} else {
+			return labels.values();
+		}
 	}
 	
 	public String getLabel(String language) {
-		if (labels != null ) {
-			return LanguageSpecificText.getText(labels, language);
-		} else {
-			return null;
-		}
+		return labels == null ? null: labels.getText(language);
 	}
 	
 	public void addLabel(LanguageSpecificText label) {
 		if ( labels == null ) {
-			labels = new ArrayList<LanguageSpecificText>();
+			labels = new LanguageSpecificTextMap();
 		}
 		labels.add(label);
 	}
 
-	public void setLabel(String language, String description) {
+	public void setLabel(String language, String text) {
 		if ( labels == null ) {
-			labels = new ArrayList<LanguageSpecificText>();
+			labels = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(labels, language, description);
+		labels.setText(language, text);
 	}
 	
 	public void removeLabel(String language) {
-		LanguageSpecificText.remove(labels, language);
+		labels.remove(language);
 	}
 
 	public List<LanguageSpecificText> getAbbreviations() {
-		return CollectionUtil.unmodifiableList(abbreviations);
-	}
-
-	public String getAbbreviation(String language) {
-		if (abbreviations != null ) {
-			return LanguageSpecificText.getText(abbreviations, language);
+		if ( abbreviations == null ) {
+			return Collections.emptyList();
 		} else {
-			return null;
+			return abbreviations.values();
 		}
+	}
+	
+	public String getAbbreviation(String language) {
+		return abbreviations == null ? null: abbreviations.getText(language);
 	}
 	
 	public void addAbbreviation(LanguageSpecificText label) {
 		if ( abbreviations == null ) {
-			abbreviations = new ArrayList<LanguageSpecificText>();
+			abbreviations = new LanguageSpecificTextMap();
 		}
 		abbreviations.add(label);
 	}
 
-	public void setAbbreviation(String language, String description) {
+	public void setAbbreviation(String language, String text) {
 		if ( abbreviations == null ) {
-			abbreviations = new ArrayList<LanguageSpecificText>();
+			abbreviations = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(abbreviations, language, description);
+		abbreviations.setText(language, text);
 	}
 	
 	public void removeAbbreviation(String language) {
-		LanguageSpecificText.remove(abbreviations, language);
+		abbreviations.remove(language);
 	}
 
 	@Override
@@ -158,7 +125,6 @@ public class Unit implements Serializable {
 		result = prime * result + ((abbreviations == null) ? 0 : abbreviations.hashCode());
 		result = prime * result + ((conversionFactor == null) ? 0 : conversionFactor.hashCode());
 		result = prime * result + ((dimension == null) ? 0 : dimension.hashCode());
-		result = prime * result + id;
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -187,8 +153,6 @@ public class Unit implements Serializable {
 			if (other.dimension != null)
 				return false;
 		} else if (!dimension.equals(other.dimension))
-			return false;
-		if (id != other.id)
 			return false;
 		if (labels == null) {
 			if (other.labels != null)

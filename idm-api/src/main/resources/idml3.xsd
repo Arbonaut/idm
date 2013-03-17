@@ -6,17 +6,25 @@
   xmlns="http://www.openforis.org/idml/3.0">
   <xs:annotation>
     <xs:documentation xml:lang="en">
-		Inventory Data Modeling Language 3.0
-		
-		Inventory Data Modeling Language (IDML) is an XML implementation of the Inventory Data Metamodel (IDMM), providing a formal language for defining and describing inventory data models.  It is an abstraction which enables the creation of software that is flexible and reuseable in a wider range of scenarios.  The IDMM also allows tools to interoperate on the same field data, regardless of platform or implementation.  For example, mobile or personal data recorder (PDR) software, web or desktop-based data management software and data modeling tools that are designed to work with the IDMM would all be able work together and exchange data, regardless of vendor or inventory-specific details or functionality.
-		      
-		A specific usage or instance of the IDMM is called an inventory data model (IDM).  An inventory data model formally defines the variables recorded during an inventory, as well as metadata needed for transparent, consistent interpretation of collected data.  This includes definition of each entity and attribute and their respective data quality checks, precision, units, code lists and spatial reference systems.  Names and documentation for each of these elements may be specified in any number of languages.  These may then be used to generate standard reports for use in field manuals, online reporting and/or software help systems, for example.  This documentation is also essential for proper interpretation of primary data and results calculation.
-		      
-		Other features include versioning, which allow data models to evolve over time in a managed way.  New elements may be added and old ones deprecated, however operations which would compromise data integraty and comparability are inherently prohibited.  This also facilitates creation of easy-to-use tools for data and database management.  Custom expressions are represented in the W3C standard XPath language.  String patterns may also be specified using standard POSIX-like regular expressions.  
-	            
-		© Copyright 2012 Food and Agriculture Organization of the United Nations
-		      
-		G. Miceli, M. Togna, A. Pekkarinen, S. Ricci
+      Inventory Data Modeling Language 3.1
+      March 2013
+
+        Inventory Data Modeling Language (IDML) is an XML implementation of the Inventory Data Metamodel (IDMM), providing a formal language for defining and describing inventory data models.  It is an abstraction which enables the creation of software that is flexible and reuseable in a wider range of scenarios.  The IDMM also allows tools to interoperate on the same field data, regardless of platform or implementation.  For example, mobile or personal data recorder (PDR) software, web or desktop-based data management software and data modeling tools that are designed to work with the IDMM would all be able work together and exchange data, regardless of vendor or inventory-specific details or functionality.
+
+        A specific usage or instance of the IDMM is called an inventory data model (IDM).  An inventory data model formally defines the variables recorded during an inventory, as well as metadata needed for transparent, consistent interpretation of collected data.  This includes definition of each entity and attribute and their respective data quality checks, precision, units, code lists and spatial reference systems.  Names and documentation for each of these elements may be specified in any number of languages.  These may then be used to generate standard reports for use in field manuals, online reporting and/or software help systems, for example.  This documentation is also essential for proper interpretation of primary data and results calculation.
+
+        Other features include versioning, which allow data models to evolve over time in a managed way.  New elements may be added and old ones deprecated, however operations which would compromise data integraty and comparability are inherently prohibited.  This also facilitates creation of easy-to-use tools for data and database management.  Custom expressions are represented in the W3C standard XPath language.  String patterns may also be specified using standard POSIX-like regular expressions.  
+
+        © Copyright 2012 Food and Agriculture Organization of the United Nations
+
+        G. Miceli, M. Togna, A. Pekkarinen, S. Ricci
+
+        3.1 Release Notes
+        Changes from 3.0:
+         * Code list hierarchy levels no longer contain id attribute; their natural order
+          determines hierarchy rank
+         * Languages in Survey
+         * Added oftype attributes 
     </xs:documentation>
   </xs:annotation>
 
@@ -29,7 +37,9 @@
   <xs:simpleType name="regularExpression">
     <xs:annotation>
       <xs:documentation xml:lang="en">
-        In computing, a regular expression (regex) are used for describing patterns for matching text. IDM uses standard POSIX-style expressions for describing these patterns. 
+        In computing, regular expressions (regex) are used for describing 
+        patterns for matching text. IDM uses standard POSIX-style expressions 
+        for describing these patterns. 
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
@@ -38,10 +48,11 @@
   <xs:simpleType name="path">
     <xs:annotation>
       <xs:documentation xml:lang="en">
-        A path in W3C-standard XML Path Language (XPath) Version 1.0 pointing to an attrbiute or expresion.    
-        
+        A path in W3C-standard XML Path Language (XPath) Version 1.0 pointing 
+        to an attrbiute or expresion.    
+
         Several custom functions are also provided:
-        
+
           parent() - the parent of the entity or attribute containing the expression
           blank()  - returns true if an attribute value is blank (does not include symbols)
         
@@ -69,19 +80,29 @@
   <xs:simpleType name="expression">
     <xs:annotation>
       <xs:documentation xml:lang="en">
-        Expressions may contain formulas and custom logic used for data checking, relevance features, default calculation and other features which depend on the values entered at run-time.  In IDM, the W3C-standard XML Path Language (XPath) Version 1.0 is used for this purpose.  Expressions may refer one or more elements (attributes or entities) in the data hierarchy.  
+        Expressions may contain formulas and custom logic used for data 
+        checking, relevance features, default calculation and other features 
+        which depend on the values entered at run-time.  In IDM, the 
+        W3C-standard XML Path Language (XPath) Version 1.0 is used for this 
+        purpose.  Expressions may refer one or more elements (attributes or 
+        entities) in the data hierarchy.  
         
         Several custom functions are also provided:
         
-          parent() - the parent of the entity or attribute containing the expression
-          blank()  - returns true if an attribute value is blank (does not include symbols)
-          valid()  - returns true if an attribute value is not blank and does not return an error
+          parent() - the parent of the entity or attribute containing the 
+                     expression
+          blank()  - returns true if an attribute value is blank (does not 
+                     include symbols)
+          valid()  - returns true if an attribute value is not blank and does 
+                     not return an error
 
         Also, a custom variable to point to the current value is defined:
         
-          $this    - the value associatioed with the attribute where the expression is defined
+          $this    - the value associatioed with the attribute where the 
+                     expression is defined
 
-        Expressions are generally evaluated from one level above the entity or attribute where they are defined.  For example:
+        Expressions are generally evaluated from one level above the entity or 
+        attribute where they are defined.  For example:
       </xs:documentation>
       <xs:documentation xml:lang="en">
         <entity name="tree" multiple="true">
@@ -120,6 +141,7 @@
             A code used to refer to this item (e.g. 100, a).  By default, codes within a given code list must be unique.  Special behavior may be defined using the <codingScheme/> element.  
           </xs:documentation>
         </xs:annotation>
+        <!-- 
         <xs:complexType>
           <xs:simpleContent>
             <xs:extension base="xs:normalizedString">
@@ -133,6 +155,7 @@
             </xs:extension>
           </xs:simpleContent>
         </xs:complexType>
+         -->
       </xs:element>
       <xs:element name="label" maxOccurs="unbounded" minOccurs="0" type="unformattedText">
         <xs:annotation>
@@ -226,21 +249,51 @@
           </xs:annotation>
         </xs:element>
 
-        <xs:element name="configuration" minOccurs="0" maxOccurs="1">
+        <xs:element name="language" type="unformattedText" minOccurs="0" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
-              Any other application-specific configuration.  To differentiate between applications, custom namespaces may be used.
+              Codes of languages used by this survey model.  The code consists of the
+              two-letter ISO 639 language code (lower-case), optionally followed by
+              the two-letter ISO-3166 country code (upper-case) and the implementation specific 
+              language variant.  Each of these are to be separated by an underscore ("_").
+              Examples: "en", "de_DE", "en_US_WIN", "de__POSIX", "fr__MAC" 
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="applicationOptions" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              Application-specific configuration.
             </xs:documentation>
           </xs:annotation>
           <xs:complexType>
             <xs:sequence>
-              <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="options" minOccurs="1">
                 <xs:annotation>
-                  <xs:documentation>
-                    Application-specific elements imported from other namespaces. 
-                  </xs:documentation>
+                    <xs:documentation>
+                        A set of application-specific options, identified by type attribute.
+                    </xs:documentation>
                 </xs:annotation>
-              </xs:any>
+                  <xs:complexType>
+                     <xs:sequence>
+                      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Application-specific elements imported from other namespaces. 
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:any>
+                      </xs:sequence>
+                      <xs:attribute name="type" use="required">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Type of application options contained in this element.
+                              </xs:documentation>
+                          </xs:annotation>
+                      </xs:attribute>
+                  </xs:complexType>
+              </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -288,7 +341,7 @@
                       </xs:annotation>
                     </xs:element>
                   </xs:sequence>
-    			  <xs:attribute name="id" type="xs:integer" use="required" />
+                  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="name" type="versionName" use="required">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
@@ -300,7 +353,7 @@
               </xs:element>
             </xs:sequence>
           </xs:complexType>
-		  <xs:unique name="versioningKey">
+          <xs:unique name="versioningKey">
             <xs:selector xpath="idml:version" />
             <xs:field xpath="@id" />
           </xs:unique>
@@ -382,7 +435,7 @@
                     <xs:element name="codingScheme" minOccurs="0" maxOccurs="1">
                       <xs:annotation>
                         <xs:documentation xml:lang="en">
-                          Additional settings on how code values are to be treated and interpreted.     
+                          Additional settings on how code values are treated and interpreted.     
                         </xs:documentation>
                       </xs:annotation>
                       <xs:complexType>
@@ -506,7 +559,7 @@
                             </xs:annotation>
                             <xs:complexType>
                               <xs:sequence>
-                              	<xs:element name="label" type="unformattedText" minOccurs="0"
+                                  <xs:element name="label" type="unformattedText" minOccurs="0"
                                   maxOccurs="unbounded">
                                   <xs:annotation>
                                     <xs:documentation xml:lang="en">
@@ -523,7 +576,6 @@
                                   </xs:annotation>
                                 </xs:element>
                               </xs:sequence>
-                              <xs:attribute name="id" type="xs:integer" use="required" />
                               <xs:attribute name="name" type="internalName" use="required">
                                 <xs:annotation>
                                   <xs:documentation xml:lang="en">
@@ -536,9 +588,9 @@
                         </xs:sequence>
                       </xs:complexType>
                       <xs:unique name="levelKey">
-						<xs:selector xpath="idml:level" />
-						<xs:field xpath="@id" />
-					  </xs:unique>
+                        <xs:selector xpath="idml:level" />
+                        <xs:field xpath="@id" />
+                      </xs:unique>
                     </xs:element>
                     <xs:element minOccurs="0" name="items">
                       <xs:annotation>
@@ -564,7 +616,7 @@
                       </xs:unique>
                     </xs:element>
                   </xs:sequence>
-    			  <xs:attribute name="id" type="xs:integer" use="required" />
+                  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="name" type="internalName" use="required">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
@@ -640,7 +692,7 @@
                       </xs:annotation>
                     </xs:element>
                   </xs:sequence>
-    			  <xs:attribute name="id" type="xs:integer" use="required" />
+                  <xs:attribute name="id" type="xs:integer" use="required" />
                   <xs:attribute name="name" use="required" type="internalName">
                     <xs:annotation>
                       <xs:documentation xml:lang="en">
@@ -761,22 +813,40 @@
           </xs:complexType>
           <xs:unique name="schemaObjectKey">
             <xs:selector xpath=".//idml:entity | 
-				            	.//idml:boolean | 
-					            .//idml:code | 
-				            	.//idml:coordinate |
-				            	.//idml:date |
-				            	.//idml:file | 
-				            	.//idml:number | 
-				            	.//idml:range | 
-				            	.//idml:taxon | 
-				            	.//idml:text | 
-				            	.//idml:time"/>
+                                .//idml:boolean | 
+                                .//idml:code | 
+                                .//idml:coordinate |
+                                .//idml:date |
+                                .//idml:file | 
+                                .//idml:number | 
+                                .//idml:range | 
+                                .//idml:taxon | 
+                                .//idml:text | 
+                                 .//idml:time"/>
             <xs:field xpath="@id"/>
           </xs:unique>
         </xs:element>
       </xs:sequence>
+      <xs:attribute name="lastId" use="required">
+          <xs:annotation>
+           <xs:documentation>
+             Contains the last id used for uniquely identifying objects in this survey model.  
+                  To avoid conflicts between instances and uses of the model, ids should not be 
+                  reused (i.e. lastId must increase each time a new object is added to the IDM)
+              </xs:documentation>
+          </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="published" type="xs:boolean" use="optional" default="false">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            If true, the survey is in use by some systems and cannot be entirely modified
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
+
+
 
   <xs:complexType name="schemaObject">
     <xs:annotation>
@@ -896,7 +966,7 @@
         </xs:annotation>
       </xs:element>
     </xs:sequence>
- 	<xs:attribute name="id" type="xs:integer" use="required" />
+     <xs:attribute name="id" type="xs:integer" use="required" />
     <xs:attribute name="name" type="internalName" use="required">
       <xs:annotation>
         <xs:documentation xml:lang="en">
@@ -1727,11 +1797,11 @@
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-		<xs:enumeration value="family" />
-		<xs:enumeration value="genus" />
-		<xs:enumeration value="species" />
-		<xs:enumeration value="subspecies" />
-	</xs:restriction>
+      <xs:enumeration value="family" />
+      <xs:enumeration value="genus" />
+      <xs:enumeration value="species" />
+      <xs:enumeration value="subspecies" />
+    </xs:restriction>
   </xs:simpleType>
   
   <!--~~~~~~~~~~~~~~~~~~~~~~~-->

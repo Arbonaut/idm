@@ -7,13 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Transient;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Time;
@@ -25,19 +18,20 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
-	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
+
 public class TimeAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
-	@Transient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 			new FieldDefinition<Integer>("hour", "h", "h", Integer.class, this), 
 			new FieldDefinition<Integer>("minute", "m", "m", Integer.class, this)
 	};
 	
+	protected TimeAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	@Override
 	public Node<?> createNode() {
 		return new TimeAttribute(this);

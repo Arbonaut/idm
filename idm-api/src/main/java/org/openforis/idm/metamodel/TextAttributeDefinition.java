@@ -1,24 +1,9 @@
-/**
- * 
- */
 package org.openforis.idm.metamodel;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Transient;
-import org.simpleframework.xml.convert.Convert;
-
-import org.openforis.idm.metamodel.xml.internal.TextAttributeDefinitionTypeAdapter;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TextAttribute;
 import org.openforis.idm.model.TextValue;
@@ -29,12 +14,11 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "type", "key","required", "relevantExpression", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-	"labels", "prompts", "descriptions", "attributeDefaults", "checks"})
+
 public class TextAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition {
 
-	@Transient
+	private static final long serialVersionUID = 1L;
+
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 			new FieldDefinition<String>("value", "v", null, String.class, this)
 	};
@@ -43,22 +27,30 @@ public class TextAttributeDefinition extends AttributeDefinition implements KeyA
 		SHORT, MEMO
 	}
 
-	private static final long serialVersionUID = 1L;
-	
-	@Attribute(name = "type")
-	@Convert(TextAttributeDefinitionTypeAdapter.class)
 	private Type type;
 
-	@Attribute(name = "key")
 	private Boolean key;
+
+	protected TextAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
 
 	public Type getType() {
 		return this.type;
 	}
 	
+	public void setType(Type type) {
+		this.type = type;
+	}
+	
 	@Override
 	public boolean isKey() {
 		return this.key == null ? false : key;
+	}
+	
+	@Override
+	public void setKey(boolean key) {
+		this.key = key;
 	}
 
 	@Override

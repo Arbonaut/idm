@@ -19,7 +19,14 @@ public class NumericRangeUnitValidator implements ValidationRule<NumericRangeAtt
 		RangeAttributeDefinition defn = attribute.getDefinition();
 		List<Unit> units = defn.getUnits();
 		if ( units.size() > 1  && unit == null ) {
-			return ValidationResultFlag.ERROR;
+			Number from = attribute.getFrom();
+			Number to = attribute.getTo();
+			if ( from != null && from.doubleValue() != 0 || 
+					to != null && to.doubleValue() != 0 ) {
+				return ValidationResultFlag.ERROR;
+			} else {
+				return ValidationResultFlag.OK;
+			}
 		} else {
 			return ValidationResultFlag.OK;
 		}

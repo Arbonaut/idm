@@ -7,13 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Order;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.IntegerAttribute;
 import org.openforis.idm.model.IntegerValue;
@@ -27,19 +20,27 @@ import org.openforis.idm.model.Value;
  * @author G. Miceli
  * @author M. Togna
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "type", "key", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", 
-		"labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
+
 public class NumberAttributeDefinition extends NumericAttributeDefinition implements KeyAttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Attribute(name = "key")
-	private Boolean key;
+
+	public static final String VALUE_FIELD = "value";
+
+	private boolean key;
+
+	NumberAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
 
 	@Override
 	public boolean isKey() {
-		return this.key == null ? false : key;
+		return key;
+	}
+	
+	@Override
+	public void setKey(boolean key) {
+		this.key = key;
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 		} else if(isReal()) {
 			return new RealValue(Double.valueOf(string), unit);
 		}
-		throw new RuntimeException("Invalid type " + type);
+		throw new RuntimeException("Invalid type " + getType());
 	}
 	
 	@Override
@@ -76,15 +77,16 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 		Type type = getType();
 		switch (type) {
 		case INTEGER:
-			result.add(new FieldDefinition<Integer>("value", "v", null, Integer.class, this));
+			result.add(new FieldDefinition<Integer>(VALUE_FIELD, "v", null, Integer.class, this));
 			break;
 		case REAL:
-			result.add(new FieldDefinition<Double>("value", "v", null, Double.class, this));
+			result.add(new FieldDefinition<Double>(VALUE_FIELD, "v", null, Double.class, this));
 			break;
 		default:
 			throw new UnsupportedOperationException("Unknown type");
 		}
-		result.add(new FieldDefinition<String>("unit", "u", "unit", String.class, this));
+		result.add(new FieldDefinition<String>(UNIT_NAME_FIELD, "u_name", UNIT_NAME_FIELD, String.class, this));
+		result.add(new FieldDefinition<Integer>(UNIT_FIELD, "u", "unit_id", Integer.class, this));
 		return Collections.unmodifiableList(result);
 	}
 
@@ -105,7 +107,7 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		result = prime * result + (key ? 1231 : 1237);
 		return result;
 	}
 
@@ -118,12 +120,8 @@ public class NumberAttributeDefinition extends NumericAttributeDefinition implem
 		if (getClass() != obj.getClass())
 			return false;
 		NumberAttributeDefinition other = (NumberAttributeDefinition) obj;
-		if (key == null) {
-			if (other.key != null)
-				return false;
-		} else if (!key.equals(other.key))
+		if (key != other.key)
 			return false;
 		return true;
 	}
-
 }

@@ -1,29 +1,23 @@
 package org.openforis.idm.metamodel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-/*import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Transient;
-import org.simpleframework.xml.convert.Convert;
-
-import org.openforis.idm.metamodel.xml.internal.NumberAttributeDefinitionTypeAdapter;
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author G. Miceli
  * @author K. Waga
  */
-@Transient
+
 public abstract class NumericAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
+	public static final String UNIT_FIELD = "unit";
+	public static final String UNIT_NAME_FIELD = "unit_name";
+	
 	public enum Type {
 		INTEGER(Integer.class), REAL(Double.class);
 
@@ -37,16 +31,11 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		}
 	}
 
-	/*@XmlElement(name = "precision", type = Precision.class)
-	private List<Precision> precisionDefinitions;*/
-	@ElementList(inline=true, entry="precision", type=Precision.class)
+	private Type type; 
 	private List<Precision> precisionDefinitions;
 
-	@Attribute(name = "type")
-	@Convert(NumberAttributeDefinitionTypeAdapter.class) Type type;
-
-	public NumericAttributeDefinition() {
-		super();
+	protected NumericAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
 	}
 
 	public Type getType() {
@@ -54,7 +43,6 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	}
 
 	public void setType(Type type) {
-		checkLockState();
 		this.type = type;
 	}
 	
@@ -67,15 +55,36 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	}
 
 	public List<Precision> getPrecisionDefinitions() {
-		return CollectionUtil.unmodifiableList(precisionDefinitions);
+		return CollectionUtils.unmodifiableList(precisionDefinitions);
 	}
 
 	public void addPrecisionDefinition(Precision precision) {
-		checkLockState();
 		if ( precisionDefinitions == null ) {
 			precisionDefinitions = new ArrayList<Precision>();
 		}
 		precisionDefinitions.add(precision);
+	}
+	
+	public void removePrecisionDefinition(Precision precision) {
+		precisionDefinitions.remove(precision);
+	}
+	
+	public void removePrecisionDefinitions(Unit unit) {
+		if ( precisionDefinitions != null ) {
+			int unitId = unit.getId();
+			Iterator<Precision> it = precisionDefinitions.iterator();
+			while (it.hasNext()) {
+				Precision precision = (Precision) it.next();
+				Unit un = precision.getUnit();
+				if ( un != null && un.getId() == unitId ) {
+					it.remove();
+				}
+			}
+		}
+	}
+	
+	public void movePrecisionDefinition(Precision precision, int toIndex) {
+		CollectionUtils.shiftItem(precisionDefinitions, precision, toIndex);
 	}
 	
 	/**
@@ -146,7 +155,7 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 				}
 			}
 		}
-		return CollectionUtil.unmodifiableList(units);
+		return CollectionUtils.unmodifiableList(units);
 	}
 
 	@Override
@@ -176,5 +185,5 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 			return false;
 		return true;
 	}
-	
+
 }

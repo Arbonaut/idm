@@ -4,85 +4,42 @@
 package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
-
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Transient;
-
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
-
 /**
  * @author G. Miceli
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = {"decimalDigits", "default"} )
+
 public class Precision implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Transient
 	private Unit unit;
-
-	@Transient
-	@XmlParent
-	private NodeDefinition definition;
-	
-	@Attribute(name = "decimalDigits")
 	private Integer decimalDigits;
-
-	@Attribute(name = "default")
 	private Boolean defaultPrecision;
 
 	public Unit getUnit() {
 		return this.unit;
 	}
 
-	void setUnit(Unit unit) {
+	public void setUnit(Unit unit) {
 		this.unit = unit;
-	}
-	
-	@Attribute(name = "unit")
-	public String getUnitName() {
-		return unit == null ? null : unit.getName();
-	}
-	
-	protected void setUnitName(String name) {
-		Survey survey = getSurvey();
-		if ( survey == null ) {
-			throw new DetachedNodeDefinitionException(Precision.class, Survey.class);
-		}
-		Unit newUnit = survey.getUnit(name);
-		if ( newUnit == null ) {
-			throw new IllegalArgumentException("Unit '"+name+"' not defined in survey");
-		}
-		this.unit = newUnit;
-	}
-	
-	private Survey getSurvey() {
-		return definition == null ? null : definition.getSurvey();
 	}
 	
 	public Integer getDecimalDigits() {
 		return this.decimalDigits;
 	}
+	
+	public void setDecimalDigits(Integer decimalDigits) {
+		this.decimalDigits = decimalDigits;
+	}
 
 	public boolean isDefaultPrecision() {
 		return defaultPrecision == null ? false : defaultPrecision;
 	}
-
-	public NodeDefinition getDefinition() {
-		return definition;
-	}
-
-	protected void setDefinition(NodeDefinition definition) {
-		this.definition = definition;
+	
+	public void setDefaultPrecision(boolean defaultPrecision) {
+		this.defaultPrecision = defaultPrecision;
 	}
 
 	@Override
@@ -121,5 +78,8 @@ public class Precision implements Serializable {
 			return false;
 		return true;
 	}
-	
+
+	public String getUnitName() {
+		return unit == null ? null : unit.getName();
+	}
 }

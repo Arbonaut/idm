@@ -3,26 +3,14 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/*import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlTransient;*/
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.ElementUnion;
-import org.simpleframework.xml.Transient;
-
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.metamodel.validation.Check;
-import org.openforis.idm.metamodel.validation.ComparisonCheck;
-import org.openforis.idm.metamodel.validation.CustomCheck;
-import org.openforis.idm.metamodel.validation.DistanceCheck;
-import org.openforis.idm.metamodel.validation.PatternCheck;
-import org.openforis.idm.metamodel.validation.UniquenessCheck;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.model.Value;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -31,40 +19,60 @@ import org.openforis.idm.util.CollectionUtil;
  * @author K. Waga
  * 
  */
-@Transient
+
 public abstract class AttributeDefinition extends NodeDefinition {
 	
 	private static final long serialVersionUID = 1L;
-
-	/*@XmlElements({ 
-			@XmlElement(name = "distance", type = DistanceCheck.class), 
-			@XmlElement(name = "pattern", type = PatternCheck.class), 
-			@XmlElement(name = "compare", type = ComparisonCheck.class),
-			@XmlElement(name = "check", type = CustomCheck.class), 
-			@XmlElement(name = "unique", type = UniquenessCheck.class) 
-			})
-	private List<Check<?>> checks;*/
-	
-	@ElementUnion({
-	    @Element(name="distance", type=DistanceCheck.class),
-	    @Element(name="pattern", type=PatternCheck.class),
-	    @Element(name="compare", type=ComparisonCheck.class),
-	    @Element(name="check", type=CustomCheck.class),
-	    @Element(name="unique", type=UniquenessCheck.class)
-	})
 	private List<Check<?>> checks;
-	
-	/*@XmlElement(name = "default", type = AttributeDefault.class)
-	private List<AttributeDefault> attributeDefaults;*/
-	@ElementList(inline=true, entry="default", type=AttributeDefault.class)
 	private List<AttributeDefault> attributeDefaults;
 
+	AttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	public List<Check<?>> getChecks() {
-		return CollectionUtil.unmodifiableList(this.checks);
+		return CollectionUtils.unmodifiableList(this.checks);
+	}
+	
+	public void addCheck(Check<?> check) {
+		if ( checks == null ) {
+			checks = new ArrayList<Check<?>>();
+		}
+		checks.add(check);
+	}
+	
+	public void removeAllChecks() {
+		if ( checks != null ) {
+			checks.clear();
+		}
+	}
+	
+	public void removeCheck(Check<?> check) {
+		checks.remove(check);
 	}
 
 	public List<AttributeDefault> getAttributeDefaults() {
-		return CollectionUtil.unmodifiableList(this.attributeDefaults);
+		return CollectionUtils.unmodifiableList(this.attributeDefaults);
+	}
+
+	public void addAttributeDefault(AttributeDefault def) {
+		if ( attributeDefaults == null ) {
+			attributeDefaults = new ArrayList<AttributeDefault>();
+		}
+		attributeDefaults.add(def);
+	}
+	
+	public void removeAllAttributeDefaults() {
+		if ( attributeDefaults != null ) {
+			attributeDefaults.clear();
+		}
+	}
+	public void removeAttributeDefault(AttributeDefault def) {
+		attributeDefaults.remove(def);
+	}
+	
+	public void moveAttributeDefault(AttributeDefault def, int toIndex) {
+		CollectionUtils.shiftItem(attributeDefaults, def, toIndex);
 	}
 
 	public abstract <V extends Value> V createValue(String string);
@@ -118,5 +126,19 @@ public abstract class AttributeDefinition extends NodeDefinition {
 			return false;
 		return true;
 	}
-	
+
+	/**
+	 * Build name prefixing all names of ancestor single entities
+	 * @return
+	 */
+	public String getCompoundName() {
+		StringBuilder sb = new StringBuilder(getName());
+		NodeDefinition ancestor = getParentDefinition();
+		while ( ancestor != null && !ancestor.isMultiple() ) {
+			sb.insert(0, "_");
+			sb.insert(0, ancestor.getName());
+			ancestor = ancestor.getParentDefinition();
+		}
+		return sb.toString();
+	}
 }

@@ -8,10 +8,14 @@ import java.net.URL;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.openforis.idm.metamodel.DefaultSurveyContext;
+import org.openforis.idm.metamodel.EntityDefinition;
+import org.openforis.idm.metamodel.NodeDefinition;
+import org.openforis.idm.metamodel.Schema;
 import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.xml.IdmlBindingContext;
-import org.openforis.idm.metamodel.xml.InvalidIdmlException;
-import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
+import org.openforis.idm.metamodel.SurveyContext;
+import org.openforis.idm.metamodel.xml.IdmlParseException;
+import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 
 /**
  * 
@@ -41,12 +45,41 @@ public class ProtostuffSerializationTest  {
 		Assert.assertTrue(record1.getRootEntity().equals(record2.getRootEntity()));
 	}
 
-	private Survey getTestSurvey() throws IOException, InvalidIdmlException {
+	@Test
+	public void testSkipRemovedEntity() throws Exception {
+		// Set up
+		Survey survey = getTestSurvey();
+		//assignFakeNodeDefinitionIds(survey.getSchema());
+		Record record1 = createTestRecord(survey);
+		Entity cluster1 = record1.getRootEntity();
+		
+		// Write
+		ModelSerializer ser = new ModelSerializer(10000);
+		byte[] data = ser.toByteArray(cluster1);
+		
+		//remove data
+		cluster1.remove("map_sheet", 1);
+		cluster1.remove("map_sheet", 0);
+		
+		Schema schema = survey.getSchema();
+		EntityDefinition clusterDefn = schema.getRootEntityDefinition("cluster");
+		NodeDefinition mapSheetDefn = schema.getDefinitionById(10);
+		clusterDefn.removeChildDefinition(mapSheetDefn);
+		
+		Record record2 = new Record(survey, "2.0");
+		Entity cluster2 = record2.createRootEntity("cluster");
+		ser.mergeFrom(data, cluster2);
+		
+		// Compare
+		Assert.assertTrue(record1.getRootEntity().equals(record2.getRootEntity()));
+	}
+	
+	private Survey getTestSurvey() throws IOException, IdmlParseException {
 		URL idm = ClassLoader.getSystemResource("test.idm.xml");
 		InputStream is = idm.openStream();
-		IdmlBindingContext idmlBindingContext = new IdmlBindingContext(new TestSurveyContext());
-		SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
-		return su.unmarshal(is);		
+		SurveyContext surveyContext = new DefaultSurveyContext();
+		SurveyIdmlBinder parser = new SurveyIdmlBinder(surveyContext);
+		return parser.unmarshal(is);
 	}
 	
 	private Record createTestRecord(Survey survey) {

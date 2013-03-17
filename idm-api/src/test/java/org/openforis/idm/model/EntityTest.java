@@ -1,53 +1,19 @@
 package org.openforis.idm.model;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.xml.IdmlBindingContext;
-import org.openforis.idm.metamodel.xml.InvalidIdmlException;
-import org.openforis.idm.metamodel.xml.SurveyUnmarshaller;
+import org.openforis.idm.AbstractTest;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public class EntityTest {
-
-	private static Survey survey;
-
-	@BeforeClass
-	public static void setUp() throws IOException, InvalidIdmlException {
-		URL idm = ClassLoader.getSystemResource("test.idm.xml");
-		InputStream is = idm.openStream();
-		IdmlBindingContext idmlBindingContext = new IdmlBindingContext(new TestSurveyContext());
-		SurveyUnmarshaller su = idmlBindingContext.createSurveyUnmarshaller();
-		survey = su.unmarshal(is);
-	}
+public class EntityTest extends AbstractTest {
 
 	@Test
 	public void testAddNullCode() {
 		Entity cluster = getRootEntity();
 		EntityBuilder.addValue(cluster, "id", (Code) null);
 	}
-
-	// @Test(expected = ArrayIndexOutOfBoundsException.class)
-	// public void testAddTooManySingleAttributes() {
-	// Entity cluster = getRootEntity();
-	// EntityBuilder.addValue(cluster, "id", new Code("123_456"));
-	// EntityBuilder.addValue(cluster, "id", new Code("789_012"));
-	// }
-
-	// @Test(expected = ArrayIndexOutOfBoundsException.class)
-	// public void testAddTooManyMultipleEntities() {
-	// Entity cluster = getRootEntity();
-	// EntityBuilder.addEntity(cluster, "time_study");
-	// EntityBuilder.addEntity(cluster, "time_study");
-	// EntityBuilder.addEntity(cluster, "time_study");
-	// }
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddAttributeOnEntity() {

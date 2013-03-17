@@ -6,73 +6,60 @@ package org.openforis.idm.metamodel;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Transient;
-import org.simpleframework.xml.convert.Convert;
-
 import org.apache.commons.lang3.StringUtils;
-import org.openforis.idm.metamodel.xml.internal.InvertBooleanAdapter;
 import org.openforis.idm.model.Code;
 import org.openforis.idm.model.CodeAttribute;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Value;
+import org.openforis.idm.path.InvalidPathException;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "listName", "key", "allowUnlisted", "parentExpression", "relevantExpression","required", "requiredExpression",
-		"multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName", "labels", "prompts", "descriptions", "attributeDefaults", "checks" })
+
 public class CodeAttributeDefinition extends AttributeDefinition implements KeyAttributeDefinition  {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Transient
-	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
-		new FieldDefinition<String>("code", "c", null, String.class, this), 
-		new FieldDefinition<String>("qualifier", "q", "other", String.class, this)
-	};
+	public static final String CODE_FIELD = "code";
+	public static final String QUALIFIER_FIELD = "qualifier";
 	
-	@Attribute(name = "key")
-	private Boolean key;
+	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
+		new FieldDefinition<String>(CODE_FIELD, "c", null, String.class, this), 
+		new FieldDefinition<String>(QUALIFIER_FIELD, "q", "other", String.class, this)
+	};
 
-	@Attribute(name = "strict")
-	@Convert(InvertBooleanAdapter.class)
-	private Boolean allowUnlisted;
-
-	@Attribute(name = "parent")
+	private boolean key;
+	private boolean allowUnlisted;
 	private String parentExpression;
-
-	@Transient
 	private CodeList list;
-
-	@Transient
 	private CodeAttributeDefinition parentCodeAttributeDefinition; 
 	
+	CodeAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	public CodeList getList() {
 		return this.list;
 	}
 
-	protected void setList(CodeList list) {
-		this.list = list;
+	public void setList(CodeList list) {
+		if ( list == null ) {
+			throw new IllegalArgumentException("Cannot add a null list");
+		} else if ( list.getSurvey() == null || ! list.getSurvey().equals(this.getSurvey() )) {
+			throw new IllegalArgumentException("Cannot add a list from a different survey");
+		} else {
+			this.list = list;
+		}
 	}
 	
-	@Attribute(name = "list")
 	public String getListName() {
 		return list == null ? null : list.getName();
 	}
 	
-	protected void setListName(String name) {
+	public void setListName(String name) {
 		Survey survey = getSurvey();
 		if ( survey == null ) {
 			throw new DetachedNodeDefinitionException(CodeAttributeDefinition.class, Survey.class);
@@ -84,22 +71,40 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		this.list = newList;
 	}
 	
+	@Override
 	public boolean isKey() {
-		return this.key == null ? false : key;
+		return key;
+	}
+	
+	@Override
+	public void setKey(boolean key) {
+		this.key = key;
 	}
 
 	public boolean isAllowUnlisted() {
-		return allowUnlisted == null ? false : allowUnlisted;
+		return allowUnlisted;
+	}
+	
+	public void setAllowUnlisted(Boolean allowUnlisted) {
+		this.allowUnlisted = allowUnlisted;
 	}
 	
 	public String getParentExpression() {
 		return this.parentExpression;
 	}
+	
+	public void setParentExpression(String parentExpression) {
+		this.parentExpression = parentExpression;
+	}
 
 	public CodeAttributeDefinition getParentCodeAttributeDefinition() {
 		if (StringUtils.isNotBlank(parentExpression) && parentCodeAttributeDefinition == null) {
 			NodeDefinition parentDefinition = getParentDefinition();
-			parentCodeAttributeDefinition = (CodeAttributeDefinition) parentDefinition.getDefinitionByRelativePath(parentExpression);
+			try {
+				parentCodeAttributeDefinition = (CodeAttributeDefinition) parentDefinition.getDefinitionByPath(parentExpression);
+			} catch (InvalidPathException e) {
+				throw new IllegalStateException("Invalid parent paths should not be allowed");
+			}
 		}
 		return parentCodeAttributeDefinition;
 	}
@@ -133,9 +138,8 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((allowUnlisted == null) ? 0 : allowUnlisted.hashCode());
-		result = prime * result + ((key == null) ? 0 : key.hashCode());
-		result = prime * result + ((list == null) ? 0 : list.hashCode());
+		result = prime * result + (allowUnlisted ? 1231 : 1237);
+		result = prime * result + (key ? 1231 : 1237);
 		result = prime * result + ((parentExpression == null) ? 0 : parentExpression.hashCode());
 		return result;
 	}
@@ -149,20 +153,9 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		if (getClass() != obj.getClass())
 			return false;
 		CodeAttributeDefinition other = (CodeAttributeDefinition) obj;
-		if (allowUnlisted == null) {
-			if (other.allowUnlisted != null)
-				return false;
-		} else if (!allowUnlisted.equals(other.allowUnlisted))
+		if (allowUnlisted != other.allowUnlisted)
 			return false;
-		if (key == null) {
-			if (other.key != null)
-				return false;
-		} else if (!key.equals(other.key))
-			return false;
-		if (list == null) {
-			if (other.list != null)
-				return false;
-		} else if (!list.equals(other.list))
+		if (key != other.key)
 			return false;
 		if (parentExpression == null) {
 			if (other.parentExpression != null)
@@ -171,5 +164,18 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 			return false;
 		return true;
 	}
-	
+
+	public int getCodeListLevel() {
+		if ( list == null || list.getHierarchy().isEmpty() ) {
+			return 0;
+		} else {
+			int level = 0;
+			CodeAttributeDefinition ptr = getParentCodeAttributeDefinition();
+			while ( ptr != null ) {
+				level ++;
+				ptr = ptr.getParentCodeAttributeDefinition();
+			}
+			return level;
+		}
+	}
 }

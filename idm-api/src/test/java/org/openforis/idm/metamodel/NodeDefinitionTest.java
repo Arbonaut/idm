@@ -1,16 +1,17 @@
 package org.openforis.idm.metamodel;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
+import org.openforis.idm.AbstractTest;
 
 /**
  * @author G. Miceli
  */
-public class NodeDefinitionTest {
+
+public class NodeDefinitionTest extends AbstractTest {
 
 	@Test
 	public void testGetPathAtRoot() {
@@ -37,8 +38,8 @@ public class NodeDefinitionTest {
 	
 	@Test
 	public void testRootEntityDefinitionIsMultiple() {
-		NodeDefinition defn = new EntityDefinition();
-		defn.setSchema(new Schema());
-		assertTrue(defn.isMultiple());
+		Schema schema = survey.getSchema();
+		EntityDefinition clusterDefn = schema.getRootEntityDefinition("cluster");
+		assertTrue(clusterDefn.isMultiple());
 	}
 }

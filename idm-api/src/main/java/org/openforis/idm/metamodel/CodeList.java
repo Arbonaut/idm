@@ -1,27 +1,20 @@
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Transient;
-
-import org.openforis.idm.metamodel.xml.internal.XmlParent;
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = { "id", "name", "lookup", "since", "deprecated"}, elements = {"label", "description", "codingScheme", "hierarchy", "items" })
-public class CodeList extends Versionable implements Serializable {
+public class CodeList extends VersionableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,60 +22,18 @@ public class CodeList extends Versionable implements Serializable {
 		SCHEME, LOCAL
 	}
 
-	@Transient
-	@XmlParent
-	private Survey survey;
-
-	@Attribute(name = "id")
-	private int id;
-
-	@Attribute(name = "name")
 	private String name;
-
-	@Attribute(name = "lookup", required=false)
 	private String lookupTable;
-
-	/*@XmlElement(name = "label", type = CodeListLabel.class)
-	private List<CodeListLabel> labels;*/
-	@ElementList(inline=true, entry="label", type=CodeListLabel.class)
-	private List<CodeListLabel> labels;
-
-	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;*/
-	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;
-
-//	@XmlElement(name = "codingScheme", type = CodingScheme.class)
-//	private List<CodingScheme> codingSchemes;
-
-	/*@XmlElement(name = "codingScheme", type = CodingScheme.class)
-	private CodingScheme codingScheme;*/
-	@Element(name = "codingScheme", type = CodingScheme.class)
+	private CodeListLabelMap labels;
+	private LanguageSpecificTextMap descriptions;
 	private CodingScheme codingScheme;
-
-	/*@XmlElement(name = "level", type = CodeListLevel.class)
-	@XmlElementWrapper(name = "hierarchy")
-	private List<CodeListLevel> hierarchy;*/
-	@ElementList(name = "hierarchy", entry="level", type = CodeListLevel.class, required=false)
 	private List<CodeListLevel> hierarchy;
-
-	/*@XmlElement(name = "item", type = CodeListItem.class)
-	@XmlElementWrapper(name = "items")
-	private List<CodeListItem> items;*/
-	@ElementList(name="items", entry="item", type = CodeListItem.class, required=false)
 	private List<CodeListItem> items;
 
-	@Transient
-	private int nextItemId;
-	
-	public int getId() {
-		return id;
+	CodeList(Survey survey, int id) {
+		super(survey, id);
 	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+
 	public String getName() {
 		return this.name;
 	}
@@ -100,94 +51,69 @@ public class CodeList extends Versionable implements Serializable {
 	}
 
 	public List<CodeListLabel> getLabels() {
-		return CollectionUtil.unmodifiableList(this.labels);
+		if ( labels == null ) {
+			return Collections.emptyList();
+		} else {
+			return labels.values();
+		}
 	}
 	
 	public String getLabel(CodeListLabel.Type type, String language) {
-		CodeListLabel label = getCodeListLabel(type, language);
-		if ( label != null ) {
-			return label.getText();
-		} else {
-			return null;
-		}
-	}
-	
-	protected CodeListLabel getCodeListLabel(CodeListLabel.Type type, String language) {
-		if (labels != null ) {
-			for (CodeListLabel label : labels) {
-				if ( label.getType()== type && label.getLanguage().equals(language)) {
-					return label;
-				}
-			}
-		}
-		return null;
+		return labels == null ? null: labels.getText(type, language);
 	}
 	
 	public void setLabel(CodeListLabel.Type type, String language, String text) {
 		if ( labels == null ) {
-			labels = new ArrayList<CodeListLabel>();
+			labels = new CodeListLabelMap();
 		}
-		CodeListLabel oldLabel = getCodeListLabel(type, language);
-		if ( oldLabel == null ) {
-			CodeListLabel newLabel = new CodeListLabel(type, language, text);
-			addLabel(newLabel);
-		} else {
-			oldLabel.setText(text);
-		}
+		labels.setText(type, language, text);
 	}
 
 	public void addLabel(CodeListLabel label) {
 		if ( labels == null ) {
-			labels = new ArrayList<CodeListLabel>();
+			labels = new CodeListLabelMap();
 		}
 		labels.add(label);
 	}
 
 	public void removeLabel(CodeListLabel.Type type, String language) {
 		if (labels != null ) {
-			Iterator<CodeListLabel> it = labels.iterator();
-			while ( it.hasNext() ) {
-				CodeListLabel label = it.next();
-				if ( label.getType()== type && label.getLanguage().equals(language)) {
-					it.remove();
-					return;
-				}
-			}
+			labels.remove(type, language);
 		}
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return CollectionUtil.unmodifiableList(this.descriptions);
+		if ( this.descriptions == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.descriptions.values();
+		}
 	}
 
 	public String getDescription(String language) {
-		if (descriptions != null ) {
-			return LanguageSpecificText.getText(descriptions, language);
-		} else {
-			return null;
-		}
+		return descriptions == null ? null: descriptions.getText(language);
 	}
 	
 	public void setDescription(String language, String description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(descriptions, language, description);
+		descriptions.setText(language, description);
 	}
 	
 	public void addDescription(LanguageSpecificText description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
 		descriptions.add(description);
 	}
 
 	public void removeDescription(String language) {
-		LanguageSpecificText.remove(descriptions, language);
+		descriptions.remove(language);
 	}
 
 	public List<CodeListLevel> getHierarchy() {
-		return CollectionUtil.unmodifiableList(this.hierarchy);
+		return CollectionUtils.unmodifiableList(this.hierarchy);
 	}
 
 	public void addLevel(CodeListLevel level) {
@@ -196,20 +122,102 @@ public class CodeList extends Versionable implements Serializable {
 		}
 		this.hierarchy.add(level);
 	}
-
-	public List<CodeListItem> getItems() {
-		return CollectionUtil.unmodifiableList(this.items);
+	
+	public void removeLevel(int index) {
+		if ( index >= 0 ) {
+			hierarchy.remove(index);
+			if ( index > 0 ) {
+				removeItemsInLevel(index);
+			}
+		}
 	}
 	
+	/**
+	 * Removes all levels in hierarchy and all the child items
+	 * 
+	 */
+	public void removeAllLevels() {
+		removeAllItems();
+		hierarchy = null;
+	}
+
+	public boolean hasItemsInLevel(int levelIndex) {
+		List<CodeListItem> itemsInLevel = getItemsInLevel(levelIndex);
+		return ! itemsInLevel.isEmpty();
+	}
+	
+	protected List<CodeListItem> getItemsInLevel(int levelIndex) {
+		List<CodeListItem> itemsInLevel = getItems();
+		for (int depth = 0; ! itemsInLevel.isEmpty() && depth < levelIndex; depth ++ ) {
+			List<CodeListItem> itemsInNextLevel = new ArrayList<CodeListItem>();
+			for (CodeListItem item : itemsInLevel) {
+				List<CodeListItem> childItems = item.getChildItems();
+				if ( ! childItems.isEmpty() ) {
+					itemsInNextLevel.addAll(childItems);
+				}
+			}
+			itemsInLevel = itemsInNextLevel;
+		}
+		return itemsInLevel;
+	}
+	
+	protected void removeItemsInLevel(int levelIndex) {
+		List<CodeListItem> itemsInLevel = getItemsInLevel(levelIndex);
+		for (CodeListItem item : itemsInLevel) {
+			CodeListItem parent = item.getParentItem();
+			int itemId = item.getId();
+			if ( parent != null ) {
+				parent.removeChildItem(itemId);
+			} else {
+				this.removeItem(itemId);
+			}
+		}
+	}
+	
+	public List<CodeListItem> getItems() {
+		return CollectionUtils.unmodifiableList(this.items);
+	}
+	
+	public CodeListItem getItem(String code) {
+		if ( items != null && code != null ) {
+			for (CodeListItem item : items) {
+				if ( code.equals(item.getCode()) ) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * Removes all child items
+	 * 
+	 */
+	public void removeAllItems() {
+		items = null;
+	}
+	
+	public CodeListItem findItem(String code) {
+		if ( items != null && code != null ) {
+			String adaptedCode = Pattern.quote(code);
+			Pattern pattern = Pattern.compile("^" + adaptedCode + "$", Pattern.CASE_INSENSITIVE);
+			for (CodeListItem item : items) {
+				String itemCode = item.getCode();
+				Matcher matcher = pattern.matcher(itemCode);
+				if(matcher.find()) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
+
 	public void addItem(CodeListItem item) {
 		if ( items == null ) {
 			items = new ArrayList<CodeListItem>();
 		}
-		if ( item.getId() == 0 ) {
-			item.setId(nextItemId ++);
-		} else {
-			nextItemId = Math.max(nextItemId, item.getId() + 1);
-		}
+		// TODO check id
 		items.add(item);
 	}
 	
@@ -225,22 +233,25 @@ public class CodeList extends Versionable implements Serializable {
 		}
 	}
 	
+	public void moveItem(CodeListItem item, int indexTo) {
+		CollectionUtils.shiftItem(items, item, indexTo);
+	}
+
 	public CodeScope getCodeScope() {
 		if ( codingScheme == null || codingScheme.getCodeScope() == null ) {
-			return CodeScope.LOCAL;
+			return null;
 		} else {
 			return codingScheme.getCodeScope();
 		}
 	}
 
-	public Survey getSurvey() {
-		return survey;
+	public void setCodeScope(CodeScope scope) {
+		if ( codingScheme == null ) {
+			this.codingScheme = new CodingScheme();
+		}
+		codingScheme.setCodeScope(scope); 
 	}
-
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
-	}
-
+	
 	public boolean isQualifiable() {
 		for (CodeListItem item : getItems()) {
 			if ( item.isQualifiableRecursive() ) {
@@ -248,6 +259,13 @@ public class CodeList extends Versionable implements Serializable {
 			}
 		}
 		return false;
+	}
+	
+	public void removeVersioningRecursive(ModelVersion version) {
+		removeVersioning(version);
+		for (CodeListItem item : getItems()) {
+			item.removeVersioningRecursive(version);
+		}
 	}
 
 	@Override
@@ -257,7 +275,7 @@ public class CodeList extends Versionable implements Serializable {
 		result = prime * result + ((codingScheme == null) ? 0 : codingScheme.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
 		result = prime * result + ((hierarchy == null) ? 0 : hierarchy.hashCode());
-		result = prime * result + id;
+		result = prime * result + getId();
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((lookupTable == null) ? 0 : lookupTable.hashCode());
@@ -289,7 +307,7 @@ public class CodeList extends Versionable implements Serializable {
 				return false;
 		} else if (!hierarchy.equals(other.hierarchy))
 			return false;
-		if (id != other.id)
+		if (getId() != other.getId())
 			return false;
 		if (items == null) {
 			if (other.items != null)
@@ -312,6 +330,32 @@ public class CodeList extends Versionable implements Serializable {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public CodeListItem createItem(int id) {
+		return new CodeListItem(this, id);
+	}
+
+	public CodeListItem createItem() {
+		int id = getSurvey().nextId();
+		return createItem(id);
+	}
+
+	public List<CodeListItem> getItems(int level) {
+		return getItemsInternal(items, level);
+	}
+
+	private List<CodeListItem> getItemsInternal(List<CodeListItem> parentItems, int level) {
+		if ( level <= 0 ) {
+			return Collections.unmodifiableList(parentItems);
+		} else {
+			ArrayList<CodeListItem> descendants = new ArrayList<CodeListItem>();
+			for (CodeListItem item : parentItems) {
+				List<CodeListItem> childItems = item.getChildItems();
+				descendants.addAll(childItems);
+			}
+			return getItemsInternal(descendants, level-1);
+		}
 	}
 
 }

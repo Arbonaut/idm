@@ -3,61 +3,28 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Order;
-
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes = {"id", "name"}, elements = { "labels", "descriptions", "date" })
-public class ModelVersion implements Serializable {
+
+public class ModelVersion extends IdentifiableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
 
-	@Attribute(name = "id")
-	private int id;
-
-	@Attribute(name = "name")
 	private String name;
-
-	/*@XmlElement(name = "label", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> labels;*/
-	@ElementList(inline=true, entry="label", type=LanguageSpecificText.class)
-	private List<LanguageSpecificText> labels;
-
-	/*@XmlElement(name = "description", type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;*/
-	@ElementList(inline=true, entry="description", type=LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;
-
-	@Element(name = "date")
+	private LanguageSpecificTextMap labels;
+	private LanguageSpecificTextMap descriptions;
 	private String date;
 
-	public int getId() {
-		return id;
+	ModelVersion(Survey survey, int id) {
+		super(survey, id);
 	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+
 	public String getName() {
 		return this.name;
 	}
@@ -67,65 +34,64 @@ public class ModelVersion implements Serializable {
 	}
 	
 	public List<LanguageSpecificText> getLabels() {
-		return CollectionUtil.unmodifiableList(labels);
-	}
-
-	public String getLabel(String language) {
-		if (labels != null ) {
-			return LanguageSpecificText.getText(labels, language);
+		if ( this.labels == null ) {
+			return Collections.emptyList();
 		} else {
-			return null;
+			return this.labels.values();
 		}
+	}
+	
+	public String getLabel(String language) {
+		return labels == null ? null: labels.getText(language);
 	}
 	
 	public void addLabel(LanguageSpecificText label) {
 		if ( labels == null ) {
-			labels = new ArrayList<LanguageSpecificText>();
+			labels = new LanguageSpecificTextMap();
 		}
 		labels.add(label);
 	}
 
-	public void setLabel(String language, String description) {
+	public void setLabel(String language, String text) {
 		if ( labels == null ) {
-			labels = new ArrayList<LanguageSpecificText>();
+			labels = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(labels, language, description);
+		labels.setText(language, text);
 	}
 	
 	public void removeLabel(String language) {
-		LanguageSpecificText.remove(labels, language);
+		labels.remove(language);
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return Collections.unmodifiableList(descriptions);
+		if ( this.descriptions == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.descriptions.values();
+		}
 	}
 
 	public String getDescription(String language) {
-		if (descriptions != null ) {
-			return LanguageSpecificText.getText(descriptions, language);
-		} else {
-			return null;
-		}
-	}
-	
-	public void addDescription(LanguageSpecificText description) {
-		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
-		}
-		descriptions.add(description);
+		return descriptions == null ? null: descriptions.getText(language);
 	}
 	
 	public void setDescription(String language, String description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(descriptions, language, description);
+		descriptions.setText(language, description);
 	}
 	
-	public void removeDescription(String language) {
-		LanguageSpecificText.remove(descriptions, language);
+	public void addDescription(LanguageSpecificText description) {
+		if ( descriptions == null ) {
+			descriptions = new LanguageSpecificTextMap();
+		}
+		descriptions.add(description);
 	}
 
+	public void removeDescription(String language) {
+		descriptions.remove(language);
+	}
 
 	public String getDate() {
 		return date;
@@ -135,7 +101,7 @@ public class ModelVersion implements Serializable {
 		this.date = date;
 	}
 
-	public boolean isApplicable(Versionable versionable) {
+	public boolean isApplicable(VersionableSurveyObject versionable) {
 		ModelVersion since = versionable.getSinceVersion();
 		ModelVersion deprecated = versionable.getDeprecatedVersion();
 		if (since == null && deprecated == null) {
@@ -170,7 +136,7 @@ public class ModelVersion implements Serializable {
 		int result = 1;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
-		result = prime * result + id;
+		result = prime * result + getId();
 		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -195,7 +161,7 @@ public class ModelVersion implements Serializable {
 				return false;
 		} else if (!descriptions.equals(other.descriptions))
 			return false;
-		if (id != other.id)
+		if (getId() != other.getId())
 			return false;
 		if (labels == null) {
 			if (other.labels != null)

@@ -14,28 +14,47 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 	protected NumberAttribute(NumberAttributeDefinition definition) {
 		super(definition);
 	}
-	public String getUnitName() {
+	
+	public Integer getUnitId() {
 		return getUnitField().getValue();
+	}
+	
+	public String getUnitName() {
+		return getUnitNameField().getValue();
 	}
 
 	public Unit getUnit() {
-		String unitName = getUnitName();
-		if ( unitName != null ) {
-			Unit unit = getSurvey().getUnit(unitName);
-			return unit;
+		Integer unitId = getUnitId();
+		Unit unit = null;
+		if ( unitId != null ) {
+			unit = getSurvey().getUnit(unitId);
 		} else {
-			return null;
+			String unitName = getUnitName();
+			if ( unitName != null ) {
+				unit = getSurvey().getUnit(unitName);
+			}
 		}
+		return unit;
 	}
 
+	public void setUnit(Unit unit) {
+		Integer unitId = unit == null ? null: unit.getId();
+		setUnitId(unitId);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Field<N> getNumberField() {
 		return (Field<N>) getField(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Field<String> getUnitField() {
+	public Field<String> getUnitNameField() {
 		return (Field<String>) getField(1);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Field<Integer> getUnitField() {
+		return (Field<Integer>) getField(2);
 	}
 
 	public N getNumber() {
@@ -48,7 +67,12 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 	}
 	
 	public void setUnitName(String name) {
-		getUnitField().setValue(name);
+		getUnitNameField().setValue(name);
+		onUpdateValue();
+	}
+	
+	public void setUnitId(Integer id) {
+		getUnitField().setValue(id);
 		onUpdateValue();
 	}
 	
@@ -58,9 +82,9 @@ public abstract class NumberAttribute<N extends Number, T extends NumberValue<N>
 	public void setValue(T value) {
 		N number = value.getValue();
 		Unit unit = value.getUnit();
-		String unitName = unit == null ? null : unit.getName();
+		Integer unitId = unit == null ? null : unit.getId();
 		getNumberField().setValue(number);
-		getUnitField().setValue(unitName);
+		getUnitField().setValue(unitId);
 		onUpdateValue();
 	}
 

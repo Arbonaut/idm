@@ -7,15 +7,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Transient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TaxonAttribute;
 import org.openforis.idm.model.TaxonOccurrence;
@@ -26,19 +20,16 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  * @author S. Ricci
  * @author W. Eko
- * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "taxonomy", "highestRank", "qualifiers", "relevantExpression", "required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-		"labels", "prompts", "descriptions", "attributeDefaults", "checks"})		
 public class TaxonAttributeDefinition extends AttributeDefinition {
+
+	private static final String QUALIFIER_SEPARATOR = ",";
 
 	private static final long serialVersionUID = 1L;
 
-	@Attribute(name = "qualifiers")
 	private String qualifiers;
 	
-	@Transient
+	@XmlTransient
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
 			new FieldDefinition<String>("code", "c", "code", String.class, this), 
 			new FieldDefinition<String>("scientific_name", "s", "name", String.class, this), 
@@ -47,11 +38,12 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 			new FieldDefinition<String>("language_variety", "lv", "lang_var", String.class, this)
 	};
 	
-	@Attribute(name = "taxonomy")
 	private String taxonomy;
-
-	@Attribute(name = "highestRank")
 	private String highestRank;
+	
+	TaxonAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
 
 	@Override
 	public Node<?> createNode() {
@@ -78,19 +70,35 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 		return taxonomy;
 	}
 
+	public void setTaxonomy(String taxonomy) {
+		this.taxonomy = taxonomy;
+	}
+
 	public String getHighestRank() {
 		return highestRank;
 	}
 	
+	public void setHighestRank(String highestRank) {
+		this.highestRank = highestRank;
+	}
+
 	public List<String> getQualifiers() {
 		if ( qualifiers != null ) {
-			String[] exprs = qualifiers.split(",");
+			String[] exprs = qualifiers.split(QUALIFIER_SEPARATOR);
 			return Collections.unmodifiableList(Arrays.asList(exprs));
 		} else {
 			return Collections.emptyList();
 		}
 	}
 
+	public void setQualifiers(String qualifiers) {
+		this.qualifiers = qualifiers != null && qualifiers.length() > 0 ? qualifiers: null;
+	}
+
+	public void setQualifiers(List<String> qualifiers) {
+		setQualifiers(StringUtils.join(qualifiers, QUALIFIER_SEPARATOR));
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -127,5 +135,5 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 			return false;
 		return true;
 	}
-	
+
 }

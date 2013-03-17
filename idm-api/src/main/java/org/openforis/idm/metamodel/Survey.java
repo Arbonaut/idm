@@ -3,28 +3,14 @@ package org.openforis.idm.metamodel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;*/
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Transient;
-import org.simpleframework.xml.convert.Convert;
-
-import org.openforis.idm.metamodel.xml.internal.ConfigurationXmlAdapter;
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.model.NodePathPointer;
-import org.openforis.idm.util.CollectionUtil;
 
 
 /**
@@ -34,67 +20,44 @@ import org.openforis.idm.util.CollectionUtil;
  * @author E. Suprapto Wibowo
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(elements = { "project", "uri", "cycle", "description", "configuration", "modelVersions",
-		"codeLists", "units", "spatialReferenceSystems", "schema" })
-@Root(name = "survey")
+
 public class Survey implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Transient
+
 	private Integer id;
-	
-	@Transient
 	private String name;
-	
-	@ElementList(entry = "project", inline = true, type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> projectNames;
-	
-	@Element(name = "uri")
+	private LanguageSpecificTextMap projectNames;
 	private String uri;
-
-	@Element(name = "cycle")
-	private Integer cycle;
-
-	@ElementList(entry = "description", inline = true, type = LanguageSpecificText.class)
-	private List<LanguageSpecificText> descriptions;
-
-	@Element(name = "configuration", required = false)
-	private ConfigurationWrapper configuration;
-	
-	/*@XmlElement(name = "version", type = ModelVersion.class)
-	@XmlElementWrapper(name = "versioning")
-	private List<ModelVersion> modelVersions;*/
-	@ElementList(name = "modelVersions", entry = "version", type = ModelVersion.class, required=false)
+	private boolean published;
+	private String cycle;
+	private LanguageSpecificTextMap descriptions;
+	private LinkedHashMap<String, ApplicationOptions> applicationOptionsMap;
 	private List<ModelVersion> modelVersions;
-
-	/*@XmlElement(name = "list", type = CodeList.class)
-	@XmlElementWrapper(name = "codeLists")
-	private List<CodeList> codeLists;*/
-	@ElementList(name = "codeLists", entry = "list", type = CodeList.class, required=false)
 	private List<CodeList> codeLists;
-
-	/*@XmlElement(name = "unit", type = Unit.class)
-	@XmlElementWrapper(name = "units")
-	private List<Unit> units;*/
-	@ElementList(name = "units", entry = "unit", type = Unit.class, required=false)
 	private List<Unit> units;
-
-	/*@XmlElement(name = "spatialReferenceSystem", type = SpatialReferenceSystem.class)
-	@XmlElementWrapper(name = "spatialReferenceSystems")
-	private List<SpatialReferenceSystem> spatialReferenceSystems;*/
-	@ElementList(name = "spatialReferenceSystems", entry = "spatialReferenceSystem", type = SpatialReferenceSystem.class, required=false)
 	private List<SpatialReferenceSystem> spatialReferenceSystems;
-
-	@Element(name = "schema", type = Schema.class)
+	private List<String> languages;
 	private Schema schema;
+	private Map<String, String> namespaces;
+	private int lastId;
 
-	//@Transient
 	private transient SurveyContext surveyContext;
-	
-	//@Transient
 	private transient SurveyDependencies surveyDependencies;
+	
+	protected Survey(SurveyContext surveyContext) {
+		this.surveyContext = surveyContext;
+		this.schema = new Schema(this);
+		this.lastId = 1;
+	}
+
+	public void setLastId(int lastId) {
+		if ( lastId < this.lastId ) {
+			throw new IllegalArgumentException("lastId cannot be decreased");
+		}
+		this.lastId = lastId;
+	}
 	
 	public Integer getId() {
 		return id;
@@ -112,6 +75,14 @@ public class Survey implements Serializable {
 		this.uri = uri;
 	}
 	
+	public boolean isPublished() {
+		return published;
+	}
+
+	public void setPublished(boolean published) {
+		this.published = published;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -121,77 +92,75 @@ public class Survey implements Serializable {
 	}
 
 	public List<LanguageSpecificText> getProjectNames() {
-		return CollectionUtil.unmodifiableList(this.projectNames);
+		if ( this.projectNames == null ) {
+			return Collections.emptyList();
+		} else {
+			return this.projectNames.values();
+		}
+	}
+
+	public String getProjectName(String language) {
+		return projectNames == null ? null: projectNames.getText(language);
 	}
 	
-	public String getProjectName(String language) {
-		if (projectNames != null ) {
-			return LanguageSpecificText.getText(projectNames, language);
-		} else {
-			return null;
+	public void setProjectName(String language, String text) {
+		if ( projectNames == null ) {
+			projectNames = new LanguageSpecificTextMap();
 		}
+		projectNames.setText(language, text);
 	}
 	
 	public void addProjectName(LanguageSpecificText projectName) {
 		if ( projectNames == null ) {
-			projectNames = new ArrayList<LanguageSpecificText>();
+			projectNames = new LanguageSpecificTextMap();
 		}
 		projectNames.add(projectName);
 	}
 
-	public void setProjectName(String language, String name) {
-		if ( projectNames == null ) {
-			projectNames = new ArrayList<LanguageSpecificText>();
-		}
-		LanguageSpecificText.setText(projectNames, language, name);
-	}
-	
 	public void removeProjectName(String language) {
-		if ( projectNames != null ) {
-			LanguageSpecificText.remove(projectNames, language);
-		}
+		projectNames.remove(language);
 	}
 	
-	public Integer getCycle() {
+	public String getCycle() {
 		return this.cycle;
 	}
 	
-	public void setCycle(Integer cycle) {
+	public void setCycle(String cycle) {
 		this.cycle = cycle;
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
-		return Collections.unmodifiableList(this.descriptions);
+		if ( descriptions == null ) {
+			return Collections.emptyList();
+		} else {
+			return descriptions.values();
+		}
 	}
 
 	public String getDescription(String language) {
-		if (descriptions != null ) {
-			return LanguageSpecificText.getText(descriptions, language);
-		} else {
-			return null;
-		}
+		return descriptions == null ? null: descriptions.getText(language);
 	}
 	
 	public void setDescription(String language, String description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
-		LanguageSpecificText.setText(descriptions, language, description);
+		descriptions.setText(language, description);
 	}
 	
 	public void addDescription(LanguageSpecificText description) {
 		if ( descriptions == null ) {
-			descriptions = new ArrayList<LanguageSpecificText>();
+			descriptions = new LanguageSpecificTextMap();
 		}
 		descriptions.add(description);
 	}
 
 	public void removeDescription(String language) {
-		LanguageSpecificText.remove(descriptions, language);
+		descriptions.remove(language);
 	}
 
 	public List<ModelVersion> getVersions() {
-		return CollectionUtil.unmodifiableList(this.modelVersions);
+		return CollectionUtils.unmodifiableList(this.modelVersions);
 	}
 	
 	public void addVersion(ModelVersion version) {
@@ -205,12 +174,24 @@ public class Survey implements Serializable {
 		if ( modelVersions != null ) {
 			ModelVersion oldVersion = getVersionById(version.getId());
 			modelVersions.remove(oldVersion);
+			removeVersioningReferences(oldVersion);
 		}
 	}
 	
+	protected void removeVersioningReferences(ModelVersion version) {
+		schema.removeVersioning(version);
+		removeCodeListsVersioning(version);
+	}
+
+	protected void removeCodeListsVersioning(ModelVersion version) {
+		List<CodeList> codeLists = getCodeLists();
+		for (CodeList codeList : codeLists) {
+			codeList.removeVersioningRecursive(version);
+		}
+	}
+
 	public void moveVersion(ModelVersion version, int index) {
-		modelVersions.remove(version);
-		modelVersions.add(index, version);
+		CollectionUtils.shiftItem(modelVersions, version, index);
 	}
 	
 	public void updateVersion(ModelVersion version) {
@@ -219,7 +200,7 @@ public class Survey implements Serializable {
 		modelVersions.set(index, version);
 	}
 
-	protected ModelVersion getVersionById(int id) {
+	public ModelVersion getVersionById(int id) {
 		for (ModelVersion v : modelVersions) {
 			if (id == v.getId() ) {
 				return v;
@@ -229,10 +210,17 @@ public class Survey implements Serializable {
 	}
 
 	public List<CodeList> getCodeLists() {
-		return CollectionUtil.unmodifiableList(this.codeLists);
+		return CollectionUtils.unmodifiableList(this.codeLists);
 	}
 	
 	public void addCodeList(CodeList codeList) {
+		// TODO check survey in other methods as well
+		// TODO check that code list id is not already in survey; same in other add methods as well
+		// TODO check that code list id is <= lastId; same other add methods as well
+		if ( codeList.getSurvey() != this ) {
+			throw new IllegalArgumentException("Code list belongs to another survey");
+		}
+		
 		if ( codeLists == null ) {
 			codeLists = new ArrayList<CodeList>();
 		}
@@ -247,8 +235,7 @@ public class Survey implements Serializable {
 	}
 	
 	public void moveCodeList(CodeList codeList, int index) {
-		codeLists.remove(codeList);
-		codeLists.add(index, codeList);
+		CollectionUtils.shiftItem(codeLists, codeList, index);
 	}
 	
 	public void updateCodeList(CodeList codeList) {
@@ -257,17 +244,19 @@ public class Survey implements Serializable {
 		codeLists.set(index, codeList);
 	}
 
-	protected CodeList getCodeListById(int id) {
-		for (CodeList c : codeLists) {
-			if ( id == c.getId() ) {
-				return c;
+	public CodeList getCodeListById(int id) {
+		if ( codeLists != null) {
+			for (CodeList c : codeLists) {
+				if ( id == c.getId() ) {
+					return c;
+				}
 			}
 		}
 		return null;
 	}
 
 	public List<Unit> getUnits() {
-		return CollectionUtil.unmodifiableList(this.units);
+		return CollectionUtils.unmodifiableList(this.units);
 	}
 	
 	public void addUnit(Unit unit) {
@@ -281,12 +270,27 @@ public class Survey implements Serializable {
 		if ( units != null ) {
 			Unit oldUnit = getUnitById(unit.getId());
 			units.remove(oldUnit);
+			removeReferences(unit);
 		}
 	}
 	
+	protected void removeReferences(Unit unit) {
+		List<EntityDefinition> rootEntities = schema.getRootEntityDefinitions();
+		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
+		stack.addAll(rootEntities);
+		while ( ! stack.isEmpty() ) {
+			NodeDefinition defn = stack.pop();
+			if ( defn instanceof EntityDefinition ) {
+				stack.addAll(((EntityDefinition) defn).getChildDefinitions());
+			} else if ( defn instanceof NumericAttributeDefinition ) {
+				NumericAttributeDefinition numericAttrDefn = (NumericAttributeDefinition) defn;
+				numericAttrDefn.removePrecisionDefinitions(unit);
+			}
+		}
+	}
+
 	public void moveUnit(Unit unit, int index) {
-		units.remove(unit);
-		units.add(index, unit);
+		CollectionUtils.shiftItem(units, unit, index);
 	}
 	
 	public void updateUnit(Unit unit) {
@@ -305,7 +309,18 @@ public class Survey implements Serializable {
 	}
 
 	public List<SpatialReferenceSystem> getSpatialReferenceSystems() {
-		return CollectionUtil.unmodifiableList(this.spatialReferenceSystems);
+		return CollectionUtils.unmodifiableList(this.spatialReferenceSystems);
+	}
+	
+	public SpatialReferenceSystem getSpatialReferenceSystem(String id) {
+		if ( spatialReferenceSystems != null ) {
+			for (SpatialReferenceSystem s : spatialReferenceSystems) {
+				if ( id.equals(s.getId()) ) {
+					return s;
+				}
+			}
+		}
+		return null;
 	}
 	
 	public void addSpatialReferenceSystem(SpatialReferenceSystem srs) {
@@ -320,8 +335,7 @@ public class Survey implements Serializable {
 	}
 	
 	public void moveSpatialReferenceSystem(SpatialReferenceSystem srs, int index) {
-		spatialReferenceSystems.remove(srs);
-		spatialReferenceSystems.add(index, srs);
+		CollectionUtils.shiftItem(spatialReferenceSystems, srs, index);
 	}
 	
 	public void updateSpatialReferenceSystem(SpatialReferenceSystem srs) {
@@ -343,12 +357,8 @@ public class Survey implements Serializable {
 		return this.schema;
 	}
 	
-	public void setSchema(Schema schema) {
-		this.schema = schema;
-	}
-	
 	public ModelVersion getVersion(String name) {
-		if ( modelVersions != null ) {
+		if ( modelVersions != null && name != null ) {
 			for (ModelVersion v : modelVersions) {
 				if ( name.equals(v.getName()) ) {
 					return v;
@@ -359,48 +369,113 @@ public class Survey implements Serializable {
 	}
 
 	public CodeList getCodeList(String name) {
-		for (CodeList codeList : codeLists) {
-			if (codeList.getName().equals(name)) {
-				return codeList;
+		if ( codeLists != null && name != null ) {
+			for (CodeList codeList : codeLists) {
+				if (name.equals(codeList.getName())) {
+					return codeList;
+				}
 			}
 		}
 		return null;
 	}
 
+	public Unit getUnit(int id) {
+		if ( units != null) {
+			for (Unit unit : units) {
+				if (unit.getId() == id) {
+					return unit;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public Unit getUnit(String name) {
-		for (Unit unit : units) {
-			if (unit.getName().equals(name)) {
-				return unit;
+		if ( units != null && name != null ) {
+			for (Unit unit : units) {
+				if (name.equals(unit.getName())) {
+					return unit;
+				}
 			}
 		}
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Configuration> getConfiguration() {
-		if ( configuration == null ) {
-			return (List<Configuration>) Collections.EMPTY_LIST;
+	public ApplicationOptions getApplicationOptions(String type) {
+		if ( applicationOptionsMap == null ) {
+			return null;
 		} else {
-			return CollectionUtil.unmodifiableList(configuration.list);
+			return applicationOptionsMap.get(type);
+		}
+	}
+
+	public List<String> getApplicationOptionTypes() {
+		if ( applicationOptionsMap == null ) {
+			return Collections.emptyList();
+		} else {
+			List<String> types = new ArrayList<String>(applicationOptionsMap.keySet());
+			return Collections.unmodifiableList(types);
+		}		
+	}
+	
+	public List<ApplicationOptions> getApplicationOptions() {
+		if ( applicationOptionsMap == null ) {
+			return Collections.emptyList();
+		} else {
+			List<ApplicationOptions> values = new ArrayList<ApplicationOptions>(applicationOptionsMap.values());
+			return Collections.unmodifiableList(values);
 		}
 	}
 	
+	public void addApplicationOptions(ApplicationOptions options) {
+		if ( applicationOptionsMap == null ) {
+			this.applicationOptionsMap = new LinkedHashMap<String, ApplicationOptions>();
+		}
+		applicationOptionsMap.put(options.getType(), options);
+	}
+	
+	public void removeApplicationOptions(String type) {
+		if ( applicationOptionsMap != null ) {
+			applicationOptionsMap.remove(type);
+		}
+	}
+	
+	public List<String> getLanguages() {
+		return CollectionUtils.unmodifiableList(languages);
+	}
+	
+	public void addLanguage(String lang) {
+		if ( languages == null ) {
+			this.languages = new ArrayList<String>();  
+		}
+		languages.add(lang);
+	}
+	
+	public void removeLanguage(String lang) {
+		if ( languages == null ) {
+			return;
+		}
+		languages.remove(lang);
+	}
+	
+	public void moveLanguage(String language, int index) {
+		CollectionUtils.shiftItem(languages, language, index);
+	}
+
 	public SurveyContext getContext() {
 		return surveyContext;
-	}
-	
-	public void setSurveyContext(SurveyContext surveyContext) {
-		this.surveyContext = surveyContext;
 	}
 	
 	public Set<NodePathPointer> getCheckDependencies(NodeDefinition definition) {
 		return getSurveyDependencies().getCheckDependencies(definition);
 	}
 	
+	// TODO move to ??
 	public Set<NodePathPointer> getRelevanceDependencies(NodeDefinition definition) {
 		return getSurveyDependencies().getRelevanceDependencies(definition);
 	}
-	
+
+	// TODO move to ??
 	public Set<NodePathPointer> getRequiredDependencies(NodeDefinition definition) {
 		return getSurveyDependencies().getRequiredDependencies(definition);
 	}
@@ -412,51 +487,12 @@ public class Survey implements Serializable {
 		return surveyDependencies;
 	}
 	
-	/**
-	 * Workaround for JAXB since @XmlAnyElement, @XmlElementWrapper and @XmlJavaTypeAdapter 
-	 * wouldn't play nice together
-	 */
-	private static class ConfigurationWrapper implements Serializable {
-
-		private static final long serialVersionUID = 1L;
-		
-		@ElementList(inline = true, required = false)
-		@Convert(ConfigurationXmlAdapter.class)
-		List<Configuration> list;
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((list == null) ? 0 : list.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			ConfigurationWrapper other = (ConfigurationWrapper) obj;
-			if (list == null) {
-				if (other.list != null)
-					return false;
-			} else if (!list.equals(other.list))
-				return false;
-			return true;
-		}
-		
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((codeLists == null) ? 0 : codeLists.hashCode());
-		result = prime * result + ((configuration == null) ? 0 : configuration.hashCode());
+		result = prime * result + ((applicationOptionsMap == null) ? 0 : applicationOptionsMap.hashCode());
 		result = prime * result + ((cycle == null) ? 0 : cycle.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -484,10 +520,10 @@ public class Survey implements Serializable {
 				return false;
 		} else if (!codeLists.equals(other.codeLists))
 			return false;
-		if (configuration == null) {
-			if (other.configuration != null)
+		if (applicationOptionsMap == null) {
+			if (other.applicationOptionsMap != null)
 				return false;
-		} else if (!configuration.equals(other.configuration))
+		} else if (!applicationOptionsMap.equals(other.applicationOptionsMap))
 			return false;
 		if (cycle == null) {
 			if (other.cycle != null)
@@ -542,4 +578,65 @@ public class Survey implements Serializable {
 		return true;
 	}
 
+	synchronized 
+	public int nextId() {
+		return ++lastId;
+	}
+	
+	synchronized 
+	public int getLastId() {
+		return lastId;
+	}
+	
+	public ModelVersion createModelVersion(int id) {
+		return new ModelVersion(this, id);
+	}
+
+	public ModelVersion createModelVersion() {
+		return new ModelVersion(this, nextId());
+	}
+	
+	public CodeList createCodeList(int id) {
+		return new CodeList(this, id);
+	}
+
+	public CodeList createCodeList() {
+		return new CodeList(this, nextId());
+	}
+	
+	public Unit createUnit(int id) {
+		return new Unit(this, id);
+	}
+
+	public Unit createUnit() {
+		return new Unit(this, nextId());
+	}
+	
+	public void addCustomNamespace(String uri, String prefix) {
+		if ( namespaces == null ) {
+			namespaces = new LinkedHashMap<String, String>();
+		}
+		namespaces.put(uri, prefix);
+	}
+	
+	public void removeCustomNamespace(String uri) {
+		if ( namespaces != null ) {
+			namespaces.remove(uri);
+		}
+	}
+	
+	public List<String> getCustomNamespaces() {
+		if ( namespaces == null ) {
+			return Collections.emptyList();
+		} else {
+			return Collections.unmodifiableList(new ArrayList<String>(namespaces.keySet()));
+		}
+	}
+	public String getCustomNamespacePrefix(String uri) {
+		if ( namespaces == null ) {
+			return null;
+		} else {
+			return namespaces.get(uri);
+		}
+	}
 }

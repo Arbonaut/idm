@@ -63,17 +63,16 @@ public class EntitySchema extends SchemaSupport<Entity> {
         		
         		// Definition id
         		int definitionId = input.readUInt32();
-        		NodeDefinition defn = idmSchema.getById(definitionId);
+        		NodeDefinition defn = idmSchema.getDefinitionById(definitionId);
         		if ( defn == null ) {
-        			throw new ProtostuffException("Invalid definition id "+definitionId);
+	        		skipNode(input);
+        		} else {
+	        		Node<?> node = defn.createNode();
+	        		entity.add(node);
+	        		// Node
+	        		readAndCheckFieldNumber(input, FIELD_NODE);
+	        		input.mergeObject(node, getSchema(node.getClass()));
         		}
-        		Node<?> node = defn.createNode();
-        		entity.add(node);
-        		
-        		// Node
-        		readAndCheckFieldNumber(input, FIELD_NODE);
-        		input.mergeObject(node, getSchema(node.getClass()));
-        		
         	} else if ( number == FIELD_CHILD_NODE_STATE ){
         		//Node state
         		int intState = input.readInt32();
@@ -81,14 +80,16 @@ public class EntitySchema extends SchemaSupport<Entity> {
         		readAndCheckFieldNumber(input, FIELD_CHILD_DEFINITION_ID);
         		int childDefnId = input.readInt32();
         		Schema schema = entity.getSchema();
-        		NodeDefinition childDefn = schema.getById(childDefnId);
-        		entity.childStates.put(childDefn.getName(), state);
+        		NodeDefinition childDefn = schema.getDefinitionById(childDefnId);
+        		if ( childDefn != null ) {
+        			entity.childStates.put(childDefn.getName(), state);
+        		}
         	} else {
             	throw new ProtostuffException("Unexpected field number");
             }
         }
 	}
-	
+
 	protected boolean isNodeToBeSaved(Node<?> node) {
 		if ( node instanceof Attribute<?, ?> ) {
 			Entity parent = node.getParent();
@@ -99,5 +100,10 @@ public class EntitySchema extends SchemaSupport<Entity> {
     	}
 		return true;
 	}
-	
+
+	protected void skipNode(Input input) throws IOException, ProtostuffException {
+		readAndCheckFieldNumber(input, FIELD_NODE);
+		input.handleUnknownField(FIELD_NODE, this);
+	}
+
 }

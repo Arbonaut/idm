@@ -29,6 +29,7 @@ import org.openforis.idm.model.RealAttribute;
 import org.openforis.idm.model.RealRange;
 import org.openforis.idm.model.RealRangeAttribute;
 import org.openforis.idm.model.RealValue;
+import org.openforis.idm.model.TaxonOccurrence;
 import org.openforis.idm.model.TextValue;
 import org.openforis.idm.model.Time;
 
@@ -91,6 +92,9 @@ public class ModelNodePointer extends DynamicPointer {
 		} else if (value instanceof Code) {
 			Code code = (Code) value;
 			return code.getCode();
+		} else if (value instanceof TaxonOccurrence) {
+			TaxonOccurrence taxonOcc = (TaxonOccurrence) value;
+			return taxonOcc.getCode();
 		} else {
 			throw new UnsupportedOperationException("Unsupported value type of "+attribute.getClass());
 		}
@@ -197,11 +201,11 @@ public class ModelNodePointer extends DynamicPointer {
 	
 	private Number getNormalizedValue(Number value, Unit unit, Unit defaultUnit) {
 		if ( value != null && unit.getConversionFactor() != null && defaultUnit.getConversionFactor() != null ) {
-			float unitConvFact = unit.getConversionFactor().floatValue();
-			float defaultUnitConvFact = defaultUnit.getConversionFactor().floatValue();
-			float floatValue = value.floatValue();
-			float normalized = floatValue * unitConvFact;
-			Float normalizedToDefault = normalized / defaultUnitConvFact;
+			double unitConvFact = unit.getConversionFactor();
+			double defaultUnitConvFact = defaultUnit.getConversionFactor();
+			double doubleValue = value.doubleValue();
+			double normalized = doubleValue * unitConvFact;
+			double normalizedToDefault = normalized / defaultUnitConvFact;
 			return normalizedToDefault;
 		} else {
 			return value;

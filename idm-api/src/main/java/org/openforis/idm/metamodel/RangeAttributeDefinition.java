@@ -7,11 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;*/
-import org.simpleframework.xml.Order;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.model.IntegerRange;
 import org.openforis.idm.model.IntegerRangeAttribute;
@@ -26,13 +21,15 @@ import org.openforis.idm.model.Value;
  * @author M. Togna
  * @author K. Waga
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
-@Order(attributes="", elements = {"id", "name", "relevantExpression","required", "requiredExpression", "multiple", "minCount", "maxCount", "sinceVersionName", "deprecatedVersionName",
-		"type", "labels", "prompts", "descriptions", "attributeDefaults", "precisionDefinitions", "checks" })
+
 public class RangeAttributeDefinition extends NumericAttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 	
+	RangeAttributeDefinition(Survey survey, int id) {
+		super(survey, id);
+	}
+
 	@Override
 	public Node<?> createNode() {
 		Type effectiveType = getType();
@@ -58,7 +55,7 @@ public class RangeAttributeDefinition extends NumericAttributeDefinition {
 		} else if (isReal()) {
 			return RealRange.parseRealRange(string, unit);
 		}
-		throw new RuntimeException("Invalid range type " + type);
+		throw new RuntimeException("Invalid range type " + getType());
 	}
 	
 	@Override
@@ -77,7 +74,8 @@ public class RangeAttributeDefinition extends NumericAttributeDefinition {
 		default:
 			throw new UnsupportedOperationException("Unknown type");
 		}
-		result.add(new FieldDefinition<String>("unit", "u", "unit", String.class, this));
+		result.add(new FieldDefinition<String>(UNIT_NAME_FIELD, "u_name", "unit", String.class, this));
+		result.add(new FieldDefinition<Integer>(UNIT_FIELD, "u", "unit_id", Integer.class, this));
 		return Collections.unmodifiableList(result);
 	}
 	

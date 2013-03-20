@@ -40,13 +40,12 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
 	<dependencies>
-    <dependency>
-      <groupId>org.openforis.commons</groupId>
-      <artifactId>commons-collections</artifactId>
-      <version>0.0.2</version>
-    </dependency>
+	    <dependency>
+	      <groupId>org.openforis.commons</groupId>
+	      <artifactId>commons-collections</artifactId>
+	      <version>0.0.2</version>
+	    </dependency>
 		<dependency>
 			<groupId>org.openforis.idm</groupId>
 			<artifactId>idm-test</artifactId>

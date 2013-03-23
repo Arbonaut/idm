@@ -41,10 +41,9 @@ public class ExternalCodeValidator implements ValidationRule<CodeAttribute> {
 		columns.add(codeValue);
 		fillEmptyColumnValues(codeAttribute, columns, level);
 		
-		
 		ExternalCodeListProvider externalCodeListProvider = getExternalCodeListProvider(codeAttribute);
-		String listName = getListName(codeAttribute);
-		String code = externalCodeListProvider.getCode(listName, colName, (Object[]) columns.toArray(new String[] {}));
+		CodeList list = getList(codeAttribute);
+		String code = externalCodeListProvider.getCode(list, colName, (Object[]) columns.toArray(new String[] {}));
 		if (code == null || !code.equals(codeAttribute.getValue().getCode())) {
 			if ( isAllowedUnlisted(codeAttribute) ) {
 				return ValidationResultFlag.WARNING;
@@ -68,10 +67,10 @@ public class ExternalCodeValidator implements ValidationRule<CodeAttribute> {
 		}
 	}
 
-	private String getListName(CodeAttribute codeAttribute) {
+	private CodeList getList(CodeAttribute codeAttribute) {
 		CodeAttributeDefinition definition = codeAttribute.getDefinition();
 		CodeList list = definition.getList();
-		return list.getName();
+		return list;
 	}
 
 	private ExternalCodeListProvider getExternalCodeListProvider(CodeAttribute codeAttribute) {

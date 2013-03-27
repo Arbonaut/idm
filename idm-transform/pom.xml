@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>idm</artifactId>
 		<groupId>org.openforis.idm</groupId>
-		<version>3.0-Alpha6</version>
+		<version>3.0-Alpha7-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>idm-transform</artifactId>

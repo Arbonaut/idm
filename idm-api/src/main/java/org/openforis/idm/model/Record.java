@@ -45,7 +45,7 @@ public class Record {
 				throw new IllegalArgumentException("Version not specified");
 			}
 		}
-		this.nextId = 0;
+		this.nextId = 1;
 	}
 
 	public Entity createRootEntity(String name) {

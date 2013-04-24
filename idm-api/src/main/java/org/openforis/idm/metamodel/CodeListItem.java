@@ -92,7 +92,9 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	}
 	
 	public void removeLabel(String language) {
-		labels.remove(language);
+		if ( labels != null ) {
+			labels.remove(language);
+		}
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
@@ -122,7 +124,9 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	}
 
 	public void removeDescription(String language) {
-		descriptions.remove(language);
+		if ( descriptions != null ) {
+			descriptions.remove(language);
+		}
 	}
 
 	public List<CodeListItem> getChildItems() {

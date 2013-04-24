@@ -163,8 +163,10 @@ public class EntityDefinition extends NodeDefinition {
 	
 	@Override
 	public void detach() {
-		for (NodeDefinition child : childDefinitions) {
-			child.detach();
+		if ( childDefinitions != null ) {
+			for (NodeDefinition child : childDefinitions) {
+				child.detach();
+			}
 		}
 		super.detach();
 	}

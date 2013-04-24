@@ -8,7 +8,7 @@ package org.openforis.idm.model.species;
 public class Taxon {
 
 	public enum TaxonRank {
-		FAMILY("family"), GENUS("genus"), SPECIES("species"), SUBSPECIES("subspecies");
+		FAMILY("family"), GENUS("genus"), SPECIES("species"), SUBSPECIES("subspecies"), VARIETY("variety");
 		
 		private final String name;
 
@@ -28,6 +28,8 @@ public class Taxon {
 		
 		public TaxonRank getParent() {
 			switch (this) {
+			case VARIETY:
+				return SPECIES;
 			case SUBSPECIES:
 				return SPECIES;
 			case SPECIES:

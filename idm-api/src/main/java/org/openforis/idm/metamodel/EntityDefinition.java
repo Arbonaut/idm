@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.model.Entity;
 import org.openforis.idm.model.Node;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -28,7 +28,7 @@ public class EntityDefinition extends NodeDefinition {
 	}
 
 	public List<NodeDefinition> getChildDefinitions() {
-		return CollectionUtil.unmodifiableList(childDefinitions);
+		return CollectionUtils.unmodifiableList(childDefinitions);
 	}
 	
 	public NodeDefinition getChildDefinition(String name) {
@@ -70,7 +70,7 @@ public class EntityDefinition extends NodeDefinition {
 		return (T) childDefinition;
 	}
 	
-	public int getChildIndex(NodeDefinition defn) {
+	public int getChildDefinitionIndex(NodeDefinition defn) {
 		if ( childDefinitions != null ) {
 			int result = childDefinitions.indexOf(defn);
 			if ( result < 0 ) {
@@ -105,6 +105,7 @@ public class EntityDefinition extends NodeDefinition {
 	
 	public void removeChildDefinition(NodeDefinition defn) {
 		childDefinitions.remove(defn);
+		defn.detach();
 	}
 	
 	public void moveChildDefinition(int id, int index) {
@@ -113,16 +114,18 @@ public class EntityDefinition extends NodeDefinition {
 	}
 
 	public void moveChildDefinition(NodeDefinition defn, int newIndex) {
-		CollectionUtil.moveItem(childDefinitions, defn, newIndex);
+		CollectionUtils.shiftItem(childDefinitions, defn, newIndex);
 	}
 	
 	public List<AttributeDefinition> getKeyAttributeDefinitions() {
 		ArrayList<AttributeDefinition> result = new ArrayList<AttributeDefinition>();
-		for (NodeDefinition nodeDefinition : childDefinitions) {
-			if(nodeDefinition instanceof KeyAttributeDefinition) {
-				KeyAttributeDefinition keyAttributeDefinition = (KeyAttributeDefinition) nodeDefinition;
-				if(keyAttributeDefinition.isKey()) {
-					result.add((AttributeDefinition) keyAttributeDefinition);
+		if ( childDefinitions != null ) {
+			for (NodeDefinition nodeDefinition : childDefinitions) {
+				if(nodeDefinition instanceof KeyAttributeDefinition) {
+					KeyAttributeDefinition keyAttributeDefinition = (KeyAttributeDefinition) nodeDefinition;
+					if(keyAttributeDefinition.isKey()) {
+						result.add((AttributeDefinition) keyAttributeDefinition);
+					}
 				}
 			}
 		}
@@ -158,27 +161,45 @@ public class EntityDefinition extends NodeDefinition {
 		return new Entity(this);
 	}
 	
+	@Override
+	public void detach() {
+		if ( childDefinitions != null ) {
+			for (NodeDefinition child : childDefinitions) {
+				child.detach();
+			}
+		}
+		super.detach();
+	}
+
 	/**
 	 *  
 	 * @return true if entities with only keys of type internal code (not lookup)
 	 */
 	public boolean isEnumerable() {
-		List<AttributeDefinition> keyDefs = getKeyAttributeDefinitions();
-		if ( keyDefs.isEmpty() ) {
-			return false;
-		} else {
-			for (AttributeDefinition keyDef : keyDefs) {
-				if ( keyDef instanceof CodeAttributeDefinition ) {
-					CodeList list = ((CodeAttributeDefinition) keyDef).getList();
-					if ( list.getLookupTable() != null ) {
-						return false;
+		CodeAttributeDefinition enumeratingKeyCodeAttribute = getEnumeratingKeyCodeAttribute();
+		return enumeratingKeyCodeAttribute != null;
+	}
+	
+	public CodeAttributeDefinition getEnumeratingKeyCodeAttribute() {
+		return getEnumeratingKeyCodeAttribute(null);
+	}
+	
+	public CodeAttributeDefinition getEnumeratingKeyCodeAttribute(ModelVersion version) {
+		List<AttributeDefinition> keyDefns = getKeyAttributeDefinitions();
+		for (AttributeDefinition keyDefn: keyDefns) {
+			if (version == null || version.isApplicable(keyDefn) ) {
+				if ( keyDefn instanceof CodeAttributeDefinition ) {
+					CodeAttributeDefinition codeDefn = (CodeAttributeDefinition) keyDefn;
+					CodeList list = codeDefn.getList();
+					if ( list.getLookupTable() == null ) {
+						return codeDefn;
 					}
 				} else {
-					return false;
+					return null;
 				}
 			}
-			return true;
 		}
+		return null;
 	}
 
 	@Override
@@ -206,11 +227,4 @@ public class EntityDefinition extends NodeDefinition {
 		return true;
 	}
 	
-	@Override
-	public void detach() {
-		for (NodeDefinition child : childDefinitions) {
-			child.detach();
-		}
-		super.detach();
-	}
 }

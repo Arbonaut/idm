@@ -9,6 +9,6 @@ package org.openforis.idm.metamodel;
  */
 public interface ExternalCodeListProvider {
 	
-	String getCode(String listName, String attribute, Object... keys);
+	String getCode(CodeList list, String attribute, Object... keys);
 	
 }

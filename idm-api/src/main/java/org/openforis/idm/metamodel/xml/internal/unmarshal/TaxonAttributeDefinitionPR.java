@@ -23,8 +23,10 @@ class TaxonAttributeDefinitionPR extends AttributeDefinitionPR {
 		TaxonAttributeDefinition defn = (TaxonAttributeDefinition) getDefinition();
 		String taxonomy = getAttribute(TAXONOMY, true);
 		String highestRank = getAttribute(HIGHEST_RANK, false);
+		String qualifiers = getAttribute(QUALIFIERS, false);
 		defn.setTaxonomy(taxonomy);
 		defn.setHighestRank(highestRank);
+		defn.setQualifiers(qualifiers);
 	}
 	
 	@Override

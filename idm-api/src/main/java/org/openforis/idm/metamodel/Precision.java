@@ -5,29 +5,16 @@ package org.openforis.idm.metamodel;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "unitName", "decimalDigits", "defaultPrecision" })
 public class Precision implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlTransient
 	private Unit unit;
-
-	@XmlAttribute(name = "decimalDigits")
 	private Integer decimalDigits;
-
-	@XmlAttribute(name = "default")
 	private Boolean defaultPrecision;
 
 	public Unit getUnit() {

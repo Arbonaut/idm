@@ -41,7 +41,7 @@ public final class FieldDefinition<T> extends NodeDefinition {
 	
 	@Override
 	public Node<?> createNode() {
-		return new Field<T>(valueType); 
+		return new Field<T>(this, valueType); 
 	}
 
 	@Override

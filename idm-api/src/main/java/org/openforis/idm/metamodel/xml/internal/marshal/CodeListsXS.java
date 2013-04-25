@@ -42,6 +42,8 @@ class CodeListsXS extends VersionableSurveyObjectXS<CodeList, Survey> {
 		attribute(ID, list.getId());
 		attribute(NAME, list.getName());
 		attribute(LOOKUP, list.getLookupTable());
+		attribute(SINCE, list.getSinceVersionName());
+		attribute(DEPRECATED, list.getDeprecatedVersionName());
 		super.attributes(list);
 	}
 	
@@ -149,6 +151,8 @@ class CodeListsXS extends VersionableSurveyObjectXS<CodeList, Survey> {
 			if ( item.isQualifiable() ) {
 				attribute(QUALIFIABLE, "true");
 			}
+			attribute(SINCE, item.getSinceVersionName());
+			attribute(DEPRECATED, item.getDeprecatedVersionName());
 		}
 		
 		private class CodeXS extends TextXS<CodeListItem> {

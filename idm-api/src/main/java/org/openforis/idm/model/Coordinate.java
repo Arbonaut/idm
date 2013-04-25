@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public final class Coordinate implements Value{
 
-	private static final String STRING_FORMAT = "SRID=(.+);POINT\\((\\d+)\\s(\\d+)\\)";
+	private static final String STRING_FORMAT = "SRID=(.+);POINT\\((-?\\d+)\\s(-?\\d+)\\)";
 	private static final Pattern PATTERN = Pattern.compile(STRING_FORMAT);
 	
 	private Double x;

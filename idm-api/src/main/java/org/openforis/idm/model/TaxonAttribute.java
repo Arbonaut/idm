@@ -1,6 +1,7 @@
 package org.openforis.idm.model;
 
 import org.openforis.idm.metamodel.Languages;
+import org.openforis.idm.metamodel.Languages.Standard;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
 
 /**
@@ -62,11 +63,11 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 		return getLanguageCodeField().getValue();
 	}
 	
-	public void setLanguageCode(String lang) {
-		if ( lang != null && ! Languages.contains(lang) ) {
-			throw new LanguageCodeNotSupportedException("Language code not supported: " + lang);
+	public void setLanguageCode(String code) {
+		if ( code != null && ! Languages.exists(Standard.ISO_639_3, code) ) {
+			throw new LanguageCodeNotSupportedException("Language code not supported: " + code);
 		}
-		getLanguageCodeField().setValue(lang);
+		getLanguageCodeField().setValue(code);
 		onUpdateValue();
 	}
 

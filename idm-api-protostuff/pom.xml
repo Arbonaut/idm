@@ -3,16 +3,17 @@
 	<parent>
 		<groupId>org.openforis.idm</groupId>
 		<artifactId>idm</artifactId>
-		<version>3.1-SNAPSHOT</version>
+		<version>3.0-CR1-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	
+	<artifactId>idm-api-protostuff</artifactId>
+
 	<properties>
 		<protostuff.version>1.0.4</protostuff.version>
 	</properties>
 	
-	<artifactId>idm-api-protostuff</artifactId>
-	<dependencies>
+  <dependencies>
 		<dependency>
 			<groupId>org.openforis.idm</groupId>
 			<artifactId>idm-api</artifactId>
@@ -22,12 +23,6 @@
 			<artifactId>idm-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>net.sf.kxml</groupId>
-			<artifactId>kxml2</artifactId>
-			<version>2.3.0</version>
-			<scope>test</scope>
-		</dependency>  
 		<dependency>
 			<groupId>com.dyuproject.protostuff</groupId>
 			<artifactId>protostuff-api</artifactId>

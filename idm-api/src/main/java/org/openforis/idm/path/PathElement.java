@@ -150,6 +150,9 @@ public class PathElement implements Axis {
 	}
 	
 	public static PathElement parseElement(String s) throws InvalidPathException {
+		if ( PARENT_FUNCTION.equals(s) ) {
+			return new PathElement(s);
+		}
 		Matcher m = PATTERN.matcher(s);
 		if ( ! m.matches() ) {
 			throw new InvalidPathException(s);

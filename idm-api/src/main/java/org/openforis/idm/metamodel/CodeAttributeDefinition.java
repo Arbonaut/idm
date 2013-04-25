@@ -22,9 +22,12 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 
 	private static final long serialVersionUID = 1L;
 	
+	public static final String CODE_FIELD = "code";
+	public static final String QUALIFIER_FIELD = "qualifier";
+	
 	private final FieldDefinition<?>[] FIELD_DEFINITIONS = {
-		new FieldDefinition<String>("code", "c", null, String.class, this), 
-		new FieldDefinition<String>("qualifier", "q", "other", String.class, this)
+		new FieldDefinition<String>(CODE_FIELD, "c", null, String.class, this), 
+		new FieldDefinition<String>(QUALIFIER_FIELD, "q", "other", String.class, this)
 	};
 
 	private boolean key;
@@ -159,5 +162,19 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		} else if (!parentExpression.equals(other.parentExpression))
 			return false;
 		return true;
+	}
+
+	public int getCodeListLevel() {
+		if ( list == null || list.getHierarchy().isEmpty() ) {
+			return 0;
+		} else {
+			int level = 0;
+			CodeAttributeDefinition ptr = getParentCodeAttributeDefinition();
+			while ( ptr != null ) {
+				level ++;
+				ptr = ptr.getParentCodeAttributeDefinition();
+			}
+			return level;
+		}
 	}
 }

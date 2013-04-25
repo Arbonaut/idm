@@ -40,6 +40,15 @@ public abstract class NodeDefinition extends VersionableSurveyObject {
 		Path p = Path.parse(path);
 		return p.evaluate(this);
 	}
+	
+	@Override
+	void detach() {
+		Schema schema = getSchema();
+		if ( schema != null ) {
+			schema.detach(this);
+		}
+		super.detach();
+	}
 
 	public String getName() {
 		return this.name;
@@ -240,7 +249,7 @@ public abstract class NodeDefinition extends VersionableSurveyObject {
 			this.multiple = true;
 		}
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

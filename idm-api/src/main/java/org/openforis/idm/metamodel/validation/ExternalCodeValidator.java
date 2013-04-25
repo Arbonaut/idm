@@ -41,12 +41,15 @@ public class ExternalCodeValidator implements ValidationRule<CodeAttribute> {
 		columns.add(codeValue);
 		fillEmptyColumnValues(codeAttribute, columns, level);
 		
-		
 		ExternalCodeListProvider externalCodeListProvider = getExternalCodeListProvider(codeAttribute);
-		String listName = getListName(codeAttribute);
-		String code = externalCodeListProvider.getCode(listName, colName, (Object[]) columns.toArray(new String[] {}));
+		CodeList list = getList(codeAttribute);
+		String code = externalCodeListProvider.getCode(list, colName, (Object[]) columns.toArray(new String[] {}));
 		if (code == null || !code.equals(codeAttribute.getValue().getCode())) {
-			return ValidationResultFlag.ERROR;
+			if ( isAllowedUnlisted(codeAttribute) ) {
+				return ValidationResultFlag.WARNING;
+			} else {
+				return ValidationResultFlag.ERROR;
+			}
 		} else {
 			return ValidationResultFlag.OK;
 		}
@@ -64,10 +67,10 @@ public class ExternalCodeValidator implements ValidationRule<CodeAttribute> {
 		}
 	}
 
-	private String getListName(CodeAttribute codeAttribute) {
+	private CodeList getList(CodeAttribute codeAttribute) {
 		CodeAttributeDefinition definition = codeAttribute.getDefinition();
 		CodeList list = definition.getList();
-		return list.getName();
+		return list;
 	}
 
 	private ExternalCodeListProvider getExternalCodeListProvider(CodeAttribute codeAttribute) {
@@ -95,6 +98,11 @@ public class ExternalCodeValidator implements ValidationRule<CodeAttribute> {
 		List<CodeListLevel> hierarchy = codeList.getHierarchy();
 		CodeListLevel codeListLevel = hierarchy.get(level);
 		return codeListLevel.getName();
+	}
+	
+	private boolean isAllowedUnlisted(CodeAttribute attribute) {
+		CodeAttributeDefinition definition = attribute.getDefinition();
+		return definition.isAllowUnlisted();
 	}
 
 }

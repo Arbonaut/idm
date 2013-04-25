@@ -65,7 +65,6 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 			String codeValue = code.getCode();
 			if (StringUtils.isNotBlank(codeValue)) {
 				ModelVersion currentVersion = getRecord().getVersion();
-
 				CodeAttributeDefinition definition = getDefinition();
 				String parentExpression = definition.getParentExpression();
 				if (StringUtils.isBlank(parentExpression)) {
@@ -112,7 +111,7 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 	// check if it's used elsewhere
 	private CodeListItem findCodeListItem(List<CodeListItem> list, String value, ModelVersion version) {
 		for (CodeListItem item : list) {
-			if (item.getCode().equals(value) && version.isApplicable(item)) {
+			if (item.getCode().equals(value) && (version == null || version.isApplicable(item)) ) {
 				return item;
 			}
 		}

@@ -1,9 +1,11 @@
 package org.openforis.idm.metamodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
-@XmlAccessorType(XmlAccessType.FIELD)
+/**
+ * 
+ * @author M. Togna
+ * @author S. Ricci
+ *
+ */
 public class NodeLabel extends TypedLanguageSpecificText<NodeLabel.Type> {
 
 	public NodeLabel(Type type, String language, String text) {

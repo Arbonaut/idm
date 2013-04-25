@@ -11,46 +11,24 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  * @author S. Ricci
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "id", "qualifiable", "sinceVersionName", "deprecatedVersionName", "code", "labels", "descriptions", "childItems" })
 public class CodeListItem extends VersionableSurveyObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlAttribute(name = "qualifiable")
 	private Boolean qualifiable;
-
-	@XmlElement(name = "code")
 	private String code;
-
-	@XmlElement(name = "label", type = LanguageSpecificTextMap.class)
 	private LanguageSpecificTextMap labels;
-
-	@XmlElement(name = "description", type = LanguageSpecificTextMap.class)
 	private LanguageSpecificTextMap descriptions;
-
-	@XmlElement(name = "item", type = CodeListItem.class)
 	private List<CodeListItem> childItems;
-
 	private CodeList list;
-
 	private CodeListItem parentItem;
-	
-//	@XmlTransient
-//	private int lastItemId;
 
 	CodeListItem(CodeList codeList, int id) {
 		super(codeList.getSurvey(), id);
@@ -114,7 +92,9 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	}
 	
 	public void removeLabel(String language) {
-		labels.remove(language);
+		if ( labels != null ) {
+			labels.remove(language);
+		}
 	}
 
 	public List<LanguageSpecificText> getDescriptions() {
@@ -144,11 +124,13 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	}
 
 	public void removeDescription(String language) {
-		descriptions.remove(language);
+		if ( descriptions != null ) {
+			descriptions.remove(language);
+		}
 	}
 
 	public List<CodeListItem> getChildItems() {
-		return CollectionUtil.unmodifiableList(childItems);
+		return CollectionUtils.unmodifiableList(childItems);
 	}
 	
 	public CodeListItem getChildItem(String code) {
@@ -164,17 +146,35 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	
 	public CodeListItem findChildItem(String code) {
 		if ( childItems != null && code != null ) {
-			String adaptedCode = Pattern.quote(code);
-			Pattern pattern = Pattern.compile("^" + adaptedCode + "$", Pattern.CASE_INSENSITIVE);
+			Pattern pattern = createMatchingPattern(code);
 			for (CodeListItem item : childItems) {
-				String itemCode = item.getCode();
-				Matcher matcher = pattern.matcher(itemCode);
-				if(matcher.find()) {
+				if ( item.matchCode(pattern) ) {
 					return item;
 				}
 			}
 		}
 		return null;
+	}
+	
+	protected Pattern createMatchingPattern(String code) {
+		String adaptedCode = Pattern.quote(code);
+		Pattern pattern = Pattern.compile("^" + adaptedCode + "$", Pattern.CASE_INSENSITIVE);
+		return pattern;
+	}
+	
+	public boolean matchCode(String code) {
+		Pattern pattern = createMatchingPattern(code);
+		return matchCode(pattern);
+	}
+
+	protected boolean matchCode(Pattern pattern) {
+		String itemCode = getCode();
+		Matcher matcher = pattern.matcher(itemCode);
+		if(matcher.find()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void addChildItem(CodeListItem item) {
@@ -200,7 +200,7 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	}
 
 	public void moveChildItem(CodeListItem item, int indexTo) {
-		CollectionUtil.moveItem(childItems, item, indexTo);
+		CollectionUtils.shiftItem(childItems, item, indexTo);
 	}
 
 	protected int calculateLastUsedItemId() {
@@ -238,6 +238,15 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 			}
 		}
 		return false;
+	}
+	
+	public void removeVersioningRecursive(ModelVersion version) {
+		removeVersioning(version);
+		if ( childItems != null ) {
+			for (CodeListItem child : childItems ) {
+				child.removeVersioningRecursive(version);
+			}
+		}
 	}
 
 	@Override

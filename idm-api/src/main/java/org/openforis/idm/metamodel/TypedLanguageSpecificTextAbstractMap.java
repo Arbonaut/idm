@@ -1,11 +1,14 @@
 package org.openforis.idm.metamodel;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -15,7 +18,9 @@ import java.util.List;
  * @param <T>
  * @param <T>
  */
-public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLanguageSpecificText<T>, T extends Enum<T>> {
+public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLanguageSpecificText<T>, T extends Enum<T>> implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	private final Class<L> itemClass;
 	private final Class<T> typeClass;
@@ -47,12 +52,16 @@ public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLangua
 	}
 	
 	public void setText(T type, String language, String text) {
-		L languageSpecificText = get(type, language);
-		if ( languageSpecificText == null ) {
-			languageSpecificText = createLanguageSpecificTextInstance(type, language, text);
-			add(languageSpecificText);
+		if ( StringUtils.isBlank(text) ) {
+			remove(type, language);
 		} else {
-			languageSpecificText.setText(text);
+			L languageSpecificText = get(type, language);
+			if ( languageSpecificText == null ) {
+				languageSpecificText = createLanguageSpecificTextInstance(type, language, text);
+				add(languageSpecificText);
+			} else {
+				languageSpecificText.setText(text);
+			}
 		}
 	}
 
@@ -101,7 +110,10 @@ public abstract class TypedLanguageSpecificTextAbstractMap<L extends TypedLangua
 		return true;
 	}
 
-	static class MapKey<T> {
+	static class MapKey<T> implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+
 		private String language;
 		private T type;
 		

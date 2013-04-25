@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author G. Miceli
  * @author M. Togna
  */
-public class CodeList extends VersionableSurveyObject implements Annotatable {
+public class CodeList extends VersionableSurveyObject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -112,7 +112,7 @@ public class CodeList extends VersionableSurveyObject implements Annotatable {
 	}
 
 	public List<CodeListLevel> getHierarchy() {
-		return CollectionUtil.unmodifiableList(this.hierarchy);
+		return CollectionUtils.unmodifiableList(this.hierarchy);
 	}
 
 	public void addLevel(CodeListLevel level) {
@@ -129,6 +129,15 @@ public class CodeList extends VersionableSurveyObject implements Annotatable {
 				removeItemsInLevel(index);
 			}
 		}
+	}
+	
+	/**
+	 * Removes all levels in hierarchy and all the child items
+	 * 
+	 */
+	public void removeAllLevels() {
+		removeAllItems();
+		hierarchy = null;
 	}
 
 	public boolean hasItemsInLevel(int levelIndex) {
@@ -165,7 +174,7 @@ public class CodeList extends VersionableSurveyObject implements Annotatable {
 	}
 	
 	public List<CodeListItem> getItems() {
-		return CollectionUtil.unmodifiableList(this.items);
+		return CollectionUtils.unmodifiableList(this.items);
 	}
 	
 	public CodeListItem getItem(String code) {
@@ -177,6 +186,15 @@ public class CodeList extends VersionableSurveyObject implements Annotatable {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * 
+	 * Removes all child items
+	 * 
+	 */
+	public void removeAllItems() {
+		items = null;
 	}
 	
 	public CodeListItem findItem(String code) {
@@ -215,7 +233,7 @@ public class CodeList extends VersionableSurveyObject implements Annotatable {
 	}
 	
 	public void moveItem(CodeListItem item, int indexTo) {
-		CollectionUtil.moveItem(items, item, indexTo);
+		CollectionUtils.shiftItem(items, item, indexTo);
 	}
 
 	public CodeScope getCodeScope() {
@@ -240,6 +258,13 @@ public class CodeList extends VersionableSurveyObject implements Annotatable {
 			}
 		}
 		return false;
+	}
+	
+	public void removeVersioningRecursive(ModelVersion version) {
+		removeVersioning(version);
+		for (CodeListItem item : getItems()) {
+			item.removeVersioningRecursive(version);
+		}
 	}
 
 	@Override
@@ -314,4 +339,22 @@ public class CodeList extends VersionableSurveyObject implements Annotatable {
 		int id = getSurvey().nextId();
 		return createItem(id);
 	}
+
+	public List<CodeListItem> getItems(int level) {
+		return getItemsInternal(items, level);
+	}
+
+	private List<CodeListItem> getItemsInternal(List<CodeListItem> parentItems, int level) {
+		if ( level <= 0 ) {
+			return Collections.unmodifiableList(parentItems);
+		} else {
+			ArrayList<CodeListItem> descendants = new ArrayList<CodeListItem>();
+			for (CodeListItem item : parentItems) {
+				List<CodeListItem> childItems = item.getChildItems();
+				descendants.addAll(childItems);
+			}
+			return getItemsInternal(descendants, level-1);
+		}
+	}
+
 }

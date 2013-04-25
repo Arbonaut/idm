@@ -258,7 +258,7 @@ public class NumberColumnProviderTest extends AbstractColumnProviderTest {
 		assertEquals((Integer) 1, valueField.getValue());
 		assertEquals(1, cells.get(1).getNodes().size());
 		Field<Integer> unitField = (Field<Integer>) cells.get(1).getNodes().get(0);
-		assertEquals("cm", unitField.getValue());
+		assertEquals((Integer) u2.getId(), unitField.getValue());
 	}
 
 	private EntityDefinition createTestPlotRootEntity() {
@@ -275,7 +275,7 @@ public class NumberColumnProviderTest extends AbstractColumnProviderTest {
 //		plotDef.setName("plot");
 //		NumberAttributeDefinition numberDefn = schema.createNumberAttributeDefinition();
 //		numberDefn.setName("number");
-//		numberDefn.setType(Type.INTEGER);
+//		numberDefn.setType(Standard.INTEGER);
 //		numberDefn.setMaxCount(2);
 //		plotDef.addChildDefinition(numberDefn);
 //		

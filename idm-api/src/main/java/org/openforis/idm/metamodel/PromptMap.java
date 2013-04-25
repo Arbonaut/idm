@@ -7,4 +7,6 @@ package org.openforis.idm.metamodel;
  */
 public class PromptMap extends TypedLanguageSpecificTextAbstractMap<Prompt, Prompt.Type> {
 
+	private static final long serialVersionUID = 1L;
+
 }

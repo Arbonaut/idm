@@ -1,9 +1,10 @@
 package org.openforis.idm.metamodel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.openforis.idm.util.CollectionUtil;
+import org.openforis.commons.collection.CollectionUtils;
 
 /**
  * @author G. Miceli
@@ -12,6 +13,9 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 
 	private static final long serialVersionUID = 1L;
 
+	public static final String UNIT_FIELD = "unit";
+	public static final String UNIT_NAME_FIELD = "unit_name";
+	
 	public enum Type {
 		INTEGER(Integer.class), REAL(Double.class);
 
@@ -49,7 +53,7 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	}
 
 	public List<Precision> getPrecisionDefinitions() {
-		return CollectionUtil.unmodifiableList(precisionDefinitions);
+		return CollectionUtils.unmodifiableList(precisionDefinitions);
 	}
 
 	public void addPrecisionDefinition(Precision precision) {
@@ -59,10 +63,26 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 		precisionDefinitions.add(precision);
 	}
 	
-	public void removeAllPrecisionDefinitions() {
+	public void removePrecisionDefinition(Precision precision) {
+		precisionDefinitions.remove(precision);
+	}
+	
+	public void removePrecisionDefinitions(Unit unit) {
 		if ( precisionDefinitions != null ) {
-			precisionDefinitions.clear();
+			int unitId = unit.getId();
+			Iterator<Precision> it = precisionDefinitions.iterator();
+			while (it.hasNext()) {
+				Precision precision = (Precision) it.next();
+				Unit un = precision.getUnit();
+				if ( un != null && un.getId() == unitId ) {
+					it.remove();
+				}
+			}
 		}
+	}
+	
+	public void movePrecisionDefinition(Precision precision, int toIndex) {
+		CollectionUtils.shiftItem(precisionDefinitions, precision, toIndex);
 	}
 	
 	/**
@@ -133,7 +153,7 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 				}
 			}
 		}
-		return CollectionUtil.unmodifiableList(units);
+		return CollectionUtils.unmodifiableList(units);
 	}
 
 	@Override
@@ -163,5 +183,5 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 			return false;
 		return true;
 	}
-	
+
 }

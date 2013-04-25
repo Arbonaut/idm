@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.metamodel.validation.Check;
 import org.openforis.idm.model.NodePathPointer;
 import org.openforis.idm.model.Value;
-import org.openforis.idm.util.CollectionUtil;
 
 /**
  * @author G. Miceli
@@ -30,7 +30,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	}
 
 	public List<Check<?>> getChecks() {
-		return CollectionUtil.unmodifiableList(this.checks);
+		return CollectionUtils.unmodifiableList(this.checks);
 	}
 	
 	public void addCheck(Check<?> check) {
@@ -51,7 +51,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	}
 
 	public List<AttributeDefault> getAttributeDefaults() {
-		return CollectionUtil.unmodifiableList(this.attributeDefaults);
+		return CollectionUtils.unmodifiableList(this.attributeDefaults);
 	}
 
 	public void addAttributeDefault(AttributeDefault def) {
@@ -60,7 +60,7 @@ public abstract class AttributeDefinition extends NodeDefinition {
 		}
 		attributeDefaults.add(def);
 	}
-
+	
 	public void removeAllAttributeDefaults() {
 		if ( attributeDefaults != null ) {
 			attributeDefaults.clear();
@@ -68,6 +68,10 @@ public abstract class AttributeDefinition extends NodeDefinition {
 	}
 	public void removeAttributeDefault(AttributeDefault def) {
 		attributeDefaults.remove(def);
+	}
+	
+	public void moveAttributeDefault(AttributeDefault def, int toIndex) {
+		CollectionUtils.shiftItem(attributeDefaults, def, toIndex);
 	}
 
 	public abstract <V extends Value> V createValue(String string);
@@ -121,5 +125,19 @@ public abstract class AttributeDefinition extends NodeDefinition {
 			return false;
 		return true;
 	}
-	
+
+	/**
+	 * Build name prefixing all names of ancestor single entities
+	 * @return
+	 */
+	public String getCompoundName() {
+		StringBuilder sb = new StringBuilder(getName());
+		NodeDefinition ancestor = getParentDefinition();
+		while ( ancestor != null && !ancestor.isMultiple() ) {
+			sb.insert(0, "_");
+			sb.insert(0, ancestor.getName());
+			ancestor = ancestor.getParentDefinition();
+		}
+		return sb.toString();
+	}
 }

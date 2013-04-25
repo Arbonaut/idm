@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author S. Ricci
  */
 @XmlTransient
 public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
@@ -20,6 +21,16 @@ public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
 
 	protected VersionableSurveyObject(Survey survey, int id) {
 		super(survey, id);
+	}
+
+	public void removeVersioning(ModelVersion version) {
+		int versionId = version.getId();
+		if ( sinceVersion != null && sinceVersion.getId() == versionId ) {
+			sinceVersion = null;
+		}
+		if ( deprecatedVersion != null && deprecatedVersion.getId() == versionId ) {
+			deprecatedVersion = null;
+		}
 	}
 
 	public String getSinceVersionName() {

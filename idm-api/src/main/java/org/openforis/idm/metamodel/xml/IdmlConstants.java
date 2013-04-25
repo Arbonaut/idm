@@ -90,6 +90,7 @@ public interface IdmlConstants {
 	static String HIGHEST_RANK = "highestRank";
 	static String TAXONOMY = "taxonomy";
 	static String TAXON = "taxon";
+	static String QUALIFIERS = "qualifiers";
 	static String EXTENSIONS = "extensions";
 	static String MAX_SIZE = "maxSize";
 	// Checks

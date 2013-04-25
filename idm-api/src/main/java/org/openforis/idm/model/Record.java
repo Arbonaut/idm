@@ -35,11 +35,17 @@ public class Record {
 		this.survey = survey;
 		this.nodesByInternalId = new HashMap<Integer, Node<? extends NodeDefinition>>();
 		this.survey = survey;
-		this.modelVersion = survey.getVersion(version);
-		if ( modelVersion == null ) {
-			throw new IllegalArgumentException("Invalid version '"+version+'"');
+		if ( version == null ) {
+			if ( ! survey.getVersions().isEmpty() ) {
+				throw new IllegalArgumentException("Invalid version '"+version+'"');
+			}
+		} else {
+			this.modelVersion = survey.getVersion(version);
+			if ( modelVersion == null ) {
+				throw new IllegalArgumentException("Version not specified");
+			}
 		}
-		this.nextId = 0;
+		this.nextId = 1;
 	}
 
 	public Entity createRootEntity(String name) {

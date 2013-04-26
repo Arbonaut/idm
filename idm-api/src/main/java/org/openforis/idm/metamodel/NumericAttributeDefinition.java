@@ -89,20 +89,9 @@ public abstract class NumericAttributeDefinition extends AttributeDefinition {
 	 * @return true if the unit may be user-defined, false if the value is always measured with the same (or no) unit  
 	 */
 	public boolean isVariableUnit() {
-		if ( precisionDefinitions == null ) {
-			return false;
-		}
-		boolean unitFound = false;
-		for (Precision p : precisionDefinitions) {
-			Unit unit = p.getUnit();
-			if ( unit != null ) {
-				if ( unitFound ) {
-					return true;
-				}
-				unitFound = true;
-			}
-		}
-		return false;
+		List<Unit> units = getUnits();
+		
+		return units.size() > 1;
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -265,6 +266,27 @@ public class CodeList extends VersionableSurveyObject {
 		for (CodeListItem item : getItems()) {
 			item.removeVersioningRecursive(version);
 		}
+	}
+	
+	public boolean isEnumeratingList() {
+		Survey survey = getSurvey();
+		Schema schema = survey.getSchema();
+		Stack<NodeDefinition> stack = new Stack<NodeDefinition>();
+		List<EntityDefinition> rootEntityDefinitions = schema.getRootEntityDefinitions();
+		stack.addAll(rootEntityDefinitions);
+		while ( ! stack.isEmpty() ) {
+			NodeDefinition node = stack.pop();
+			if ( node instanceof EntityDefinition ) {
+				EntityDefinition entityDefn = (EntityDefinition) node;
+				CodeAttributeDefinition enumeratingKeyCodeAttribute = entityDefn.getEnumeratingKeyCodeAttribute();
+				if ( enumeratingKeyCodeAttribute != null && 
+						enumeratingKeyCodeAttribute.getList().getId() == this.getId() ) {
+					return true;
+				}
+				stack.addAll(entityDefn.getChildDefinitions());
+			}
+		}
+		return false;
 	}
 
 	@Override

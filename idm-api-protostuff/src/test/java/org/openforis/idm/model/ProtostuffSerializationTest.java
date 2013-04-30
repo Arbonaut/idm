@@ -63,7 +63,7 @@ public class ProtostuffSerializationTest  {
 		
 		Schema schema = survey.getSchema();
 		EntityDefinition clusterDefn = schema.getRootEntityDefinition("cluster");
-		NodeDefinition mapSheetDefn = schema.getDefinitionById(10);
+		NodeDefinition mapSheetDefn = clusterDefn.getChildDefinition("map_sheet");
 		clusterDefn.removeChildDefinition(mapSheetDefn);
 		
 		Record record2 = new Record(survey, "2.0");

@@ -119,6 +119,9 @@ public class PathElement implements Axis {
 		if ( index == null || index == 1) {					// /cluster[0]/plot[2]/location[1]/x[1]
 			List<Node<?>> results = new ArrayList<Node<?>>(1);
 			Field<?> field = parentAttribute.getField(name);
+			if ( field == null ) {
+				return null;
+			}
 			results.add(field);
 			return Collections.unmodifiableList(results);
 		} else {								// /cluster[1]/plot[2]/location[1]/x[2] NO 

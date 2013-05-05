@@ -61,12 +61,19 @@ public final class Path implements Axis, Iterable<PathElement> {
 			Record record = context.getRecord();
 			return evaluate(record);
 		} else if ( parentPath == null ) {
-			return lastElement.evaluate(context);
+			List<Node<?>> res = lastElement.evaluate(context);
+			if ( res == null ) {
+				throw new InvalidPathException(toString());
+			}
+			return res;
 		} else {
 			List<Node<?>> contexts = parentPath.evaluate(context);
 			List<Node<?>> results = new ArrayList<Node<?>>();
 			for (Node<?> ctx : contexts) {
 				List<Node<?>> eval = lastElement.evaluate(ctx);
+				if ( eval == null ) {
+					throw new InvalidPathException(toString());
+				}
 				results.addAll(eval);
 			}
 			return Collections.unmodifiableList(results);

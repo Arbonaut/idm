@@ -4013,23 +4013,23 @@
               <prompt type="pc">Proportion of stones</prompt>
             </code>
           </entity>
-          <code deprecated="1.1" id="71" list="soil_structure" name="structure">
-            <label>Structure</label>
-          </code>
-          <number id="72" name="depth" since="1.1" type="real">
-            <label>Depth of organic layer</label>
-            <precision decimalDigits="0" unit="cm" />
-            <compare flag="error" gte="0" />
-          </number>
-          <text deprecated="1.1" id="73" name="colour">
-            <label>Colour</label>
-          </text>
-          <code deprecated="1.1" id="74" list="soil_texture" name="texture">
-            <label>Texture</label>
-          </code>
-          <boolean deprecated="1.1" id="75" name="sample">
-            <label>Sample collected</label>
-          </boolean>
+<!--           <code deprecated="1.1" id="71" list="soil_structure" name="structure"> -->
+<!--             <label>Structure</label> -->
+<!--           </code> -->
+<!--           <number id="72" name="depth" since="1.1" type="real"> -->
+<!--             <label>Depth of organic layer</label> -->
+<!--             <precision decimalDigits="0" unit="cm" /> -->
+<!--             <compare flag="error" gte="0" /> -->
+<!--           </number> -->
+<!--           <text deprecated="1.1" id="73" name="colour"> -->
+<!--             <label>Colour</label> -->
+<!--           </text> -->
+<!--           <code deprecated="1.1" id="74" list="soil_texture" name="texture"> -->
+<!--             <label>Texture</label> -->
+<!--           </code> -->
+<!--           <boolean deprecated="1.1" id="75" name="sample"> -->
+<!--             <label>Sample collected</label> -->
+<!--           </boolean> -->
         </entity>
         <code id="76" list="erosion_intensity" name="erosion" relevant="accessibility = 0" required="true" ui:tab="plot_det">
           <label>Erosion</label>

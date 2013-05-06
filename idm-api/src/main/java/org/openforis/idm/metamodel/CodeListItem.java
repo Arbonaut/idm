@@ -18,7 +18,7 @@ import org.openforis.commons.collection.CollectionUtils;
  * @author M. Togna
  * @author S. Ricci
  */
-public class CodeListItem extends VersionableSurveyObject implements Serializable {
+public class CodeListItem extends VersionableSurveyObject implements Labelable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 

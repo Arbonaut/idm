@@ -83,7 +83,7 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 		}
 		return null;
 	}
-
+	
 	public CodeAttribute getCodeParent() {
 		try {
 			String parentExpr = definition.getParentExpression();

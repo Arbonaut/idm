@@ -181,12 +181,12 @@ public class CodeList extends VersionableSurveyObject {
 		return CollectionUtils.unmodifiableList(this.items);
 	}
 	
-	public List<CodeListItem> getItems(int level) {
+	public List<CodeListItem> getItems(Integer level) {
 		return getItemsInternal(items, level);
 	}
 
-	private List<CodeListItem> getItemsInternal(List<CodeListItem> parentItems, int level) {
-		if ( level <= 0 ) {
+	private List<CodeListItem> getItemsInternal(List<CodeListItem> parentItems, Integer levelIdx) {
+		if ( levelIdx == null || levelIdx <= 0 ) {
 			return Collections.unmodifiableList(parentItems);
 		} else {
 			ArrayList<CodeListItem> descendants = new ArrayList<CodeListItem>();
@@ -194,7 +194,7 @@ public class CodeList extends VersionableSurveyObject {
 				List<CodeListItem> childItems = item.getChildItems();
 				descendants.addAll(childItems);
 			}
-			return getItemsInternal(descendants, level-1);
+			return getItemsInternal(descendants, levelIdx - 1);
 		}
 	}
 

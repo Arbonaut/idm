@@ -116,6 +116,10 @@ public class CodeList extends VersionableSurveyObject {
 		return CollectionUtils.unmodifiableList(this.hierarchy);
 	}
 
+	public boolean isHierarchical() {
+		return hierarchy != null && hierarchy.size() > 1;
+	}
+
 	public void addLevel(CodeListLevel level) {
 		if ( this.hierarchy == null ) {
 			this.hierarchy = new ArrayList<CodeListLevel>();
@@ -178,6 +182,23 @@ public class CodeList extends VersionableSurveyObject {
 		return CollectionUtils.unmodifiableList(this.items);
 	}
 	
+	public List<CodeListItem> getItems(Integer level) {
+		return getItemsInternal(items, level);
+	}
+
+	private List<CodeListItem> getItemsInternal(List<CodeListItem> parentItems, Integer levelIdx) {
+		if ( levelIdx == null || levelIdx <= 0 ) {
+			return Collections.unmodifiableList(parentItems);
+		} else {
+			ArrayList<CodeListItem> descendants = new ArrayList<CodeListItem>();
+			for (CodeListItem item : parentItems) {
+				List<CodeListItem> childItems = item.getChildItems();
+				descendants.addAll(childItems);
+			}
+			return getItemsInternal(descendants, levelIdx - 1);
+		}
+	}
+
 	public CodeListItem getItem(String code) {
 		if ( items != null && code != null ) {
 			for (CodeListItem item : items) {
@@ -189,15 +210,15 @@ public class CodeList extends VersionableSurveyObject {
 		return null;
 	}
 	
-	/**
-	 * 
-	 * Removes all child items
-	 * 
-	 */
-	public void removeAllItems() {
-		items = null;
+	public CodeListItem createItem(int id) {
+		return new CodeListItem(this, id);
 	}
-	
+
+	public CodeListItem createItem() {
+		int id = getSurvey().nextId();
+		return createItem(id);
+	}
+
 	public CodeListItem findItem(String code) {
 		if ( items != null && code != null ) {
 			String adaptedCode = Pattern.quote(code);
@@ -219,6 +240,15 @@ public class CodeList extends VersionableSurveyObject {
 		}
 		// TODO check id
 		items.add(item);
+	}
+	
+	/**
+	 * 
+	 * Removes all child items
+	 * 
+	 */
+	public void removeAllItems() {
+		items = null;
 	}
 	
 	public void removeItem(int id) {
@@ -351,32 +381,6 @@ public class CodeList extends VersionableSurveyObject {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
-	}
-
-	public CodeListItem createItem(int id) {
-		return new CodeListItem(this, id);
-	}
-
-	public CodeListItem createItem() {
-		int id = getSurvey().nextId();
-		return createItem(id);
-	}
-
-	public List<CodeListItem> getItems(int level) {
-		return getItemsInternal(items, level);
-	}
-
-	private List<CodeListItem> getItemsInternal(List<CodeListItem> parentItems, int level) {
-		if ( level <= 0 ) {
-			return Collections.unmodifiableList(parentItems);
-		} else {
-			ArrayList<CodeListItem> descendants = new ArrayList<CodeListItem>();
-			for (CodeListItem item : parentItems) {
-				List<CodeListItem> childItems = item.getChildItems();
-				descendants.addAll(childItems);
-			}
-			return getItemsInternal(descendants, level-1);
-		}
 	}
 
 }

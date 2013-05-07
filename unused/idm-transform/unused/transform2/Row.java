@@ -1,4 +1,4 @@
-package org.openforis.idm.transform;
+package org.openforis.idm.transform2;
 
 import java.util.Collections;
 import java.util.Iterator;

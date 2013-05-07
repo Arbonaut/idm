@@ -30,7 +30,7 @@ public class Schema extends SurveyObject {
 	}
 	
 	public NodeDefinition getDefinitionByPath(String absolutePath) throws InvalidPathException {
-		Path path = Path.parsePath(absolutePath);
+		Path path = Path.parse(absolutePath);
 		return path.evaluate(this);
 	}
 	
@@ -280,5 +280,11 @@ public class Schema extends SurveyObject {
 	public void detach(NodeDefinition defn) {
 		int id = defn.getId();
 		definitionsById.remove(id);	
+	}
+	
+	public void traverse(NodeDefinitionVisitor visitor) {
+		for (EntityDefinition root : rootEntityDefinitions) {
+			root.traverse(visitor);
+		}
 	}
 }

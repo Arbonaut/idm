@@ -1,7 +1,8 @@
-package org.openforis.idm.transform;
+package org.openforis.idm.transform2;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.openforis.idm.path.Path;
+import org.openforis.idm.transform2.ColumnProvider;
 
 /**
  * @author G. Miceli

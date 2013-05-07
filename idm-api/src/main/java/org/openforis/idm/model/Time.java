@@ -84,11 +84,15 @@ public final class Time implements Value {
 	}
 
 	public String toXmlTime() {
-		Formatter formatter = new Formatter();
-		formatter.format("%02d:%02d:00", hour, minute);
-		String result = formatter.toString();
-		formatter.close();
-		return result;
+		if ( hour == null || minute == null ) {
+			return null;
+		} else {
+			Formatter formatter = new Formatter();
+			formatter.format("%02d:%02d:00", hour, minute);
+			String result = formatter.toString();
+			formatter.close();
+			return result;
+		}
 	}
 	
 	public static Time parseTime(String string) {

@@ -4,7 +4,8 @@ package org.openforis.idm.path;
  * @author G. Miceli
  * @author M. Togna
  */
-public class InvalidPathException extends Exception {
+// TODO Replace with checked exception
+public class InvalidPathException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

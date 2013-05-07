@@ -1,4 +1,4 @@
-package org.openforis.idm.transform;
+package org.openforis.idm.transform2;
 
 /**
  * @author G. Miceli

@@ -18,6 +18,10 @@ import org.openforis.idm.model.EntityBuilder;
 import org.openforis.idm.model.Field;
 import org.openforis.idm.model.IntegerAttribute;
 import org.openforis.idm.model.Node;
+import org.openforis.idm.transform2.AttributeColumnProvider;
+import org.openforis.idm.transform2.Cell;
+import org.openforis.idm.transform2.Column;
+import org.openforis.idm.transform2.NodeColumnProvider;
 
 /**
  * @author G. Miceli

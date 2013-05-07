@@ -11,6 +11,9 @@ import org.openforis.idm.model.Field;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.model.Time;
 import org.openforis.idm.model.TimeAttribute;
+import org.openforis.idm.transform2.Cell;
+import org.openforis.idm.transform2.Column;
+import org.openforis.idm.transform2.FieldColumnProvider;
 
 /**
  * @author G. Miceli

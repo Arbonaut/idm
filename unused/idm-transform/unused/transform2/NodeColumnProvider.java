@@ -1,4 +1,4 @@
-package org.openforis.idm.transform;
+package org.openforis.idm.transform2;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.openforis.idm.metamodel.NodeDefinition;
 import org.openforis.idm.model.Node;
 import org.openforis.idm.path.Path;
+import org.openforis.idm.transform2.ColumnProvider;
 
 /**
  * @author G. Miceli
@@ -25,7 +26,6 @@ public abstract class NodeColumnProvider implements ColumnProvider {
 		this.parentProvider = parentProvider;
 		this.childExpansionFilter = childExpansionFilter;
 	}
-
 
 	public NodeDefinition getNodeDefinition() {
 		return nodeDefinition;

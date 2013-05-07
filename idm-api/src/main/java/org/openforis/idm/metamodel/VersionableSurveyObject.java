@@ -86,7 +86,7 @@ public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((deprecatedVersion == null) ? 0 : deprecatedVersion.hashCode());
 		result = prime * result + ((sinceVersion == null) ? 0 : sinceVersion.hashCode());
 		return result;
@@ -96,7 +96,7 @@ public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -113,5 +113,4 @@ public abstract class VersionableSurveyObject extends IdentifiableSurveyObject {
 			return false;
 		return true;
 	}
-	
 }

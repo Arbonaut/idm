@@ -66,7 +66,8 @@ public final class Date implements Value {
 	}
 	
 	public java.util.Date toJavaDate() {
-		return toCalendar().getTime();
+		Calendar cal = toCalendar();
+		return cal == null ? null: cal.getTime();
 	}
 
 	public String toXmlDate() {

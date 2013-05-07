@@ -108,6 +108,20 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		return parentCodeAttributeDefinition;
 	}
 
+	public Integer getListLevelIndex() {
+		if ( list.isHierarchical() ) {
+			int idx = -1;
+			CodeAttributeDefinition currCode = this;
+			while ( currCode != null ) {
+				idx++;
+				currCode = currCode.getParentCodeAttributeDefinition();
+			}
+			return idx;
+		} else {
+			return null;
+		}
+	}
+
 	@Override
 	public Node<?> createNode() {
 		return new CodeAttribute(this);

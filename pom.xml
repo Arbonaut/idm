@@ -9,8 +9,7 @@
 	<modules>
 		<module>idm-api</module>
 		<module>idm-api-protostuff</module>
-  	<module>idm-transform</module>
-  	<module>idm-test</module>
+		<module>idm-test</module>
 	</modules>
 
 	<properties>

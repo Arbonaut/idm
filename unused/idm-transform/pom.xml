@@ -3,14 +3,19 @@
 	<parent>
 		<artifactId>idm</artifactId>
 		<groupId>org.openforis.idm</groupId>
-		<version>3.0-CR1-SNAPSHOT</version>
+		<version>3.1-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>idm-transform</artifactId>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.openforis.idm</groupId>
 			<artifactId>idm-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openforis.idm</groupId>
+			<artifactId>idm-test</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

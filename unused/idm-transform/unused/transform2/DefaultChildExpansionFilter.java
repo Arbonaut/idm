@@ -1,4 +1,4 @@
-package org.openforis.idm.transform;
+package org.openforis.idm.transform2;
 
 import static org.openforis.idm.metamodel.CodeAttributeDefinition.QUALIFIER_FIELD;
 import static org.openforis.idm.metamodel.NumericAttributeDefinition.UNIT_FIELD;

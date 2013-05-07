@@ -61,6 +61,10 @@ public abstract class Attribute<D extends AttributeDefinition, V extends Value> 
 		return fields[idx];
 	}
 	
+	/**
+	 * @param name
+	 * @return the field requested, or null if field name is invalid
+	 */
 	public Field<?> getField(String name) {
 		List<FieldDefinition<?>> fieldsDefinitions = definition.getFieldDefinitions();
 		for (int i = 0; i < fieldsDefinitions.size(); i++) {
@@ -227,10 +231,7 @@ public abstract class Attribute<D extends AttributeDefinition, V extends Value> 
 		for (int i = 0; i < indent; i++) {
 			sw.append('\t');
 		}
-		sw.append(getName());
-		sw.append(": ");
 		sw.append(value == null ? "!!null" : value.toString());
-		sw.append("\n");
 	}
 
 	@Override

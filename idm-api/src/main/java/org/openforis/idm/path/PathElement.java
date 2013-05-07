@@ -24,6 +24,9 @@ import org.openforis.idm.model.Record;
 public class PathElement implements Axis {
 
 	private static final String PARENT_FUNCTION = "parent()";
+	private static final String PARENT_SYMBOL = "..";
+	private static final String THIS_FUNCTION = "this()";
+	private static final String THIS_SYMBOL = ".";
 	private static final Pattern PATTERN = Pattern.compile("(\\w+)(?:\\[(\\d+)\\])?");
 	private String name;
 	private Integer index;
@@ -57,7 +60,7 @@ public class PathElement implements Axis {
 	
 	@Override
 	public List<Node<?>> evaluate(Node<?> context) {
-		if ( PARENT_FUNCTION.equals(name) ) {
+		if ( PARENT_FUNCTION.equals(name) || PARENT_SYMBOL.equals(name) ) {
 			Entity parent = context.getParent();
 			if ( parent == null ) { 
 				return Collections.emptyList();
@@ -66,6 +69,10 @@ public class PathElement implements Axis {
 				results.add(parent);
 				return Collections.unmodifiableList(results);
 			}
+		} else if ( THIS_FUNCTION.equals(name) || THIS_SYMBOL.equals(name) ) {
+			List<Node<?>> results = new ArrayList<Node<?>>(1);
+			results.add(context);
+			return Collections.unmodifiableList(results);
 		} else if ( context instanceof Entity ) {
 			return evaluateInternal((Entity) context);
 		} if ( context instanceof Attribute ) {
@@ -112,6 +119,9 @@ public class PathElement implements Axis {
 		if ( index == null || index == 1) {					// /cluster[0]/plot[2]/location[1]/x[1]
 			List<Node<?>> results = new ArrayList<Node<?>>(1);
 			Field<?> field = parentAttribute.getField(name);
+			if ( field == null ) {
+				return null;
+			}
 			results.add(field);
 			return Collections.unmodifiableList(results);
 		} else {								// /cluster[1]/plot[2]/location[1]/x[2] NO 
@@ -121,8 +131,10 @@ public class PathElement implements Axis {
 
 	@Override
 	public NodeDefinition evaluate(NodeDefinition context) {
-		if ( PARENT_FUNCTION.equals(name) ) {
+		if ( PARENT_FUNCTION.equals(name) || PARENT_SYMBOL.equals(name) ) {
 			return context.getParentDefinition();
+		} else if ( THIS_FUNCTION.equals(name) || THIS_SYMBOL.equals(name) ) {
+			return context;
 		} else if ( context instanceof EntityDefinition ) {
 			return evaluateInternal((EntityDefinition) context);
 		} else if ( context instanceof AttributeDefinition ) {
@@ -161,5 +173,36 @@ public class PathElement implements Axis {
 		} catch ( NumberFormatException e ) {
 			throw new InvalidPathException(s);
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((index == null) ? 0 : index.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PathElement other = (PathElement) obj;
+		if (index == null) {
+			if (other.index != null)
+				return false;
+		} else if (!index.equals(other.index))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 }

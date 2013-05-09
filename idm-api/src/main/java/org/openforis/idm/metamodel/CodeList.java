@@ -183,28 +183,45 @@ public class CodeList extends VersionableSurveyObject {
 	}
 	
 	public List<CodeListItem> getItems(Integer level) {
-		return getItemsInternal(items, level);
+		return getItems(level, null);
+	}
+	
+	public List<CodeListItem> getItems(Integer level, ModelVersion version) {
+		List<CodeListItem> items = getItemsInternal(this.items, level, version);
+		return CollectionUtils.unmodifiableList(items);
 	}
 
-	private List<CodeListItem> getItemsInternal(List<CodeListItem> parentItems, Integer levelIdx) {
+	private List<CodeListItem> getItemsInternal(List<CodeListItem> parentItems, Integer levelIdx,
+			ModelVersion version) {
 		if ( levelIdx == null || levelIdx <= 0 ) {
-			return Collections.unmodifiableList(parentItems);
+			return parentItems;
 		} else {
 			ArrayList<CodeListItem> descendants = new ArrayList<CodeListItem>();
 			for (CodeListItem item : parentItems) {
 				List<CodeListItem> childItems = item.getChildItems();
-				descendants.addAll(childItems);
+				for (CodeListItem childItem : childItems) {
+					if ( version == null || version.isApplicable(childItem) ) {
+						descendants.add(childItem);
+					}
+				}
 			}
-			return getItemsInternal(descendants, levelIdx - 1);
+			return getItemsInternal(descendants, levelIdx - 1, version);
 		}
 	}
 
 	public CodeListItem getItem(String code) {
-		if ( items != null && code != null ) {
-			for (CodeListItem item : items) {
-				if ( code.equals(item.getCode()) ) {
-					return item;
-				}
+		return getItem(code, null);
+	}
+	
+	public CodeListItem getItem(String code, Integer levelIdx) {
+		return getItem(code, levelIdx, null);
+	}
+	
+	public CodeListItem getItem(String code, Integer levelIdx, ModelVersion version) {
+		List<CodeListItem> items = getItems(levelIdx, version);
+		for (CodeListItem item : items) {
+			if ( code.equals(item.getCode()) ) {
+				return item;
 			}
 		}
 		return null;

@@ -269,6 +269,7 @@ public abstract class XmlPullReader {
 	        	break;
 	        }
 	    }
+	    out.flush();
 	    return sw.toString();
 //	    IOUtils.copy(tpis, new OutputStreamWriter(System.out), "UTF-8");
 	}

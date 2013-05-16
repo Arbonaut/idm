@@ -4,11 +4,13 @@
 package org.openforis.idm.model;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.openforis.commons.collection.CollectionUtils;
 import org.openforis.idm.metamodel.AttributeDefinition;
 import org.openforis.idm.metamodel.FieldDefinition;
 import org.openforis.idm.metamodel.SurveyContext;
@@ -74,6 +76,14 @@ public abstract class Attribute<D extends AttributeDefinition, V extends Value> 
 			}
 		}
 		return null;
+	}
+	
+	public List<Field<?>> getFields() {
+		List<Field<?>> list = new ArrayList<Field<?>>();
+		for (Field<?> field : fields) {
+			list.add(field);
+		}
+		return CollectionUtils.unmodifiableList(list);
 	}
 
 	public int getFieldCount() {

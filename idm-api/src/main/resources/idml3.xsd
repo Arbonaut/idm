@@ -49,7 +49,7 @@ The path to one or more attributes or entities using a simplified form of W3C-st
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-      <xs:pattern value="(/?([a-z]+|parent\(\)|blank\(\)))+"/>
+      <xs:pattern value="(/?([a-z][a-z0-9_]+|parent\(\)|blank\(\)))+"/>
     </xs:restriction>
   </xs:simpleType>
 

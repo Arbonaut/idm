@@ -21,6 +21,7 @@ import org.openforis.idm.model.NumberAttribute;
 import org.openforis.idm.model.NumericRangeAttribute;
 import org.openforis.idm.model.RealRangeAttribute;
 import org.openforis.idm.model.Record;
+import org.openforis.idm.model.TaxonAttribute;
 import org.openforis.idm.model.TimeAttribute;
 import org.openforis.idm.model.expression.CheckConditionExpression;
 import org.openforis.idm.model.expression.ExpressionFactory;
@@ -65,6 +66,10 @@ public class Validator {
 		return new MaxCountValidator(defn);
 	}
 
+	protected TaxonVernacularLanguageValidator getTaxonVernacularLanguageValidator() {
+		return new TaxonVernacularLanguageValidator();
+	}
+	
 	private NodeDefinition getChildDefinition(Entity entity, String childName) {
 		EntityDefinition entityDefn = entity.getDefinition();
 		NodeDefinition childDefn = entityDefn.getChildDefinition(childName);
@@ -101,6 +106,8 @@ public class Validator {
 			validateRealRangeAttributeValue((RealRangeAttribute) attribute, results);
 		} else if (attribute instanceof TimeAttribute) {
 			validateTimeAttributeValue((TimeAttribute) attribute, results);
+		} else if (attribute instanceof TaxonAttribute) {
+			validateTaxonAttributeValue((TaxonAttribute) attribute, results);
 		}
 	}
 
@@ -165,6 +172,13 @@ public class Validator {
 		NumericRangeUnitValidator unitValidator = new NumericRangeUnitValidator();
 		ValidationResultFlag unitValidationResult = unitValidator.evaluate(attribute);
 		results.addResult(unitValidator, unitValidationResult);
+	}
+	
+	protected void validateTaxonAttributeValue(TaxonAttribute attribute,
+			ValidationResults results) {
+		TaxonVernacularLanguageValidator vernacularLanguageValidator = getTaxonVernacularLanguageValidator();
+		ValidationResultFlag validationResultFlag = vernacularLanguageValidator.evaluate(attribute);
+		results.addResult(vernacularLanguageValidator, validationResultFlag);
 	}
 
 	private boolean evaluateCheckCondition(Attribute<?, ?> attribute, String condition) {

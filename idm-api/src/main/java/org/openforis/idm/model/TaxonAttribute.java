@@ -51,7 +51,7 @@ public class TaxonAttribute extends Attribute<TaxonAttributeDefinition, TaxonOcc
 	}
 
 	public String getVernacularName() {
-		return getCodeField().getValue();
+		return getVernacularNameField().getValue();
 	}
 	
 	public void setVernacularName(String name) {

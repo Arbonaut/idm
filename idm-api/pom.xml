@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>idm-api</artifactId>
 	<packaging>jar</packaging>
 	<url>http://km.fao.org/OFwiki/index.php/Inventory_Data_Metamodel</url>
-	
+
 	<parent>
 		<groupId>org.openforis.idm</groupId>
 		<artifactId>idm</artifactId>
@@ -11,14 +12,14 @@
 	</parent>
 
 	<repositories>
-	    <repository>
-	        <id>open-foris-maven-releases</id>
-	        <url>https://github.com/openforis/mvn-repo/raw/master/releases</url>
-	    </repository>
-	    <repository>
-	        <id>open-foris-maven-snapshots</id>
-	        <url>https://github.com/openforis/mvn-repo/raw/master/snapshots</url>
-	    </repository>
+		<repository>
+			<id>open-foris-maven-releases</id>
+			<url>https://github.com/openforis/mvn-repo/raw/master/releases</url>
+		</repository>
+		<repository>
+			<id>open-foris-maven-snapshots</id>
+			<url>https://github.com/openforis/mvn-repo/raw/master/snapshots</url>
+		</repository>
 	</repositories>
 
 	<reporting>
@@ -41,11 +42,11 @@
 		</plugins>
 	</reporting>
 	<dependencies>
-	    <dependency>
-	      <groupId>org.openforis.commons</groupId>
-	      <artifactId>commons-collections</artifactId>
-	      <version>0.0.2</version>
-	    </dependency>
+		<dependency>
+			<groupId>org.openforis.commons</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>0.0.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.openforis.idm</groupId>
 			<artifactId>idm-test</artifactId>
@@ -83,17 +84,17 @@
 			<artifactId>kxml2</artifactId>
 			<version>2.3.0</version>
 			<scope>test</scope>
-		</dependency>  
+		</dependency>
 		<dependency>
 			<groupId>xmlpull</groupId>
 			<artifactId>xmlpull</artifactId>
-			<version>1.1.2.1</version>
+			<version>1.1.3.4a</version>
 		</dependency>
 		<dependency>
-		  <groupId>org.mockito</groupId>
-		  <artifactId>mockito-all</artifactId>  
-		  <version>1.9.0</version> 
-		  <scope>test</scope>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.0</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

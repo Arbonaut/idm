@@ -50,7 +50,7 @@ public class ExternalCodeListItem extends CodeListItem {
 			StringKeyValuePair item = new StringKeyValuePair(entry);
 			result.add(item);
 		}
-		return CollectionUtils.unmodifiableSet(result);
+		return result;
 	}
 	
 }

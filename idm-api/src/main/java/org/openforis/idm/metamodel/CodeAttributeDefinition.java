@@ -178,7 +178,11 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		return true;
 	}
 
-	public int getCodeListLevelIndex() {
+	public int getHierarchyLevel() {
+		return getHieararchyIndex() + 1;
+	}
+
+	public int getHieararchyIndex() {
 		if ( list == null || list.getHierarchy().isEmpty() ) {
 			return 0;
 		} else {

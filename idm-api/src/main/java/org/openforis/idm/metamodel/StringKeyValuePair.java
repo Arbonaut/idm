@@ -8,15 +8,15 @@ import java.util.Map.Entry;
  * @author S. Ricci
  *
  */
-public class StringKeyValuePair extends SimpleEntry<String, String> {
+public class StringKeyValuePair extends SimpleEntry<String, Object> {
 
 	private static final long serialVersionUID = 1L;
 	
-	public StringKeyValuePair(Entry<? extends String, ? extends String> entry) {
+	public StringKeyValuePair(Entry<? extends String, ? extends Object> entry) {
 		super(entry);
 	}
 	
-	public StringKeyValuePair(String key, String value) {
+	public StringKeyValuePair(String key, Object value) {
 		super(key, value);
 	}
 

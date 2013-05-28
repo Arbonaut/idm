@@ -3,9 +3,13 @@ package org.openforis.idm.metamodel.xml.internal.marshal;
 import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.util.List;
 
+import org.openforis.idm.metamodel.ExternalCodeListProvider;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -17,8 +21,13 @@ import org.xmlpull.v1.XmlSerializer;
  */
 public class SurveyMarshaller extends XmlSerializerSupport<Survey, Void>{
 
+	private boolean marshallExternalCodeLists;
+
 	public SurveyMarshaller(SurveyIdmlBinder binder) {
 		super(IDML3_NAMESPACE_URI, SURVEY);
+		
+		marshallExternalCodeLists = false;
+		
 		addChildMarshallers(
 				new ProjectXS(),
 				new UriXS(), 
@@ -33,6 +42,32 @@ public class SurveyMarshaller extends XmlSerializerSupport<Survey, Void>{
 				new SchemaXS());
 	}
 
+	@Override
+	public synchronized void marshal(Survey survey, OutputStream os,
+			String enc) throws IOException {
+		boolean externalCodeListProviderActive = isExternalCodeListProviderEnabled(survey);
+		activateExternalCodeListProvider(survey, marshallExternalCodeLists);
+		try {
+			super.marshal(survey, os, enc);
+		} finally {
+			//restore old external code list settings
+			activateExternalCodeListProvider(survey, externalCodeListProviderActive);
+		}
+	}
+	
+	@Override
+	public synchronized void marshal(Survey survey, Writer wr, String enc)
+			throws IOException {
+		boolean externalCodeListProviderActive = isExternalCodeListProviderEnabled(survey);
+		activateExternalCodeListProvider(survey, marshallExternalCodeLists);
+		try {
+			super.marshal(survey, wr, enc);
+		} finally {
+			//restore old external code list settings
+			activateExternalCodeListProvider(survey, externalCodeListProviderActive);
+		}
+	}
+	
 	@Override
 	protected void start(Survey survey) throws IOException {
 		startDocument();
@@ -116,4 +151,28 @@ public class SurveyMarshaller extends XmlSerializerSupport<Survey, Void>{
 			marshal(survey.getLanguages());
 		}
 	}
+	
+	private void activateExternalCodeListProvider(Survey survey,
+			boolean enabled) {
+		ExternalCodeListProvider provider = getExternalCodeListProvider(survey);
+		if ( provider != null ) {
+			provider.setActive(enabled);
+		}
+	}
+
+	private boolean isExternalCodeListProviderEnabled(Survey survey) {
+		ExternalCodeListProvider provider = getExternalCodeListProvider(survey);
+		return provider == null ? false: provider.isActive();
+	}
+
+	private ExternalCodeListProvider getExternalCodeListProvider(Survey survey) {
+		try {
+			SurveyContext context = survey.getContext();
+			ExternalCodeListProvider provider = context.getExternalCodeListProvider();
+			return provider;
+		} catch(Exception e) {
+			return null;
+		}
+	}
+	
 }

@@ -3,8 +3,6 @@
  */
 package org.openforis.idm.metamodel;
 
-import java.util.List;
-
 import org.openforis.idm.model.CodeAttribute;
 
 /**
@@ -12,17 +10,11 @@ import org.openforis.idm.model.CodeAttribute;
  * @author S. Ricci
  *
  */
-public interface ExternalCodeListProvider {
+public interface ExternalCodeListProvider extends Activable {
 	
 	@Deprecated
 	String getCode(CodeList list, String attribute, Object... keys);
 	
-	ExternalCodeListItem getItem(CodeAttribute atttribute);
-
-	ExternalCodeListItem getParentItem(ExternalCodeListItem item);
-	
-	List<ExternalCodeListItem> getChildItems(CodeList list);
-	
-	List<ExternalCodeListItem> getChildItems(ExternalCodeListItem item);
+	ExternalCodeListItem getItem(CodeAttribute attribute);
 
 }

@@ -202,7 +202,9 @@ class CodeListsXS extends VersionableSurveyObjectXS<CodeList, Survey> {
 		
 		@Override
 		protected void marshalInstances(CodeList list) throws IOException {
-			marshal(list.getItems());
+			if ( ! list.isExternal() ) {
+				marshal(list.getItems());
+			}
 		}
 	}
 

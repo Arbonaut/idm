@@ -49,7 +49,7 @@ public class CodeParentValidator implements ValidationRule<CodeAttribute> {
 	private boolean isExternalCodeList(CodeAttribute node) {
 		CodeAttributeDefinition definition = node.getDefinition();
 		CodeList codeList = definition.getList();
-		return StringUtils.isNotBlank(codeList.getLookupTable());
+		return codeList.isExternal();
 	}
 
 }

@@ -178,11 +178,11 @@ public class CodeAttributeDefinition extends AttributeDefinition implements KeyA
 		return true;
 	}
 
-	public int getHierarchyLevel() {
-		return getHieararchyIndex() + 1;
+	public int getLevelPosition() {
+		return getLevelIndex() + 1;
 	}
 
-	public int getHieararchyIndex() {
+	public int getLevelIndex() {
 		if ( list == null || list.getHierarchy().isEmpty() ) {
 			return 0;
 		} else {

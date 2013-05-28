@@ -191,7 +191,7 @@ public class EntityDefinition extends NodeDefinition {
 				if ( keyDefn instanceof CodeAttributeDefinition ) {
 					CodeAttributeDefinition codeDefn = (CodeAttributeDefinition) keyDefn;
 					CodeList list = codeDefn.getList();
-					if ( list.getLookupTable() == null ) {
+					if ( ! list.isExternal() ) {
 						return codeDefn;
 					}
 				} else {

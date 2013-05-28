@@ -8,6 +8,7 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openforis.commons.collection.CollectionUtils;
 
 /**
@@ -116,6 +117,10 @@ public class CodeList extends VersionableSurveyObject {
 		return CollectionUtils.unmodifiableList(this.hierarchy);
 	}
 
+	public boolean isExternal() {
+		return StringUtils.isNotBlank(lookupTable);
+	}
+
 	public boolean isHierarchical() {
 		return hierarchy != null && hierarchy.size() > 1;
 	}
@@ -178,10 +183,15 @@ public class CodeList extends VersionableSurveyObject {
 		}
 	}
 	
-	public List<CodeListItem> getItems() {
-		return CollectionUtils.unmodifiableList(this.items);
+	@SuppressWarnings("unchecked")
+	public <T extends CodeListItem> List<T> getItems() {
+		if ( isExternal() ) {
+			throw new UnsupportedOperationException();
+		} else {
+			return (List<T>) CollectionUtils.unmodifiableList(this.items);
+		}
 	}
-	
+
 	public List<CodeListItem> getItems(Integer level) {
 		return getItems(level, null);
 	}
@@ -310,8 +320,10 @@ public class CodeList extends VersionableSurveyObject {
 	
 	public void removeVersioningRecursive(ModelVersion version) {
 		removeVersioning(version);
-		for (CodeListItem item : getItems()) {
-			item.removeVersioningRecursive(version);
+		if ( ! isExternal() ) {
+			for (CodeListItem item : getItems()) {
+				item.removeVersioningRecursive(version);
+			}
 		}
 	}
 	
@@ -335,7 +347,7 @@ public class CodeList extends VersionableSurveyObject {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

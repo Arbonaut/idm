@@ -129,8 +129,9 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 		}
 	}
 
-	public List<CodeListItem> getChildItems() {
-		return CollectionUtils.unmodifiableList(childItems);
+	@SuppressWarnings("unchecked")
+	public <T extends CodeListItem> List<T> getChildItems() {
+		return (List<T>) CollectionUtils.unmodifiableList(childItems);
 	}
 	
 	public CodeListItem getChildItem(String code) {

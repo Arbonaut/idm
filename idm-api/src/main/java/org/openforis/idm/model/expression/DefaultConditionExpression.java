@@ -20,7 +20,7 @@ public class DefaultConditionExpression extends AbstractBooleanExpression {
 	}
 
 	public boolean evaluate(Node<?> contextNode, Node<?> thisNode) throws InvalidExpressionException {
-		return evaluate(contextNode, thisNode);
+		return super.evaluate(contextNode, thisNode);
 	}
 	
 }

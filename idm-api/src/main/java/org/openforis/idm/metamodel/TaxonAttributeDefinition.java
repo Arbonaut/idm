@@ -14,6 +14,7 @@ import org.openforis.idm.model.Node;
 import org.openforis.idm.model.TaxonAttribute;
 import org.openforis.idm.model.TaxonOccurrence;
 import org.openforis.idm.model.Value;
+import org.openforis.idm.model.species.Taxon.TaxonRank;
 
 /**
  * @author G. Miceli
@@ -39,7 +40,7 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	};
 	
 	private String taxonomy;
-	private String highestRank;
+	private TaxonRank highestTaxonRank;
 	
 	TaxonAttributeDefinition(Survey survey, int id) {
 		super(survey, id);
@@ -74,14 +75,25 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 		this.taxonomy = taxonomy;
 	}
 
+	@Deprecated
 	public String getHighestRank() {
-		return highestRank;
+		return highestTaxonRank == null ? null: highestTaxonRank.getName();
 	}
 	
+	@Deprecated
 	public void setHighestRank(String highestRank) {
-		this.highestRank = highestRank;
+		TaxonRank rank = TaxonRank.fromName(highestRank);
+		setHighestTaxonRank(rank);
 	}
 
+	public TaxonRank getHighestTaxonRank() {
+		return highestTaxonRank;
+	}
+	
+	public void setHighestTaxonRank(TaxonRank highestTaxonRank) {
+		this.highestTaxonRank = highestTaxonRank;
+	}
+	
 	public List<String> getQualifiers() {
 		if ( qualifiers != null ) {
 			String[] exprs = qualifiers.split(QUALIFIER_SEPARATOR);
@@ -98,14 +110,18 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 	public void setQualifiers(List<String> qualifiers) {
 		setQualifiers(StringUtils.join(qualifiers, QUALIFIER_SEPARATOR));
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((highestRank == null) ? 0 : highestRank.hashCode());
-		result = prime * result + ((qualifiers == null) ? 0 : qualifiers.hashCode());
-		result = prime * result + ((taxonomy == null) ? 0 : taxonomy.hashCode());
+		result = prime
+				* result
+				+ ((highestTaxonRank == null) ? 0 : highestTaxonRank.hashCode());
+		result = prime * result
+				+ ((qualifiers == null) ? 0 : qualifiers.hashCode());
+		result = prime * result
+				+ ((taxonomy == null) ? 0 : taxonomy.hashCode());
 		return result;
 	}
 
@@ -118,10 +134,7 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 		if (getClass() != obj.getClass())
 			return false;
 		TaxonAttributeDefinition other = (TaxonAttributeDefinition) obj;
-		if (highestRank == null) {
-			if (other.highestRank != null)
-				return false;
-		} else if (!highestRank.equals(other.highestRank))
+		if (highestTaxonRank != other.highestTaxonRank)
 			return false;
 		if (qualifiers == null) {
 			if (other.qualifiers != null)
@@ -135,5 +148,5 @@ public class TaxonAttributeDefinition extends AttributeDefinition {
 			return false;
 		return true;
 	}
-
+	
 }

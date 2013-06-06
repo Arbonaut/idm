@@ -7,10 +7,12 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.TaxonAttributeDefinition;
+import org.openforis.idm.model.species.Taxon.TaxonRank;
 
 /**
  * 
  * @author G. Miceli
+ * @author S. Ricci
  *
  */
 class TaxonAttributeXS extends AttributeDefinitionXS<TaxonAttributeDefinition> {
@@ -24,7 +26,8 @@ class TaxonAttributeXS extends AttributeDefinitionXS<TaxonAttributeDefinition> {
 		super.attributes(defn);
 		//attribute(QUALIFIABLE, defn.getQualifiers());
 		attribute(TAXONOMY, defn.getTaxonomy());
-		attribute(HIGHEST_RANK, defn.getHighestRank());
+		TaxonRank highestRank = defn.getHighestTaxonRank();
+		attribute(HIGHEST_RANK, highestRank == null ? null: highestRank.getName());
 		List<String> qualifiers = defn.getQualifiers();
 		String jointQualifiers = StringUtils.join(qualifiers, ",");
 		attribute(QUALIFIERS, jointQualifiers);

@@ -189,7 +189,7 @@ Additional helper functions:
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="project" type="unformattedText" minOccurs="1" maxOccurs="unbounded">
+        <xs:element name="project" type="unformattedText" minOccurs="0" maxOccurs="unbounded">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               Human-readable name of the survey in (e.g. Archenland NFI).
@@ -1052,6 +1052,7 @@ Used to link large code lists (e.g. cluster and plot ids or detailed lists of ad
                   <xs:extension base="attribute">
                     <xs:sequence>
                       <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      	<xs:element name="unique" type="uniquenessCheck"/>
                         <xs:element name="compare" type="compareCheck">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
@@ -1084,6 +1085,7 @@ Used to link large code lists (e.g. cluster and plot ids or detailed lists of ad
                   <xs:extension base="attribute">
                     <xs:sequence>
                       <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      	<xs:element name="unique" type="uniquenessCheck"/>
                         <xs:element name="compare" type="compareCheck">
                           <xs:annotation>
                             <xs:documentation xml:lang="en">
@@ -1255,6 +1257,7 @@ In this case, the meaning and validity of the district code would then depend on
                 <xs:complexContent>
                   <xs:extension base="attribute">
                     <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element name="unique" type="uniquenessCheck"/>
                       <xs:element name="distance" type="distanceCheck"/>
                     </xs:choice>
                   </xs:extension>
@@ -1504,7 +1507,7 @@ In this case, the meaning and validity of the district code would then depend on
   <xs:complexType name="numericAttribute">
     <xs:complexContent>
       <xs:extension base="attribute">
-        <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="precision" minOccurs="0" maxOccurs="unbounded">
             <xs:complexType>
               <xs:attribute name="unit" type="name">
@@ -1530,12 +1533,10 @@ In this case, the meaning and validity of the district code would then depend on
               </xs:attribute>
             </xs:complexType>
           </xs:element>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="compare" type="compareCheck"/>
             <xs:element name="unique" type="uniquenessCheck"/>
             <xs:element name="check" type="customCheck"/>
-          </xs:choice>
-        </xs:sequence>
+        </xs:choice>
         <xs:attribute name="key" type="xs:boolean" use="optional" default="false">
           <xs:annotation>
             <xs:documentation xml:lang="en">

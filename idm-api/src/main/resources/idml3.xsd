@@ -327,10 +327,6 @@ Additional helper functions:
               </xs:element>
             </xs:sequence>
           </xs:complexType>
-          <xs:unique name="versionKey">
-            <xs:selector xpath="idml:version" />
-            <xs:field xpath="@id" />
-          </xs:unique>
           <xs:unique name="versionName">
             <xs:selector xpath="idml:version" />
             <xs:field xpath="@name" />
@@ -563,9 +559,9 @@ Additional helper functions:
                           </xs:element>
                         </xs:sequence>
                       </xs:complexType>
-                      <xs:unique name="levelKey">
+                      <xs:unique name="levelNameKey">
                         <xs:selector xpath="idml:level" />
-                        <xs:field xpath="@id" />
+                        <xs:field xpath="@name" />
                       </xs:unique>
                     </xs:element>
                     <xs:element minOccurs="0" name="items">
@@ -585,10 +581,6 @@ Additional helper functions:
                           </xs:element>
                         </xs:sequence>
                       </xs:complexType>
-                      <xs:unique name="codeListItemKey">
-                        <xs:selector xpath="idml:item" />
-                        <xs:field xpath="@id" />
-                      </xs:unique>
                     </xs:element>
                   </xs:sequence>
                   <xs:attribute name="id" type="xs:integer" use="required">
@@ -645,10 +637,6 @@ Used to link large code lists (e.g. cluster and plot ids or detailed lists of ad
               </xs:element>
             </xs:sequence>
           </xs:complexType>
-          <xs:unique name="listKey">
-            <xs:selector xpath="idml:list" />
-            <xs:field xpath="@id" />
-          </xs:unique>
         </xs:element>
 
         <!--~~~~~~~~~~~~~~~~~~~~~~-->
@@ -719,10 +707,6 @@ Used to link large code lists (e.g. cluster and plot ids or detailed lists of ad
               </xs:element>
             </xs:sequence>
           </xs:complexType>
-          <xs:unique name="unitKey">
-            <xs:selector xpath="idml:unit" />
-            <xs:field xpath="@id" />
-          </xs:unique>
         </xs:element>
 
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -812,20 +796,6 @@ Used to link large code lists (e.g. cluster and plot ids or detailed lists of ad
               </xs:element>
             </xs:sequence>
           </xs:complexType>
-          <xs:unique name="schemaObjectKey">
-            <xs:selector xpath=".//idml:entity | 
-                                .//idml:boolean | 
-                                .//idml:code | 
-                                .//idml:coordinate |
-                                .//idml:date |
-                                .//idml:file | 
-                                .//idml:number | 
-                                .//idml:range | 
-                                .//idml:taxon | 
-                                .//idml:text | 
-                                .//idml:time"/>
-            <xs:field xpath="@id"/>
-          </xs:unique>
         </xs:element>
       </xs:sequence>
       <xs:attribute name="lastId" use="required">
@@ -845,8 +815,25 @@ Used to link large code lists (e.g. cluster and plot ids or detailed lists of ad
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
+    <xs:unique name="surveyObjectKey">
+      <xs:selector xpath=".//idml:version |
+      					  .//idml:list |
+      					  .//idml:item |
+      					  .//idml:unit |
+     					  .//idml:entity | 
+                          .//idml:boolean | 
+                          .//idml:code | 
+                          .//idml:coordinate |
+                          .//idml:date |
+                          .//idml:file | 
+                          .//idml:number | 
+                          .//idml:range | 
+                          .//idml:taxon | 
+                          .//idml:text | 
+                          .//idml:time"/>
+      <xs:field xpath="@id"/>
+    </xs:unique>
   </xs:element>
-
 
   <xs:complexType name="schemaObject">
     <xs:annotation>

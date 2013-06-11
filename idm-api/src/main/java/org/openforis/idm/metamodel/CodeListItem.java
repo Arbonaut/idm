@@ -96,6 +96,12 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 			labels.remove(language);
 		}
 	}
+	
+	public void removeAllLabels() {
+		if ( labels != null ) {
+			labels.removeAll();
+		}
+	}
 
 	public List<LanguageSpecificText> getDescriptions() {
 		if ( descriptions == null ) {
@@ -126,6 +132,12 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	public void removeDescription(String language) {
 		if ( descriptions != null ) {
 			descriptions.remove(language);
+		}
+	}
+	
+	public void removeAllDescriptions() {
+		if ( descriptions != null ) {
+			descriptions.removeAll();
 		}
 	}
 
@@ -225,10 +237,6 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 		return list;
 	}
 
-	public void setCodeList(CodeList list) {
-		this.list = list;
-	}
-	
 	boolean isQualifiableRecursive() {
 		if ( isQualifiable() ) {
 			return true;

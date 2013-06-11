@@ -17,6 +17,6 @@ public interface SurveyContext {
 	Validator getValidator();
 	
 	ExternalCodeListProvider getExternalCodeListProvider();
-
+	
 	Survey createSurvey();
 }

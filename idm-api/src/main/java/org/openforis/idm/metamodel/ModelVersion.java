@@ -3,6 +3,7 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -115,6 +116,17 @@ public class ModelVersion extends IdentifiableSurveyObject {
 			}
 			return sinceResult >= 0 && deprecatedResult < 0;
 		}
+	}
+	
+	
+	public <T extends VersionableSurveyObject> List<T> filterApplicableItems(List<T> list) {
+		List<T> result = new ArrayList<T>();
+		for (T item : list) {
+			if ( isApplicable(item) ) {
+				result.add(item);
+			}
+		}
+		return result;
 	}
 
 	@Override

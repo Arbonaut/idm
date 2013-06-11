@@ -80,6 +80,10 @@ public abstract class LanguageSpecificTextAbstractMap<T extends LanguageSpecific
 		String key = getMapKey(language);
 		map.remove(key);
 	}
+	
+	public void removeAll() {
+		map.clear();
+	}
 
 	protected T createLanguageSpecificTextInstance(String language, String text) {
 		try {

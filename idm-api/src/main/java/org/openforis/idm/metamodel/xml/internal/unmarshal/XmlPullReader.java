@@ -56,7 +56,7 @@ public abstract class XmlPullReader {
 		return parentReader;
 	}
 	
-	private void setParentReader(XmlPullReader xmlPullReader) {
+	protected void setParentReader(XmlPullReader xmlPullReader) {
 		this.parentReader = xmlPullReader;
 	}
 

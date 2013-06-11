@@ -32,12 +32,16 @@ public class SurveyUnmarshaller extends IdmlPullReader {
 			new LanguagePR(),
 			new ApplicationOptionsPR(),
 			new VersioningPR(), 
-			new CodeListsPR(),
+			createCodeListReader(),
 			new UnitsPR(),
 			new SpatialReferenceSystemsPR(),
 			new SchemaPR());
 
 		setSurveyBinder(binder);
+	}
+
+	protected CodeListsPR createCodeListReader() {
+		return new CodeListsPR();
 	}
 	
 	@Override

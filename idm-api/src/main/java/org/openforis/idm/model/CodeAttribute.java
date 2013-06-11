@@ -1,6 +1,8 @@
 package org.openforis.idm.model;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
@@ -59,6 +61,12 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 		onUpdateValue();
 	}
 	
+	/**
+	 * @deprecated Access code list items using managers.
+	 * 
+	 * @return
+	 */
+	@Deprecated
 	public CodeListItem getCodeListItem() {
 		Code code = getValue();
 		if (code != null) {
@@ -104,6 +112,22 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 		} catch (Exception e) {
 			throw new RuntimeException("Error while getting parent code " + e);
 		}
+	}
+	
+	/**
+	 * Returns a list of ancestors CodeAttribute objects, starting from the root.
+	 * It is applicable only to hierarchical code lists.
+	 * 
+	 * @return
+	 */
+	public List<CodeAttribute> getCodeAncestors() {
+		Stack<CodeAttribute> result = new Stack<CodeAttribute>();
+		CodeAttribute parent = getCodeParent();
+		while (parent != null) {
+			result.push(parent);
+			parent = parent.getCodeParent();
+		}
+		return Collections.unmodifiableList(result);
 	}
 
 	private CodeListItem findCodeListItem(List<CodeListItem> list, String value, ModelVersion version) {

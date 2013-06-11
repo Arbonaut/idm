@@ -246,6 +246,7 @@ public class CodeList extends VersionableSurveyObject {
 		return createItem(id);
 	}
 
+	@Deprecated
 	public CodeListItem findItem(String code) {
 		if ( items != null && code != null ) {
 			String adaptedCode = Pattern.quote(code);

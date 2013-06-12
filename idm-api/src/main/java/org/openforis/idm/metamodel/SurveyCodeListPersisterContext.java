@@ -11,6 +11,6 @@ public interface SurveyCodeListPersisterContext {
 
 	ExternalCodeListProvider getExternalCodeListProvider();
 	
-	ExternalCodeListPersister getExternalCodeListPersister();
+	CodeListItemPersister getExternalCodeListPersister();
 
 }

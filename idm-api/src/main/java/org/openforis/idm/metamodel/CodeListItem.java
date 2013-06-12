@@ -30,7 +30,7 @@ public class CodeListItem extends VersionableSurveyObject implements Serializabl
 	private CodeList list;
 	private CodeListItem parentItem;
 
-	CodeListItem(CodeList codeList, int id) {
+	protected CodeListItem(CodeList codeList, int id) {
 		super(codeList.getSurvey(), id);
 		this.list = codeList;
 	}

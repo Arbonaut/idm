@@ -224,54 +224,74 @@ public abstract class XmlPullReader {
 		this.unordered = unordered;
 	}
 	
-	protected String nextElement(boolean includeOuterTag) throws XmlParseException, 
+	protected void skipElement() throws XmlParseException, 
+		XmlPullParserException, IOException {
+		readElement(null, false);
+	}
+
+	protected String readElement(boolean includeOuterTag) throws XmlParseException, 
+			XmlPullParserException, IOException {
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		XmlSerializer out = factory.newSerializer();
+		StringWriter sw = new StringWriter();
+		out.setOutput(sw);
+		// out.startDocument("UTF-8", true);
+		readElement(out, includeOuterTag);
+		return sw.toString();
+		// IOUtils.copy(tpis, new OutputStreamWriter(System.out), "UTF-8");
+	}
+	
+	protected void readElement(XmlSerializer out, boolean includeOuterTag) throws XmlParseException, 
 			XmlPullParserException, IOException {
 		XmlPullParser in = getParser();
 		if (in.getEventType() != START_TAG) {
 		    throw new XmlParseException(in, "start tag expected");
 		}
-		StringWriter sw = new StringWriter(); 
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-		XmlSerializer out = factory.newSerializer();
-		out.setOutput(sw);
-//		out.startDocument("UTF-8", true);
-		if ( includeOuterTag ) {
+		if ( out != null && includeOuterTag ) {
 			out.startTag(in.getNamespace(), in.getName());
 		}
 	    int depth = 1;
 	    while (depth != 0) {
 	    	switch (in.next()) {
 	        case START_TAG:
-				out.setPrefix("", in.getNamespace());
-	        	out.startTag(in.getNamespace(), in.getName());
-	        	for ( int i=0; i < in.getAttributeCount(); i++) {
-	        		String attributeNamespace = in.getAttributeNamespace(i);
-					String attributeName = in.getAttributeName(i);
-					String attributeValue = in.getAttributeValue(i);
-					out.attribute(attributeNamespace, attributeName, attributeValue);
+	        	if ( out != null ) {
+					out.setPrefix("", in.getNamespace());
+		        	out.startTag(in.getNamespace(), in.getName());
+		        	for ( int i=0; i < in.getAttributeCount(); i++) {
+		        		String attributeNamespace = in.getAttributeNamespace(i);
+		        		String attributeName = in.getAttributeName(i);
+		        		String attributeValue = in.getAttributeValue(i);
+		        		out.attribute(attributeNamespace, attributeName, attributeValue);
+		        	}
 	        	}
 	            depth++;
 	            break;
 	        case END_TAG:
-	        	if ( includeOuterTag || depth > 1 ) {
+	        	if ( out != null && ( includeOuterTag || depth > 1 ) ) {
 	        		out.endTag(in.getNamespace(), in.getName());
 	        	}
 	            depth--;
 	            break;
 	        case TEXT:
-	        	out.text(in.getText());
+	        	if ( out != null ) {
+	        		out.text(in.getText());
+	        	}
 	        	break;
 	        case CDSECT:
-	        	out.cdsect(in.getText());
+	        	if ( out != null ) {
+	        		out.cdsect(in.getText());
+	        	}
 	        	break;
 	        case ENTITY_REF:
-	        	out.entityRef(in.getText());
+	        	if ( out != null ) {
+	        		out.entityRef(in.getText());
+	        	}
 	        	break;
 	        }
 	    }
-	    out.flush();
-	    return sw.toString();
-//	    IOUtils.copy(tpis, new OutputStreamWriter(System.out), "UTF-8");
+	    if ( out != null ) {
+	    	out.flush();
+	    }
 	}
 	
 	// HELPER METHODS

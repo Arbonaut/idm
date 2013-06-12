@@ -31,7 +31,7 @@ class ApplicationOptionsPR extends IdmlPullReader {
 				throws XmlParseException, XmlPullParserException, IOException {
 			String type = getAttribute(TYPE, true);
 //			String ns = getParser().getNamespaceUri(getParser().getDepth()-1);
-			String body = nextElement(false);
+			String body = readElement(false);
 			SurveyIdmlBinder binder = getSurveyBinder();
 			ApplicationOptionsBinder<?> optionsBinder = binder.getApplicationOptionsBinder(type);
 			if ( optionsBinder != null ) {

@@ -85,8 +85,12 @@ public class SurveyIdmlBinder {
 	}
 		
 	public Survey unmarshal(InputStream is) throws IdmlParseException {
+		return unmarshal(is, false);
+	}
+	
+	public Survey unmarshal(InputStream is, boolean skipCodeListItems) throws IdmlParseException {
 		try {
-			SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this);
+			SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this, skipCodeListItems);
 			unmarshaller.parse(is, UTF8_ENCODING);
 			return unmarshaller.getSurvey();
 		} catch (XmlParseException e) {
@@ -94,11 +98,15 @@ public class SurveyIdmlBinder {
 		} catch (IOException e) {
 			throw new IdmlParseException(e);
 		}
-	}	
+	}
 	
 	public Survey unmarshal(Reader r) throws IdmlParseException {
+		return unmarshal(r, false);
+	}
+	
+	public Survey unmarshal(Reader r, boolean skipCodeListItems) throws IdmlParseException {
 		try {
-			SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this);
+			SurveyUnmarshaller unmarshaller = new SurveyUnmarshaller(this, skipCodeListItems);
 			unmarshaller.parse(r);
 			return unmarshaller.getSurvey();
 		} catch (XmlParseException e) {

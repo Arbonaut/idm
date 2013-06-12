@@ -1,5 +1,7 @@
 package org.openforis.idm.metamodel.xml.internal.unmarshal;
 
+import org.openforis.idm.metamodel.Survey;
+
 
 /**
  * 
@@ -11,6 +13,17 @@ public class CodeListPersisterPR extends CodeListPR {
 	@Override
 	protected CodeListItemsPR createCodeListItemsPR() {
 		return new CodeListItemsPersisterPR();
+	}
+	
+	public Survey getSurvey() {
+		XmlPullReader parent = getParentReader();
+		while ( parent != null ) {
+			if ( parent instanceof SurveyCodeListPersister ) {
+				return ((SurveyCodeListPersister) parent).getSurvey();
+			}
+			parent = parent.getParentReader();
+		}
+		return null;
 	}
 
 }

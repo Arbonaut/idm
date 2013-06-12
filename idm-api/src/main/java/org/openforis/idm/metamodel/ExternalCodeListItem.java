@@ -17,7 +17,6 @@ public class ExternalCodeListItem extends CodeListItem {
 	private static final long serialVersionUID = 1L;
 
 	private Integer systemId;
-	private int parentId;
 	private Map<String, String> parentKeyByLevel;
 	
 	public ExternalCodeListItem(CodeList codeList, int itemId) {
@@ -60,12 +59,4 @@ public class ExternalCodeListItem extends CodeListItem {
 		this.systemId = systemId;
 	}
 
-	public int getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
-	}
-	
 }

@@ -120,6 +120,10 @@ public class CodeList extends VersionableSurveyObject {
 	public boolean isExternal() {
 		return StringUtils.isNotBlank(lookupTable);
 	}
+	
+	public boolean isEmpty() {
+		return getItems().isEmpty();
+	}
 
 	public boolean isHierarchical() {
 		return hierarchy != null && hierarchy.size() > 1;

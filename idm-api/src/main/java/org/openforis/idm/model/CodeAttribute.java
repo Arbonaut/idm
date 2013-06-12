@@ -62,7 +62,7 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 	}
 	
 	/**
-	 * @deprecated Access code list items using managers.
+	 * @deprecated Access code list items using manager class.
 	 * 
 	 * @return
 	 */

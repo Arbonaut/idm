@@ -12,10 +12,6 @@ package org.openforis.idm.metamodel.xml.internal.unmarshal;
  */
 public class CodeListsPersisterPR extends CodeListsPR {
 
-	public CodeListsPersisterPR() {
-		super();
-	}
-	
 	@Override
 	protected CodeListPR createCodeListReader() {
 		return new CodeListPersisterPR();

@@ -17,13 +17,34 @@ public class Taxon {
 		}
 
 		public static TaxonRank fromName(String name) {
+			return fromName(name, false);
+		}
+		
+		public static TaxonRank fromName(String name, boolean ignoreCase) {
 			TaxonRank[] values = values();
 			for (TaxonRank taxonRank : values) {
-				if ( taxonRank.getName().equals(name) ) {
+				boolean match;
+				String currentRankName = taxonRank.getName();
+				if ( ignoreCase ) {
+					match = currentRankName.equalsIgnoreCase(name);
+				} else {
+					match = currentRankName.equals(name);
+				}
+				if ( match ) {
 					return taxonRank;
 				}
 			}
 			return null;
+		}
+		
+		public static String[] names() {
+			TaxonRank[] values = values();
+			String[] result = new String[values.length];
+			for (int i = 0; i < values.length; i++) {
+				TaxonRank taxonRank = values[i];
+				result[i] = taxonRank.getName();
+			}
+			return result;
 		}
 		
 		public TaxonRank getParent() {

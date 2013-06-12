@@ -17,6 +17,7 @@ import org.openforis.idm.model.expression.InvalidExpressionException;
 /**
  * @author G. Miceli
  * @author M. Togna
+ * @author S. Ricci
  */
 public class AttributeDefault implements Serializable {
 
@@ -52,12 +53,9 @@ public class AttributeDefault implements Serializable {
 	
 	@SuppressWarnings("unchecked")
 	public <V extends Value> V evaluate(Attribute<? extends AttributeDefinition,V> attrib) throws InvalidExpressionException {
-		Record record = attrib.getRecord();
-		SurveyContext recordContext = record.getSurveyContext();
-		ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
-		if ( StringUtils.isBlank(condition) || evaluateCondition(attrib, expressionFactory) ) {
+		if ( StringUtils.isBlank(condition) || evaluateCondition(attrib) ) {
 			if (StringUtils.isBlank(value)) {
-				return evaluateExpression(attrib, expressionFactory);
+				return evaluateExpression(attrib);
 			} else {
 				AttributeDefinition definition = attrib.getDefinition();
 				return (V) definition.createValue(value);
@@ -67,16 +65,31 @@ public class AttributeDefault implements Serializable {
 		}
 	}
 
-	private boolean evaluateCondition(Attribute<?,?> attrib, ExpressionFactory expressionFactory) throws InvalidExpressionException {
+	private boolean evaluateCondition(Attribute<?,?> attrib) throws InvalidExpressionException {
+		ExpressionFactory expressionFactory = getExpressionFactory(attrib);
 		DefaultConditionExpression expr = expressionFactory.createDefaultConditionExpression(condition);
 		return expr.evaluate(attrib.getParent(), attrib);
 	}
 
-	@SuppressWarnings("unchecked")
-	private <V extends Value> V evaluateExpression(Attribute<?, V> attrib, ExpressionFactory expressionFactory) throws InvalidExpressionException {
+	private <V extends Value> V evaluateExpression(Attribute<?, V> attrib) throws InvalidExpressionException {
+		ExpressionFactory expressionFactory = getExpressionFactory(attrib);
 		DefaultValueExpression defaultValueExpression = expressionFactory.createDefaultValueExpression(expression);
 		Object object = defaultValueExpression.evaluate(attrib.getParent(), attrib);
-		return (V) object;
+		if ( object == null ) {
+			return null;
+		} else {
+			AttributeDefinition defn = attrib.getDefinition();
+			String stringValue = object.toString();
+			V value = defn.createValue(stringValue);
+			return value;
+		}
+	}
+
+	private ExpressionFactory getExpressionFactory(Attribute<?, ?> attrib) {
+		Record record = attrib.getRecord();
+		SurveyContext recordContext = record.getSurveyContext();
+		ExpressionFactory expressionFactory = recordContext.getExpressionFactory();
+		return expressionFactory;
 	}
 
 	@Override

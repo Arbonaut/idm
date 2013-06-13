@@ -65,9 +65,17 @@ public class Validator {
 	protected MaxCountValidator getMaxCountValidator(NodeDefinition defn) {
 		return new MaxCountValidator(defn);
 	}
-
+	
 	protected TaxonVernacularLanguageValidator getTaxonVernacularLanguageValidator() {
 		return new TaxonVernacularLanguageValidator();
+	}
+	
+	protected CodeValidator getCodeValidator() {
+		return new CodeValidator();
+	}
+	
+	protected CodeParentValidator getCodeParentValidator() {
+		return new CodeParentValidator();
 	}
 	
 	private NodeDefinition getChildDefinition(Entity entity, String childName) {
@@ -130,10 +138,10 @@ public class Validator {
 	}
 
 	private void validateCodeAttributeValue(CodeAttribute attribute, ValidationResults results) {
-		CodeParentValidator parentValidator = new CodeParentValidator();
+		CodeParentValidator parentValidator = getCodeParentValidator();
 		ValidationResultFlag validParent = parentValidator.evaluate(attribute);
 		if (validParent == ValidationResultFlag.OK ) {
-			CodeValidator codeValidator = new CodeValidator();
+			CodeValidator codeValidator = getCodeValidator();
 			ValidationResultFlag result = codeValidator.evaluate(attribute);
 			results.addResult(codeValidator, result);
 		} else {

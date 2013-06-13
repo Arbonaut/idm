@@ -37,13 +37,18 @@ public class CodeParentValidator implements ValidationRule<CodeAttribute> {
 					return ValidationResultFlag.OK;
 				}
 			} else {
-				CodeListItem parentCodeListItem = parentCode.getCodeListItem();
+				CodeListItem parentCodeListItem = getCodeListItem(parentCode);
 				if ( parentCodeListItem == null ) {
 					return ValidationResultFlag.WARNING;
 				}
 				return ValidationResultFlag.OK;
 			}
 		}
+	}
+
+	protected CodeListItem getCodeListItem(CodeAttribute parentCode) {
+		CodeListItem parentCodeListItem = parentCode.getCodeListItem();
+		return parentCodeListItem;
 	}
 
 	private boolean isExternalCodeList(CodeAttribute node) {

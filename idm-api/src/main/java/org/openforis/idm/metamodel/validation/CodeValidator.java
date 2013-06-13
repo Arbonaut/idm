@@ -22,7 +22,7 @@ public class CodeValidator implements ValidationRule<CodeAttribute> {
 			ExternalCodeValidator externalCodeValidator = new ExternalCodeValidator();
 			return externalCodeValidator.evaluate(attribute);
 		} else {
-			CodeListItem item = attribute.getCodeListItem();
+			CodeListItem item = getCodeListItem(attribute);
 			if (item == null) {
 				if (isAllowedUnlisted(attribute)) {
 					return ValidationResultFlag.WARNING;
@@ -33,6 +33,10 @@ public class CodeValidator implements ValidationRule<CodeAttribute> {
 				return ValidationResultFlag.OK;
 			}
 		}
+	}
+
+	protected CodeListItem getCodeListItem(CodeAttribute attribute) {
+		return attribute.getCodeListItem();
 	}
 
 	private boolean isAllowedUnlisted(CodeAttribute attribute) {

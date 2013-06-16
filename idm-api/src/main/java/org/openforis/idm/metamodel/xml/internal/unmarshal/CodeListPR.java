@@ -27,15 +27,15 @@ import org.xmlpull.v1.XmlPullParserException;
 class CodeListPR extends IdmlPullReader {
 	
 	CodeList list;
-	private boolean skipChildItems;
+	private boolean includeChildItems;
 	
 	public CodeListPR() {
 		this(false);
 	}
 	
-	public CodeListPR(boolean skipChildItems) {
+	public CodeListPR(boolean includeChildItems) {
 		super(LIST);
-		this.skipChildItems = skipChildItems;
+		this.includeChildItems = includeChildItems;
 		addChildPullReaders(new LabelPR(), new DescriptionPR(), new CodingSchemePR(), new HierarchyPR(), createCodeListItemsPR());
 	}
 
@@ -55,7 +55,7 @@ class CodeListPR extends IdmlPullReader {
 	}
 
 	protected CodeListItemsPR createCodeListItemsPR() {
-		return new CodeListItemsPR(skipChildItems);
+		return new CodeListItemsPR(includeChildItems);
 	}
 	
 	private class CodingSchemePR extends IdmlPullReader {

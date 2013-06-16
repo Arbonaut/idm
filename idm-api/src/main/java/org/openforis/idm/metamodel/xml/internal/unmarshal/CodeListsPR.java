@@ -8,20 +8,20 @@ import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
  */
 class CodeListsPR extends IdmlPullReader {
 	
-	private boolean skipChildItems;
+	private boolean includeChildItems;
 
 	public CodeListsPR() {
 		this(false);
 	}
 	
-	public CodeListsPR(boolean skipChildItems) {
+	public CodeListsPR(boolean includeChildItems) {
 		super(CODE_LISTS, 1);
-		this.skipChildItems = skipChildItems;
+		this.includeChildItems = includeChildItems;
 		addChildPullReaders(createCodeListReader());
 	}
 
 	protected CodeListPR createCodeListReader() {
-		return new CodeListPR(skipChildItems);
+		return new CodeListPR(includeChildItems);
 	}
 	
 }

@@ -13,23 +13,23 @@ import static org.openforis.idm.metamodel.xml.IdmlConstants.ITEMS;
  */
 class CodeListItemsPR extends IdmlPullReader {
 	
-	private boolean skipChildItems;
+	private boolean includeChildItems;
 
 	public CodeListItemsPR() {
 		this(false);
 	}
 	
-	public CodeListItemsPR(boolean skipChildItems) {
+	public CodeListItemsPR(boolean includeChildItems) {
 		super(ITEMS, 1);
-		this.skipChildItems = skipChildItems;
+		this.includeChildItems = includeChildItems;
 		addChildPullReaders(createNewItemPR());
 	}
 
 	protected XmlPullReader createNewItemPR() {
-		if ( skipChildItems ) {
-			return new SkipElementPR(ITEM);
-		} else {
+		if ( includeChildItems ) {
 			return new CodeListItemPR();
+		} else {
+			return new SkipElementPR(ITEM);
 		}
 	}
 }

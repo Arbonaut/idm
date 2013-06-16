@@ -16,20 +16,20 @@ import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
 public class SurveyUnmarshaller extends IdmlPullReader {
 
 	private Survey survey;
-	private boolean skipCodeListItems;
+	private boolean includeCodeListItems;
 	
 	public SurveyUnmarshaller(SurveyIdmlBinder binder) {
-		this(binder, false);
+		this(binder, true);
 	}
 	
-	public SurveyUnmarshaller(SurveyIdmlBinder binder, boolean skipCodeListItems) {
+	public SurveyUnmarshaller(SurveyIdmlBinder binder, boolean includeCodeListItems) {
 		super(SURVEY);
 		
 		if ( binder == null ) {
 			throw new NullPointerException("binder");
 		}
 		
-		this.skipCodeListItems = skipCodeListItems;
+		this.includeCodeListItems = includeCodeListItems;
 		
 		addChildPullReaders(
 			new ProjectPR(), 
@@ -48,7 +48,7 @@ public class SurveyUnmarshaller extends IdmlPullReader {
 	}
 
 	protected XmlPullReader createCodeListReader() {
-		return new CodeListsPR(skipCodeListItems);
+		return new CodeListsPR(includeCodeListItems);
 	}
 
 	@Override

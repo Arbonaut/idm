@@ -13,8 +13,13 @@ public class PersistedCodeListItem extends CodeListItem {
 	private static final long serialVersionUID = 1L;
 
 	private Integer systemId;
+	private Integer sortOrder;
 	private Integer parentId;
 	
+	public PersistedCodeListItem(CodeList codeList) {
+		this(codeList, codeList.getSurvey().nextId());
+	}
+
 	public PersistedCodeListItem(CodeList codeList, int id) {
 		super(codeList, id);
 	}
@@ -35,12 +40,22 @@ public class PersistedCodeListItem extends CodeListItem {
 		this.parentId = parentId;
 	}
 
+	public Integer getSortOrder() {
+		return sortOrder;
+	}
+
+	public void setSortOrder(Integer sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result
 				+ ((parentId == null) ? 0 : parentId.hashCode());
+		result = prime * result
+				+ ((sortOrder == null) ? 0 : sortOrder.hashCode());
 		result = prime * result
 				+ ((systemId == null) ? 0 : systemId.hashCode());
 		return result;
@@ -59,6 +74,11 @@ public class PersistedCodeListItem extends CodeListItem {
 			if (other.parentId != null)
 				return false;
 		} else if (!parentId.equals(other.parentId))
+			return false;
+		if (sortOrder == null) {
+			if (other.sortOrder != null)
+				return false;
+		} else if (!sortOrder.equals(other.sortOrder))
 			return false;
 		if (systemId == null) {
 			if (other.systemId != null)

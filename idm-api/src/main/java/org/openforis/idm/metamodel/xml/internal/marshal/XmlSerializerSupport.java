@@ -28,6 +28,7 @@ public abstract class XmlSerializerSupport<T, P> {
 	private boolean includeEmpty;
 	private Writer writer;
 	private String listWrapperTag;
+	private XmlSerializerSupport<?, ?> parentMarshaller;
 	
 	protected XmlSerializerSupport() {
 		this(IdmlConstants.IDML3_NAMESPACE_URI, null);
@@ -57,6 +58,14 @@ public abstract class XmlSerializerSupport<T, P> {
 
 	public void setListWrapperTag(String listWrapperTag) {
 		this.listWrapperTag = listWrapperTag;
+	}
+	
+	protected XmlSerializerSupport<?, ?> getParentMarshaller() {
+		return parentMarshaller;
+	}
+	
+	protected void setParentMarshaller(XmlSerializerSupport<?, ?> parentMarshaller) {
+		this.parentMarshaller = parentMarshaller;
 	}
 	
 	synchronized
@@ -180,9 +189,9 @@ public abstract class XmlSerializerSupport<T, P> {
 		if ( childMarshallers == null ) {
 			this.childMarshallers = new ArrayList<XmlSerializerSupport<?,T>>(marshallers.length); 
 		}
-		
 		for (XmlSerializerSupport im : marshallers) {
 			childMarshallers.add(im);
+			im.setParentMarshaller(this);
 		}
 	}
 
@@ -192,6 +201,15 @@ public abstract class XmlSerializerSupport<T, P> {
 		im.writer = this.writer;
 	}
 
+	protected XmlSerializerSupport<?, ?> getRootMarshaller() {
+		XmlSerializerSupport<?, ?> current = this;
+		XmlSerializerSupport<?, ?> parent = this.getParentMarshaller();
+		while ( parent != null ) {
+			current = parent;
+			parent = current.getParentMarshaller();
+		}
+		return current;
+	}
 	
 	public void setPrefix(String prefix, String namespaceUri) throws IOException{
 		xs.setPrefix(prefix, namespaceUri);

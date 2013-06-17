@@ -18,5 +18,7 @@ public interface SurveyContext {
 	
 	ExternalCodeListProvider getExternalCodeListProvider();
 	
+	PersistedCodeListProvider getPersistedCodeListProvider();
+	
 	Survey createSurvey();
 }

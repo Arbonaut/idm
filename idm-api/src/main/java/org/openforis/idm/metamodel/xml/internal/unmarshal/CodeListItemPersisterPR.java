@@ -69,7 +69,7 @@ public class CodeListItemPersisterPR extends CodeListItemPR {
 	protected CodeListItemPersister getPersister() {
 		SurveyCodeListPersisterBinder binder = getBinder();
 		SurveyCodeListPersisterContext context = binder.getContext();
-		CodeListItemPersister persister = context.getExternalCodeListPersister();
+		CodeListItemPersister persister = context.getCodeListPersister();
 		return persister;
 	}
 

@@ -1,6 +1,23 @@
 package org.openforis.idm.metamodel.xml.internal.marshal;
 
-import static org.openforis.idm.metamodel.xml.IdmlConstants.*;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.CODE;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.CODE_LISTS;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.CODING_SCHEME;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.DEPRECATED;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.DESCRIPTION;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.HIERARCHY;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.ID;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.ITEM;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.ITEMS;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.LABEL;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.LEVEL;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.LIST;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.LOOKUP;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.NAME;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.QUALIFIABLE;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.SCOPE;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.SINCE;
+import static org.openforis.idm.metamodel.xml.IdmlConstants.TYPE;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,8 +27,14 @@ import org.openforis.idm.metamodel.CodeList.CodeScope;
 import org.openforis.idm.metamodel.CodeListItem;
 import org.openforis.idm.metamodel.CodeListLabel;
 import org.openforis.idm.metamodel.CodeListLevel;
+import org.openforis.idm.metamodel.ExternalCodeListItem;
+import org.openforis.idm.metamodel.ExternalCodeListProvider;
 import org.openforis.idm.metamodel.LanguageSpecificText;
+import org.openforis.idm.metamodel.PersistedCodeListItem;
+import org.openforis.idm.metamodel.PersistedCodeListProvider;
 import org.openforis.idm.metamodel.Survey;
+import org.openforis.idm.metamodel.SurveyContext;
+import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
 
 /**
  * 
@@ -200,9 +223,31 @@ class CodeListsXS extends VersionableSurveyObjectXS<CodeList, Survey> {
 		
 		@Override
 		protected void marshalInstances(CodeList list) throws IOException {
-			if ( ! list.isExternal() ) {
-				marshal(list.getItems());
+			List<? extends CodeListItem> items = getRootItems(list);
+			if ( items != null ) {
+				marshal(items);
 			}
+		}
+
+		protected List<? extends CodeListItem> getRootItems(CodeList list) {
+			SurveyMarshaller root = (SurveyMarshaller) getRootMarshaller();
+			SurveyIdmlBinder binder = root.getBinder();
+			SurveyContext context = binder.getSurveyContext();
+			List<? extends CodeListItem> items = null;
+			if ( list.isExternal() ) {
+				if ( root.isExternalCodeListsMarshalEnabled() ) {
+					ExternalCodeListProvider externalCodeListProvider = context.getExternalCodeListProvider();
+					items = externalCodeListProvider.getRootItems(list);
+				}
+			} else if ( list.isEmpty() ) {
+				if ( root.isPersistedCodeListsMarshalEnabled() ) {
+					PersistedCodeListProvider persistedCodeListProvider = context.getPersistedCodeListProvider();
+					items = persistedCodeListProvider.getRootItems(list);
+				}
+			} else {
+				items = list.getItems();
+			}
+			return items;
 		}
 	}
 
@@ -214,7 +259,32 @@ class CodeListsXS extends VersionableSurveyObjectXS<CodeList, Survey> {
 		
 		@Override
 		protected void marshalInstances(CodeListItem item) throws IOException {
-			marshal(item.getChildItems());
+			List<? extends CodeListItem> items = getChildItems(item);
+			if ( items != null ) {
+				marshal(items);
+			}
+		}
+
+		protected List<? extends CodeListItem> getChildItems(CodeListItem item) {
+			CodeList list = item.getCodeList();
+			SurveyMarshaller root = (SurveyMarshaller) getRootMarshaller();
+			SurveyIdmlBinder binder = root.getBinder();
+			SurveyContext context = binder.getSurveyContext();
+			List<? extends CodeListItem> items = null;
+			if ( list.isExternal() ) {
+				if ( root.isExternalCodeListsMarshalEnabled() ) {
+					ExternalCodeListProvider externalCodeListProvider = context.getExternalCodeListProvider();
+					items = externalCodeListProvider.getChildItems((ExternalCodeListItem) item);
+				}
+			} else if ( list.isEmpty() ) {
+				if ( root.isPersistedCodeListsMarshalEnabled() ) {
+					PersistedCodeListProvider persistedCodeListProvider = context.getPersistedCodeListProvider();
+					items = persistedCodeListProvider.getChildItems((PersistedCodeListItem) item);
+				}
+			} else {
+				items = item.getChildItems();
+			}
+			return items;
 		}
 	}
 }

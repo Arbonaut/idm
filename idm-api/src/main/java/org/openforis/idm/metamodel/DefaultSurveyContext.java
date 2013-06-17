@@ -31,6 +31,11 @@ public class DefaultSurveyContext implements SurveyContext {
 	public ExternalCodeListProvider getExternalCodeListProvider() {
 		throw new UnsupportedOperationException();
 	}
+	
+	@Override
+	public PersistedCodeListProvider getPersistedCodeListProvider() {
+		throw new UnsupportedOperationException();
+	}
 
 	@Override
 	public Survey createSurvey() {

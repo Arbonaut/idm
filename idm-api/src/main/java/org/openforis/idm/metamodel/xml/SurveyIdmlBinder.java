@@ -75,12 +75,28 @@ public class SurveyIdmlBinder {
 	}
 	
 	public void marshal(Survey survey, OutputStream os) throws IOException {
-		SurveyMarshaller ser = new SurveyMarshaller(this);
-		ser.marshal(survey, os, UTF8_ENCODING);
+		marshal(survey, os, true, false, false);
 	}
 	
+	public void marshal(Survey survey, OutputStream os,
+			boolean marshalCodeLists, 
+			boolean marshalPersistedCodeLists,
+			boolean marshalExternalCodeLists) throws IOException {
+		SurveyMarshaller ser = new SurveyMarshaller(this, marshalCodeLists,
+				marshalPersistedCodeLists, marshalExternalCodeLists);
+		ser.marshal(survey, os, UTF8_ENCODING);
+	}
+
 	public void marshal(Survey survey, Writer wr) throws IOException {
-		SurveyMarshaller ser = new SurveyMarshaller(this);
+		marshal(survey, wr, true, false, false);
+	}
+
+	public void marshal(Survey survey, Writer wr,
+			boolean marshalCodeLists, 
+			boolean marshalExternalCodeLists,
+			boolean marshalPersistedCodeLists) throws IOException {
+		SurveyMarshaller ser = new SurveyMarshaller(this, marshalCodeLists,
+				marshalPersistedCodeLists, marshalExternalCodeLists);
 		ser.marshal(survey, wr, UTF8_ENCODING);
 	}
 		

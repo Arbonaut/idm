@@ -59,4 +59,38 @@ public class ExternalCodeListItem extends CodeListItem {
 		this.systemId = systemId;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime
+				* result
+				+ ((parentKeyByLevel == null) ? 0 : parentKeyByLevel.hashCode());
+		result = prime * result
+				+ ((systemId == null) ? 0 : systemId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ExternalCodeListItem other = (ExternalCodeListItem) obj;
+		if (parentKeyByLevel == null) {
+			if (other.parentKeyByLevel != null)
+				return false;
+		} else if (!parentKeyByLevel.equals(other.parentKeyByLevel))
+			return false;
+		if (systemId == null) {
+			if (other.systemId != null)
+				return false;
+		} else if (!systemId.equals(other.systemId))
+			return false;
+		return true;
+	}
+
 }

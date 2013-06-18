@@ -3,6 +3,11 @@
  */
 package org.openforis.idm.metamodel;
 
+import java.util.List;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 
 /**
  * @author S. Ricci
@@ -16,6 +21,27 @@ public class PersistedCodeListItem extends CodeListItem {
 	private Integer sortOrder;
 	private Integer parentId;
 	
+	public static PersistedCodeListItem fromItem(CodeListItem item) {
+		PersistedCodeListItem result = new PersistedCodeListItem(item.getCodeList(), item.getId());
+		result.setCode(item.getCode());
+		result.setQualifiable(item.isQualifiable());
+		result.setDeprecatedVersion(item.getDeprecatedVersion());
+		result.setSinceVersion(item.getSinceVersion());
+		List<LanguageSpecificText> descriptions = item.getDescriptions();
+		for (LanguageSpecificText languageSpecificText : descriptions) {
+			result.setDescription(languageSpecificText.getLanguage(), languageSpecificText.getText());
+		}
+		List<LanguageSpecificText> labels = item.getLabels();
+		for (LanguageSpecificText languageSpecificText : labels) {
+			result.setLabel(languageSpecificText.getLanguage(), languageSpecificText.getText());
+		}
+		Set<QName> annotationNames = item.getAnnotationNames();
+		for (QName qName : annotationNames) {
+			result.setAnnotation(qName, item.getAnnotation(qName));
+		}
+		return result;
+	}
+
 	public PersistedCodeListItem(CodeList codeList) {
 		this(codeList, codeList.getSurvey().nextId());
 	}

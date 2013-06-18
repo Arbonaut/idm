@@ -13,4 +13,10 @@ public interface PersistedCodeListProvider {
 	
 	List<PersistedCodeListItem> getChildItems(PersistedCodeListItem parentItem);
 	
+	List<PersistedCodeListItem> getItems(CodeList codeList, int level);
+
+	PersistedCodeListItem getParentItem(PersistedCodeListItem item);
+	
+	boolean hasQualifiableItems(CodeList codeList);
+
 }

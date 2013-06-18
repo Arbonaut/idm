@@ -196,12 +196,12 @@ public class CodeList extends VersionableSurveyObject {
 		}
 	}
 
-	public List<CodeListItem> getItems(Integer level) {
-		return getItems(level, null);
+	public List<CodeListItem> getItems(Integer levelIdx) {
+		return getItems(levelIdx, null);
 	}
 	
-	public List<CodeListItem> getItems(Integer level, ModelVersion version) {
-		List<CodeListItem> items = getItemsInternal(this.items, level, version);
+	public List<CodeListItem> getItems(Integer levelIdx, ModelVersion version) {
+		List<CodeListItem> items = getItemsInternal(this.items, levelIdx, version);
 		return CollectionUtils.unmodifiableList(items);
 	}
 

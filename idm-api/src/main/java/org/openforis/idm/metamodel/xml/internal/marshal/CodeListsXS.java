@@ -31,7 +31,7 @@ import org.openforis.idm.metamodel.ExternalCodeListItem;
 import org.openforis.idm.metamodel.ExternalCodeListProvider;
 import org.openforis.idm.metamodel.LanguageSpecificText;
 import org.openforis.idm.metamodel.PersistedCodeListItem;
-import org.openforis.idm.metamodel.PersistedCodeListProvider;
+import org.openforis.idm.metamodel.CodeListService;
 import org.openforis.idm.metamodel.Survey;
 import org.openforis.idm.metamodel.SurveyContext;
 import org.openforis.idm.metamodel.xml.SurveyIdmlBinder;
@@ -241,8 +241,8 @@ class CodeListsXS extends VersionableSurveyObjectXS<CodeList, Survey> {
 				}
 			} else if ( list.isEmpty() ) {
 				if ( root.isPersistedCodeListsMarshalEnabled() ) {
-					PersistedCodeListProvider persistedCodeListProvider = context.getPersistedCodeListProvider();
-					items = persistedCodeListProvider.getRootItems(list);
+					CodeListService codeListService = context.getCodeListService();
+					items = codeListService.loadRootItems(list);
 				}
 			} else {
 				items = list.getItems();
@@ -278,8 +278,8 @@ class CodeListsXS extends VersionableSurveyObjectXS<CodeList, Survey> {
 				}
 			} else if ( list.isEmpty() ) {
 				if ( root.isPersistedCodeListsMarshalEnabled() ) {
-					PersistedCodeListProvider persistedCodeListProvider = context.getPersistedCodeListProvider();
-					items = persistedCodeListProvider.getChildItems((PersistedCodeListItem) item);
+					CodeListService codeListService = context.getCodeListService();
+					items = codeListService.loadChildItems((PersistedCodeListItem) item);
 				}
 			} else {
 				items = item.getChildItems();

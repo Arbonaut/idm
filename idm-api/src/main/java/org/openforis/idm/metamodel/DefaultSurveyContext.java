@@ -33,7 +33,7 @@ public class DefaultSurveyContext implements SurveyContext {
 	}
 	
 	@Override
-	public PersistedCodeListProvider getPersistedCodeListProvider() {
+	public CodeListService getCodeListService() {
 		throw new UnsupportedOperationException();
 	}
 

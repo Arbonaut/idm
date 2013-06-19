@@ -3,7 +3,7 @@ package org.openforis.idm.metamodel.xml.internal.unmarshal;
 import java.io.IOException;
 
 import org.openforis.idm.metamodel.CodeListItem;
-import org.openforis.idm.metamodel.CodeListItemPersister;
+import org.openforis.idm.metamodel.CodeListService;
 import org.openforis.idm.metamodel.PersistedCodeListItem;
 import org.openforis.idm.metamodel.SurveyCodeListPersisterContext;
 import org.openforis.idm.metamodel.xml.SurveyCodeListPersisterBinder;
@@ -56,21 +56,21 @@ public class CodeListItemPersisterPR extends CodeListItemPR {
 	}
 	
 	protected void persistItem() {
-		CodeListItemPersister persister = getPersister();
+		CodeListService service = getCodeListService();
 		PersistedCodeListItem persistedItem = (PersistedCodeListItem) item;
 		if ( parentItem != null ) {
 			int parentId = ((PersistedCodeListItem) parentItem).getSystemId();
 			persistedItem.setParentId(parentId);
 		}
-		persister.save(persistedItem);
+		service.save(persistedItem);
 		itemPersisted = true;
 	}
 	
-	protected CodeListItemPersister getPersister() {
+	protected CodeListService getCodeListService() {
 		SurveyCodeListPersisterBinder binder = getBinder();
 		SurveyCodeListPersisterContext context = binder.getContext();
-		CodeListItemPersister persister = context.getCodeListPersister();
-		return persister;
+		CodeListService service = context.getCodeListService();
+		return service;
 	}
 
 	private SurveyCodeListPersisterBinder getBinder() {

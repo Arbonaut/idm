@@ -8,6 +8,6 @@ package org.openforis.idm.metamodel;
  */
 public interface SurveyCodeListPersisterContext {
 
-	CodeListItemPersister getCodeListPersister();
+	CodeListService getCodeListService();
 
 }

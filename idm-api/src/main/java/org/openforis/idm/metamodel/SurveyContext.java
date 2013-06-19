@@ -9,6 +9,7 @@ import org.openforis.idm.model.expression.ExpressionFactory;
 /**
  * @author M. Togna
  * @author G. Miceli
+ * @author S. Ricci
  */
 public interface SurveyContext {
 
@@ -16,9 +17,9 @@ public interface SurveyContext {
 
 	Validator getValidator();
 	
-	ExternalCodeListProvider getExternalCodeListProvider();
+	CodeListService getCodeListService();
 	
-	PersistedCodeListProvider getPersistedCodeListProvider();
+	ExternalCodeListProvider getExternalCodeListProvider();
 	
 	Survey createSurvey();
 }

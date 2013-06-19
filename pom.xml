@@ -19,26 +19,26 @@
 
 	<distributionManagement>
 		<repository>
-			<id>openforis-releases-repository</id>
-			<name>Open Foris Repository</name>
+			<id>openforis-releases</id>
+			<name>Open Foris Releases</name>
 			<url>http://www.openforis.org/nexus/content/repositories/releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>openforis-snapshots-repository</id>
-			<name>Open Foris Snapshots Repository</name>
+			<id>openforis-snapshots</id>
+			<name>Open Foris Snapshots</name>
 			<url>http://www.openforis.org/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
-			<id>openforis-releases-repository</id>
-			<name>Open Foris Repository</name>
+			<id>openforis-releases</id>
+			<name>Open Foris Releases</name>
 			<url>http://www.openforis.org/nexus/content/repositories/releases/</url>
 		</repository>
 		<repository>
-			<id>openforis-snapshots-repository</id>
-			<name>Open Foris Snapshots Repository</name>
+			<id>openforis-snapshots</id>
+			<name>Open Foris Snapshots</name>
 			<url>http://www.openforis.org/nexus/content/repositories/snapshots/</url>
 		</repository>
 	</repositories>
@@ -127,6 +127,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.4</version>
 			</plugin>
+<!--
 			<plugin>
 				<groupId>com.soebes.maven.plugins.mlv</groupId>
 				<artifactId>maven-license-verifier-plugin</artifactId>
@@ -153,6 +154,7 @@
 				<artifactId>license-maven-plugin</artifactId>
 				<version>1.4</version>
 			</plugin>
+-->
 		</plugins>
 	</build>
 

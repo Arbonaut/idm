@@ -18,8 +18,8 @@ public class PersistedCodeListItem extends CodeListItem {
 	private static final long serialVersionUID = 1L;
 
 	private Integer systemId;
-	private Integer sortOrder;
 	private Integer parentId;
+	private Integer sortOrder;
 	
 	public static PersistedCodeListItem fromItem(CodeListItem item) {
 		PersistedCodeListItem result = new PersistedCodeListItem(item.getCodeList(), item.getId());

@@ -26,7 +26,9 @@ public interface CodeListService {
 	boolean hasQualifiableItems(CodeList codeList);
 
 	<T extends CodeListItem> void save(T item);
-	
+
+	<T extends CodeListItem> void save(List<T> items);
+
 	<T extends CodeListItem> void delete( T item);
 	
 	void deleteAllItems(CodeList list);

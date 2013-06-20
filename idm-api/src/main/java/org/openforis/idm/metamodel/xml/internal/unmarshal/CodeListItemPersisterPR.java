@@ -18,21 +18,32 @@ import org.xmlpull.v1.XmlPullParserException;
 public class CodeListItemPersisterPR extends CodeListItemPR {
 	
 	private boolean itemPersisted;
+	private int lastChildSortOrder;
 
 	CodeListItemPersisterPR() {
-		itemPersisted = false;
+		this(null);
 	}
 	
 	CodeListItemPersisterPR(CodeListItem parentItem) {
 		super(parentItem);
+		itemPersisted = false;
+		lastChildSortOrder = 0;
 	}
 
 	@Override
-	protected CodeListItemPR createChildItemPR(
-			CodeListItem parentItem) {
-		if ( ! itemPersisted ) {
+	protected void handleChildTag(XmlPullReader childTagReader)
+			throws XmlPullParserException, IOException, XmlParseException {
+		if ( childTagReader instanceof CodeListItemPersisterPR && 
+			! itemPersisted ) {
+			this.lastChildSortOrder = 0;
 			persistItem(); //avoid NPE referencing parentId
 		}
+		super.handleChildTag(childTagReader);
+	}
+	
+	@Override
+	protected CodeListItemPR createChildItemPR(
+			CodeListItem parentItem) {
 		return new CodeListItemPersisterPR(parentItem);
 	}
 	
@@ -55,15 +66,32 @@ public class CodeListItemPersisterPR extends CodeListItemPR {
 		item = new PersistedCodeListItem(getCodeList(), id);
 	}
 	
+	public int nextChildSortOrder() {
+		return ++lastChildSortOrder;
+	}
+
 	protected void persistItem() {
-		CodeListService service = getCodeListService();
+		SurveyCodeListPersisterBinder binder = getBinder();
 		PersistedCodeListItem persistedItem = (PersistedCodeListItem) item;
+		persistedItem.setSystemId(binder.nextItemId());
+		persistedItem.setSortOrder(calculateSortOrder());
+		binder.persistItem(persistedItem);
 		if ( parentItem != null ) {
 			int parentId = ((PersistedCodeListItem) parentItem).getSystemId();
 			persistedItem.setParentId(parentId);
 		}
-		service.save(persistedItem);
 		itemPersisted = true;
+	}
+	
+	protected int calculateSortOrder() {
+		XmlPullReader parentReader = getParentReader();
+		if ( parentReader instanceof CodeListItemsPersisterPR ) {
+			return ((CodeListItemsPersisterPR) parentReader).nextChildSortOrder();
+		} else if ( parentReader instanceof CodeListItemPersisterPR ) {
+			return ((CodeListItemPersisterPR) parentReader).nextChildSortOrder();
+		} else {
+			throw new IllegalStateException("Unexpected parent reader type: " + parentReader.getClass().getName());
+		}
 	}
 	
 	protected CodeListService getCodeListService() {

@@ -1,8 +1,8 @@
 package org.openforis.idm.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openforis.idm.metamodel.CodeAttributeDefinition;
@@ -121,10 +121,10 @@ public class CodeAttribute extends Attribute<CodeAttributeDefinition, Code> {
 	 * @return
 	 */
 	public List<CodeAttribute> getCodeAncestors() {
-		Stack<CodeAttribute> result = new Stack<CodeAttribute>();
+		List<CodeAttribute> result = new ArrayList<CodeAttribute>();
 		CodeAttribute parent = getCodeParent();
 		while (parent != null) {
-			result.push(parent);
+			result.add(0, parent);
 			parent = parent.getCodeParent();
 		}
 		return Collections.unmodifiableList(result);

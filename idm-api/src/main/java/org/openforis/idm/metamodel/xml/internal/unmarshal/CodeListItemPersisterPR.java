@@ -75,11 +75,11 @@ public class CodeListItemPersisterPR extends CodeListItemPR {
 		PersistedCodeListItem persistedItem = (PersistedCodeListItem) item;
 		persistedItem.setSystemId(binder.nextItemId());
 		persistedItem.setSortOrder(calculateSortOrder());
-		binder.persistItem(persistedItem);
 		if ( parentItem != null ) {
 			int parentId = ((PersistedCodeListItem) parentItem).getSystemId();
 			persistedItem.setParentId(parentId);
 		}
+		binder.persistItem(persistedItem);
 		itemPersisted = true;
 	}
 	

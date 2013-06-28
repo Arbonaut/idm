@@ -8,8 +8,7 @@ import java.util.List;
 import org.openforis.idm.metamodel.CodeListService;
 import org.openforis.idm.metamodel.PersistedCodeListItem;
 import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.SurveyCodeListPersisterContext;
-import org.openforis.idm.metamodel.xml.internal.unmarshal.SurveyCodeListPersister;
+import org.openforis.idm.metamodel.xml.internal.unmarshal.SurveyCodeListImporterPR;
 
 /**
  * Load code lists inside a XML file and store them into the database
@@ -17,25 +16,29 @@ import org.openforis.idm.metamodel.xml.internal.unmarshal.SurveyCodeListPersiste
  * 
  * @author S. Ricci
  */
-public class SurveyCodeListPersisterBinder {
+public class CodeListImporter {
 	
 	private static final String UTF8_ENCODING = "UTF-8";
 
 	private static final int BATCH_SIZE = 100;
 	
-	private SurveyCodeListPersisterContext context;
+	private CodeListService service;
 	private List<PersistedCodeListItem> itemsToPersistBuffer;
 	private int nextItemId;
 	
-	public SurveyCodeListPersisterBinder(SurveyCodeListPersisterContext context, int nextItemSystemId) {
-		this.context = context;
+	public CodeListImporter(CodeListService service) {
+		this(service, 1);
+	}
+	
+	public CodeListImporter(CodeListService service, int nextItemSystemId) {
+		this.service = service;
 		this.nextItemId = nextItemSystemId;
 		this.itemsToPersistBuffer = new ArrayList<PersistedCodeListItem>();
 	}
 
 	public void exportFromXMLAndStore(Survey survey, InputStream is) throws IdmlParseException {
 		try {
-			SurveyCodeListPersister persister = new SurveyCodeListPersister(this, survey);
+			SurveyCodeListImporterPR persister = new SurveyCodeListImporterPR(this, survey);
 			persister.parse(is, UTF8_ENCODING);
 			flushItemsToPersistBuffer();
 		} catch (XmlParseException e) {
@@ -46,7 +49,6 @@ public class SurveyCodeListPersisterBinder {
 	}
 	
 	private void flushItemsToPersistBuffer() {
-		CodeListService service = context.getCodeListService();
 		service.save(itemsToPersistBuffer);
 		itemsToPersistBuffer.clear();
 	}
@@ -58,8 +60,8 @@ public class SurveyCodeListPersisterBinder {
 		}
 	}
 	
-	public SurveyCodeListPersisterContext getContext() {
-		return context;
+	public CodeListService getService() {
+		return service;
 	}
 
 	public int nextItemId() {

@@ -13,19 +13,19 @@ import static org.openforis.idm.metamodel.xml.IdmlConstants.URI;
 import static org.openforis.idm.metamodel.xml.IdmlConstants.VERSIONING;
 
 import org.openforis.idm.metamodel.Survey;
-import org.openforis.idm.metamodel.xml.SurveyCodeListPersisterBinder;
+import org.openforis.idm.metamodel.xml.CodeListImporter;
 
 /**
  * 
  * @author S. Ricci
  *
  */
-public class SurveyCodeListPersister extends IdmlPullReader {
+public class SurveyCodeListImporterPR extends IdmlPullReader {
 	
-	private SurveyCodeListPersisterBinder binder;
+	private CodeListImporter binder;
 	private Survey survey;
 
-	public SurveyCodeListPersister(SurveyCodeListPersisterBinder binder, Survey survey) {
+	public SurveyCodeListImporterPR(CodeListImporter binder, Survey survey) {
 		super(SURVEY);
 		if ( binder == null ) {
 			throw new NullPointerException("binder");
@@ -51,7 +51,7 @@ public class SurveyCodeListPersister extends IdmlPullReader {
 		);
 	}
 
-	public SurveyCodeListPersisterBinder getBinder() {
+	public CodeListImporter getBinder() {
 		return binder;
 	}
 	

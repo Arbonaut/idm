@@ -47,6 +47,7 @@ public class CodeParentValidator implements ValidationRule<CodeAttribute> {
 	}
 
 	protected CodeListItem getCodeListItem(CodeAttribute parentCode) {
+		@SuppressWarnings("deprecation")
 		CodeListItem parentCodeListItem = parentCode.getCodeListItem();
 		return parentCodeListItem;
 	}

@@ -35,6 +35,7 @@ public class CodeValidator implements ValidationRule<CodeAttribute> {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	protected CodeListItem getCodeListItem(CodeAttribute attribute) {
 		return attribute.getCodeListItem();
 	}

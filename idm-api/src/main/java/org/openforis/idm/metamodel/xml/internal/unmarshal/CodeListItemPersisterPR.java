@@ -5,8 +5,7 @@ import java.io.IOException;
 import org.openforis.idm.metamodel.CodeListItem;
 import org.openforis.idm.metamodel.CodeListService;
 import org.openforis.idm.metamodel.PersistedCodeListItem;
-import org.openforis.idm.metamodel.SurveyCodeListPersisterContext;
-import org.openforis.idm.metamodel.xml.SurveyCodeListPersisterBinder;
+import org.openforis.idm.metamodel.xml.CodeListImporter;
 import org.openforis.idm.metamodel.xml.XmlParseException;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -71,7 +70,7 @@ public class CodeListItemPersisterPR extends CodeListItemPR {
 	}
 
 	protected void persistItem() {
-		SurveyCodeListPersisterBinder binder = getBinder();
+		CodeListImporter binder = getBinder();
 		PersistedCodeListItem persistedItem = (PersistedCodeListItem) item;
 		persistedItem.setSystemId(binder.nextItemId());
 		persistedItem.setSortOrder(calculateSortOrder());
@@ -95,17 +94,16 @@ public class CodeListItemPersisterPR extends CodeListItemPR {
 	}
 	
 	protected CodeListService getCodeListService() {
-		SurveyCodeListPersisterBinder binder = getBinder();
-		SurveyCodeListPersisterContext context = binder.getContext();
-		CodeListService service = context.getCodeListService();
+		CodeListImporter binder = getBinder();
+		CodeListService service = binder.getService();
 		return service;
 	}
 
-	private SurveyCodeListPersisterBinder getBinder() {
+	private CodeListImporter getBinder() {
 		XmlPullReader parent = getParentReader();
 		while ( parent != null ) {
-			if ( parent instanceof SurveyCodeListPersister ) {
-				return ((SurveyCodeListPersister) parent).getBinder();
+			if ( parent instanceof SurveyCodeListImporterPR ) {
+				return ((SurveyCodeListImporterPR) parent).getBinder();
 			}
 			parent = parent.getParentReader();
 		}

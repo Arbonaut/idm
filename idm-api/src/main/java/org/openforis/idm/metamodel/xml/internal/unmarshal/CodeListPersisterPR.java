@@ -18,8 +18,8 @@ public class CodeListPersisterPR extends CodeListPR {
 	public Survey getSurvey() {
 		XmlPullReader parent = getParentReader();
 		while ( parent != null ) {
-			if ( parent instanceof SurveyCodeListPersister ) {
-				return ((SurveyCodeListPersister) parent).getSurvey();
+			if ( parent instanceof SurveyCodeListImporterPR ) {
+				return ((SurveyCodeListImporterPR) parent).getSurvey();
 			}
 			parent = parent.getParentReader();
 		}

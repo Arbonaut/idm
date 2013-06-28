@@ -36,7 +36,7 @@ public class CodeListImporter {
 		this.itemsToPersistBuffer = new ArrayList<PersistedCodeListItem>();
 	}
 
-	public void exportFromXMLAndStore(Survey survey, InputStream is) throws IdmlParseException {
+	public void importCodeLists(Survey survey, InputStream is) throws IdmlParseException {
 		try {
 			SurveyCodeListImporterPR persister = new SurveyCodeListImporterPR(this, survey);
 			persister.parse(is, UTF8_ENCODING);

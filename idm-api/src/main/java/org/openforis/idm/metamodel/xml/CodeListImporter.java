@@ -20,7 +20,7 @@ public class CodeListImporter {
 	
 	private static final String UTF8_ENCODING = "UTF-8";
 
-	private static final int BATCH_SIZE = 100;
+	private static final int BATCH_SIZE = 1000;
 	
 	private CodeListService service;
 	private List<PersistedCodeListItem> itemsToPersistBuffer;
